@@ -1,30 +1,14 @@
-# Hybrid Task Graph Scheduler (HTGS) - An application programming interface to generate hybrid pipeline workflow systems
+/**
+@mainpage Hybrid Task Graph Scheduler (HTGS) - An application programming interface to generate hybrid pipeline workflow systems
 
-The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors.
+Disclaimer:
+NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software.
 
-Installation Instructions {#install}
-========
-## Dependencies:
-1) g++/gcc version 4.8.4+
-2) pthreads
-3) doxygen (optional)
+NIST-developed software is expressly provided “AS IS.” NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 
-## Building and testing HTGS:
-1) Download the Zip at 
-2) Extract
-3) Create 'build' directory
-4) In 'build' directory run cmake-gui $HTGS directory$ (or ccmake)
-5) Configure parameters, such as CMAKE_INSTALL_PREFIX and whether to create the documentation or run google test suite
-6) Generate make file 
-7) Run 'make'
-8) Run 'make install'
+You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
-To build the documentation run:
-'make doc'
-
-To execute the test suite run:
-'make run-test' after running make
-
+@author Timothy Blattner
 
 Motivation {#motivation}
 =========
@@ -110,7 +94,7 @@ The HTGS API is split into two modules:
 2. The Core API
 
 The user API is found in <htgs/api/...> and contains the API that programmers use to define a TaskGraph. The majority
- of programs should only use the user API.
+ of programs should only use the User API.
 
 The core API is found in <htgs/core/...> and holds the underlying sub-systems that the user API operates with.
 
@@ -143,21 +127,6 @@ Examples {#examples}
 - Profiling
 - Debugging
 
-Credits {#credits}
-=========
-Timothy Blattner
-Walid Keyrouz
-Milton Halem
-Mary Brady
-Shuvra Bhattacharyya
-
-How to cite our work {#cite-us}
-=========
-If you are using the HTGS API in your research please use one of the following methods to cite us.
-
-1) Cite the github page
-2) T. Blattner, W. Keyrouz, M. Halem, M. Brady and S. S. Bhattacharyya, "A hybrid task graph scheduler for high performance image processing workflows," 2015 IEEE Global Conference on Signal and Information Processing (GlobalSIP), Orlando, FL, 2015, pp. 634-637.
-
 
 Citations
 ------
@@ -165,7 +134,4 @@ Citations
 doi: 10.1109/ICPP.2014.9](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6957209&isnumber=6957198)
 
 [2]: Blattner, T.; "A Hybrid CPU/GPU Pipeline Workflow System". Master's thesis, 2013. University of Maryland Baltimore County
-
-Contact Us
-=========
-Timothy Blattner (timothy.blattner ( at ) nist.gov)
+*/
