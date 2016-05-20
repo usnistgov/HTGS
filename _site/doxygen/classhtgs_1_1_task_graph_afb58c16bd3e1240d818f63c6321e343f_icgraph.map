@@ -1,0 +1,6 @@
+<map id="htgs::TaskGraph::addMemoryManagerEdge" name="htgs::TaskGraph::addMemoryManagerEdge">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html#a9eb8248f52fb8f4ce7bc39ab4246b098" title="Creates a copy of the TaskGraph with the specified pipeline Id and number of pipelines. " alt="" coords="294,5,437,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html#a1aa75e2d446c8ffc4430f1011f81cbfc" title="Adds a CudaMemoryManager edge with the specified name to the TaskGraph. " alt="" coords="248,70,483,111"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph.html#ac52a73d3082454886f45c7a0d5241e32" title="Adds a MemoryManager that is managed by the user. " alt="" coords="263,135,468,191"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph.html#a3a502670e0a22b957fdcc20f1bddc67a" title="Adds a MemoryManager edge with the specified name to the TaskGraph. " alt="" coords="263,214,467,255"/>
+</map>

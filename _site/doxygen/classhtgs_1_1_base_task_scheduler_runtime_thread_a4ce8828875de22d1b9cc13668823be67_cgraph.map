@@ -1,0 +1,4 @@
+<map id="htgs::BaseTaskSchedulerRuntimeThread::BaseTaskSchedulerRuntimeThread" name="htgs::BaseTaskSchedulerRuntimeThread::BaseTaskSchedulerRuntimeThread">
+<area shape="rect" id="node2" href="$classhtgs_1_1_base_task_scheduler.html#a93ab1e58c30abedf4c3f81a2f2df8a06" title="Sets the thread that is executing this Task. " alt="" coords="291,5,463,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_base_task_scheduler.html#af4b30cbd1b0affd78ab2b81e59bb8d59" title="Sets the thread id associated with the Task. " alt="" coords="291,70,463,111"/>
+</map>

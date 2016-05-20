@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <head>
     <title>
    
-   Your awesome title &middot; 
+   HTGS &middot; 
    
     </title>
     <!-- Meta -->
@@ -42,14 +42,51 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 
-    <!-- ******HEADER****** --> 
-    <header id="header" class="header">  
-        <div class="container">            
+<header class="nist-header">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>NIST Pages Template</title>
+	<meta name="viewport" content="width=device-width">
+	<meta name="description" content="The Hybrid Task Graph Scheduler API for high performance computing across multi-CPU and multi-GPU systems.
+">
+	<link rel="canonical" href="/index.html">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<!-- Google Analytics -->
+	<!--<script type="text/javascript" id="_fed_an_js_tag" src="http://www.nist.gov/js/federated-analytics.all.min.js?agency=NIST&subagency=mml&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script> -->
+	<!-- DAP Analytics -->
+	<script type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOC&subagency=NIST&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c"></script>
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="/static/css/NISTStyle.css">
+	<link rel="stylesheet" href="/static/css/NISTPages.css">
+
+	<h1>
+	  <a class="nist-logo" target="_blank" href="http://www.nist.gov/" title="Go to nist.gov">National Institute of Standards and Technology</a>
+	</h1>
+	<div class="nist-links">
+	  <a class="nist-links-button" target="_blank" href="http://www.nist.gov">NIST Website</a>
+	  <a class="nist-links-button mobile-hide" target="_blank" href="http://www.nist.gov/public_affairs/nandyou.cfm">About NIST</a>
+	  <a class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov">usnistgov on GitHub</a>
+	  <a class="nist-links-button mobile-hide" target="_blank" href="https://github.com/usnistgov/HTGS">HTGS on GitHub</a>
+	</div>
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</header>
+
+    <!-- ******HEADER****** -->
+    <header id="header" class="header">
+        <div class="container">
             <h1 class="logo pull-left">
                 <a class="scrollto" href="#promo">
-                    <span class="logo-title">devAid</span>
+                    <span class="logo-title">HTGS</span>
                 </a>
-            </h1><!--//logo-->              
+            </h1><!--//logo-->
             <nav id="main-nav" class="main-nav navbar-right" role="navigation">
                 <div class="navbar-header">
                     <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
@@ -58,14 +95,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button><!--//nav-toggle-->
-                </div><!--//navbar-header-->            
+                </div><!--//navbar-header-->
                 <div class="navbar-collapse collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="active nav-item sr-only"><a class="scrollto" href="#promo">Home</a></li>
                         <li class="nav-item"><a class="scrollto" href="#about">About</a></li>
                         <li class="nav-item"><a class="scrollto" href="#features">Features</a></li>
                         <li class="nav-item"><a class="scrollto" href="#docs">Docs</a></li>
-                        <li class="nav-item"><a class="scrollto" href="#license">License</a></li>                        
+                        <li class="nav-item"><a class="scrollto" href="#disclaimer">Disclaimer</a></li>
                         <li class="nav-item last"><a class="scrollto" href="#contact">Contact</a></li>
                     </ul><!--//nav-->
                 </div><!--//navabr-collapse-->
@@ -76,35 +113,30 @@
     <!-- ******PROMO****** -->
     <section id="promo" class="promo section offset-header">
         <div class="container text-center">
-            <h2 class="title">dev<span class="highlight">Aid</span></h2>
-            <p class="intro">A free mobile-friendly Bootstrap theme designed to help developers
-promote their personal projects</p>
+            <h2 class="title">HTGS <span class="highlight">API</span></h2>
+            <!--<h2 class="title">dev<span class="highlight">Aid</span></h2>-->
+            <p class="intro">The Hybrid Task Graph Scheduler API <br> Aids developers in representing algorithms as hybrid pipeline workflows using hybrid task graphs</p>
             <div class="btns">
-                <a class="btn btn-cta-secondary" href="http://themes.3rdwavemedia.com/" target="_blank">Demo</a>
-                <a class="btn btn-cta-primary" href="http://themes.3rdwavemedia.com/website-templates/devaid-free-bootstrap-theme-developers/" target="_blank">Download</a>
+                <!--<a class="btn btn-cta-secondary" href="https://github.com/usnistgov/htgs" target="_blank">HTGS GitHub</a>-->
+                <a class="btn btn-cta-secondary" href="http://themes.3rdwavemedia.com/website-templates/devaid-free-bootstrap-theme-developers/" target="_blank">Download</a>
             </div>
-            <ul class="meta list-inline">
-                <li><a href="#" target="_blank">View on GitHub</a></li>
-                <li><a href="https://github.com/twbs/bootstrap" target="_blank">Full Documentation</a></li>
-                <li>Created by: <a href="http://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> at 3rd Wave Media</li>
-            </ul><!--//meta-->
+            <br/>
+            <div class="btns">
+                <a class="btn btn-cta-primary" href="https://github.com/usnistgov/htgs" target="_blank">View on GitHub</a>
+                <a class="btn btn-cta-primary" href="docs" target="_blank">Documentation</a>
+            </div><!--//meta-->
         </div><!--//container-->
+        <br/>
         <div class="social-media">
             <div class="social-media-inner container text-center">
                 <ul class="list-inline">
-                    <li class="twitter-follow"><a href="https://twitter.com/3rdwave_themes" class="twitter-follow-button" data-show-count="false">Follow @3rdwave_themes</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                    </li><!--//twitter-follow-->
-                    <li class="twitter-tweet">
-                        <a href="https://twitter.com/share" class="twitter-share-button" data-via="3rdwave_themes" data-hashtags="bootstrap">Tweet</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                    </li><!--//twitter-tweet-->
-                    <li class="facebook-like">
-                         <div class="fb-like" data-href="http://themes.3rdwavemedia.com/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
-                    </li><!--//facebook-like-->
                     <!--// Generate github buttons: https://github.com/mdo/github-buttons -->
-                    <li class="github-star"><iframe src="http://ghbtns.com/github-btn.html?user=mdo&repo=github-buttons&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></li>
-                    <li class="github-fork"><iframe src="http://ghbtns.com/github-btn.html?user=mdo&repo=github-buttons&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe></li>
+                    <li class="github-star"><iframe src="http://ghbtns.com/github-btn.html?user=usnistgov&repo=htgs&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></li>
+<li class="github-fork"><iframe src="https://ghbtns.com/github-btn.html?user=usnistgov&repo=htgs&type=watch&count=true&v=2" frameborder="0" scrolling="0" width="110px" height="20px"></iframe></li>
+                    <li class="github-fork"><iframe src="https://ghbtns.com/github-btn.html?user=tblattner&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe></li>
+                    <li class="github-fork"><iframe src="https://ghbtns.com/github-btn.html?user=usnistgov&type=follow&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe></li>
+                    <li class="github-fork"><iframe src="http://ghbtns.com/github-btn.html?user=usnistgov&repo=htgs&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe></li>
+
                     <!--//
                     <li class="github-follow"><iframe src="http://ghbtns.com/github-btn.html?user=mdo&type=follow&count=true"
   allowtransparency="true" frameborder="0" scrolling="0" width="165" height="20"></iframe></li>
@@ -114,248 +146,302 @@ promote their personal projects</p>
         </div>
     </section><!--//promo-->
 
-    <!-- ******ABOUT****** --> 
+    <!-- ******ABOUT****** -->
     <section id="about" class="about section">
         <div class="container">
-            <h2 class="title text-center">What is devAid?</h2>
-            <p class="intro text-center">Explain your project in detail. Ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.</p>
+            <h2 class="title text-center">What is HTGS?</h2>
+            <p class="intro text-center">HTGS is the Hybrid Task Graph Scheduler API that is designed to aid in creating task graphs for algoritms to obtain performance across CPUs and multiple-co-processors.</p>
             <div class="row">
                 <div class="item col-md-4 col-sm-6 col-xs-12">
                     <div class="icon-holder">
-                        <i class="fa fa-heart"></i>
+                        <i class="fa fa-object-group"></i>
                     </div>
                     <div class="content">
-                        <h3 class="sub-title">Designed for developers</h3>
-                        <p>Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">FontAwesome</a> icons available.</p>
+                        <h3 class="sub-title">Ease of use</h3>
+                        <p>C++ Object-oriented design to quickly port existing computational functions into tasks to build complex task graphs.</p>
                     </div><!--//content-->
                 </div><!--//item-->
                 <div class="item col-md-4 col-sm-6 col-xs-12">
                     <div class="icon-holder">
-                        <i class="fa fa-clock-o"></i>
+                        <i class="fa fa-recycle"></i>
                     </div>
                     <div class="content">
-                        <h3 class="sub-title">Time saver</h3>
-                        <p>Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">FontAwesome</a> icons available.</p>
+                        <h3 class="sub-title">Memory Management</h3>
+                        <p>Connect any task to memory(CPU or GPU) to keep your algorithms running within memory limits. </p>
                     </div><!--//content-->
                 </div><!--//item-->
                 <div class="item col-md-4 col-sm-6 col-xs-12">
                     <div class="icon-holder">
-                        <i class="fa fa-crosshairs"></i>
+                        <i class="fa fa-server"></i>
                     </div>
                     <div class="content">
-                        <h3 class="sub-title">UX-centred</h3>
-                        <p>Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">FontAwesome</a> icons available.</p>
+                        <h3 class="sub-title">Extreme Pipelining</h3>
+                        <p>Every task is bound to one or more threads, such that each task will compute asynchronously with all other tasks in the graph.</p>
                     </div><!--//content-->
-                </div><!--//item-->           
-                <div class="clearfix visible-md"></div>    
+                </div><!--//item-->
+                <div class="clearfix visible-md"></div>
                 <div class="item col-md-4 col-sm-6 col-xs-12">
                     <div class="icon-holder">
-                        <i class="fa fa-tablet"></i>
+                        <i class="fa fa-cog"></i>
                     </div>
                     <div class="content">
-                        <h3 class="sub-title">Mobile-friendly</h3>
-                        <p>Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">FontAwesome</a> icons available.</p>
+                        <h3 class="sub-title">Execution across ALL CPUs and GPUs</h3>
+                        <p>Decompose your problem domain and distribute data to execution pipelines, where each pipeline runs on a separate GPU taking advantage of distributed multi-GPU computation.</p>
                     </div><!--//content-->
-                </div><!--//item-->                
+                </div><!--//item-->
                 <div class="item col-md-4 col-sm-6 col-xs-12">
                     <div class="icon-holder">
                         <i class="fa fa-code"></i>
                     </div>
                     <div class="content">
-                        <h3 class="sub-title">Easy to customise</h3>
-                        <p>Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">FontAwesome</a> icons available.</p>
+                        <h3 class="sub-title">Customize</h3>
+                        <p>The API is templatized as easy-to-use interfaces to quickly create new tasks that can be shared and used for a wide variety of algorithms.</p>
                     </div><!--//content-->
                 </div><!--//item-->
                 <div class="item col-md-4 col-sm-6 col-xs-12">
                     <div class="icon-holder">
-                        <i class="fa fa-coffee"></i>
+                        <i class="fa fa-file-code-o"></i>
                     </div>
                     <div class="content">
-                        <h3 class="sub-title">LESS files included</h3>
-                        <p>Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ <a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">FontAwesome</a> icons available.</p>
+                        <h3 class="sub-title">Lightweight and easy to Install</h3>
+                        <p>The entire API is a series of header files. Just include the header files in your project and begin creating task graphs. Includes CMake configuration to generated documentation and run unit tests.</p>
                     </div><!--//content-->
-                </div><!--//item-->               
-            </div><!--//row-->            
+                </div><!--//item-->
+            </div><!--//row-->
         </div><!--//container-->
     </section><!--//about-->
 
-    <!-- ******FEATURES****** --> 
+    <!-- ******FEATURES****** -->
     <section id="features" class="features section">
         <div class="container text-center">
             <h2 class="title">Features</h2>
             <ul class="feature-list list-unstyled">
-                <li><i class="fa fa-check"></i> Fully responsive</li>
-                <li><i class="fa fa-check"></i> HTML5 + CSS3</li>
-                <li><i class="fa fa-check"></i> Built on <a href="http://getbootstrap.com/" target="_blank">Bootstrap 3.3</a></li>
-                <li><i class="fa fa-check"></i> 400+ FontAwesome icons</li>
-                <li><i class="fa fa-check"></i> 4 colour schemes</li>
-                <li><i class="fa fa-check"></i> LESS files included</li>
-                <li><i class="fa fa-check"></i> Compatible with all modern browsers</li>
+                <li><i class="fa fa-check"></i> C++11</li>
+                <li><i class="fa fa-check"></i> Pipelined Multi-Threaded</li>
+                <li><i class="fa fa-check"></i> Coarse-Grained Parallelism</li>
+                <li><i class="fa fa-check"></i> Multi-CPU and Multi-GPU</li>
+                <li><i class="fa fa-check"></i> High Performance</li>
+                <li><i class="fa fa-check"></i> Visual Debugging</li>
+                <li><i class="fa fa-check"></i> Feature Rich API</li>
+                <li><i class="fa fa-check"></i> Open Source</li>              
             </ul>
         </div><!--//container-->
     </section><!--//features-->
 
-    <!-- ******DOCS****** --> 
+    <!-- ******DOCS****** -->
     <section id="docs" class="docs section">
         <div class="container">
             <div class="docs-inner">
-            <h2 class="title text-center">Get Started</h2>            
+            <h2 class="title text-center">Get Started</h2>
             <div class="block">
-                <h3 class="sub-title text-center">HTML</h3>
-                <p><a href="http://prismjs.com/" target="_blank">PrismJS</a> is used as the syntax highlighter here.</p>
-                <p>Below are the details of the custom PrismJS build used in this template. You can <a href="http://prismjs.com/download.html" target="_blank">build your own version</a> via their website should you need to.</p>
+                <h3 class="sub-title text-center">Installation</h3>
                 <ul class="list-unstyled">
-                    <li><strong>Compression level:</strong> Minified</li>
-                    <li><strong>Theme:</strong> Okaidia</li>
-                    <li><strong>Languages:</strong> Markup, CSS, C-like, JavaScript, PHP and Python</li>
+                    <li><strong>Dependencies:</strong></li>
+                    <li>cmake v2.7+</li>
+                    <li>g++/gcc v4.8.4+ (C++11)</li>
+                    <li>pthreads</li>
+                    <li>(Optional) doxygen</li>
+                </ul>
+
+                <ul class="list-unstyled">
+                    <li><strong>CMake Options:</strong></li>
+                    <li>CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)</li>
+                    <li>BUILD_DOXYGEN - Creates doxygen documentation (view online at: <a href="doxygen/index.html" target="_blank">Documentation</a>)</li>
+                    <li>RUN_GTEST - Compiles and runs google unit tests for HTGS ('make run-test' to re-run)</li>
                 </ul>
                 <div class="code-block">
                     <!--//Use Prismjs - http://prismjs.com/index.html#basic-usage -->
-                    <pre><code class="language-markup">
-    &ltp class="my-style"&gt
-      Hello World!
-    &lt/p&gt
+                    <pre><code class="language-clike">
+ :$ git clone https://github.com/usnistgov/HTGS.git
+ :$ cd &ltHTGS_Directory&gt
+ :&ltHTGS_Directory&gt$ mkdir build && cd build
+ :&ltHTGS_Directory&gt/build$ ccmake ../         (or cmake-gui)
+
+ 'Configure' and setup cmake parameters
+ 'Configure' and 'Build'
+
+ :&ltHTGS_Directory&gt/build$ make
+ :&ltHTGS_Directory&gt/build$ make install
                      </code></pre>
                 </div><!--//code-block-->
+
+
             </div><!--//block-->
-            
+
             <div class="block">
-                <h3 class="sub-title text-center">CSS</h3>
-                <p>Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.</p>
-                
+                <h3 class="sub-title text-center">Using HTGS</h3>
+                <ul class="list-unstyled">
+                    <li><strong>HTGS API:</strong></li>
+                    <li>htgs::IData</li>
+                    <li>htgs::ITask</li>
+                    <li>htgs::TaskGraph</li>
+                    <li>htgs::Runtime</li>
+                </ul>
+
+                <p>Brief example of adding two numbers using HTGS. (As seen in Tutorial 1):</p>
                 <div class="code-block">
                     <!--//Use Prismjs - http://prismjs.com/index.html#basic-usage -->
-                    <pre>
-    <code class="language-css">
-    /*   
-     * Template Name: devAid - Responsive Website Template for developers
-     * Version: 1.0
-     * Author: Xiaoying Riley at 3rd Wave Media
-     * Website: http://themes.3rdwavemedia.com/
-     * Twitter: @3rdwave_themes
-    */
-    body {
-      font-family: 'Lato', arial, sans-serif;
-      color: #444444;
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+                    <pre><code class="language-cpp">
+  #include &lthtgs/api/IData.hpp&gt
+  #include &lthtgs/api/ITask.hpp&gt
+  #include &lthtgs/api/TaskGraph.hpp&gt
+  #include &lthtgs/api/Runtime.hpp&gt
+
+  class InputData : public htgs::IData
+  {
+    public:
+      InputData(int x, int y) : x(x), y(y) {}
+      int getX() const { return x; }
+      int getY() const { return y; }
+    private:
+      int x, y;
+  }
+
+  class OutputData : public htgs::IData
+  {
+    public:
+      OutputData(int result) : result(result) {}
+      int getResult() const { return result; }
+    private:
+      int result;
+  }
+
+  class AddTask : public htgs::ITask&ltInputData, OutputData&gt
+  {
+    public:
+      virtual void initialize(int pipelineId, int numPipeline) { }
+      virtual void shutdown() { }
+      virtual void isTerminated(std::shared_ptr&lthtgs::BaseConnector&gt inputConnector) {
+        return inputConnector-&gtisInputTerminated();
+      }
+      virtual AddTask *copy() { return new AddTask(); }
+      virtual void executeTask(std::shared_ptr&ltInputData&gt data) {
+        int sum = data->getX() + data->getY();
+        this-&gtaddResult(new OutputData(sum));
+      }
+  }
+
+  int main() {
+    AddTask *addTask = new AddTask();
+    auto taskGraph = new htgs::TaskGraph&ltInputData, OutputData&gt();
+    taskGraph-&gtaddGraphOutputProducer(addTask);
+    taskGraph-&gtaddGraphInputConsumer(addTask);
+    taskGraph-&gtincrmenetGraphInputProducers();
+
+    auto runtime = new htgs::Runtime(taskGraph);
+    runtime-&gtexecuteRuntime();
+
+    int numData = 10;
+    for (int i = 0; i < numData; i++) {
+      auto inputData = new InputData(i, i);
+      taskGraph-&gtproduceData(inputData);
     }
-    </code></pre>
+
+    taskGraph-&gtfinishedProducingData();
+
+    runtime-&gtwaitForRuntime();
+
+    while(!taskGraph-&gtisOutputTerminated()) {
+      auto data = taskGraph->consumeData();
+      std::cout << "Result: " << data-&gtgetResult();
+    }
+
+    delete runtime;
+  }
+                     </code></pre>
                 </div><!--//code-block-->
+
+                <ul class="list-unstyled">
+                    <li><strong>Sample Output:</strong></li>
+                    <li>Result: 0</li>
+                    <li>Result: 2</li>
+                    <li>Result: 4</li>
+                    <li>Result: 6</li>
+                    <li>Result: 8</li>
+                    <li>Result: 10</li>
+                    <li>Result: 12</li>
+                    <li>Result: 14</li>
+                    <li>Result: 16</li>
+                    <li>Result: 18</li>
+                </ul>
+
             </div><!--//block-->
-            
-            <div class="block">
-                <h3 class="sub-title text-center">JavaScript</h3>
-                <p>Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Lorem ipsum dolor sit amet, consectetuer adipiscing elit ligula eget dolor.</p>
-                <div class="code-block">
-                    <pre><code class="language-javascript">
-    if( awesome ){
-        console.log('This is Awesome');
-    }else{
-        $('body').addClass('give-me-awesome');
-    }
-                    </code></pre>
-                </div><!--//code-block-->
-            </div><!--//block-->   
+
             <div class="block">
                 <h3 class="sub-title text-center">Full Documentation</h3>
-                <p>If your documentation is very long you can host the full docs page (including FAQ etc) on GitHub and provide a Call to Action button below to direct users there.</p>
+                <p>For full explanation of Tutorial 1 and other tutorials showing how to use all of the components, please visit the doxygen documentation below.</p>
+                <ul class="list-unstyled">
+                    <li><strong>HTGS API:</strong></li>
+                    <li>Bookkeeper | ExecutionPipeline | ICudaTask | ICustomEdge | IData | IMemoryAllocator</li>
+                    <li>IMemoryReleaseRule | IRule | ITask | MemoryData | Runtime | TaskGraph | VoidData</li>
+                </ul>
                 <p class="text-center">
-                    <a class="btn btn-cta-primary" href="https://github.com/twbs/bootstrap" target="_blank">More on GitHub</a>
+                    <a class="btn btn-cta-primary" href="doxygen/index.html" target="_blank">More on Doxygen</a>
                 </p>
             </div><!--//block-->
-            
-            </div><!--//docs-inner-->         
+
+            <div class="block">
+                <h3 class="sub-title text-center">Cite Us In Your Research</h3>
+                <p><blockquote>T. Blattner, W. Keyrouz, M. Halem, M. Brady and S. S. Bhattacharyya, "A hybrid task graph scheduler for high performance image processing workflows," 2015 IEEE Global Conference on Signal and Information Processing (GlobalSIP), Orlando, FL, 2015, pp. 634-637.</blockquote></p>                
+            </div><!--//block-->
+
+            </div><!--//docs-inner-->
         </div><!--//container-->
     </section><!--//docs->
 
-    <!-- ******LICENSE****** --> 
-    <section id="license" class="license section">
+    <!-- ******LICENSE****** -->
+    <section id="disclaimer" class="disclaimer section">
         <div class="container">
-            <div class="license-inner">
-            <h2 class="title text-center">License</h2>
+            <div class="disclaimer-inner">
+            <h2 class="title text-center">Disclaimer</h2>
                 <div class="info">
-                    <p>This Bootstrap theme is made by UX designer <a href="https://www.linkedin.com/in/xiaoying" target="_blank">Xiaoying Riley</a> at 3rd Wave Media for developers and is <strong>100% FREE</strong> under the <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 License (CC BY 3.0)</a></p>
-                    <p><strong>[Tip for developers]:</strong> If your project is open source, you might want to put a <a href="https://www.paypal.com/us/cgi-bin/?cmd=_donate-intro-outside" target="_blank">PayPal "Donate" button</a> below so your users can express their gratitude. If your project is commercial, you can put a <a href="https://www.paypal.com/us/cgi-bin/webscr?cmd=_singleitem-intro-outside" target="_blank">PayPal "Buy Now" button</a> instead.</p>
+                    <p>NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software.</p>
+                    <p>NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.</p>
+                    <p>You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.</p>
                 </div><!--//info-->
                 <div class="cta-container">
-                    <div class="speech-bubble">                    
-                        <p class="intro">If you are feeling generous and want to show your support to Xiaoying, you can buy her a beer or coffee via the PayPal donate button below. :)</p>
-                        <div class="icon-holder  text-center"><i class="fa fa-smile-o"></i></div>
-                    </div><!--//speech-bubble-->
                     <div class="btn-container  text-center">
-                        <!--//You need to generate your own PayPal button - https://www.paypal.com/us/cgi-bin/?cmd=_donate-intro-outside -->         
-                        <!--PayPal generated code starts-->
-                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                        <input type="hidden" name="cmd" value="_s-xclick">
-                        <input type="hidden" name="hosted_button_id" value="Y46LJNXGAVVWW">
-                        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                        <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-                        </form>
-                        <!--//PayPal generated code ends-->                    
-                        
                     </div><!--//btn-container-->
                 </div><!--//cta-container-->
             </div><!--//license-inner-->
         </div><!--//container-->
     </section><!--//how-->
 
-    <!-- ******CONTACT****** --> 
+    <!-- ******CONTACT****** -->
     <section id="contact" class="contact section has-pattern">
         <div class="container">
             <div class="contact-inner">
                 <h2 class="title  text-center">Contact</h2>
-                <p class="intro  text-center">I hope you find this Bootstrap template useful. <br />Feel free to get in touch if you have any questions or suggestions.</p>
-                <div class="author-message">                      
-                    <div class="profile">
-                      <img class="img-responsive" src="public/images/profile.png" alt="" />
-                    </div><!--//profile-->
-                    <div class="speech-bubble">
-                        <h3 class="sub-title">Want to get more freebies in the future?</h3>
-                        <p>I tweet about #UX and #webdev related resources/content at <a href="https://twitter.com/3rdwave_themes" target="_blank">@3rdwave_themes</a> 
-                        <p>If you like what I do, you can follow me on twitter and I will keep you informed about my next free template there :)</p>
-                        <p><strong>[Tip for developers]:</strong> If you take on freelance work you can put a tailored message here about your availability to attract potential clients. Be creative and good luck!</p> 
-                        <div class="source">
-                            <span class="name"><a href="https://twitter.com/3rdwave_themes" target="_blank">Xiaoying Riley</a></span>
-                            <br />
-                            <span class="title">UX/UI Designer</span>
-                        </div><!--//source-->
-                    </div><!--//speech-bubble-->                        
-                </div><!--//author-message-->
+                <p class="intro  text-center">We hope you enjoy HTGS and its functionality.<br/> If you have any suggestions or comments please feel free to send us an email.</p>
                 <div class="clearfix"></div>
                 <div class="info text-center">
                     <h4 class="sub-title">Get Connected</h4>
                     <ul class="social-icons list-inline">
-                        <li><a href="https://twitter.com/3rdwave_themes" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="https://www.facebook.com/3rdwavethemes" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="https://www.linkedin.com/in/xiaoying"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="http://instagram.com/xyriley"><i class="fa fa-instagram"></i></a></li>  
-                        <li><a href="https://dribbble.com/Xiaoying"><i class="fa fa-dribbble"></i></a></li>   
-                        <li class="last"><a href="mailto: hello@3rdwavemedia.com"><i class="fa fa-envelope"></i></a></li>              
+                        <li><a href="https://twitter.com/usnistgov" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.facebook.com/usnistgov" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                        <li class="last"><a href="mailto: timothy.blattner@nist.gov"><i class="fa fa-envelope"></i></a></li>
                     </ul>
                 </div><!--//info-->
             </div><!--//contact-inner-->
         </div><!--//container-->
-    </section><!--//contact-->  
+    </section><!--//contact-->
 
-    <!-- ******FOOTER****** --> 
+    <!-- ******FOOTER****** -->
     <footer class="footer">
         <div class="container text-center">
-            <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+            <br><a target="_blank" href="http://www.nist.gov/public_affairs/privacy.cfm#privpolicy">Privacy Policy</a> | <a target="_blank" href="http://www.nist.gov/public_affairs/privacy.cfm#secnot">Security Notice</a> | <a href="http://www.nist.gov/public_affairs/privacy.cfm#accesstate">Accessibility Statement</a> | <a target="_blank" href="mailto:timothy.blattner@nist.gov?subject=Feedback%20on%20Web%20HTGS">Send feedback</a>
+            <!--<small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>-->
         </div><!--//container-->
     </footer><!--//footer-->
-     
-    <!-- Javascript -->          
-    <script type="text/javascript" src="public/plugins/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="public/plugins/jquery-migrate-1.2.1.min.js"></script>    
-    <script type="text/javascript" src="public/plugins/jquery.easing.1.3.js"></script>   
-    <script type="text/javascript" src="public/plugins/bootstrap/js/bootstrap.min.js"></script>     
-    <script type="text/javascript" src="public/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script> 
-    <script type="text/javascript" src="public/plugins/prism/prism.js"></script>    
-    <script type="text/javascript" src="public/js/main.js"></script>       
 
+    <!-- Javascript -->
+    <script type="text/javascript" src="public/plugins/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="public/plugins/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="public/plugins/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="public/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="public/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="public/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="public/js/main.js"></script>
 
 </body>
-</html> 
-
+</html>

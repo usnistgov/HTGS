@@ -1,0 +1,4 @@
+<map id="htgs::VoidMemoryAllocator" name="htgs::VoidMemoryAllocator">
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_memory_allocator.html" title="htgs::IMemoryAllocator\l\&lt; void * \&gt;" alt="" coords="17,81,175,122"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_base_memory_allocator.html" title="Bsae class for IMemoryAllocator that removes template arguments for child. " alt="" coords="5,5,187,32"/>
+</map>

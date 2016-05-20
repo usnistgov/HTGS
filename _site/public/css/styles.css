@@ -1,4 +1,4 @@
-/*   
+/*
  * Template Name: devAid - Responsive Website Template for developers
  * Version: 1.0
  * Author: Xiaoying Riley at 3rd Wave Media
@@ -410,6 +410,87 @@ pre code {
 .license .cta-container .intro {
   margin-bottom: 30px;
 }
+
+/* ======= Disclaimer Section ====== */
+.disclaimer {
+  padding: 80px 0;
+  background: #f5f5f5;
+}
+.disclaimer .title {
+  margin-top: 0;
+  margin-bottom: 60px;
+  color: #074f66;
+}
+.disclaimer .disclaimer-inner {
+  max-width: 800px;
+  background: #fff;
+  padding: 30px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  margin: 0 auto;
+}
+.disclaimer .info {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.disclaimer .cta-container {
+  max-width: 540px;
+  margin: 0 auto;
+  margin-top: 60px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.disclaimer .cta-container .speech-bubble {
+  background: #d6f3fc;
+  color: #074f66;
+  padding: 30px;
+  margin-bottom: 30px;
+  position: relative;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.disclaimer .cta-container .speech-bubble:after {
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  margin-left: -10px;
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #d6f3fc;
+}
+.disclaimer .cta-container .icon-holder {
+  margin-bottom: 15px;
+}
+.disclaimer .cta-container .icon-holder .fa {
+  font-size: 56px;
+}
+.disclaimer .cta-container .intro {
+  margin-bottom: 30px;
+}
+
+
 /* ======= Contact Section ======= */
 .contact {
   padding: 80px 0;

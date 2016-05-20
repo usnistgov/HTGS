@@ -1,0 +1,4 @@
+<map id="htgs::RuleManager::executeTask" name="htgs::RuleManager::executeTask">
+<area shape="rect" id="node2" href="$classhtgs_1_1_rule_manager.html#afba78af44d68954f1923a8fdbe241c0b" title="Checks whether the RuleManager is terminated or not. " alt="" coords="195,5,335,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_rule_manager.html#a51dd70935321bfba6e83993d5af53b27" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="195,70,335,111"/>
+</map>

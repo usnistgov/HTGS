@@ -1,0 +1,4 @@
+<map id="htgs::RuleManager::addRule" name="htgs::RuleManager::addRule">
+<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipeline times. " alt="" coords="195,5,354,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html#a06dc23492237350c4ce8036818e5d984" title="Adds an IRule to the TaskGraph connecting a Bookkeeper with a consumer ITask. " alt="" coords="203,70,346,111"/>
+</map>

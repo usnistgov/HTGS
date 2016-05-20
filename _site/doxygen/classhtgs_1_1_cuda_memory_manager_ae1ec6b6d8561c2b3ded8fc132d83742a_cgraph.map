@@ -1,0 +1,7 @@
+<map id="htgs::CudaMemoryManager::copy" name="htgs::CudaMemoryManager::copy">
+<area shape="rect" id="node2" href="$classhtgs_1_1_cuda_memory_manager.html#a4e584fae403ce3005f015f82e1fb5615" title="Creates a CudaMemoryManager. " alt="" coords="238,5,421,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_memory_manager.html#af64691d20057a62f66489cdb73a56b70" title="Gets the name of the memory manager. " alt="" coords="239,70,419,111"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_memory_manager.html#a70d0ca391ab2edb2ccf5d6ca6091640f" title="Gets the size of the MemoryPool. " alt="" coords="253,135,405,177"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_memory_manager.html#afeac13f09f119aa6ffe539e27e0925c7" title="Gets the allocator that is responsible for allocating and freeing memory for the MemoryPool. " alt="" coords="253,201,405,242"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_memory_manager.html#a257a303ce6647fe9813f814cdacae8a8" title="Gets the memory manager type. " alt="" coords="253,266,405,307"/>
+</map>

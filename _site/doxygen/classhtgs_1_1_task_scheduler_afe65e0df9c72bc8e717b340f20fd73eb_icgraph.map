@@ -1,0 +1,4 @@
+<map id="htgs::TaskScheduler::getOutputBaseConnector" name="htgs::TaskScheduler::getOutputBaseConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html#afb58c16bd3e1240d818f63c6321e343f" title="Adds a MemoryManager edge with the specified name to the TaskGraph, which connects a memory getter an..." alt="" coords="250,5,454,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html#a80e18746a83108c7cfbecc0b854f5ddc" title="Adds a MemoryManager edge with the specified name to the TaskGraph. " alt="" coords="233,70,471,111"/>
+</map>

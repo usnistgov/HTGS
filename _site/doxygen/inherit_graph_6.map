@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classhtgs_1_1_base_task_graph.html" title="Creates a parent TaskGraph that removes the template arguments. " alt="" coords="5,31,155,57"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. " alt="" coords="203,5,376,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html" title="htgs::TaskGraph\&lt; T, U \&gt;" alt="" coords="205,56,374,83"/>
+</map>
