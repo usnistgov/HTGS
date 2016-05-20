@@ -1,0 +1,160 @@
+    <!-- ******DOCS****** -->
+    <section id="docs" class="docs section">
+        <div class="container">
+            <div class="docs-inner">
+            <h2 class="title text-center">Get Started</h2>
+            <div class="block">
+                <h3 class="sub-title text-center">Installation</h3>
+                <ul class="list-unstyled">
+                    <li><strong>Dependencies:</strong></li>
+                    <li>cmake v2.7+</li>
+                    <li>g++/gcc v4.8.4+ (C++11)</li>
+                    <li>pthreads</li>
+                    <li>(Optional) doxygen</li>
+                </ul>
+
+                <ul class="list-unstyled">
+                    <li><strong>CMake Options:</strong></li>
+                    <li>CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)</li>
+                    <li>BUILD_DOXYGEN - Creates doxygen documentation (view online at: <a href="doxygen/index.html" target="_blank">Documentation</a>)</li>
+                    <li>RUN_GTEST - Compiles and runs google unit tests for HTGS ('make run-test' to re-run)</li>
+                </ul>
+                <div class="code-block">
+                    <!--//Use Prismjs - http://prismjs.com/index.html#basic-usage -->
+                    <pre><code class="language-clike">
+ :$ git clone https://github.com/usnistgov/HTGS.git
+ :$ cd &ltHTGS_Directory&gt
+ :&ltHTGS_Directory&gt$ mkdir build && cd build
+ :&ltHTGS_Directory&gt/build$ ccmake ../         (or cmake-gui)
+
+ 'Configure' and setup cmake parameters
+ 'Configure' and 'Build'
+
+ :&ltHTGS_Directory&gt/build$ make
+ :&ltHTGS_Directory&gt/build$ make install
+                     </code></pre>
+                </div><!--//code-block-->
+
+
+            </div><!--//block-->
+
+            <div class="block">
+                <h3 class="sub-title text-center">Using HTGS</h3>
+                <ul class="list-unstyled">
+                    <li><strong>HTGS API:</strong></li>
+                    <li>htgs::IData</li>
+                    <li>htgs::ITask</li>
+                    <li>htgs::TaskGraph</li>
+                    <li>htgs::Runtime</li>
+                </ul>
+
+                <p>Brief example of adding two numbers using HTGS. (As seen in Tutorial 1):</p>
+                <div class="code-block">
+                    <!--//Use Prismjs - http://prismjs.com/index.html#basic-usage -->
+                    <pre><code class="language-cpp">
+  #include &lthtgs/api/IData.hpp&gt
+  #include &lthtgs/api/ITask.hpp&gt
+  #include &lthtgs/api/TaskGraph.hpp&gt
+  #include &lthtgs/api/Runtime.hpp&gt
+
+  class InputData : public htgs::IData
+  {
+    public:
+      InputData(int x, int y) : x(x), y(y) {}
+      int getX() const { return x; }
+      int getY() const { return y; }
+    private:
+      int x, y;
+  }
+
+  class OutputData : public htgs::IData
+  {
+    public:
+      OutputData(int result) : result(result) {}
+      int getResult() const { return result; }
+    private:
+      int result;
+  }
+
+  class AddTask : public htgs::ITask&ltInputData, OutputData&gt
+  {
+    public:
+      virtual void initialize(int pipelineId, int numPipeline) { }
+      virtual void shutdown() { }
+      virtual void isTerminated(std::shared_ptr&lthtgs::BaseConnector&gt inputConnector) {
+        return inputConnector-&gtisInputTerminated();
+      }
+      virtual AddTask *copy() { return new AddTask(); }
+      virtual void executeTask(std::shared_ptr&ltInputData&gt data) {
+        int sum = data->getX() + data->getY();
+        this-&gtaddResult(new OutputData(sum));
+      }
+  }
+
+  int main() {
+    AddTask *addTask = new AddTask();
+    auto taskGraph = new htgs::TaskGraph&ltInputData, OutputData&gt();
+    taskGraph-&gtaddGraphOutputProducer(addTask);
+    taskGraph-&gtaddGraphInputConsumer(addTask);
+    taskGraph-&gtincrmenetGraphInputProducers();
+
+    auto runtime = new htgs::Runtime(taskGraph);
+    runtime-&gtexecuteRuntime();
+
+    int numData = 10;
+    for (int i = 0; i < numData; i++) {
+      auto inputData = new InputData(i, i);
+      taskGraph-&gtproduceData(inputData);
+    }
+
+    taskGraph-&gtfinishedProducingData();
+
+    runtime-&gtwaitForRuntime();
+
+    while(!taskGraph-&gtisOutputTerminated()) {
+      auto data = taskGraph->consumeData();
+      std::cout << "Result: " << data-&gtgetResult();
+    }
+
+    delete runtime;
+  }
+                     </code></pre>
+                </div><!--//code-block-->
+
+                <ul class="list-unstyled">
+                    <li><strong>Sample Output:</strong></li>
+                    <li>Result: 0</li>
+                    <li>Result: 2</li>
+                    <li>Result: 4</li>
+                    <li>Result: 6</li>
+                    <li>Result: 8</li>
+                    <li>Result: 10</li>
+                    <li>Result: 12</li>
+                    <li>Result: 14</li>
+                    <li>Result: 16</li>
+                    <li>Result: 18</li>
+                </ul>
+
+            </div><!--//block-->
+
+            <div class="block">
+                <h3 class="sub-title text-center">Full Documentation</h3>
+                <p>For full explanation of Tutorial 1 and other tutorials showing how to use all of the components, please visit the doxygen documentation below.</p>
+                <ul class="list-unstyled">
+                    <li><strong>HTGS API:</strong></li>
+                    <li>Bookkeeper | ExecutionPipeline | ICudaTask | ICustomEdge | IData | IMemoryAllocator</li>
+                    <li>IMemoryReleaseRule | IRule | ITask | MemoryData | Runtime | TaskGraph | VoidData</li>
+                </ul>
+                <p class="text-center">
+                    <a class="btn btn-cta-primary" href="doxygen/index.html" target="_blank">More on Doxygen</a>
+                </p>
+            </div><!--//block-->
+
+            <div class="block">
+                <h3 class="sub-title text-center">Cite Us In Your Research</h3>
+                <p><blockquote>T. Blattner, W. Keyrouz, M. Halem, M. Brady and S. S. Bhattacharyya, "A hybrid task graph scheduler for high performance image processing workflows," 2015 IEEE Global Conference on Signal and Information Processing (GlobalSIP), Orlando, FL, 2015, pp. 634-637.</blockquote></p>                
+            </div><!--//block-->
+
+            </div><!--//docs-inner-->
+        </div><!--//container-->
+    </section><!--//docs->

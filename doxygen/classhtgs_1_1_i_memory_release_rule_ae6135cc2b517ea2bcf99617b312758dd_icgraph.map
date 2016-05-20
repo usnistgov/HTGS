@@ -1,0 +1,3 @@
+<map id="htgs::IMemoryReleaseRule::canReleaseMemory" name="htgs::IMemoryReleaseRule::canReleaseMemory">
+<area shape="rect" id="node2" href="$classhtgs_1_1_memory_data.html#ab75cb9c6e44adea1a5b63db4a4c825dc" title="Checks whether the memory can be recycled/released by the MemoryManager. " alt="" coords="235,5,442,46"/>
+</map>

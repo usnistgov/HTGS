@@ -1,0 +1,6 @@
+<map id="htgs::BlockingQueue::Enqueue" name="htgs::BlockingQueue::Enqueue">
+<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#ab1b9d21cf955c9a8fbcbec6603579c18" title="Produces data into the priority queue. " alt="" coords="213,56,411,83"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_connector.html#a8c81ac03c4c3489b7708de87b5d8c0bd" title="Wakes up a consumer waiting for data. " alt="" coords="198,107,426,133"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html#a6dc611d4a0883c5ba28f740dc89377f6" title="Releases memory onto a memory edge. " alt="" coords="475,5,650,61"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph.html#a7cac8b84ca8ebc6720a8beaa8c291017" title="Releases memory onto a memory edge. " alt="" coords="491,85,634,126"/>
+</map>

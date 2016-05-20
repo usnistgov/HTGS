@@ -1,0 +1,12 @@
+# Site settings
+title: HTGS
+email: timothy.blattner@nist.gov
+description: > # this means to ignore newlines until "baseurl:"
+ The Hybrid Task Graph Scheduler API for high performance computing across
+multi-CPU and multi-GPU systems.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://pages.nist.gov/HTGS" # the base hostname & protocol for your site
+github_username:  tblattner
+
+# Build settings
+markdown: kramdown

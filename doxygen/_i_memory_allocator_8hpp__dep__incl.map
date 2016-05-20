@@ -1,0 +1,13 @@
+<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/IMemoryAllocator.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/IMemoryAllocator.hpp">
+<area shape="rect" id="node2" href="$_memory_data_8hpp.html" title="Implements MemoryData used by a MemoryManager, which can be shared among multiple ITask..." alt="" coords="370,97,608,138"/>
+<area shape="rect" id="node9" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="664,291,859,347"/>
+<area shape="rect" id="node12" href="$_void_memory_allocator_8hpp.html" title="Provides the implementation for a Void memory allocator. " alt="" coords="799,187,994,243"/>
+<area shape="rect" id="node3" href="$_i_task_8hpp.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="275,194,472,235"/>
+<area shape="rect" id="node4" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="26,402,259,443"/>
+<area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="44,589,242,645"/>
+<area shape="rect" id="node7" href="$_task_scheduler_8hpp.html" title="Implements a TaskScheduler that interacts with an ITask and holds the input and output Connector for ..." alt="" coords="164,291,335,347"/>
+<area shape="rect" id="node11" href="$_i_cuda_task_8hpp.html" title="ICudaTask.hpp is used to define an NVIDIA Cuda GPU Tasks. " alt="" coords="412,298,639,339"/>
+<area shape="rect" id="node6" href="$_task_graph_8hpp.html" title="Implements the TaskGraph class responsible for managing ITask connections. " alt="" coords="513,499,740,541"/>
+<area shape="rect" id="node8" href="$_connector_8hpp.html" title="Provides the Connector class for managing input/output of AbsData between Tasks. " alt="" coords="284,395,463,451"/>
+<area shape="rect" id="node10" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="664,395,859,451"/>
+</map>

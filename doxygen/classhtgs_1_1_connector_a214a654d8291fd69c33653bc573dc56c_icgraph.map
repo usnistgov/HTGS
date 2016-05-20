@@ -1,0 +1,4 @@
+<map id="htgs::Connector::consumeData" name="htgs::Connector::consumeData">
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41" title="Retrieves memory from a memory edge. " alt="" coords="270,5,445,61"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html#a322b23d307ce1b12d302ce2d622f8308" title="Retrieves memory from a memory edge that is managed by the user. " alt="" coords="259,85,456,141"/>
+</map>

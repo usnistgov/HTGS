@@ -1,0 +1,4 @@
+<map id="htgs::TaskGraph::copy" name="htgs::TaskGraph::copy">
+<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipeline times. " alt="" coords="209,5,367,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#a33b556557bc0a5abf32a4a43fea0a076" title="Makes a copy of the execution pipeline. " alt="" coords="209,70,367,111"/>
+</map>

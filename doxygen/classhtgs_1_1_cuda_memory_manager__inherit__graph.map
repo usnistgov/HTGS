@@ -1,0 +1,5 @@
+<map id="htgs::CudaMemoryManager&lt; T &gt;" name="htgs::CudaMemoryManager&lt; T &gt;">
+<area shape="rect" id="node2" href="$classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="20,171,204,197"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html" title="htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;" alt="" coords="21,81,203,122"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_base_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="53,5,171,32"/>
+</map>

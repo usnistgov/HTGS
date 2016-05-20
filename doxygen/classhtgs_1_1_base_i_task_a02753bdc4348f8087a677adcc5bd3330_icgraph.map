@@ -1,0 +1,5 @@
+<map id="htgs::BaseITask::getName" name="htgs::BaseITask::getName">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html#a1aa75e2d446c8ffc4430f1011f81cbfc" title="Adds a CudaMemoryManager edge with the specified name to the TaskGraph. " alt="" coords="235,5,469,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html#a3a502670e0a22b957fdcc20f1bddc67a" title="Adds a MemoryManager edge with the specified name to the TaskGraph. " alt="" coords="250,70,454,111"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph.html#a80e18746a83108c7cfbecc0b854f5ddc" title="Adds a MemoryManager edge with the specified name to the TaskGraph. " alt="" coords="233,135,471,177"/>
+</map>

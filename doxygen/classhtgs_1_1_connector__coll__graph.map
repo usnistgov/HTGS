@@ -1,0 +1,4 @@
+<map id="htgs::Connector&lt; V &gt;" name="htgs::Connector&lt; V &gt;">
+<area shape="rect" id="node2" href="$classhtgs_1_1_base_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,13,149,40"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_blocking_queue.html" title="htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; T \&gt; \&gt;" alt="" coords="175,6,339,47"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="htgs::RuleManager::getName" name="htgs::RuleManager::getName">
+<area shape="rect" id="node2" href="$classhtgs_1_1_bookkeeper.html#abc8027abadb52ef836d9d3f687dab261" title="Adds rule manager to this bookkeeper. " alt="" coords="195,5,375,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_rule_manager.html#af628f0f2c8dec90f3a2731b116b74e8a" title="Initializes the RuleManager. " alt="" coords="215,70,355,111"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_rule_manager.html#a29f943a885861cbdc166b930b82e1fca" title="Shuts down the RuleManager. " alt="" coords="215,135,355,177"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_rule_manager.html#a7eaa271e711032d82b4265502c76c384" title="Processes the input data, which is forwarded to each IRule synchronously. " alt="" coords="215,201,355,242"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_rule_manager.html#a67bb5fdef545b3a3f0a0339f7d5002cf" title="Sets the output connector that the RuleManager is attached to. " alt="" coords="215,266,355,307"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_rule_manager.html#ab4c10b1ce138acf17cd05baf05871e9b" title="Provides debug output. " alt="" coords="215,331,355,373"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipeline times. " alt="" coords="425,169,583,210"/>
+</map>

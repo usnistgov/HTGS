@@ -1,0 +1,10 @@
+<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/ITask.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/ITask.hpp">
+<area shape="rect" id="node2" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="30,207,262,249"/>
+<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="48,395,245,451"/>
+<area shape="rect" id="node5" href="$_task_scheduler_8hpp.html" title="Implements a TaskScheduler that interacts with an ITask and holds the input and output Connector for ..." alt="" coords="507,96,678,152"/>
+<area shape="rect" id="node7" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="288,96,482,152"/>
+<area shape="rect" id="node9" href="$_i_cuda_task_8hpp.html" title="ICudaTask.hpp is used to define an NVIDIA Cuda GPU Tasks. " alt="" coords="703,103,930,145"/>
+<area shape="rect" id="node4" href="$_task_graph_8hpp.html" title="Implements the TaskGraph class responsible for managing ITask connections. " alt="" coords="227,305,454,346"/>
+<area shape="rect" id="node6" href="$_connector_8hpp.html" title="Provides the Connector class for managing input/output of AbsData between Tasks. " alt="" coords="557,200,736,256"/>
+<area shape="rect" id="node8" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="288,200,482,256"/>
+</map>

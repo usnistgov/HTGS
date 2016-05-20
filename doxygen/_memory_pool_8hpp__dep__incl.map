@@ -1,0 +1,6 @@
+<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryPool.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryPool.hpp">
+<area shape="rect" id="node2" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="21,109,216,165"/>
+<area shape="rect" id="node3" href="$_task_graph_8hpp.html" title="Implements the TaskGraph class responsible for managing ITask connections. " alt="" coords="5,318,232,359"/>
+<area shape="rect" id="node5" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="89,213,284,269"/>
+<area shape="rect" id="node4" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="20,408,217,464"/>
+</map>

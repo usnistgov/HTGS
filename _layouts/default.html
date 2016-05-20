@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html>
-<head>
-<!--
---> 
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+{% include head.html %}
+<body data-spy="scroll">
+{% include facebook.html %}
 {% include NISTPagesHeader.html %}
-
-</head>
-<body>
- 
-  {{ content }}
-  <footer role="contentInfo" class="site-footer">
-    <div class="section-container">
-      <div class="section-content">     
-      </div>
-    </div>
-  </footer>
- 
-{% include NISTPagesFooter.html %}
+{% include header.html %}
+{% include promo.html %}
+{% include about.html %}
+{% include features.html %}
+{% include docs.html %}
+{% include disclaimer.html %}
+{% include contact.html %}
+{% include footer.html %}
 </body>
 </html>
