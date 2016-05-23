@@ -47,7 +47,7 @@
                     <li>htgs::TaskGraph</li>
                     <li>htgs::Runtime</li>
                 </ul>
-                <p>Brief example of adding two numbers using HTGS. (As seen in <a href="doxygen/tutorial1.html" target="_blank">Tutorial 1</a>):</p>
+                <p>Brief example of adding two numbers using HTGS; filename: "main.cpp". (As seen in <a href="doxygen/tutorial1.html" target="_blank">Tutorial 1</a>):</p>
                 <div class="code-block">
                     <!--//Use Prismjs - http://prismjs.com/index.html#basic-usage -->
                     <pre><code class="language-cpp">
@@ -64,7 +64,7 @@
       int getY() const { return y; }
     private:
       int x, y;
-  }
+  };
 
   class OutputData : public htgs::IData
   {
@@ -73,14 +73,14 @@
       int getResult() const { return result; }
     private:
       int result;
-  }
+  };
 
   class AddTask : public htgs::ITask&ltInputData, OutputData&gt
   {
     public:
       virtual void initialize(int pipelineId, int numPipeline) { }
       virtual void shutdown() { }
-      virtual void isTerminated(std::shared_ptr&lthtgs::BaseConnector&gt inputConnector) {
+      virtual bool isTerminated(std::shared_ptr&lthtgs::BaseConnector&gt inputConnector) {
         return inputConnector-&gtisInputTerminated();
       }
       virtual AddTask *copy() { return new AddTask(); }
@@ -88,14 +88,14 @@
         int sum = data->getX() + data->getY();
         this-&gtaddResult(new OutputData(sum));
       }
-  }
+  };
 
   int main() {
     AddTask *addTask = new AddTask();
     auto taskGraph = new htgs::TaskGraph&ltInputData, OutputData&gt();
     taskGraph-&gtaddGraphOutputProducer(addTask);
     taskGraph-&gtaddGraphInputConsumer(addTask);
-    taskGraph-&gtincrmenetGraphInputProducers();
+    taskGraph-&gtincrementGraphInputProducer();
 
     auto runtime = new htgs::Runtime(taskGraph);
     runtime-&gtexecuteRuntime();
@@ -112,7 +112,7 @@
 
     while(!taskGraph-&gtisOutputTerminated()) {
       auto data = taskGraph->consumeData();
-      std::cout << "Result: " << data-&gtgetResult();
+      std::cout << "Result: " << data-&gtgetResult() << std::endl;
     }
 
     delete runtime;
@@ -121,6 +121,9 @@
                 </div><!--//code-block-->
 
                 <ul class="list-unstyled">
+                    <li><strong>Compile:</strong></li>
+                    <li>g++ -I &ltHTGS_INSTALL_DIR&gt/include main.cpp -std=c++11 -pthread</li>
+                    <br/>
                     <li><strong>Sample Output:</strong></li>
                     <li>Result: 0</li>
                     <li>Result: 2</li>
