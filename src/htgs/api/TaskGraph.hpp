@@ -759,7 +759,9 @@ class TaskGraph: public BaseTaskGraph {
 
   /**
    * Adds an edge to the TaskGraph.
-   * The output type of the produce must match the input type of the consumer
+   * The output type of the produce must match the input type of the consumer. This will create two TaskScheduler
+   * vertices (or lookup an existing vertex for the producer or consumer if that vertex already exists in the graph) and
+   * connect the two vertices through a Connector.
    * @param producer the producer ITask
    * @param consumer the consumer ITask
    */
