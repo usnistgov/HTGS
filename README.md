@@ -155,7 +155,7 @@ The main limiting factor of the ICustomEdge is it assumes that both ITasks will 
 If the two ITasks must be in two different TaskGraphs, then a new type of TaskGraph will need to be created by inheriting
 the [TaskGraph](https://pages.nist.gov/HTGS/doxygen/classhtgs_1_1_task_graph.html) class.
 
-# Documenatation
+# Documentation
 [Link to Documentation](https://pages.nist.gov/HTGS/doxygen/index.html)
 
 # Examples
