@@ -33,6 +33,7 @@ The API is designed to aid in creating task graphs for algorithms to obtain perf
 
 ## Building HTGS:
 **CMake Options:**
+
 CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)
 
 BUILD_DOXYGEN - Creates doxygen documentation (view online at: Documentation)
