@@ -1,6 +1,13 @@
+# Hybrid Task Graph Scheduler (HTGS)
+
+An application programming interface to generate hybrid pipeline workflow systems
+
+The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors.
+
+## Content
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Hybrid Task Graph Scheduler (HTGS)](#hybrid-task-graph-scheduler-htgs)
 - [Installation Instructions](#installation-instructions)
 	- [Dependencies:](#dependencies)
 	- [Building and testing HTGS:](#building-and-testing-htgs)
@@ -14,11 +21,6 @@
 - [Contact Us](#contact-us)
 
 <!-- /TOC -->
-# Hybrid Task Graph Scheduler (HTGS)
-
-An application programming interface to generate hybrid pipeline workflow systems
-
-The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors.
 
 # Installation Instructions
 
