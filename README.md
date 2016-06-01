@@ -32,30 +32,25 @@ The API is designed to aid in creating task graphs for algorithms to obtain perf
 3) doxygen (optional)
 
 ## Building and testing HTGS:
-1) Download the [Zip](https://github.com/usnistgov/HTGS/archive/master.zip)
+**CMake Options:**
+CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)
 
-2) Extract
+BUILD_DOXYGEN - Creates doxygen documentation (view online at: Documentation)
 
-3) Create 'build' directory
+RUN_GTEST - Compiles and runs google unit tests for HTGS ('make run-test' to re-run)
 
-4) In 'build' directory run cmake-gui $HTGS directory$ (or ccmake)
+```
+ :$ git clone https://github.com/usnistgov/HTGS.git
+ :$ cd <HTGS_Directory>
+ :<HTGS_Directory>$ mkdir build && cd build
+ :<HTGS_Directory>/build$ ccmake ../         (or cmake-gui)
 
-5) Configure parameters, such as CMAKE_INSTALL_PREFIX and whether to create the documentation or run google test suite
+ 'Configure' and setup cmake parameters
+ 'Configure' and 'Build'
 
-6) Generate make file
-
-7) Run 'make'
-
-8) Run 'make install'
-
-
-To build the documentation run:
-
-'make doc'
-
-To execute the test suite run:
-
-'make run-test' after running make
+ :<HTGS_Directory>/build$ make
+ :<HTGS_Directory>/build$ make install
+```
 
 
 # Motivation
