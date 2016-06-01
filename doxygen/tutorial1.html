@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('tutorial1.html','');});
 <li class="level1"><a href="#summary">Summary </a></li>
 </ul>
 </div>
-<div class="textblock"><p>In this tutorial we will be introducing the basics of the Hybrid Task Graph Scheduler (HTGS). API</p>
+<div class="textblock"><p>In this tutorial we will be introducing the basics of the Hybrid Task Graph Scheduler (HTGS) API.</p>
 <p>The source code for the tutorial is found in "test/tutorial1"</p>
 <p>We will be implementing a simple add function to add two numbers and return the result. This is a test case just to introduce the API and how to work with it.</p>
 <h1><a class="anchor" id="objectives"></a>
@@ -146,7 +146,7 @@ API Used </h1>
 </ul>
 <h1><a class="anchor" id="implementation"></a>
 Implementation </h1>
-<p>Below we will go into detail on each of the components needed to implement the algorithm x+y=z. Before we implement any code, we must analyze the algorithm and try to transform it into a dataflow graph. The dataflow graph provides a high level view of the algorithm such as data dependencies, control flow, and compute instances.</p>
+<p>Below we will go into detail on each of the components needed to implement the algorithm x+y=z. Before we implement any code, we must analyze the algorithm and transform it into a dataflow graph. The dataflow graph provides a high level view of the algorithm such as data dependencies, control flow, and compute instances.</p>
 <p>Algorithm: <img class="formulaInl" alt="$x+y=z$" src="form_0.png"/></p>
 <p>Dataflow graph:</p>
 <div class="image">
@@ -233,7 +233,7 @@ Tasks</h2>
 <ul>
 <li>Creates a copy of the ITask. Called during the <a class="el" href="classhtgs_1_1_runtime.html">Runtime</a> when a Task is being copied and bound to a thread. This function is used for concurrency/multithreading. If data is shared among ITask's that are copied, then proper synchronization may be required to manage that data.</li>
 </ul>
-<p>5) <a class="el" href="classhtgs_1_1_i_task.html#ac7abe254b443b32861cea2a96531dc4f">ITask::isTerminated(inputConnector)</a></p>
+<p>5) <a class="el" href="classhtgs_1_1_i_task.html#a4a3eb066af852acba199bfea764434b8">ITask::isTerminated(inputConnector)</a></p>
 <ul>
 <li>Determines if the Task is ready to be terminated. In most cases, the ITask should use the input <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">htgs::Connector</a>, which is passed as a parameter to isTerminated. The <a class="el" href="classhtgs_1_1_connector.html#a08ff806f4a9a9aca7767961bcacfc88d">Connector::isInputTerminated</a> function can be used by the ITask to check if all producers for the connector have finished sending data and the data queue is empty.</li>
 </ul>
@@ -263,7 +263,7 @@ AddTask Implementation</h3>
 <div class="line">    <span class="keyword">virtual</span> AddTask *<a class="code" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">copy</a>() {</div>
 <div class="line">        <span class="keywordflow">return</span> <span class="keyword">new</span> AddTask();</div>
 <div class="line">    }</div>
-<div class="line">    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classhtgs_1_1_i_task.html#ac7abe254b443b32861cea2a96531dc4f">isTerminated</a>(std::shared_ptr&lt;htgs::BaseConnector&gt; inputConnector) {</div>
+<div class="line">    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classhtgs_1_1_i_task.html#a4a3eb066af852acba199bfea764434b8">isTerminated</a>(std::shared_ptr&lt;htgs::BaseConnector&gt; inputConnector) {</div>
 <div class="line">        <span class="keywordflow">return</span> inputConnector-&gt;isInputTerminated();</div>
 <div class="line">    }</div>
 <div class="line">};</div>

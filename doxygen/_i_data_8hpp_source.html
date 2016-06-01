@@ -126,48 +126,48 @@ $(document).ready(function(){initNavTree('_i_data_8hpp_source.html','');});
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    this-&gt;<a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a> = 0;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#ad7c076460cfeee0defe697105ff99399">   76</a></span>&#160;  <a class="code" href="classhtgs_1_1_i_data.html#ad7c076460cfeee0defe697105ff99399">IData</a>(<span class="keywordtype">int</span> <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    this-&gt;order = <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a6621ea7ac69ef13b5bdca861931589a4">   83</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classhtgs_1_1_i_data.html#a6621ea7ac69ef13b5bdca861931589a4">~IData</a>() { }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a5e15d857775323e255746277d4ddc1fe">   93</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classhtgs_1_1_i_data.html#a5e15d857775323e255746277d4ddc1fe">operator()</a>(<span class="keyword">const</span> std::shared_ptr&lt;IData&gt; p1, <span class="keyword">const</span> std::shared_ptr&lt;IData&gt; p2)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">if</span> (p1 &amp;&amp; !p2)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordflow">if</span> (!p1 &amp;&amp; p2)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">if</span> (!p1 &amp;&amp; !p2)</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">return</span> p1-&gt;compare(p2);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0">  118</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0">compare</a>(<span class="keyword">const</span> std::shared_ptr&lt;IData&gt; p2)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">getOrder</a>() &gt; p2-&gt;getOrder();</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">  126</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">getOrder</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">  131</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;};</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#endif //HTGS_IDATA_H</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#ad7c076460cfeee0defe697105ff99399">   77</a></span>&#160;  <a class="code" href="classhtgs_1_1_i_data.html#ad7c076460cfeee0defe697105ff99399">IData</a>(<span class="keywordtype">int</span> <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    this-&gt;order = <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a6621ea7ac69ef13b5bdca861931589a4">   84</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classhtgs_1_1_i_data.html#a6621ea7ac69ef13b5bdca861931589a4">~IData</a>() { }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a5e15d857775323e255746277d4ddc1fe">   94</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="classhtgs_1_1_i_data.html#a5e15d857775323e255746277d4ddc1fe">operator()</a>(<span class="keyword">const</span> std::shared_ptr&lt;IData&gt; p1, <span class="keyword">const</span> std::shared_ptr&lt;IData&gt; p2)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">if</span> (p1 &amp;&amp; !p2)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">if</span> (!p1 &amp;&amp; p2)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">if</span> (!p1 &amp;&amp; !p2)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">return</span> p1-&gt;compare(p2);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0">  120</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0">compare</a>(<span class="keyword">const</span> std::shared_ptr&lt;IData&gt; p2)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">getOrder</a>() &gt; p2-&gt;getOrder();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">  128</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">getOrder</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">  133</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">order</a>; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;};</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="preprocessor">#endif //HTGS_IDATA_H</span></div>
 <div class="ttc" id="classhtgs_1_1_i_data_html"><div class="ttname"><a href="classhtgs_1_1_i_data.html">htgs::IData</a></div><div class="ttdoc">Class to hold any type of data. </div><div class="ttdef"><b>Definition:</b> IData.hpp:61</div></div>
-<div class="ttc" id="classhtgs_1_1_i_data_html_ac87beac9eae940d991735615274007e0"><div class="ttname"><a href="classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0">htgs::IData::compare</a></div><div class="ttdeci">virtual bool compare(const std::shared_ptr&lt; IData &gt; p2) const </div><div class="ttdoc">Virtual IData comparison function, can be used for custom ordering. </div><div class="ttdef"><b>Definition:</b> IData.hpp:118</div></div>
+<div class="ttc" id="classhtgs_1_1_i_data_html_ac87beac9eae940d991735615274007e0"><div class="ttname"><a href="classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0">htgs::IData::compare</a></div><div class="ttdeci">virtual bool compare(const std::shared_ptr&lt; IData &gt; p2) const </div><div class="ttdoc">Virtual IData comparison function, can be used for custom ordering. </div><div class="ttdef"><b>Definition:</b> IData.hpp:120</div></div>
 <div class="ttc" id="classhtgs_1_1_i_data_html_a42b560e1b8188a498db702700e9f724b"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a42b560e1b8188a498db702700e9f724b">htgs::IData::IData</a></div><div class="ttdeci">IData()</div><div class="ttdoc">Constructs an IData with default ordering = 0. </div><div class="ttdef"><b>Definition:</b> IData.hpp:68</div></div>
-<div class="ttc" id="classhtgs_1_1_i_data_html_ad7c076460cfeee0defe697105ff99399"><div class="ttname"><a href="classhtgs_1_1_i_data.html#ad7c076460cfeee0defe697105ff99399">htgs::IData::IData</a></div><div class="ttdeci">IData(int order)</div><div class="ttdoc">Constructs IData with integer ordering. </div><div class="ttdef"><b>Definition:</b> IData.hpp:76</div></div>
-<div class="ttc" id="classhtgs_1_1_i_data_html_a442e90377b4e29aefd026dc72376acf6"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">htgs::IData::getOrder</a></div><div class="ttdeci">int getOrder() const </div><div class="ttdoc">Gets the order of this IData. </div><div class="ttdef"><b>Definition:</b> IData.hpp:126</div></div>
-<div class="ttc" id="classhtgs_1_1_i_data_html_a704eb584341a5d18d99c9029ded7af53"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">htgs::IData::order</a></div><div class="ttdeci">int order</div><div class="ttdoc">The ordering of the data (lowest first) </div><div class="ttdef"><b>Definition:</b> IData.hpp:131</div></div>
-<div class="ttc" id="classhtgs_1_1_i_data_html_a5e15d857775323e255746277d4ddc1fe"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a5e15d857775323e255746277d4ddc1fe">htgs::IData::operator()</a></div><div class="ttdeci">bool operator()(const std::shared_ptr&lt; IData &gt; p1, const std::shared_ptr&lt; IData &gt; p2) const </div><div class="ttdoc">Compares two IData pointers for ordering. </div><div class="ttdef"><b>Definition:</b> IData.hpp:93</div></div>
-<div class="ttc" id="classhtgs_1_1_i_data_html_a6621ea7ac69ef13b5bdca861931589a4"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a6621ea7ac69ef13b5bdca861931589a4">htgs::IData::~IData</a></div><div class="ttdeci">virtual ~IData()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> IData.hpp:83</div></div>
+<div class="ttc" id="classhtgs_1_1_i_data_html_ad7c076460cfeee0defe697105ff99399"><div class="ttname"><a href="classhtgs_1_1_i_data.html#ad7c076460cfeee0defe697105ff99399">htgs::IData::IData</a></div><div class="ttdeci">IData(int order)</div><div class="ttdoc">Constructs IData with integer ordering. </div><div class="ttdef"><b>Definition:</b> IData.hpp:77</div></div>
+<div class="ttc" id="classhtgs_1_1_i_data_html_a442e90377b4e29aefd026dc72376acf6"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a442e90377b4e29aefd026dc72376acf6">htgs::IData::getOrder</a></div><div class="ttdeci">int getOrder() const </div><div class="ttdoc">Gets the order of this IData. </div><div class="ttdef"><b>Definition:</b> IData.hpp:128</div></div>
+<div class="ttc" id="classhtgs_1_1_i_data_html_a704eb584341a5d18d99c9029ded7af53"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a704eb584341a5d18d99c9029ded7af53">htgs::IData::order</a></div><div class="ttdeci">int order</div><div class="ttdoc">The ordering of the data (lowest first) </div><div class="ttdef"><b>Definition:</b> IData.hpp:133</div></div>
+<div class="ttc" id="classhtgs_1_1_i_data_html_a5e15d857775323e255746277d4ddc1fe"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a5e15d857775323e255746277d4ddc1fe">htgs::IData::operator()</a></div><div class="ttdeci">bool operator()(const std::shared_ptr&lt; IData &gt; p1, const std::shared_ptr&lt; IData &gt; p2) const </div><div class="ttdoc">Compares two IData pointers for ordering. </div><div class="ttdef"><b>Definition:</b> IData.hpp:94</div></div>
+<div class="ttc" id="classhtgs_1_1_i_data_html_a6621ea7ac69ef13b5bdca861931589a4"><div class="ttname"><a href="classhtgs_1_1_i_data.html#a6621ea7ac69ef13b5bdca861931589a4">htgs::IData::~IData</a></div><div class="ttdeci">virtual ~IData()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> IData.hpp:84</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

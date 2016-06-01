@@ -153,11 +153,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#a61a5c19a2280acbf02e730191c6a1416">producerFinished</a> ()</td></tr>
 <tr class="memdesc:a61a5c19a2280acbf02e730191c6a1416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that a producer has finished producing data. <br/></td></tr>
 <tr class="separator:a61a5c19a2280acbf02e730191c6a1416"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7701a4beebcbd79d966f3ec474aef06"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#ac7701a4beebcbd79d966f3ec474aef06">pollConsumeData</a> (long timeout)</td></tr>
-<tr class="memdesc:ac7701a4beebcbd79d966f3ec474aef06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls for data for a consumer given a timeout.  <a href="#ac7701a4beebcbd79d966f3ec474aef06">More...</a><br/></td></tr>
+<tr class="memitem:ac7701a4beebcbd79d966f3ec474aef06"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7701a4beebcbd79d966f3ec474aef06"></a>
+std::shared_ptr&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pollConsumeData</b> (long timeout)</td></tr>
 <tr class="separator:ac7701a4beebcbd79d966f3ec474aef06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a214a654d8291fd69c33653bc573dc56c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#a214a654d8291fd69c33653bc573dc56c">consumeData</a> ()</td></tr>
-<tr class="memdesc:a214a654d8291fd69c33653bc573dc56c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes data from the priority queue.  <a href="#a214a654d8291fd69c33653bc573dc56c">More...</a><br/></td></tr>
+<tr class="memitem:a214a654d8291fd69c33653bc573dc56c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a214a654d8291fd69c33653bc573dc56c"></a>
+std::shared_ptr&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>consumeData</b> ()</td></tr>
 <tr class="separator:a214a654d8291fd69c33653bc573dc56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1b9d21cf955c9a8fbcbec6603579c18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#ab1b9d21cf955c9a8fbcbec6603579c18">produceData</a> (std::shared_ptr&lt; T &gt; data)</td></tr>
 <tr class="memdesc:ab1b9d21cf955c9a8fbcbec6603579c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces data into the priority queue.  <a href="#ab1b9d21cf955c9a8fbcbec6603579c18">More...</a><br/></td></tr>
@@ -199,7 +199,7 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:aa6cefac1e0ccd061c5c947d795f4c245"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6cefac1e0ccd061c5c947d795f4c245"></a>
 <a class="el" href="classhtgs_1_1_blocking_queue.html">BlockingQueue</a>&lt; std::shared_ptr<br class="typebreak"/>
 &lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#aa6cefac1e0ccd061c5c947d795f4c245">queue</a></td></tr>
-<tr class="memdesc:aa6cefac1e0ccd061c5c947d795f4c245"><td class="mdescLeft">&#160;</td><td class="mdescRight">The priority blocking queue associated with the connector (thread safe) <br/></td></tr>
+<tr class="memdesc:aa6cefac1e0ccd061c5c947d795f4c245"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pblocking queue associated with the connector (thread safe) (can be switched to a priority queue using the USE_PRIORITY_QUEUE directive) <br/></td></tr>
 <tr class="separator:aa6cefac1e0ccd061c5c947d795f4c245"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e4583c929b0664baa9fd30bef587111"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e4583c929b0664baa9fd30bef587111"></a>
 std::atomic_long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#a5e4583c929b0664baa9fd30bef587111">producerTaskCount</a></td></tr>
@@ -222,53 +222,6 @@ class htgs::Connector&lt; V &gt;</h3>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This class should only be called by the HTGS API </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a214a654d8291fd69c33653bc573dc56c"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;T&gt; <a class="el" href="classhtgs_1_1_connector.html">htgs::Connector</a>&lt; V &gt;::consumeData </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Consumes data from the priority queue. </p>
-<dl class="section return"><dt>Returns</dt><dd>the data </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function will block until data is available. </dd></dl>
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_cgraph.png" border="0" usemap="#classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_cgraph" alt=""/></div>
-<map name="classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_cgraph" id="classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_blocking_queue.html#ac3130a5a177b85f4c22dbe309aeb995a" title="Removes an element from the queue. " alt="" coords="259,5,402,46"/></map>
-</div>
-</p>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_icgraph.png" border="0" usemap="#classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_icgraph" alt=""/></div>
-<map name="classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_icgraph" id="classhtgs_1_1_connector_a214a654d8291fd69c33653bc573dc56c_icgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41" title="Retrieves memory from a memory edge. " alt="" coords="270,5,445,61"/><area shape="rect" id="node3" href="classhtgs_1_1_i_task.html#a322b23d307ce1b12d302ce2d622f8308" title="Retrieves memory from a memory edge that is managed by the user. " alt="" coords="259,85,456,141"/></map>
-</div>
-</p>
-
-</div>
-</div>
 <a class="anchor" id="a2b525d28fb6a9200bdf227e009d4ddf6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -296,7 +249,7 @@ template&lt;class V &gt; </div>
 <p>Does not copy the priority queue contents. </p>
 <dl class="section return"><dt>Returns</dt><dd>the shallow copy of the <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classhtgs_1_1_base_connector.html#a97f391ec0ab3ee8fa0098d16cde9aabe">htgs::BaseConnector</a>.</p>
+<p>Reimplemented from <a class="el" href="classhtgs_1_1_base_connector.html">htgs::BaseConnector</a>.</p>
 
 </div>
 </div>
@@ -419,58 +372,6 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classhtgs_1_1_connector_a08ff806f4a9a9aca7767961bcacfc88d_cgraph.png" border="0" usemap="#classhtgs_1_1_connector_a08ff806f4a9a9aca7767961bcacfc88d_cgraph" alt=""/></div>
 <map name="classhtgs_1_1_connector_a08ff806f4a9a9aca7767961bcacfc88d_cgraph" id="classhtgs_1_1_connector_a08ff806f4a9a9aca7767961bcacfc88d_cgraph">
 <area shape="rect" id="node2" href="classhtgs_1_1_blocking_queue.html#a2f6020fd259d87f2ebedeb51de065ccb" title="Gets whether the queue is empty or not. " alt="" coords="217,5,359,46"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="ac7701a4beebcbd79d966f3ec474aef06"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;T&gt; <a class="el" href="classhtgs_1_1_connector.html">htgs::Connector</a>&lt; V &gt;::pollConsumeData </td>
-          <td>(</td>
-          <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>timeout</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Polls for data for a consumer given a timeout. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">timeout</td><td>the timeout time in microseconds </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the data or nullptr </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">DATA</td><td>the next data that is on the priority queue </td></tr>
-    <tr><td class="paramname">nullptr</td><td>if the timeout time expires </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function will block until data is available or the timeout time has expired. </dd></dl>
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classhtgs_1_1_connector_ac7701a4beebcbd79d966f3ec474aef06_cgraph.png" border="0" usemap="#classhtgs_1_1_connector_ac7701a4beebcbd79d966f3ec474aef06_cgraph" alt=""/></div>
-<map name="classhtgs_1_1_connector_ac7701a4beebcbd79d966f3ec474aef06_cgraph" id="classhtgs_1_1_connector_ac7701a4beebcbd79d966f3ec474aef06_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_blocking_queue.html#ac119e69ce672e190edd9da9c0d515c88" title="Polls for data given the specified timeout time in microseconds. " alt="" coords="281,5,423,46"/></map>
 </div>
 </p>
 

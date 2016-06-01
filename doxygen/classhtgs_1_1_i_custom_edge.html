@@ -119,8 +119,9 @@ $(document).ready(function(){initNavTree('classhtgs_1_1_i_custom_edge.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a481678298a31322173451fb33fdd99b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_custom_edge.html#a481678298a31322173451fb33fdd99b2">ICustomEdge</a> ()</td></tr>
-<tr class="memdesc:a481678298a31322173451fb33fdd99b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a custom edge with a default priority.  <a href="#a481678298a31322173451fb33fdd99b2">More...</a><br/></td></tr>
+<tr class="memitem:a481678298a31322173451fb33fdd99b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a481678298a31322173451fb33fdd99b2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_custom_edge.html#a481678298a31322173451fb33fdd99b2">ICustomEdge</a> ()</td></tr>
+<tr class="memdesc:a481678298a31322173451fb33fdd99b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a custom edge. <br/></td></tr>
 <tr class="separator:a481678298a31322173451fb33fdd99b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab589d1427088385838c1499f5d0c64e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab589d1427088385838c1499f5d0c64e8"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_custom_edge.html#ab589d1427088385838c1499f5d0c64e8">~ICustomEdge</a> ()</td></tr>
@@ -155,7 +156,7 @@ virtual <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface for defining a custom edge to be added into a <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>. </p>
 <p>The purpose of this interface is to define an edge with additional functionality. Two examples that demonstrates this concept is reimplementing the <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a> and <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a> using a custom edge. The source code for these is found in test/api/BookkeeperCustomEdge.h and test/api/MemoryManagerCustomEdge.h</p>
-<p>The <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> assumes that both the producer and consumer tasks that are connected by the custom edge are within the same <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>. If each are within two separate graphs (example: one is inside of a <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a> added to an <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a> and the other is within a graph that holds onto the <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a>), then the <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> will not work. To add more advanced edges (such as connecting two tasks from two different TaskGraphs) it is required to inherit the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a> and add custom functionality (see <a class="el" href="classhtgs_1_1_task_graph.html#a06dc23492237350c4ce8036818e5d984" title="Adds an IRule to the TaskGraph connecting a Bookkeeper with a consumer ITask. ">TaskGraph::addRule</a> or <a class="el" href="classhtgs_1_1_task_graph.html#afb58c16bd3e1240d818f63c6321e343f" title="Adds a MemoryManager edge with the specified name to the TaskGraph, which connects a memory getter an...">TaskGraph::addMemoryManagerEdge</a> )</p>
+<p>The <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> assumes that both the producer and consumer tasks that are connected by the custom edge are within the same <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>. If each are within two separate graphs (example: one is inside of a <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a> added to an <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a> and the other is within a graph that holds onto the <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a>), then the <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> will not work. To add more advanced edges (such as connecting two tasks from two different TaskGraphs) it may be required to inherit the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a> and add custom functionality (see <a class="el" href="classhtgs_1_1_task_graph.html#a06dc23492237350c4ce8036818e5d984" title="Adds an IRule to the TaskGraph connecting a Bookkeeper with a consumer ITask. ">TaskGraph::addRule</a> or <a class="el" href="classhtgs_1_1_task_graph.html#afb58c16bd3e1240d818f63c6321e343f" title="Adds a MemoryManager edge with the specified name to the TaskGraph, which connects a memory getter an...">TaskGraph::addMemoryManagerEdge</a> )</p>
 <p>Example Implementation (<a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a>): </p>
 <div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> U, <span class="keyword">class</span> V&gt;</div>
 <div class="line"><span class="keyword">class </span>BookkeeperCustomEdge : <span class="keyword">public</span> <a class="code" href="classhtgs_1_1_i_custom_edge.html">htgs::ICustomEdge</a> {</div>
@@ -188,34 +189,7 @@ virtual <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a>
 <div class="line">bkCustomEdge-&gt;addRule(stitchingRule);</div>
 <div class="line"></div>
 <div class="line">taskGraph-&gt;addCustomEdge(bkCustomEdge);</div>
-</div><!-- fragment --> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a481678298a31322173451fb33fdd99b2"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">htgs::ICustomEdge::ICustomEdge </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a custom edge with a default priority. </p>
-<p>When the <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> is added into a task graph, its ordering will be updated based on the order in which each <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> is added into the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>. When the edge is copied, the lowest order edge will be added first. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a483553439de31b87451da07b2254634a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -273,7 +247,7 @@ virtual <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a>
 <p>The logic behind this function is to describe how the producer and consumer tasks are connected. One basic example that does a simple connection between the two: </p>
 <div class="fragment"><div class="line">connector-&gt;setProducer(producer);</div>
 <div class="line">connector-&gt;setConsumer(consumer);</div>
-</div><!-- fragment --><p>Both the producer and consumer tasks are already within the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>. If a producer or consumer Task is outside of the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>, then <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> will not work. To add more complex functionality such as connecting edges between two TaskGraphs, then the programmer must define that functionality through creating inheriting the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a> and creates a new type of <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>.</p>
+</div><!-- fragment --><p>Both the producer and consumer tasks are already within the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>. If a producer or consumer Task is outside of the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>, then <a class="el" href="classhtgs_1_1_i_custom_edge.html" title="Interface for defining a custom edge to be added into a TaskGraph. ">ICustomEdge</a> will not work. To add more complex functionality such as connecting edges between two TaskGraphs, then the programmer must define that functionality through inheriting the <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a> and creates a new type of <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>.</p>
 <p>The pipelineId specified is the execution pipeline id that this graph is bound to. Any tasks that are created for this <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a> should have their pipelineIds set to the passed in pipelineId.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

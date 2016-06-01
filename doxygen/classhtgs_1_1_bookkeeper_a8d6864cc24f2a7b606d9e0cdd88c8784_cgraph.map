@@ -1,4 +1,4 @@
 <map id="htgs::Bookkeeper::addRuleManager" name="htgs::Bookkeeper::addRuleManager">
-<area shape="rect" id="node2" href="$classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers managed by it. " alt="" coords="235,5,421,32"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers it controls. " alt="" coords="235,5,421,32"/>
 <area shape="rect" id="node3" href="$classhtgs_1_1_base_rule_manager.html#a1e72a4162c2f8bbea93bdb3e1efa38bd" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="247,57,409,98"/>
 </map>

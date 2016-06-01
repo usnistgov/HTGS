@@ -199,7 +199,7 @@ class htgs::IMemoryAllocator&lt; T &gt;</h3>
 <div class="line"></div>
 <div class="line">taskGraph-&gt;<a class="code" href="classhtgs_1_1_task_graph.html#a88a428a714464c9c757668d3544c4328">addEdge</a>(fftTask, matMul);</div>
 <div class="line"></div>
-<div class="line">taskGraph-&gt;<a class="code" href="classhtgs_1_1_task_graph.html#afb58c16bd3e1240d818f63c6321e343f">addMemoryManagerEdge</a>(<span class="stringliteral">&quot;fft&quot;</span>, fftTask, matMul, <span class="keyword">new</span> FFTWMemoryAllocator(imgSize), memoryPoolSize);</div>
+<div class="line">taskGraph-&gt;<a class="code" href="classhtgs_1_1_task_graph.html#afb58c16bd3e1240d818f63c6321e343f">addMemoryManagerEdge</a>(<span class="stringliteral">&quot;fft&quot;</span>, fftTask, matMul, <span class="keyword">new</span> FFTWMemoryAllocator(imageSize), memoryPoolSize);</div>
 </div><!-- fragment --> <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>the memory type </td></tr>

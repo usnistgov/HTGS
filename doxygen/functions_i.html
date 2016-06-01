@@ -156,30 +156,26 @@ $(document).ready(function(){initNavTree('functions_i.html','');});
 : <a class="el" href="classhtgs_1_1_task_graph.html#a1dfcadb07611c7c71ef5d09ce59bc8c6">htgs::TaskGraph&lt; V, W &gt;</a>
 </li>
 <li>incrementInputTaskCount()
-: <a class="el" href="classhtgs_1_1_base_connector.html#a925452ac0c88f86049307729d4d27f7c">htgs::BaseConnector</a>
-, <a class="el" href="classhtgs_1_1_connector.html#aabc7f8c57ee1e180915e03469f02aef1">htgs::Connector&lt; V &gt;</a>
+: <a class="el" href="classhtgs_1_1_connector.html#aabc7f8c57ee1e180915e03469f02aef1">htgs::Connector&lt; V &gt;</a>
 </li>
 <li>initialize()
-: <a class="el" href="classhtgs_1_1_base_rule_manager.html#a23461bf35c06f97dc9ca203ee6792228">htgs::BaseRuleManager&lt; U &gt;</a>
-, <a class="el" href="classhtgs_1_1_base_task_scheduler.html#aff2fca80065d739b64afb2200e05c135">htgs::BaseTaskScheduler</a>
+: <a class="el" href="classhtgs_1_1_base_task_scheduler.html#aff2fca80065d739b64afb2200e05c135">htgs::BaseTaskScheduler</a>
 , <a class="el" href="classhtgs_1_1_bookkeeper.html#af8126b2e2531a17ddc4a17cc3058c737">htgs::Bookkeeper&lt; T &gt;</a>
 , <a class="el" href="classhtgs_1_1_cuda_memory_manager.html#a24224d0dd8d0d4d0675342b6b2cf7e97">htgs::CudaMemoryManager&lt; T &gt;</a>
 , <a class="el" href="classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4">htgs::ExecutionPipeline&lt; T, U &gt;</a>
 , <a class="el" href="classhtgs_1_1_i_cuda_task.html#a2bc639a73a9a4974f5e5f5a66a5cf5c5">htgs::ICudaTask&lt; T, U &gt;</a>
 , <a class="el" href="classhtgs_1_1_i_task.html#abe832ff8732822f3fcbf72314d3bf109">htgs::ITask&lt; T, U &gt;</a>
 , <a class="el" href="classhtgs_1_1_memory_manager.html#ac8fd74a33673d08055ac4ee304979294">htgs::MemoryManager&lt; T &gt;</a>
-, <a class="el" href="classhtgs_1_1_rule_manager.html#af628f0f2c8dec90f3a2731b116b74e8a">htgs::RuleManager&lt; T, U &gt;</a>
 , <a class="el" href="classhtgs_1_1_task_scheduler.html#a682818907ef3b9fd0362e7c5bf30c877">htgs::TaskScheduler&lt; V, W &gt;</a>
 </li>
 <li>initializeCudaGPU()
 : <a class="el" href="classhtgs_1_1_i_cuda_task.html#a92e2383c154857534d79364af6d495e8">htgs::ICudaTask&lt; T, U &gt;</a>
 </li>
-<li>initializeITask()
-: <a class="el" href="classhtgs_1_1_i_task.html#aa4d67a539ea8ae881c9c7b7f5a41cd85">htgs::ITask&lt; T, U &gt;</a>
-</li>
 <li>input
-: <a class="el" href="classhtgs_1_1_execution_pipeline.html#af915e0bc5a12dbd4e8258706950834fa">htgs::ExecutionPipeline&lt; T, U &gt;</a>
-, <a class="el" href="classhtgs_1_1_task_graph.html#a839fa5eee17aa8dde3e25586984c5369">htgs::TaskGraph&lt; V, W &gt;</a>
+: <a class="el" href="classhtgs_1_1_task_graph.html#a839fa5eee17aa8dde3e25586984c5369">htgs::TaskGraph&lt; V, W &gt;</a>
+</li>
+<li>inputBk
+: <a class="el" href="classhtgs_1_1_execution_pipeline.html#a824b24a0b62df0ab79a7598c73cd359f">htgs::ExecutionPipeline&lt; T, U &gt;</a>
 </li>
 <li>inputConnector
 : <a class="el" href="classhtgs_1_1_task_scheduler.html#a1d0cd889757f08ba4ecab30302afbddd">htgs::TaskScheduler&lt; V, W &gt;</a>
@@ -231,16 +227,10 @@ $(document).ready(function(){initNavTree('functions_i.html','');});
 , <a class="el" href="classhtgs_1_1_task_scheduler.html#ae17199214e13bfe4c5221afae8157c4b">htgs::TaskScheduler&lt; V, W &gt;</a>
 </li>
 <li>isTerminated()
-: <a class="el" href="classhtgs_1_1_base_rule_manager.html#aaee7beb9a407dc5322e7839047027880">htgs::BaseRuleManager&lt; U &gt;</a>
-, <a class="el" href="classhtgs_1_1_bookkeeper.html#ac361c8fc27755e1d79affb4907dfef4b">htgs::Bookkeeper&lt; T &gt;</a>
-, <a class="el" href="classhtgs_1_1_execution_pipeline.html#a2c5b9ee75afe4796402978bac58d3631">htgs::ExecutionPipeline&lt; T, U &gt;</a>
-, <a class="el" href="classhtgs_1_1_i_cuda_task.html#ab2fc1acdad075a8b4e06b5c265b60b94">htgs::ICudaTask&lt; T, U &gt;</a>
-, <a class="el" href="classhtgs_1_1_i_task.html#ac7abe254b443b32861cea2a96531dc4f">htgs::ITask&lt; T, U &gt;</a>
-, <a class="el" href="classhtgs_1_1_memory_manager.html#a44ee0c28ee60aa9624071b9f3b304042">htgs::MemoryManager&lt; T &gt;</a>
-, <a class="el" href="classhtgs_1_1_rule_manager.html#afba78af44d68954f1923a8fdbe241c0b">htgs::RuleManager&lt; T, U &gt;</a>
+: <a class="el" href="classhtgs_1_1_i_task.html#a4a3eb066af852acba199bfea764434b8">htgs::ITask&lt; T, U &gt;</a>
 </li>
 <li>ITask()
-: <a class="el" href="classhtgs_1_1_i_task.html#ac23fa74bf05d6a86000422d989ccc5d1">htgs::ITask&lt; T, U &gt;</a>
+: <a class="el" href="classhtgs_1_1_i_task.html#a989523e7239586ec9999384ebb0b4174">htgs::ITask&lt; T, U &gt;</a>
 </li>
 <li>iTaskMap
 : <a class="el" href="classhtgs_1_1_task_graph.html#a3151d5aa1fbd2a3228cb9dc0e5e41968">htgs::TaskGraph&lt; V, W &gt;</a>

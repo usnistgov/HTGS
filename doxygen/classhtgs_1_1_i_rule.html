@@ -142,8 +142,8 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_rule.html#a99ba4eb4d3e14e33d9ddbb78da75399c">~IRule</a> ()</td></tr>
 <tr class="memdesc:a99ba4eb4d3e14e33d9ddbb78da75399c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br/></td></tr>
 <tr class="separator:a99ba4eb4d3e14e33d9ddbb78da75399c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2daf5fd5d7325c703d2a393f98c8a8b"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::shared_ptr&lt; U &gt; &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_rule.html#af2daf5fd5d7325c703d2a393f98c8a8b">applyRuleFunction</a> (std::shared_ptr&lt; T &gt; data, int pipelineId)</td></tr>
-<tr class="memdesc:af2daf5fd5d7325c703d2a393f98c8a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the virtual rule function and processes output.  <a href="#af2daf5fd5d7325c703d2a393f98c8a8b">More...</a><br/></td></tr>
+<tr class="memitem:af2daf5fd5d7325c703d2a393f98c8a8b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2daf5fd5d7325c703d2a393f98c8a8b"></a>
+std::list&lt; std::shared_ptr&lt; U &gt; &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>applyRuleFunction</b> (std::shared_ptr&lt; T &gt; data, int pipelineId)</td></tr>
 <tr class="separator:af2daf5fd5d7325c703d2a393f98c8a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5bd50e5556023e8e90557cbfdc60565"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_rule.html#af5bd50e5556023e8e90557cbfdc60565">addResult</a> (std::shared_ptr&lt; U &gt; result)</td></tr>
 <tr class="memdesc:af5bd50e5556023e8e90557cbfdc60565"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a result value to the output.  <a href="#af5bd50e5556023e8e90557cbfdc60565">More...</a><br/></td></tr>
@@ -558,71 +558,6 @@ template&lt;class V, class W&gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>To send data to the next edge use addResult </dd></dl>
 
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classhtgs_1_1_i_rule_ae4c792ac122b08ece4023043351c65f8_icgraph.png" border="0" usemap="#classhtgs_1_1_i_rule_ae4c792ac122b08ece4023043351c65f8_icgraph" alt=""/></div>
-<map name="classhtgs_1_1_i_rule_ae4c792ac122b08ece4023043351c65f8_icgraph" id="classhtgs_1_1_i_rule_ae4c792ac122b08ece4023043351c65f8_icgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_i_rule.html#af2daf5fd5d7325c703d2a393f98c8a8b" title="Applies the virtual rule function and processes output. " alt="" coords="205,5,408,32"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="af2daf5fd5d7325c703d2a393f98c8a8b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V, class W&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::list&lt;std::shared_ptr&lt;U&gt; &gt;* <a class="el" href="classhtgs_1_1_i_rule.html">htgs::IRule</a>&lt; V, W &gt;::applyRuleFunction </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; T &gt;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>pipelineId</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Applies the virtual rule function and processes output. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>the input data </td></tr>
-    <tr><td class="paramname">pipelineId</td><td>the pipelineId </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the results of the rule function</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classhtgs_1_1_i_rule_af2daf5fd5d7325c703d2a393f98c8a8b_cgraph.png" border="0" usemap="#classhtgs_1_1_i_rule_af2daf5fd5d7325c703d2a393f98c8a8b_cgraph" alt=""/></div>
-<map name="classhtgs_1_1_i_rule_af2daf5fd5d7325c703d2a393f98c8a8b_cgraph" id="classhtgs_1_1_i_rule_af2daf5fd5d7325c703d2a393f98c8a8b_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_i_rule.html#ae4c792ac122b08ece4023043351c65f8" title="Pure virtual function to process input data. " alt="" coords="256,5,408,32"/></map>
-</div>
-</p>
-
 </div>
 </div>
 <a class="anchor" id="aeda1a10de72cc469a1e4af9b5425e4b0"></a>
@@ -753,7 +688,7 @@ template&lt;class V, class W&gt; </div>
 <p>Virtual function that handles when a rule is being shutdown for a particular pipelineId. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pipelineId</td><td>the pipelineId to shutdown</td></tr>
+    <tr><td class="paramname">pipelineId</td><td>the pipelineId to shutdown </td></tr>
   </table>
   </dd>
 </dl>

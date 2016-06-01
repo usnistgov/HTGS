@@ -30,7 +30,7 @@ var classhtgs_1_1_i_task =
     [ "initializeITask", "classhtgs_1_1_i_task.html#aa4d67a539ea8ae881c9c7b7f5a41cd85", null ],
     [ "isMemReleaserOutsideGraph", "classhtgs_1_1_i_task.html#af7f87e2851725015f5a01fbe75dfd9ed", null ],
     [ "isPoll", "classhtgs_1_1_i_task.html#a2342f6be5d1fe4fb0eb1c9bae2dbc528", null ],
-    [ "isTerminated", "classhtgs_1_1_i_task.html#ac7abe254b443b32861cea2a96531dc4f", null ],
+    [ "isTerminated", "classhtgs_1_1_i_task.html#a4a3eb066af852acba199bfea764434b8", null ],
     [ "memGet", "classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41", null ],
     [ "memGet", "classhtgs_1_1_i_task.html#a63f8ea35e515b324518e3607e9a4e3e2", null ],
     [ "memRelease", "classhtgs_1_1_i_task.html#a6dc611d4a0883c5ba28f740dc89377f6", null ],

@@ -162,9 +162,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a33b556557bc0a5abf32a4a43fea0a076"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhtgs_1_1_i_task.html">ITask</a>&lt; T, U &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_execution_pipeline.html#a33b556557bc0a5abf32a4a43fea0a076">copy</a> ()</td></tr>
 <tr class="memdesc:a33b556557bc0a5abf32a4a43fea0a076"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes a copy of the execution pipeline.  <a href="#a33b556557bc0a5abf32a4a43fea0a076">More...</a><br/></td></tr>
 <tr class="separator:a33b556557bc0a5abf32a4a43fea0a076"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c5b9ee75afe4796402978bac58d3631"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_execution_pipeline.html#a2c5b9ee75afe4796402978bac58d3631">isTerminated</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; inputConnector)</td></tr>
-<tr class="memdesc:a2c5b9ee75afe4796402978bac58d3631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this execution pipeline is ready to be terminated.  <a href="#a2c5b9ee75afe4796402978bac58d3631">More...</a><br/></td></tr>
-<tr class="separator:a2c5b9ee75afe4796402978bac58d3631"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a409fb080726562470ee8599786bc365e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_execution_pipeline.html#a409fb080726562470ee8599786bc365e">debug</a> ()</td></tr>
 <tr class="memdesc:a409fb080726562470ee8599786bc365e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides debugging output for the execution pipeline.  <a href="#a409fb080726562470ee8599786bc365e">More...</a><br/></td></tr>
 <tr class="separator:a409fb080726562470ee8599786bc365e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,20 +183,20 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a0cebc4dc6ff74eeb0d27b076a642bb80">~ITask</a> ()</td></tr>
 <tr class="memdesc:a0cebc4dc6ff74eeb0d27b076a642bb80 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br/></td></tr>
 <tr class="separator:a0cebc4dc6ff74eeb0d27b076a642bb80 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#aeb07ef40eb479d07e3a8379320a28840">setPipelineId</a> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>)</td></tr>
-<tr class="memdesc:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pipeline Id for this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#aeb07ef40eb479d07e3a8379320a28840">More...</a><br/></td></tr>
+<tr class="memitem:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb07ef40eb479d07e3a8379320a28840"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPipelineId</b> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>)</td></tr>
 <tr class="separator:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a8a67cc24e70396b6db89abc11bf3dd32">setNumThreads</a> (int <a class="el" href="classhtgs_1_1_i_task.html#ab2e1f133f9408f0a1340b2f682c0e54f">numThreads</a>)</td></tr>
-<tr class="memdesc:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the number of threads associated with this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#a8a67cc24e70396b6db89abc11bf3dd32">More...</a><br/></td></tr>
+<tr class="memitem:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a67cc24e70396b6db89abc11bf3dd32"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNumThreads</b> (int <a class="el" href="classhtgs_1_1_i_task.html#ab2e1f133f9408f0a1340b2f682c0e54f">numThreads</a>)</td></tr>
 <tr class="separator:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5a2c1ab7f3db3e69458d2cf0e708435 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#af5a2c1ab7f3db3e69458d2cf0e708435">setIsStartTask</a> (bool <a class="el" href="classhtgs_1_1_i_task.html#a0ce9a193a938edf4b6862926ff741511">isStartTask</a>)</td></tr>
 <tr class="memdesc:af5a2c1ab7f3db3e69458d2cf0e708435 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether this task is a start task or not.  <a href="#af5a2c1ab7f3db3e69458d2cf0e708435">More...</a><br/></td></tr>
 <tr class="separator:af5a2c1ab7f3db3e69458d2cf0e708435 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a5e97a5b81e7e9c99ae369f94f3ae7364">setPoll</a> (bool <a class="el" href="classhtgs_1_1_i_task.html#a0757403bce3b40d369330af6398e7fd9">poll</a>)</td></tr>
-<tr class="memdesc:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether this task is polling for data or not.  <a href="#a5e97a5b81e7e9c99ae369f94f3ae7364">More...</a><br/></td></tr>
+<tr class="memitem:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e97a5b81e7e9c99ae369f94f3ae7364"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPoll</b> (bool <a class="el" href="classhtgs_1_1_i_task.html#a0757403bce3b40d369330af6398e7fd9">poll</a>)</td></tr>
 <tr class="separator:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a18dbd35950af39c9f204116c2bf3370a">setMicroTimeoutTime</a> (long <a class="el" href="classhtgs_1_1_i_task.html#a3c12d83f5a2f87fd71453eaaac3feed8">microTimeoutTime</a>)</td></tr>
-<tr class="memdesc:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the timeout time for polling in microseconds.  <a href="#a18dbd35950af39c9f204116c2bf3370a">More...</a><br/></td></tr>
+<tr class="memitem:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18dbd35950af39c9f204116c2bf3370a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setMicroTimeoutTime</b> (long <a class="el" href="classhtgs_1_1_i_task.html#a3c12d83f5a2f87fd71453eaaac3feed8">microTimeoutTime</a>)</td></tr>
 <tr class="separator:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeeada962181237186b47285ab5b8947 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#abeeada962181237186b47285ab5b8947">getNumThreads</a> () const </td></tr>
 <tr class="memdesc:abeeada962181237186b47285ab5b8947 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of threads associated with this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#abeeada962181237186b47285ab5b8947">More...</a><br/></td></tr>
@@ -219,19 +216,19 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:adab8481dc44985387e35477324e263f7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#adab8481dc44985387e35477324e263f7">addResult</a> (U *result)</td></tr>
 <tr class="memdesc:adab8481dc44985387e35477324e263f7 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds results to the output list to be sent to the next connected <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> in a <a class="el" href="classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. ">TaskGraph</a>.  <a href="#adab8481dc44985387e35477324e263f7">More...</a><br/></td></tr>
 <tr class="separator:adab8481dc44985387e35477324e263f7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhtgs_1_1_i_task.html">ITask</a>&lt; T, U &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a50ddfa059fc5891ce19a4690aaa2f294">copyITask</a> ()</td></tr>
-<tr class="memdesc:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> including its list of memGetters and memReleasers.  <a href="#a50ddfa059fc5891ce19a4690aaa2f294">More...</a><br/></td></tr>
+<tr class="memitem:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50ddfa059fc5891ce19a4690aaa2f294"></a>
+<a class="el" href="classhtgs_1_1_i_task.html">ITask</a>&lt; T, U &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>copyITask</b> ()</td></tr>
 <tr class="separator:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41">memGet</a> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule)</td></tr>
-<tr class="memdesc:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge.  <a href="#ac29e3c78e0079017d17fb3e39e05fd41">More...</a><br/></td></tr>
+<tr class="memitem:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac29e3c78e0079017d17fb3e39e05fd41"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>memGet</b> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule)</td></tr>
 <tr class="separator:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a63f8ea35e515b324518e3607e9a4e3e2">memGet</a> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule, size_t numElems)</td></tr>
-<tr class="memdesc:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge.  <a href="#a63f8ea35e515b324518e3607e9a4e3e2">More...</a><br/></td></tr>
+<tr class="memitem:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplParams" colspan="2"><a class="anchor" id="a63f8ea35e515b324518e3607e9a4e3e2"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>memGet</b> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule, size_t numElems)</td></tr>
 <tr class="separator:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a322b23d307ce1b12d302ce2d622f8308">allocUserManagedMemory</a> (std::string name)</td></tr>
-<tr class="memdesc:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge that is managed by the user.  <a href="#a322b23d307ce1b12d302ce2d622f8308">More...</a><br/></td></tr>
+<tr class="memitem:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a322b23d307ce1b12d302ce2d622f8308"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>allocUserManagedMemory</b> (std::string name)</td></tr>
 <tr class="separator:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dc611d4a0883c5ba28f740dc89377f6 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
 <tr class="memitem:a6dc611d4a0883c5ba28f740dc89377f6 inherit pub_methods_classhtgs_1_1_i_task"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a6dc611d4a0883c5ba28f740dc89377f6">memRelease</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt;&gt; memory)</td></tr>
@@ -249,21 +246,21 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:af7f87e2851725015f5a01fbe75dfd9ed inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#af7f87e2851725015f5a01fbe75dfd9ed">isMemReleaserOutsideGraph</a> (std::string name)</td></tr>
 <tr class="memdesc:af7f87e2851725015f5a01fbe75dfd9ed inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> contains a memReleaser that exists outside of the graph that the memory edge exists.  <a href="#af7f87e2851725015f5a01fbe75dfd9ed">More...</a><br/></td></tr>
 <tr class="separator:af7f87e2851725015f5a01fbe75dfd9ed inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a6c4d5c51e177c5c87e08b50977bdc095">attachMemGetter</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type)</td></tr>
-<tr class="memdesc:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a memGetter to this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#a6c4d5c51e177c5c87e08b50977bdc095">More...</a><br/></td></tr>
+<tr class="memitem:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c4d5c51e177c5c87e08b50977bdc095"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>attachMemGetter</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type)</td></tr>
 <tr class="separator:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a55abce7b871a6a181136ba20bbae8659">attachMemReleaser</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type, bool outsideMemManGraph)</td></tr>
-<tr class="memdesc:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a memReleaser to this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#a55abce7b871a6a181136ba20bbae8659">More...</a><br/></td></tr>
+<tr class="memitem:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55abce7b871a6a181136ba20bbae8659"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>attachMemReleaser</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type, bool outsideMemManGraph)</td></tr>
 <tr class="separator:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40440dd567664a09d4d502f62217eea7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
 &lt; ConnectorVectorMap &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a40440dd567664a09d4d502f62217eea7">getMemReleasers</a> ()</td></tr>
 <tr class="memdesc:a40440dd567664a09d4d502f62217eea7 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the memReleaser mapping.  <a href="#a40440dd567664a09d4d502f62217eea7">More...</a><br/></td></tr>
 <tr class="separator:a40440dd567664a09d4d502f62217eea7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#aa4d67a539ea8ae881c9c7b7f5a41cd85">initializeITask</a> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>, int numPipeline, <a class="el" href="classhtgs_1_1_task_scheduler.html">TaskScheduler</a>&lt; T, U &gt; *<a class="el" href="classhtgs_1_1_i_task.html#a055a0bcd8059a79129dd0367c0ef9ee6">ownerTask</a>, std::shared_ptr&lt; ConnectorVector &gt; pipelineConnectorList)</td></tr>
-<tr class="memdesc:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#aa4d67a539ea8ae881c9c7b7f5a41cd85">More...</a><br/></td></tr>
+<tr class="memitem:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4d67a539ea8ae881c9c7b7f5a41cd85"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initializeITask</b> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>, int numPipeline, <a class="el" href="classhtgs_1_1_task_scheduler.html">TaskScheduler</a>&lt; T, U &gt; *<a class="el" href="classhtgs_1_1_i_task.html#a055a0bcd8059a79129dd0367c0ef9ee6">ownerTask</a>, std::shared_ptr&lt; ConnectorVector &gt; pipelineConnectorList)</td></tr>
 <tr class="separator:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ab5ef48478a2c1a71664aabfedec0fe91">profileITask</a> ()</td></tr>
-<tr class="memdesc:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides profile output for the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>,.  <a href="#ab5ef48478a2c1a71664aabfedec0fe91">More...</a><br/></td></tr>
+<tr class="memitem:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5ef48478a2c1a71664aabfedec0fe91"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>profileITask</b> ()</td></tr>
 <tr class="separator:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe832ff8732822f3fcbf72314d3bf109 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#abe832ff8732822f3fcbf72314d3bf109">initialize</a> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>, int numPipeline, <a class="el" href="classhtgs_1_1_task_scheduler.html">TaskScheduler</a>&lt; T, U &gt; *<a class="el" href="classhtgs_1_1_i_task.html#a055a0bcd8059a79129dd0367c0ef9ee6">ownerTask</a>, std::shared_ptr&lt; ConnectorVector &gt; pipelineConnectorList)</td></tr>
 <tr class="memdesc:abe832ff8732822f3fcbf72314d3bf109 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is being initialized by it's owner thread.  <a href="#abe832ff8732822f3fcbf72314d3bf109">More...</a><br/></td></tr>
@@ -271,6 +268,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:ae818ab0579ae490810a560a7e4209d8f inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ae818ab0579ae490810a560a7e4209d8f">initialize</a> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>, int numPipeline)</td></tr>
 <tr class="memdesc:ae818ab0579ae490810a560a7e4209d8f inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is being initialized by it's owner thread.  <a href="#ae818ab0579ae490810a560a7e4209d8f">More...</a><br/></td></tr>
 <tr class="separator:ae818ab0579ae490810a560a7e4209d8f inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a3eb066af852acba199bfea764434b8 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a4a3eb066af852acba199bfea764434b8">isTerminated</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; inputConnector)</td></tr>
+<tr class="memdesc:a4a3eb066af852acba199bfea764434b8 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is checking if it can be terminated.  <a href="#a4a3eb066af852acba199bfea764434b8">More...</a><br/></td></tr>
+<tr class="separator:a4a3eb066af852acba199bfea764434b8 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8f3a4eb75334b0ab6c77b9a6cc4d6dd inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#af8f3a4eb75334b0ab6c77b9a6cc4d6dd">profile</a> ()</td></tr>
 <tr class="memdesc:af8f3a4eb75334b0ab6c77b9a6cc4d6dd inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called to provide profile output for the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#af8f3a4eb75334b0ab6c77b9a6cc4d6dd">More...</a><br/></td></tr>
 <tr class="separator:af8f3a4eb75334b0ab6c77b9a6cc4d6dd inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,8 +292,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#a77eee9118c44ea974291cfe1693d7525">~BaseITask</a> ()</td></tr>
 <tr class="memdesc:a77eee9118c44ea974291cfe1693d7525 inherit pub_methods_classhtgs_1_1_base_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br/></td></tr>
 <tr class="separator:a77eee9118c44ea974291cfe1693d7525 inherit pub_methods_classhtgs_1_1_base_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaef40aa7d96fcc7b3f758be2d62eda94 inherit pub_methods_classhtgs_1_1_base_i_task"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#aaef40aa7d96fcc7b3f758be2d62eda94">addRuleManager</a> (<a class="el" href="classhtgs_1_1_base_base_rule_manager.html">BaseBaseRuleManager</a> *ruleManager)</td></tr>
-<tr class="memdesc:aaef40aa7d96fcc7b3f758be2d62eda94 inherit pub_methods_classhtgs_1_1_base_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function used for <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a>.  <a href="#aaef40aa7d96fcc7b3f758be2d62eda94">More...</a><br/></td></tr>
+<tr class="memitem:aaef40aa7d96fcc7b3f758be2d62eda94 inherit pub_methods_classhtgs_1_1_base_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaef40aa7d96fcc7b3f758be2d62eda94"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>addRuleManager</b> (<a class="el" href="classhtgs_1_1_base_base_rule_manager.html">BaseBaseRuleManager</a> *ruleManager)</td></tr>
 <tr class="separator:aaef40aa7d96fcc7b3f758be2d62eda94 inherit pub_methods_classhtgs_1_1_base_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -302,10 +302,10 @@ Private Attributes</h2></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_execution_pipeline.html#a4badd47195d8e0c4a164e84394ccf10f">numPipelines</a></td></tr>
 <tr class="memdesc:a4badd47195d8e0c4a164e84394ccf10f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of pipelines that will spawn from the <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a>. <br/></td></tr>
 <tr class="separator:a4badd47195d8e0c4a164e84394ccf10f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af915e0bc5a12dbd4e8258706950834fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af915e0bc5a12dbd4e8258706950834fa"></a>
-<a class="el" href="classhtgs_1_1_bookkeeper.html">Bookkeeper</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_execution_pipeline.html#af915e0bc5a12dbd4e8258706950834fa">input</a></td></tr>
-<tr class="memdesc:af915e0bc5a12dbd4e8258706950834fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The input <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a> for the <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a>. <br/></td></tr>
-<tr class="separator:af915e0bc5a12dbd4e8258706950834fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a824b24a0b62df0ab79a7598c73cd359f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a824b24a0b62df0ab79a7598c73cd359f"></a>
+<a class="el" href="classhtgs_1_1_bookkeeper.html">Bookkeeper</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_execution_pipeline.html#a824b24a0b62df0ab79a7598c73cd359f">inputBk</a></td></tr>
+<tr class="memdesc:a824b24a0b62df0ab79a7598c73cd359f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The input <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a> for the <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a>. <br/></td></tr>
+<tr class="separator:a824b24a0b62df0ab79a7598c73cd359f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a486904a03eb5fa5b315ffddfa9a342c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a486904a03eb5fa5b315ffddfa9a342c3"></a>
 <a class="el" href="classhtgs_1_1_task_graph.html">TaskGraph</a>&lt; T, U &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_execution_pipeline.html#a486904a03eb5fa5b315ffddfa9a342c3">graph</a></td></tr>
 <tr class="memdesc:a486904a03eb5fa5b315ffddfa9a342c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The graph that the <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">ExecutionPipeline</a> manages, duplicates, and executes. <br/></td></tr>
@@ -611,7 +611,7 @@ template&lt;class T, class U&gt; </div>
 <p>The input rules should parse the data and determine the correct pipelineId to forward the data to. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>the data to be forwarded to the proper execution pipeline</td></tr>
+    <tr><td class="paramname">data</td><td>the data to be forwarded to the proper execution pipeline </td></tr>
   </table>
   </dd>
 </dl>
@@ -662,6 +662,14 @@ template&lt;class T, class U&gt; </div>
 </div><div class="memdoc">
 
 <p>Virtual function that adds additional dot attributes to this node. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">idStr</td><td>the id string for this task </td></tr>
+    <tr><td class="paramname">inputConn</td><td>the input connector for this task </td></tr>
+    <tr><td class="paramname">outputConn</td><td>the output connector for this task </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>the additional dot attributes for the dot graph representation </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classhtgs_1_1_i_task.html#a84a30e646d8122a132e8fda7f33b7096">htgs::ITask&lt; T, U &gt;</a>.</p>
@@ -671,7 +679,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_execution_pipeline_ac960cce9c2de32c6834b564d065718f0_cgraph.png" border="0" usemap="#classhtgs_1_1_execution_pipeline_ac960cce9c2de32c6834b564d065718f0_cgraph" alt=""/></div>
 <map name="classhtgs_1_1_execution_pipeline_ac960cce9c2de32c6834b564d065718f0_cgraph" id="classhtgs_1_1_execution_pipeline_ac960cce9c2de32c6834b564d065718f0_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_task_graph.html#aa6fcf566e71f6346281c42db8d09c530" title="Gets the input connector for the TaskGraph. " alt="" coords="229,5,403,46"/><area shape="rect" id="node3" href="classhtgs_1_1_execution_pipeline.html#af25a3227493e4c38a2d81e0cd2709a47" title="Gets the name for the execution pipeline. " alt="" coords="237,70,395,111"/><area shape="rect" id="node4" href="classhtgs_1_1_task_graph.html#aaf726a7c0ee834a7b7cb1c906b1cc9af" title="Updates the TaskGraph output producers. " alt="" coords="215,135,417,177"/><area shape="rect" id="node5" href="classhtgs_1_1_task_graph.html#a4617fee561077b5f3e1dc2078468dfe7" title="Generate the content only of the graph (excludes all graph definitions and attributes) ..." alt="" coords="214,201,418,242"/></map>
+<area shape="rect" id="node2" href="classhtgs_1_1_task_graph.html#aa6fcf566e71f6346281c42db8d09c530" title="Gets the input connector for the TaskGraph. " alt="" coords="229,5,403,46"/><area shape="rect" id="node3" href="classhtgs_1_1_execution_pipeline.html#af25a3227493e4c38a2d81e0cd2709a47" title="Gets the name for the execution pipeline. " alt="" coords="237,70,395,111"/><area shape="rect" id="node4" href="classhtgs_1_1_task_graph.html#a4617fee561077b5f3e1dc2078468dfe7" title="Generate the content only of the graph (excludes all graph definitions and attributes) ..." alt="" coords="214,135,418,177"/></map>
 </div>
 </p>
 
@@ -763,13 +771,12 @@ template&lt;class T, class U&gt; </div>
 </div><div class="memdoc">
 
 <p>Initializes the execution pipeline and duplicates the task graph numPipeline times. </p>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pipelineId</td><td>the pipelineId for the execution pipeline task </td></tr>
     <tr><td class="paramname">numPipeline</td><td>the number of pipelines for the graph holding the execution pipeline </td></tr>
     <tr><td class="paramname">ownerTask</td><td>the owner task </td></tr>
-    <tr><td class="paramname">pipelineConnectorList</td><td>the list of connectors that connect to other duplicate execution pipelines in an execution pipeline</td></tr>
+    <tr><td class="paramname">pipelineConnectorList</td><td>the list of connectors that connect to other duplicate execution pipelines in an execution pipeline </td></tr>
   </table>
   </dd>
 </dl>
@@ -780,54 +787,9 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_execution_pipeline_a44a8067a04fe35d93591036ddc3ff5b4_cgraph.png" border="0" usemap="#classhtgs_1_1_execution_pipeline_a44a8067a04fe35d93591036ddc3ff5b4_cgraph" alt=""/></div>
 <map name="classhtgs_1_1_execution_pipeline_a44a8067a04fe35d93591036ddc3ff5b4_cgraph" id="classhtgs_1_1_execution_pipeline_a44a8067a04fe35d93591036ddc3ff5b4_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_task_graph.html#ad09b75a38dd58ae9d05bd188d468ca30" title="Updates the pipelineIds and the number of pipelines for all tasks in the TaskGraph. " alt="" coords="229,5,406,46"/><area shape="rect" id="node3" href="classhtgs_1_1_rule_manager.html#adff766b4e8de8877375f6e94f51d3060" title="Adds a rule to the RuleManager. " alt="" coords="247,70,387,111"/><area shape="rect" id="node4" href="classhtgs_1_1_rule_manager.html#a67bb5fdef545b3a3f0a0339f7d5002cf" title="Sets the output connector that the RuleManager is attached to. " alt="" coords="247,135,387,177"/><area shape="rect" id="node7" href="classhtgs_1_1_task_graph.html#aa6fcf566e71f6346281c42db8d09c530" title="Gets the input connector for the TaskGraph. " alt="" coords="230,201,405,242"/><area shape="rect" id="node8" href="classhtgs_1_1_rule_manager.html#af628f0f2c8dec90f3a2731b116b74e8a" title="Initializes the RuleManager. " alt="" coords="247,266,387,307"/><area shape="rect" id="node9" href="classhtgs_1_1_task_graph.html#aaf726a7c0ee834a7b7cb1c906b1cc9af" title="Updates the TaskGraph output producers. " alt="" coords="217,331,418,373"/><area shape="rect" id="node10" href="classhtgs_1_1_task_scheduler.html#a95854bbdc72c7083f084a77f738cefb2" title="Gets the output Connector. " alt="" coords="244,397,391,438"/><area shape="rect" id="node11" href="classhtgs_1_1_task_graph.html#a9eb8248f52fb8f4ce7bc39ab4246b098" title="Creates a copy of the TaskGraph with the specified pipeline Id and number of pipelines. " alt="" coords="240,463,395,489"/><area shape="rect" id="node12" href="classhtgs_1_1_runtime.html#a7f6f3656b206a43d9499e27241c592a7" title="Executes the Runtime. " alt="" coords="214,513,421,540"/><area shape="rect" id="node5" href="classhtgs_1_1_connector.html#aabc7f8c57ee1e180915e03469f02aef1" title="Increments the number of producers for the Connector. " alt="" coords="490,135,670,177"/><area shape="rect" id="node6" href="classhtgs_1_1_rule_manager.html#a51dd70935321bfba6e83993d5af53b27" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="510,233,650,274"/><area shape="rect" id="node13" href="classhtgs_1_1_base_task_graph.html#a7ca02fa62a1b9c64945a4634b6e88e17" title="Pure virtual function to get the vertices of the TaskGraph. " alt="" coords="505,407,655,449"/><area shape="rect" id="node14" href="classhtgs_1_1_base_task_scheduler.html#a889cf25bd0edf9085293bf9a1321bc37" title="Copies the Task. " alt="" coords="494,473,666,514"/><area shape="rect" id="node15" href="classhtgs_1_1_base_task_scheduler_runtime_thread.html#a6e86a5d036b89d335acbe04fa64fb96a" title="Executes the task until the underlying Task has been terminated. " alt="" coords="469,538,691,579"/><area shape="rect" id="node20" href="classhtgs_1_1_base_task_graph.html#a9e6c2230a8d02a7637ccab89f1275e10" title="Pure virtual function to add a copy of a TaskScheduler into the TaskGraph. " alt="" coords="505,603,655,645"/><area shape="rect" id="node16" href="classhtgs_1_1_base_task_scheduler.html#a6444f1872c8e6521ae37cabb9e1be109" title="Gets the name of the Task. " alt="" coords="739,439,911,481"/><area shape="rect" id="node17" href="classhtgs_1_1_base_task_scheduler.html#aff2fca80065d739b64afb2200e05c135" title="Initializes the Task. " alt="" coords="739,505,911,546"/><area shape="rect" id="node18" href="classhtgs_1_1_base_task_scheduler.html#a04b73fc54a057319db7ba2d4dbcaa816" title="Executes the Task. " alt="" coords="739,570,911,611"/><area shape="rect" id="node19" href="classhtgs_1_1_base_task_scheduler.html#a421761b20d523be7a5c2ee8c9f4573a9" title="Shuts down the Task. " alt="" coords="739,635,911,677"/></map>
+<area shape="rect" id="node2" href="classhtgs_1_1_rule_manager.html#adff766b4e8de8877375f6e94f51d3060" title="Adds a rule to the RuleManager. " alt="" coords="247,5,387,46"/><area shape="rect" id="node3" href="classhtgs_1_1_task_graph.html#aa6fcf566e71f6346281c42db8d09c530" title="Gets the input connector for the TaskGraph. " alt="" coords="230,70,405,111"/><area shape="rect" id="node4" href="classhtgs_1_1_task_scheduler.html#a95854bbdc72c7083f084a77f738cefb2" title="Gets the output Connector. " alt="" coords="244,135,391,177"/><area shape="rect" id="node5" href="classhtgs_1_1_task_graph.html#a9eb8248f52fb8f4ce7bc39ab4246b098" title="Creates a copy of the TaskGraph with the specified pipeline Id and number of pipelines. " alt="" coords="240,201,395,228"/><area shape="rect" id="node6" href="classhtgs_1_1_runtime.html#a7f6f3656b206a43d9499e27241c592a7" title="Executes the Runtime. " alt="" coords="214,252,421,279"/><area shape="rect" id="node7" href="classhtgs_1_1_base_task_graph.html#a7ca02fa62a1b9c64945a4634b6e88e17" title="Pure virtual function to get the vertices of the TaskGraph. " alt="" coords="505,146,655,187"/><area shape="rect" id="node8" href="classhtgs_1_1_base_task_scheduler.html#a889cf25bd0edf9085293bf9a1321bc37" title="Copies the Task. " alt="" coords="494,211,666,253"/><area shape="rect" id="node9" href="classhtgs_1_1_base_task_scheduler_runtime_thread.html#a6e86a5d036b89d335acbe04fa64fb96a" title="Executes the task until the underlying Task has been terminated. " alt="" coords="469,277,691,318"/><area shape="rect" id="node14" href="classhtgs_1_1_base_task_graph.html#a9e6c2230a8d02a7637ccab89f1275e10" title="Pure virtual function to add a copy of a TaskScheduler into the TaskGraph. " alt="" coords="505,342,655,383"/><area shape="rect" id="node10" href="classhtgs_1_1_base_task_scheduler.html#a6444f1872c8e6521ae37cabb9e1be109" title="Gets the name of the Task. " alt="" coords="739,178,911,219"/><area shape="rect" id="node11" href="classhtgs_1_1_base_task_scheduler.html#aff2fca80065d739b64afb2200e05c135" title="Initializes the Task. " alt="" coords="739,243,911,285"/><area shape="rect" id="node12" href="classhtgs_1_1_base_task_scheduler.html#a04b73fc54a057319db7ba2d4dbcaa816" title="Executes the Task. " alt="" coords="739,309,911,350"/><area shape="rect" id="node13" href="classhtgs_1_1_base_task_scheduler.html#a421761b20d523be7a5c2ee8c9f4573a9" title="Shuts down the Task. " alt="" coords="739,374,911,415"/></map>
 </div>
 </p>
-
-</div>
-</div>
-<a class="anchor" id="a2c5b9ee75afe4796402978bac58d3631"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T, class U&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classhtgs_1_1_execution_pipeline.html">htgs::ExecutionPipeline</a>&lt; T, U &gt;::isTerminated </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt;&#160;</td>
-          <td class="paramname"><em>inputConnector</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if this execution pipeline is ready to be terminated. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inputConnector</td><td>the input connector that sends data to this bookkeeper </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>whether the execution pipeline can be terminated, uses inputConnector-&gt;isInputTerminated() </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">TRUE</td><td>if it is ready to be terminated </td></tr>
-    <tr><td class="paramname">FALSE</td><td>if it is not ready to be terminated</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
-
-<p>Implements <a class="el" href="classhtgs_1_1_i_task.html#ac7abe254b443b32861cea2a96531dc4f">htgs::ITask&lt; T, U &gt;</a>.</p>
 
 </div>
 </div>
