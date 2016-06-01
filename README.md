@@ -10,7 +10,7 @@ The API is designed to aid in creating task graphs for algorithms to obtain perf
 
 - [Installation Instructions](#installation-instructions)
 	- [Dependencies:](#dependencies)
-	- [Building and testing HTGS:](#building-and-testing-htgs)
+	- [Building HTGS:](#building-htgs)
 - [Motivation](#motivation)
 - [Approach](#approach)
 - [Steps to Programming with HTGS](#steps-to-programming-with-htgs)
@@ -31,7 +31,7 @@ The API is designed to aid in creating task graphs for algorithms to obtain perf
 
 3) doxygen (optional)
 
-## Building and testing HTGS:
+## Building HTGS:
 **CMake Options:**
 CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)
 
