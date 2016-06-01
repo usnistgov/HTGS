@@ -17,6 +17,7 @@ The API is designed to aid in creating task graphs for algorithms to obtain perf
 - [Approach](#approach)
 - [Steps to Programming with HTGS](#steps-to-programming-with-htgs)
 - [Overview of HTGS](#overview-of-htgs)
+- [Documentation](#documentation)
 - [Examples](#examples)
 - [Credits](#credits)
 - [How to cite our work](#how-to-cite-our-work)
@@ -38,7 +39,7 @@ The API is designed to aid in creating task graphs for algorithms to obtain perf
 
 CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)
 
-BUILD_DOXYGEN - Creates doxygen documentation (view online at: Documentation)
+BUILD_DOXYGEN - Creates doxygen documentation (view online at: [Documentation](https://pages.nist.gov/HTGS/doxygen/index.html))
 
 RUN_GTEST - Compiles and runs google unit tests for HTGS ('make run-test' to re-run)
 
@@ -154,6 +155,8 @@ The main limiting factor of the ICustomEdge is it assumes that both ITasks will 
 If the two ITasks must be in two different TaskGraphs, then a new type of TaskGraph will need to be created by inheriting
 the [TaskGraph](https://pages.nist.gov/HTGS/doxygen/classhtgs_1_1_task_graph.html) class.
 
+# Documenatation
+[Link to Documentation](https://pages.nist.gov/HTGS/doxygen/index.html)
 
 # Examples
 
