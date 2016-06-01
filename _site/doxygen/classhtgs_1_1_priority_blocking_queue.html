@@ -140,8 +140,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af9a735e62d0283f719c1825a24d657f9"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_priority_blocking_queue.html#af9a735e62d0283f719c1825a24d657f9">size</a> ()</td></tr>
 <tr class="memdesc:af9a735e62d0283f719c1825a24d657f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of elements in the priority queue.  <a href="#af9a735e62d0283f719c1825a24d657f9">More...</a><br/></td></tr>
 <tr class="separator:af9a735e62d0283f719c1825a24d657f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e0992cf2061586132bde4620916bcf0"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_priority_blocking_queue.html#a6e0992cf2061586132bde4620916bcf0">remove</a> ()</td></tr>
-<tr class="memdesc:a6e0992cf2061586132bde4620916bcf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an element from the priority queue.  <a href="#a6e0992cf2061586132bde4620916bcf0">More...</a><br/></td></tr>
+<tr class="memitem:a6e0992cf2061586132bde4620916bcf0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e0992cf2061586132bde4620916bcf0"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> ()</td></tr>
 <tr class="separator:a6e0992cf2061586132bde4620916bcf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a705ccc0a7ba4bbd64957e656750fbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_priority_blocking_queue.html#a1a705ccc0a7ba4bbd64957e656750fbe">Enqueue</a> (T const &amp;value)</td></tr>
 <tr class="memdesc:a1a705ccc0a7ba4bbd64957e656750fbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an element into the priority queue.  <a href="#a1a705ccc0a7ba4bbd64957e656750fbe">More...</a><br/></td></tr>
@@ -179,6 +179,7 @@ class htgs::PriorityBlockingQueue&lt; T &gt;</h3>
 
 <p>Creates a thread-safe priority queue that will wait when no data is available and can block if the queue is full. </p>
 <p>If the size of the queue is specified to be less than 0, then the queue will not block if the queue is full. </p>
+<dl class="section note"><dt>Note</dt><dd>Use the directive USE_PRIORITY_QUEUE to enable the <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a> to use priority blocking queues. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a8e8ddc665ad0939e4571f875f5eae90b"></a>
 <div class="memitem">
@@ -386,35 +387,6 @@ template&lt;class T &gt; </div>
 <p>Gets the remaining capacity of the priority queue based on the queueSize. </p>
 <p>This function should only be used if the queueSize &gt; 0 </p>
 <dl class="section return"><dt>Returns</dt><dd>the remaining size of the priority queue before it is full </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a6e0992cf2061586132bde4620916bcf0"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T <a class="el" href="classhtgs_1_1_priority_blocking_queue.html">htgs::PriorityBlockingQueue</a>&lt; T &gt;::remove </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Removes an element from the priority queue. </p>
-<dl class="section return"><dt>Returns</dt><dd>an element from the priority queue </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function is not thread safe. </dd></dl>
 
 </div>
 </div>

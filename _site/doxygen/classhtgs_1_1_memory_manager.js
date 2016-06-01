@@ -11,7 +11,6 @@ var classhtgs_1_1_memory_manager =
     [ "getName", "classhtgs_1_1_memory_manager.html#a904fdabea5d41dd24102202379d9c656", null ],
     [ "getType", "classhtgs_1_1_memory_manager.html#a257a303ce6647fe9813f814cdacae8a8", null ],
     [ "initialize", "classhtgs_1_1_memory_manager.html#ac8fd74a33673d08055ac4ee304979294", null ],
-    [ "isTerminated", "classhtgs_1_1_memory_manager.html#a44ee0c28ee60aa9624071b9f3b304042", null ],
     [ "shutdown", "classhtgs_1_1_memory_manager.html#a441a942c936a2481897c84aeb42c8fe7", null ],
     [ "allocator", "classhtgs_1_1_memory_manager.html#aff27a74a838658b92ee56153b3754c7b", null ],
     [ "memoryPoolSize", "classhtgs_1_1_memory_manager.html#a027e42f71671175ecbbc925789d8edb6", null ],

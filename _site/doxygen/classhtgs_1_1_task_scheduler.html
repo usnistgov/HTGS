@@ -765,6 +765,12 @@ template&lt;class V, class W&gt; </div>
 </div><div class="memdoc">
 
 <p>Executes the <a class="el" href="classhtgs_1_1_task_scheduler.html" title="Encapsulates an ITask to interact with an ITask&#39;s functionality. ">TaskScheduler</a>. </p>
+<p>Using the following procedure: 0. If the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is a start task, then send <a class="el" href="classhtgs_1_1_i_task.html#a78776a659308572e84760e6e36a2520d" title="Pure virtual function that is called when an ITask&#39;s thread is to execute on data. ">ITask::executeTask</a> with nullptr and set that it is no longer a startTask</p>
+<ol type="1">
+<li>Checks if the <a class="el" href="classhtgs_1_1_i_task.html#a4a3eb066af852acba199bfea764434b8" title="Virtual function that is called when an ITask is checking if it can be terminated. ">ITask::isTerminated</a>, if it is then reduce thread pool count for the runtime and wakeup any tasks waiting on this <a class="el" href="classhtgs_1_1_task_scheduler.html" title="Encapsulates an ITask to interact with an ITask&#39;s functionality. ">TaskScheduler</a>'s input queue. If the thread pool count is zero, then indicate that this task is no longer producing data and wakup all consumers waiting on the output connector. Also indicate this task is no longer releasing memory and wakeup all memory managers that this task is releasing memory to.</li>
+<li>Get input from input <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a>. (optional polls for data, if timeout period expires, then will recheck if the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is terminated and try to get input again)</li>
+<li>If the data is not nullptr, then sends the data to the <a class="el" href="classhtgs_1_1_i_task.html#a78776a659308572e84760e6e36a2520d" title="Pure virtual function that is called when an ITask&#39;s thread is to execute on data. ">ITask::executeTask</a> function.</li>
+</ol>
 <dl class="section note"><dt>Note</dt><dd>#define PROFILE to enable profiling. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classhtgs_1_1_base_task_scheduler.html#a04b73fc54a057319db7ba2d4dbcaa816">htgs::BaseTaskScheduler</a>.</p>

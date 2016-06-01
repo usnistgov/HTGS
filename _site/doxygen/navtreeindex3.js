@@ -1,9 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"tutorial1.html#input-data":[1,2,0,0],
-"tutorial1.html#main-function":[1,2,2,0],
-"tutorial1.html#objectives":[1,0],
-"tutorial1.html#output-data":[1,2,0,1],
 "tutorial1.html#summary":[1,3],
 "tutorial1.html#task-notes":[1,2,1,1],
 "tutorial1.html#taskgraph-notes":[1,2,2,1],

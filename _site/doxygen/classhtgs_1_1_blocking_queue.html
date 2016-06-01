@@ -140,8 +140,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a17ee855bf68d163c5f831727609ba814"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_blocking_queue.html#a17ee855bf68d163c5f831727609ba814">size</a> ()</td></tr>
 <tr class="memdesc:a17ee855bf68d163c5f831727609ba814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of elements in the queue.  <a href="#a17ee855bf68d163c5f831727609ba814">More...</a><br/></td></tr>
 <tr class="separator:a17ee855bf68d163c5f831727609ba814"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53ef9eea2994526bf77ee447c8b270de"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_blocking_queue.html#a53ef9eea2994526bf77ee447c8b270de">remove</a> ()</td></tr>
-<tr class="memdesc:a53ef9eea2994526bf77ee447c8b270de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an element from the queue.  <a href="#a53ef9eea2994526bf77ee447c8b270de">More...</a><br/></td></tr>
+<tr class="memitem:a53ef9eea2994526bf77ee447c8b270de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53ef9eea2994526bf77ee447c8b270de"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> ()</td></tr>
 <tr class="separator:a53ef9eea2994526bf77ee447c8b270de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c888fdff461258302367ae1a771ebf1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_blocking_queue.html#a5c888fdff461258302367ae1a771ebf1">Enqueue</a> (T const &amp;value)</td></tr>
 <tr class="memdesc:a5c888fdff461258302367ae1a771ebf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an element into the queue.  <a href="#a5c888fdff461258302367ae1a771ebf1">More...</a><br/></td></tr>
@@ -242,15 +242,6 @@ template&lt;class T&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Is thread safe. </dd>
 <dd>
 Will block if the queue is empty. </dd></dl>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classhtgs_1_1_blocking_queue_ac3130a5a177b85f4c22dbe309aeb995a_icgraph.png" border="0" usemap="#classhtgs_1_1_blocking_queue_ac3130a5a177b85f4c22dbe309aeb995a_icgraph" alt=""/></div>
-<map name="classhtgs_1_1_blocking_queue_ac3130a5a177b85f4c22dbe309aeb995a_icgraph" id="classhtgs_1_1_blocking_queue_ac3130a5a177b85f4c22dbe309aeb995a_icgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_connector.html#a214a654d8291fd69c33653bc573dc56c" title="Consumes data from the priority queue. " alt="" coords="198,60,402,87"/><area shape="rect" id="node3" href="classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41" title="Retrieves memory from a memory edge. " alt="" coords="462,5,637,61"/><area shape="rect" id="node4" href="classhtgs_1_1_i_task.html#a322b23d307ce1b12d302ce2d622f8308" title="Retrieves memory from a memory edge that is managed by the user. " alt="" coords="451,85,648,141"/></map>
-</div>
-</p>
 
 </div>
 </div>
@@ -384,15 +375,6 @@ template&lt;class T&gt; </div>
   </dd>
 </dl>
 
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="classhtgs_1_1_blocking_queue_ac119e69ce672e190edd9da9c0d515c88_icgraph.png" border="0" usemap="#classhtgs_1_1_blocking_queue_ac119e69ce672e190edd9da9c0d515c88_icgraph" alt=""/></div>
-<map name="classhtgs_1_1_blocking_queue_ac119e69ce672e190edd9da9c0d515c88_icgraph" id="classhtgs_1_1_blocking_queue_ac119e69ce672e190edd9da9c0d515c88_icgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_connector.html#ac7701a4beebcbd79d966f3ec474aef06" title="Polls for data for a consumer given a timeout. " alt="" coords="197,12,424,39"/></map>
-</div>
-</p>
-
 </div>
 </div>
 <a class="anchor" id="a15a172688ceb93b62fbf3e23c02bd20b"></a>
@@ -421,35 +403,6 @@ template&lt;class T&gt; </div>
 <p>Gets the remaining capacity of the queue based on the queueSize. </p>
 <p>This function should only be used if the queueSize &gt; 0 </p>
 <dl class="section return"><dt>Returns</dt><dd>the remaining size of the queue before it is full </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a53ef9eea2994526bf77ee447c8b270de"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T <a class="el" href="classhtgs_1_1_blocking_queue.html">htgs::BlockingQueue</a>&lt; T &gt;::remove </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Removes an element from the queue. </p>
-<dl class="section return"><dt>Returns</dt><dd>an element from the queue </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function is not thread safe. </dd></dl>
 
 </div>
 </div>

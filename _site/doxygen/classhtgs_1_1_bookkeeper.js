@@ -10,7 +10,6 @@ var classhtgs_1_1_bookkeeper =
     [ "genDot", "classhtgs_1_1_bookkeeper.html#a357f3d90c875b3ecb60822fd0aec0f56", null ],
     [ "getName", "classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba", null ],
     [ "initialize", "classhtgs_1_1_bookkeeper.html#af8126b2e2531a17ddc4a17cc3058c737", null ],
-    [ "isTerminated", "classhtgs_1_1_bookkeeper.html#ac361c8fc27755e1d79affb4907dfef4b", null ],
     [ "shutdown", "classhtgs_1_1_bookkeeper.html#ad9c5e6ba0b7bd66b7de8f68c18fad234", null ],
     [ "ruleManagerInfo", "classhtgs_1_1_bookkeeper.html#a684d8dded291b20cb89389acad377ae6", null ],
     [ "ruleManagers", "classhtgs_1_1_bookkeeper.html#a27e9f60e48dc400eb4983ffab9ca6bbf", null ]

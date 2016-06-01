@@ -16,7 +16,6 @@ var classhtgs_1_1_i_cuda_task =
     [ "hasPeerToPeerCopy", "classhtgs_1_1_i_cuda_task.html#a2d5770e50a2e5c9fc669386dc40f6502", null ],
     [ "initialize", "classhtgs_1_1_i_cuda_task.html#a2bc639a73a9a4974f5e5f5a66a5cf5c5", null ],
     [ "initializeCudaGPU", "classhtgs_1_1_i_cuda_task.html#a92e2383c154857534d79364af6d495e8", null ],
-    [ "isTerminated", "classhtgs_1_1_i_cuda_task.html#ab2fc1acdad075a8b4e06b5c265b60b94", null ],
     [ "requiresCopy", "classhtgs_1_1_i_cuda_task.html#a70470776641d6134e2dd9bd1bbe2d226", null ],
     [ "requiresCopy", "classhtgs_1_1_i_cuda_task.html#a0ed21dd37fe3fcaabcd5e69604f93c8a", null ],
     [ "shutdown", "classhtgs_1_1_i_cuda_task.html#a385f5cff3117b8a774e67fea02a12922", null ],

@@ -153,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0a71c020b1ae70094207f17fedcff634"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the bookkeeper on data.  <a href="#a0a71c020b1ae70094207f17fedcff634">More...</a><br/></td></tr>
 <tr class="separator:a0a71c020b1ae70094207f17fedcff634"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7777b5fb2c0e64ac8642fbca331ac7ba"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba">getName</a> ()</td></tr>
-<tr class="memdesc:a7777b5fb2c0e64ac8642fbca331ac7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name of this bookkeeper and all rule managers managed by it.  <a href="#a7777b5fb2c0e64ac8642fbca331ac7ba">More...</a><br/></td></tr>
+<tr class="memdesc:a7777b5fb2c0e64ac8642fbca331ac7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name of this bookkeeper and all rule managers it controls.  <a href="#a7777b5fb2c0e64ac8642fbca331ac7ba">More...</a><br/></td></tr>
 <tr class="separator:a7777b5fb2c0e64ac8642fbca331ac7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81f885bc90a0bc6dec274f6ea5c654f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#a81f885bc90a0bc6dec274f6ea5c654f8">debug</a> ()</td></tr>
 <tr class="memdesc:a81f885bc90a0bc6dec274f6ea5c654f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides debug output for the rule manager.  <a href="#a81f885bc90a0bc6dec274f6ea5c654f8">More...</a><br/></td></tr>
@@ -167,9 +167,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8b0824190917a7ee8672cacf7103aff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhtgs_1_1_bookkeeper.html">Bookkeeper</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#ac8b0824190917a7ee8672cacf7103aff">copy</a> ()</td></tr>
 <tr class="memdesc:ac8b0824190917a7ee8672cacf7103aff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a shallow copy of this bookkeeper.  <a href="#ac8b0824190917a7ee8672cacf7103aff">More...</a><br/></td></tr>
 <tr class="separator:ac8b0824190917a7ee8672cacf7103aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac361c8fc27755e1d79affb4907dfef4b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#ac361c8fc27755e1d79affb4907dfef4b">isTerminated</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; inputConnector)</td></tr>
-<tr class="memdesc:ac361c8fc27755e1d79affb4907dfef4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this bookkeeper is ready to be terminated.  <a href="#ac361c8fc27755e1d79affb4907dfef4b">More...</a><br/></td></tr>
-<tr class="separator:ac361c8fc27755e1d79affb4907dfef4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a357f3d90c875b3ecb60822fd0aec0f56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a357f3d90c875b3ecb60822fd0aec0f56"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#a357f3d90c875b3ecb60822fd0aec0f56">genDot</a> (std::string idStr)</td></tr>
 <tr class="memdesc:a357f3d90c875b3ecb60822fd0aec0f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the dot notation for the bookkeeper. <br/></td></tr>
@@ -189,20 +186,20 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a0cebc4dc6ff74eeb0d27b076a642bb80">~ITask</a> ()</td></tr>
 <tr class="memdesc:a0cebc4dc6ff74eeb0d27b076a642bb80 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br/></td></tr>
 <tr class="separator:a0cebc4dc6ff74eeb0d27b076a642bb80 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#aeb07ef40eb479d07e3a8379320a28840">setPipelineId</a> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>)</td></tr>
-<tr class="memdesc:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pipeline Id for this ITask.  <a href="#aeb07ef40eb479d07e3a8379320a28840">More...</a><br/></td></tr>
+<tr class="memitem:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb07ef40eb479d07e3a8379320a28840"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPipelineId</b> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>)</td></tr>
 <tr class="separator:aeb07ef40eb479d07e3a8379320a28840 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a8a67cc24e70396b6db89abc11bf3dd32">setNumThreads</a> (int <a class="el" href="classhtgs_1_1_i_task.html#ab2e1f133f9408f0a1340b2f682c0e54f">numThreads</a>)</td></tr>
-<tr class="memdesc:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the number of threads associated with this ITask.  <a href="#a8a67cc24e70396b6db89abc11bf3dd32">More...</a><br/></td></tr>
+<tr class="memitem:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a67cc24e70396b6db89abc11bf3dd32"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNumThreads</b> (int <a class="el" href="classhtgs_1_1_i_task.html#ab2e1f133f9408f0a1340b2f682c0e54f">numThreads</a>)</td></tr>
 <tr class="separator:a8a67cc24e70396b6db89abc11bf3dd32 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5a2c1ab7f3db3e69458d2cf0e708435 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#af5a2c1ab7f3db3e69458d2cf0e708435">setIsStartTask</a> (bool <a class="el" href="classhtgs_1_1_i_task.html#a0ce9a193a938edf4b6862926ff741511">isStartTask</a>)</td></tr>
 <tr class="memdesc:af5a2c1ab7f3db3e69458d2cf0e708435 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether this task is a start task or not.  <a href="#af5a2c1ab7f3db3e69458d2cf0e708435">More...</a><br/></td></tr>
 <tr class="separator:af5a2c1ab7f3db3e69458d2cf0e708435 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a5e97a5b81e7e9c99ae369f94f3ae7364">setPoll</a> (bool <a class="el" href="classhtgs_1_1_i_task.html#a0757403bce3b40d369330af6398e7fd9">poll</a>)</td></tr>
-<tr class="memdesc:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether this task is polling for data or not.  <a href="#a5e97a5b81e7e9c99ae369f94f3ae7364">More...</a><br/></td></tr>
+<tr class="memitem:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e97a5b81e7e9c99ae369f94f3ae7364"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setPoll</b> (bool <a class="el" href="classhtgs_1_1_i_task.html#a0757403bce3b40d369330af6398e7fd9">poll</a>)</td></tr>
 <tr class="separator:a5e97a5b81e7e9c99ae369f94f3ae7364 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a18dbd35950af39c9f204116c2bf3370a">setMicroTimeoutTime</a> (long <a class="el" href="classhtgs_1_1_i_task.html#a3c12d83f5a2f87fd71453eaaac3feed8">microTimeoutTime</a>)</td></tr>
-<tr class="memdesc:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the timeout time for polling in microseconds.  <a href="#a18dbd35950af39c9f204116c2bf3370a">More...</a><br/></td></tr>
+<tr class="memitem:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a18dbd35950af39c9f204116c2bf3370a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setMicroTimeoutTime</b> (long <a class="el" href="classhtgs_1_1_i_task.html#a3c12d83f5a2f87fd71453eaaac3feed8">microTimeoutTime</a>)</td></tr>
 <tr class="separator:a18dbd35950af39c9f204116c2bf3370a inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeeada962181237186b47285ab5b8947 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#abeeada962181237186b47285ab5b8947">getNumThreads</a> () const</td></tr>
 <tr class="memdesc:abeeada962181237186b47285ab5b8947 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of threads associated with this ITask.  <a href="#abeeada962181237186b47285ab5b8947">More...</a><br/></td></tr>
@@ -222,17 +219,17 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:adab8481dc44985387e35477324e263f7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#adab8481dc44985387e35477324e263f7">addResult</a> (<a class="el" href="classhtgs_1_1_void_data.html">VoidData</a> *result)</td></tr>
 <tr class="memdesc:adab8481dc44985387e35477324e263f7 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds results to the output list to be sent to the next connected ITask in a TaskGraph.  <a href="#adab8481dc44985387e35477324e263f7">More...</a><br/></td></tr>
 <tr class="separator:adab8481dc44985387e35477324e263f7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhtgs_1_1_i_task.html">ITask</a>&lt; T, <a class="el" href="classhtgs_1_1_void_data.html">VoidData</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a50ddfa059fc5891ce19a4690aaa2f294">copyITask</a> ()</td></tr>
-<tr class="memdesc:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the ITask including its list of memGetters and memReleasers.  <a href="#a50ddfa059fc5891ce19a4690aaa2f294">More...</a><br/></td></tr>
+<tr class="memitem:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50ddfa059fc5891ce19a4690aaa2f294"></a>
+<a class="el" href="classhtgs_1_1_i_task.html">ITask</a>&lt; T, <a class="el" href="classhtgs_1_1_void_data.html">VoidData</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>copyITask</b> ()</td></tr>
 <tr class="separator:a50ddfa059fc5891ce19a4690aaa2f294 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41">memGet</a> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule)</td></tr>
-<tr class="memdesc:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge.  <a href="#ac29e3c78e0079017d17fb3e39e05fd41">More...</a><br/></td></tr>
+<tr class="memitem:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac29e3c78e0079017d17fb3e39e05fd41"></a>
+std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>memGet</b> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule)</td></tr>
 <tr class="separator:ac29e3c78e0079017d17fb3e39e05fd41 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a63f8ea35e515b324518e3607e9a4e3e2">memGet</a> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule, size_t numElems)</td></tr>
-<tr class="memdesc:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge.  <a href="#a63f8ea35e515b324518e3607e9a4e3e2">More...</a><br/></td></tr>
+<tr class="memitem:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63f8ea35e515b324518e3607e9a4e3e2"></a>
+std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>memGet</b> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule, size_t numElems)</td></tr>
 <tr class="separator:a63f8ea35e515b324518e3607e9a4e3e2 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a322b23d307ce1b12d302ce2d622f8308">allocUserManagedMemory</a> (std::string name)</td></tr>
-<tr class="memdesc:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge that is managed by the user.  <a href="#a322b23d307ce1b12d302ce2d622f8308">More...</a><br/></td></tr>
+<tr class="memitem:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a322b23d307ce1b12d302ce2d622f8308"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>allocUserManagedMemory</b> (std::string name)</td></tr>
 <tr class="separator:a322b23d307ce1b12d302ce2d622f8308 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dc611d4a0883c5ba28f740dc89377f6 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a6dc611d4a0883c5ba28f740dc89377f6">memRelease</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_memory_data.html">MemoryData</a>&lt; V &gt;&gt; memory)</td></tr>
 <tr class="memdesc:a6dc611d4a0883c5ba28f740dc89377f6 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases memory onto a memory edge.  <a href="#a6dc611d4a0883c5ba28f740dc89377f6">More...</a><br/></td></tr>
@@ -249,25 +246,28 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:af7f87e2851725015f5a01fbe75dfd9ed inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#af7f87e2851725015f5a01fbe75dfd9ed">isMemReleaserOutsideGraph</a> (std::string name)</td></tr>
 <tr class="memdesc:af7f87e2851725015f5a01fbe75dfd9ed inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether this ITask contains a memReleaser that exists outside of the graph that the memory edge exists.  <a href="#af7f87e2851725015f5a01fbe75dfd9ed">More...</a><br/></td></tr>
 <tr class="separator:af7f87e2851725015f5a01fbe75dfd9ed inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a6c4d5c51e177c5c87e08b50977bdc095">attachMemGetter</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type)</td></tr>
-<tr class="memdesc:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a memGetter to this ITask.  <a href="#a6c4d5c51e177c5c87e08b50977bdc095">More...</a><br/></td></tr>
+<tr class="memitem:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c4d5c51e177c5c87e08b50977bdc095"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>attachMemGetter</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type)</td></tr>
 <tr class="separator:a6c4d5c51e177c5c87e08b50977bdc095 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a55abce7b871a6a181136ba20bbae8659">attachMemReleaser</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type, bool outsideMemManGraph)</td></tr>
-<tr class="memdesc:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a memReleaser to this ITask.  <a href="#a55abce7b871a6a181136ba20bbae8659">More...</a><br/></td></tr>
+<tr class="memitem:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55abce7b871a6a181136ba20bbae8659"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>attachMemReleaser</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type, bool outsideMemManGraph)</td></tr>
 <tr class="separator:a55abce7b871a6a181136ba20bbae8659 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40440dd567664a09d4d502f62217eea7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">std::shared_ptr<br class="typebreak"/>
 &lt; ConnectorVectorMap &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a40440dd567664a09d4d502f62217eea7">getMemReleasers</a> ()</td></tr>
 <tr class="memdesc:a40440dd567664a09d4d502f62217eea7 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the memReleaser mapping.  <a href="#a40440dd567664a09d4d502f62217eea7">More...</a><br/></td></tr>
 <tr class="separator:a40440dd567664a09d4d502f62217eea7 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#aa4d67a539ea8ae881c9c7b7f5a41cd85">initializeITask</a> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>, int numPipeline, <a class="el" href="classhtgs_1_1_task_scheduler.html">TaskScheduler</a>&lt; T, <a class="el" href="classhtgs_1_1_void_data.html">VoidData</a> &gt; *<a class="el" href="classhtgs_1_1_i_task.html#a055a0bcd8059a79129dd0367c0ef9ee6">ownerTask</a>, std::shared_ptr&lt; ConnectorVector &gt; pipelineConnectorList)</td></tr>
-<tr class="memdesc:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes an ITask.  <a href="#aa4d67a539ea8ae881c9c7b7f5a41cd85">More...</a><br/></td></tr>
+<tr class="memitem:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4d67a539ea8ae881c9c7b7f5a41cd85"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initializeITask</b> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>, int numPipeline, <a class="el" href="classhtgs_1_1_task_scheduler.html">TaskScheduler</a>&lt; T, <a class="el" href="classhtgs_1_1_void_data.html">VoidData</a> &gt; *<a class="el" href="classhtgs_1_1_i_task.html#a055a0bcd8059a79129dd0367c0ef9ee6">ownerTask</a>, std::shared_ptr&lt; ConnectorVector &gt; pipelineConnectorList)</td></tr>
 <tr class="separator:aa4d67a539ea8ae881c9c7b7f5a41cd85 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ab5ef48478a2c1a71664aabfedec0fe91">profileITask</a> ()</td></tr>
-<tr class="memdesc:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides profile output for the ITask,.  <a href="#ab5ef48478a2c1a71664aabfedec0fe91">More...</a><br/></td></tr>
+<tr class="memitem:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5ef48478a2c1a71664aabfedec0fe91"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>profileITask</b> ()</td></tr>
 <tr class="separator:ab5ef48478a2c1a71664aabfedec0fe91 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe832ff8732822f3fcbf72314d3bf109 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#abe832ff8732822f3fcbf72314d3bf109">initialize</a> (int <a class="el" href="classhtgs_1_1_i_task.html#a5da9d90a63af4d99a510f6fbb1d8c803">pipelineId</a>, int numPipeline, <a class="el" href="classhtgs_1_1_task_scheduler.html">TaskScheduler</a>&lt; T, <a class="el" href="classhtgs_1_1_void_data.html">VoidData</a> &gt; *<a class="el" href="classhtgs_1_1_i_task.html#a055a0bcd8059a79129dd0367c0ef9ee6">ownerTask</a>, std::shared_ptr&lt; ConnectorVector &gt; pipelineConnectorList)</td></tr>
 <tr class="memdesc:abe832ff8732822f3fcbf72314d3bf109 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an ITask is being initialized by it's owner thread.  <a href="#abe832ff8732822f3fcbf72314d3bf109">More...</a><br/></td></tr>
 <tr class="separator:abe832ff8732822f3fcbf72314d3bf109 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a3eb066af852acba199bfea764434b8 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a4a3eb066af852acba199bfea764434b8">isTerminated</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; inputConnector)</td></tr>
+<tr class="memdesc:a4a3eb066af852acba199bfea764434b8 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an ITask is checking if it can be terminated.  <a href="#a4a3eb066af852acba199bfea764434b8">More...</a><br/></td></tr>
+<tr class="separator:a4a3eb066af852acba199bfea764434b8 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8f3a4eb75334b0ab6c77b9a6cc4d6dd inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#af8f3a4eb75334b0ab6c77b9a6cc4d6dd">profile</a> ()</td></tr>
 <tr class="memdesc:af8f3a4eb75334b0ab6c77b9a6cc4d6dd inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called to provide profile output for the ITask.  <a href="#af8f3a4eb75334b0ab6c77b9a6cc4d6dd">More...</a><br/></td></tr>
 <tr class="separator:af8f3a4eb75334b0ab6c77b9a6cc4d6dd inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,7 +307,7 @@ class htgs::Bookkeeper&lt; T &gt;</h3>
 
 <p>Special task used to manage rules. </p>
 <p>The <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a> manages one or more rules, which customizes the flow of data within a task graph. These rules specify a scheduling over input data. When data enters the <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a>, each rule executes on that data synchronously.</p>
-<p>To use the bookkeeper, create a <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a> and add all desired rules to that <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a>. Every <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a> added represents a different edge to another task connected to a <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a>.</p>
+<p>To use the bookkeeper, create an <a class="el" href="classhtgs_1_1_i_rule.html" title="Provides an interface to send data along RuleManager edges for processing state and dependencies...">IRule</a> and an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>. The <a class="el" href="classhtgs_1_1_i_rule.html" title="Provides an interface to send data along RuleManager edges for processing state and dependencies...">IRule</a> represents the rule that produces data to the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>. An edge is created with a <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a> acting as the intermediary between the <a class="el" href="classhtgs_1_1_i_rule.html" title="Provides an interface to send data along RuleManager edges for processing state and dependencies...">IRule</a> and the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>. These RuleManagers are created automatically when adding the bookkeeper using the <a class="el" href="classhtgs_1_1_task_graph.html#a06dc23492237350c4ce8036818e5d984" title="Adds an IRule to the TaskGraph connecting a Bookkeeper with a consumer ITask. ">TaskGraph::addRule</a> function. Each <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a> represents a different edge to another <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> connected to a <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a> and can have multiple IRules connecting the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.</p>
 <p>Example usage: </p>
 <div class="fragment"><div class="line"><a class="code" href="classhtgs_1_1_task_graph.html">htgs::TaskGraph&lt;htgs::VoidData, htgs::VoidData&gt;</a> *tGraph = <span class="keyword">new</span> <a class="code" href="classhtgs_1_1_task_graph.html">htgs::TaskGraph&lt;VoidData, VoidData&gt;</a>();</div>
 <div class="line"></div>
@@ -356,16 +356,16 @@ template&lt;class T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API - use <a class="el" href="classhtgs_1_1_bookkeeper.html#abc8027abadb52ef836d9d3f687dab261" title="Adds rule manager to this bookkeeper. ">addRuleManager(RuleManager&lt;T, U&gt; *ruleManager)</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API - users of the HTGS API should instead use <a class="el" href="classhtgs_1_1_bookkeeper.html#abc8027abadb52ef836d9d3f687dab261" title="Adds rule manager to this bookkeeper. ">addRuleManager(RuleManager&lt;T, U&gt; *ruleManager)</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classhtgs_1_1_base_i_task.html#aaef40aa7d96fcc7b3f758be2d62eda94">htgs::BaseITask</a>.</p>
+<p>Reimplemented from <a class="el" href="classhtgs_1_1_base_i_task.html">htgs::BaseITask</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_bookkeeper_a8d6864cc24f2a7b606d9e0cdd88c8784_cgraph.png" border="0" usemap="#classhtgs_1_1_bookkeeper_a8d6864cc24f2a7b606d9e0cdd88c8784_cgraph" alt=""/></div>
 <map name="classhtgs_1_1_bookkeeper_a8d6864cc24f2a7b606d9e0cdd88c8784_cgraph" id="classhtgs_1_1_bookkeeper_a8d6864cc24f2a7b606d9e0cdd88c8784_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers managed by it. " alt="" coords="235,5,421,32"/><area shape="rect" id="node3" href="classhtgs_1_1_base_rule_manager.html#a1e72a4162c2f8bbea93bdb3e1efa38bd" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="247,57,409,98"/></map>
+<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers it controls. " alt="" coords="235,5,421,32"/><area shape="rect" id="node3" href="classhtgs_1_1_base_rule_manager.html#a1e72a4162c2f8bbea93bdb3e1efa38bd" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="247,57,409,98"/></map>
 </div>
 </p>
 
@@ -416,7 +416,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_bookkeeper_abc8027abadb52ef836d9d3f687dab261_cgraph.png" border="0" usemap="#classhtgs_1_1_bookkeeper_abc8027abadb52ef836d9d3f687dab261_cgraph" alt=""/></div>
 <map name="classhtgs_1_1_bookkeeper_abc8027abadb52ef836d9d3f687dab261_cgraph" id="classhtgs_1_1_bookkeeper_abc8027abadb52ef836d9d3f687dab261_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers managed by it. " alt="" coords="235,5,421,32"/><area shape="rect" id="node3" href="classhtgs_1_1_rule_manager.html#a51dd70935321bfba6e83993d5af53b27" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="258,57,398,98"/></map>
+<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers it controls. " alt="" coords="235,5,421,32"/><area shape="rect" id="node3" href="classhtgs_1_1_rule_manager.html#a51dd70935321bfba6e83993d5af53b27" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="258,57,398,98"/></map>
 </div>
 </p>
 
@@ -446,7 +446,7 @@ template&lt;class T&gt; </div>
 </div><div class="memdoc">
 
 <p>Creates a shallow copy of this bookkeeper. </p>
-<dl class="section return"><dt>Returns</dt><dd>a shallow copy (No rule managers) of this bookkeeper</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a shallow copy (No rule managers) of this bookkeeper </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
 
 <p>Implements <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; T, VoidData &gt;</a>.</p>
@@ -486,7 +486,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_bookkeeper_a81f885bc90a0bc6dec274f6ea5c654f8_cgraph.png" border="0" usemap="#classhtgs_1_1_bookkeeper_a81f885bc90a0bc6dec274f6ea5c654f8_cgraph" alt=""/></div>
 <map name="classhtgs_1_1_bookkeeper_a81f885bc90a0bc6dec274f6ea5c654f8_cgraph" id="classhtgs_1_1_bookkeeper_a81f885bc90a0bc6dec274f6ea5c654f8_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers managed by it. " alt="" coords="222,5,407,32"/></map>
+<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers it controls. " alt="" coords="222,5,407,32"/></map>
 </div>
 </p>
 
@@ -520,7 +520,7 @@ template&lt;class T&gt; </div>
 <p>The bookkeeper forwards the data to each rule manager. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>the data</td></tr>
+    <tr><td class="paramname">data</td><td>the data </td></tr>
   </table>
   </dd>
 </dl>
@@ -553,7 +553,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the name of this bookkeeper and all rule managers managed by it. </p>
+<p>Gets the name of this bookkeeper and all rule managers it controls. </p>
 <dl class="section return"><dt>Returns</dt><dd>the name of this bookkeeper </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classhtgs_1_1_i_task.html#a5dda5ecd5e72ad43cf1d76de04e89e4b">htgs::ITask&lt; T, VoidData &gt;</a>.</p>
@@ -607,58 +607,13 @@ template&lt;class T&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pipelineId</td><td>the pipeline id </td></tr>
-    <tr><td class="paramname">numPipelines</td><td>the number of pipelines bookkeepers in an execution pipeline</td></tr>
+    <tr><td class="paramname">numPipelines</td><td>the number of pipelines </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classhtgs_1_1_i_task.html#ae818ab0579ae490810a560a7e4209d8f">htgs::ITask&lt; T, VoidData &gt;</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac361c8fc27755e1d79affb4907dfef4b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classhtgs_1_1_bookkeeper.html">htgs::Bookkeeper</a>&lt; T &gt;::isTerminated </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt;&#160;</td>
-          <td class="paramname"><em>inputConnector</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if this bookkeeper is ready to be terminated. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inputConnector</td><td>the input connector that sends data to this bookkeeper </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>whether the bookkeeper can be terminated, uses inputConnector-&gt;isInputTerminated() </dd></dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">TRUE</td><td>if it is ready to be terminated </td></tr>
-    <tr><td class="paramname">FALSE</td><td>if it is not ready to be terminated</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
-
-<p>Implements <a class="el" href="classhtgs_1_1_i_task.html#ac7abe254b443b32861cea2a96531dc4f">htgs::ITask&lt; T, VoidData &gt;</a>.</p>
 
 </div>
 </div>
@@ -695,7 +650,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_bookkeeper_ad9c5e6ba0b7bd66b7de8f68c18fad234_cgraph.png" border="0" usemap="#classhtgs_1_1_bookkeeper_ad9c5e6ba0b7bd66b7de8f68c18fad234_cgraph" alt=""/></div>
 <map name="classhtgs_1_1_bookkeeper_ad9c5e6ba0b7bd66b7de8f68c18fad234_cgraph" id="classhtgs_1_1_bookkeeper_ad9c5e6ba0b7bd66b7de8f68c18fad234_cgraph">
-<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers managed by it. " alt="" coords="243,5,429,32"/></map>
+<area shape="rect" id="node2" href="classhtgs_1_1_bookkeeper.html#a7777b5fb2c0e64ac8642fbca331ac7ba" title="Gets the name of this bookkeeper and all rule managers it controls. " alt="" coords="243,5,429,32"/></map>
 </div>
 </p>
 

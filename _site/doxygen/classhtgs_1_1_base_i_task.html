@@ -136,17 +136,17 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a02753bdc4348f8087a677adcc5bd3330"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#a02753bdc4348f8087a677adcc5bd3330">getName</a> ()=0</td></tr>
 <tr class="memdesc:a02753bdc4348f8087a677adcc5bd3330"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure virtual function to get the name of an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#a02753bdc4348f8087a677adcc5bd3330">More...</a><br/></td></tr>
 <tr class="separator:a02753bdc4348f8087a677adcc5bd3330"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaef40aa7d96fcc7b3f758be2d62eda94"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#aaef40aa7d96fcc7b3f758be2d62eda94">addRuleManager</a> (<a class="el" href="classhtgs_1_1_base_base_rule_manager.html">BaseBaseRuleManager</a> *ruleManager)</td></tr>
-<tr class="memdesc:aaef40aa7d96fcc7b3f758be2d62eda94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function used for <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a>.  <a href="#aaef40aa7d96fcc7b3f758be2d62eda94">More...</a><br/></td></tr>
+<tr class="memitem:aaef40aa7d96fcc7b3f758be2d62eda94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaef40aa7d96fcc7b3f758be2d62eda94"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>addRuleManager</b> (<a class="el" href="classhtgs_1_1_base_base_rule_manager.html">BaseBaseRuleManager</a> *ruleManager)</td></tr>
 <tr class="separator:aaef40aa7d96fcc7b3f758be2d62eda94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d6f08841fd6082b54427f1e7683c407"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#a4d6f08841fd6082b54427f1e7683c407">setPipelineId</a> (int pipelineId)</td></tr>
-<tr class="memdesc:a4d6f08841fd6082b54427f1e7683c407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the pipeline Id for this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#a4d6f08841fd6082b54427f1e7683c407">More...</a><br/></td></tr>
+<tr class="memitem:a4d6f08841fd6082b54427f1e7683c407"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d6f08841fd6082b54427f1e7683c407"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setPipelineId</b> (int pipelineId)</td></tr>
 <tr class="separator:a4d6f08841fd6082b54427f1e7683c407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a519c8918abf0496a35f74a3bb161ddd8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#a519c8918abf0496a35f74a3bb161ddd8">attachMemGetter</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type)</td></tr>
-<tr class="memdesc:a519c8918abf0496a35f74a3bb161ddd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function for attaching a memGetter <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a>.  <a href="#a519c8918abf0496a35f74a3bb161ddd8">More...</a><br/></td></tr>
+<tr class="memitem:a519c8918abf0496a35f74a3bb161ddd8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a519c8918abf0496a35f74a3bb161ddd8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>attachMemGetter</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type)</td></tr>
 <tr class="separator:a519c8918abf0496a35f74a3bb161ddd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadd5e312eb708ee0ab3384d14ccce639"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#aadd5e312eb708ee0ab3384d14ccce639">attachMemReleaser</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type, bool outsideMemManGraph)</td></tr>
-<tr class="memdesc:aadd5e312eb708ee0ab3384d14ccce639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function for attached a memReleaser <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a>.  <a href="#aadd5e312eb708ee0ab3384d14ccce639">More...</a><br/></td></tr>
+<tr class="memitem:aadd5e312eb708ee0ab3384d14ccce639"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aadd5e312eb708ee0ab3384d14ccce639"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>attachMemReleaser</b> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt; connector, MMType type, bool outsideMemManGraph)</td></tr>
 <tr class="separator:aadd5e312eb708ee0ab3384d14ccce639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78b3648edc2293d0690df61645d9a279"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_base_i_task.html#a78b3648edc2293d0690df61645d9a279">hasMemGetter</a> (std::string name)</td></tr>
 <tr class="memdesc:a78b3648edc2293d0690df61645d9a279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> contains a memGetter for a specified name.  <a href="#a78b3648edc2293d0690df61645d9a279">More...</a><br/></td></tr>
@@ -166,156 +166,6 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <div class="textblock"><p>Implements the parent <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>, which removes the template arguments of an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>. </p>
 <p>Used anywhere the template arguments for an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> are not needed. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aaef40aa7d96fcc7b3f758be2d62eda94"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void htgs::BaseITask::addRuleManager </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classhtgs_1_1_base_base_rule_manager.html">BaseBaseRuleManager</a> *&#160;</td>
-          <td class="paramname"><em>ruleManager</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Virtual function used for <a class="el" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. ">Bookkeeper</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ruleManager</td><td>the <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a> to add </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
-
-<p>Reimplemented in <a class="el" href="classhtgs_1_1_bookkeeper.html#a8d6864cc24f2a7b606d9e0cdd88c8784">htgs::Bookkeeper&lt; T &gt;</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a519c8918abf0496a35f74a3bb161ddd8"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void htgs::BaseITask::attachMemGetter </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt;&#160;</td>
-          <td class="paramname"><em>connector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">MMType&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Virtual function for attaching a memGetter <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a>. </p>
-<p>The memGetter <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a> is the output <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a> for a <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the memory edge. </td></tr>
-    <tr><td class="paramname">connector</td><td>the connector of the <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a> to attach. </td></tr>
-    <tr><td class="paramname">type</td><td>the memory manager type </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
-
-<p>Reimplemented in <a class="el" href="classhtgs_1_1_i_task.html#a6c4d5c51e177c5c87e08b50977bdc095">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#a6c4d5c51e177c5c87e08b50977bdc095">htgs::ITask&lt; T, VoidData &gt;</a>, and <a class="el" href="classhtgs_1_1_i_task.html#a6c4d5c51e177c5c87e08b50977bdc095">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aadd5e312eb708ee0ab3384d14ccce639"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void htgs::BaseITask::attachMemReleaser </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_base_connector.html">BaseConnector</a> &gt;&#160;</td>
-          <td class="paramname"><em>connector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">MMType&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>outsideMemManGraph</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Virtual function for attached a memReleaser <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a>. </p>
-<p>The memReleaser <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a> is the input <a class="el" href="classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. ">Connector</a> for a <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the memory edge. </td></tr>
-    <tr><td class="paramname">connector</td><td>the connector of the <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a> to attach. </td></tr>
-    <tr><td class="paramname">type</td><td>the memory manager type </td></tr>
-    <tr><td class="paramname">outsideMemManGraph</td><td>indicates if this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> exists outside of the graph where the memory manager is </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be called by the HTGS API </dd></dl>
-
-<p>Reimplemented in <a class="el" href="classhtgs_1_1_i_task.html#a55abce7b871a6a181136ba20bbae8659">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#a55abce7b871a6a181136ba20bbae8659">htgs::ITask&lt; T, VoidData &gt;</a>, and <a class="el" href="classhtgs_1_1_i_task.html#a55abce7b871a6a181136ba20bbae8659">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a970de70b03ad9c75be84516fcfc76693"></a>
 <div class="memitem">
 <div class="memproto">
@@ -499,41 +349,6 @@ Here is the caller graph for this function:</div>
 <dl class="section note"><dt>Note</dt><dd>To add a memReleaser to this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> use <a class="el" href="classhtgs_1_1_task_graph.html#afb58c16bd3e1240d818f63c6321e343f" title="Adds a MemoryManager edge with the specified name to the TaskGraph, which connects a memory getter an...">TaskGraph::addMemoryManagerEdge</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classhtgs_1_1_i_task.html#aa1f3f2adfcd1d95465f343aab9a63662">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#aa1f3f2adfcd1d95465f343aab9a63662">htgs::ITask&lt; T, VoidData &gt;</a>, and <a class="el" href="classhtgs_1_1_i_task.html#aa1f3f2adfcd1d95465f343aab9a63662">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4d6f08841fd6082b54427f1e7683c407"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void htgs::BaseITask::setPipelineId </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>pipelineId</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the pipeline Id for this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pipelineId</td><td>the pipelineId </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function should only be used by the HTGS API </dd></dl>
-
-<p>Reimplemented in <a class="el" href="classhtgs_1_1_i_task.html#aeb07ef40eb479d07e3a8379320a28840">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#aeb07ef40eb479d07e3a8379320a28840">htgs::ITask&lt; T, VoidData &gt;</a>, and <a class="el" href="classhtgs_1_1_i_task.html#aeb07ef40eb479d07e3a8379320a28840">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>.</p>
 
 </div>
 </div>
