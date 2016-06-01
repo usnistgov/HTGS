@@ -1,11 +1,27 @@
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Hybrid Task Graph Scheduler (HTGS)](#hybrid-task-graph-scheduler-htgs)
+- [Installation Instructions](#installation-instructions)
+	- [Dependencies:](#dependencies)
+	- [Building and testing HTGS:](#building-and-testing-htgs)
+- [Motivation](#motivation)
+- [Approach](#approach)
+- [Steps to Programming with HTGS](#steps-to-programming-with-htgs)
+- [Overview of HTGS](#overview-of-htgs)
+- [Examples](#examples)
+- [Credits](#credits)
+- [How to cite our work](#how-to-cite-our-work)
+- [Contact Us](#contact-us)
+
+<!-- /TOC -->
 # Hybrid Task Graph Scheduler (HTGS)
 
 An application programming interface to generate hybrid pipeline workflow systems
 
 The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors.
 
-Installation Instructions
-========
+# Installation Instructions
+
 ## Dependencies:
 1) g++/gcc version 4.8.4+
 
@@ -40,8 +56,8 @@ To execute the test suite run:
 'make run-test' after running make
 
 
-Motivation
-=========
+# Motivation
+
 Modern compute systems are highly complex to program on, particularly when trying to balance among multiple GPU cards,
 multi-core CPUs, and multiple disks. The hybrid task graph scheduler application programmer interface (HTGS API)
 provides tools to transform an algorithm into a hybrid TaskGraph that is used to execute on these systems with the
@@ -54,8 +70,8 @@ to a particular device (CPU/GPU) and manages the data based on programmer-define
 applications to work within memory limits.
 
 
-Approach
-=======
+# Approach
+
 The intent of the hybrid task graph scheduler (HTGS) API is to transform an algorithm into a hybrid TaskGraph, which is
 used to fully utilize a high performance compute system (multi-core CPUs, multiple accelerators, and multiple disks).
 The elements of the hybrid TaskGraph are created using an object-oriented approach where the components within the TaskGraph
@@ -91,8 +107,8 @@ For CUDA memory, a CudaMemoryManager is used.
 
 
 
-Steps to Programming with HTGS
-======
+# Steps to Programming with HTGS
+
 There are three steps involved in implementing an algorithm using HTGS.
 
 1. Represent the algorithm as a dataflow graph. Where nodes in the graph represent computational entities, and edges
@@ -116,8 +132,8 @@ an IRule that processes the dependency, which should produce work for the ITask 
 
 
 
-Overview of HTGS {#overview}
-============
+# Overview of HTGS
+
 The HTGS API is split into two modules:
 
 1. The User API
@@ -139,8 +155,7 @@ If the two ITasks must be in two different TaskGraphs, then a new type of TaskGr
 the [TaskGraph](https://pages.nist.gov/HTGS/doxygen/classhtgs_1_1_task_graph.html) class.
 
 
-Examples {#examples}
-=========
+# Examples
 
 [Tutorial 1](https://pages.nist.gov/HTGS/doxygen/tutorial1.html)
 
@@ -160,8 +175,8 @@ Examples {#examples}
 - Profiling
 - Debugging
 
-Credits {#credits}
-=========
+# Credits
+
 Timothy Blattner
 
 Walid Keyrouz
@@ -172,8 +187,8 @@ Mary Brady
 
 Shuvra Bhattacharyya
 
-How to cite our work {#cite-us}
-=========
+# How to cite our work
+
 If you are using the HTGS API in your research please use one of the following methods to cite us.
 
 1) Cite the github page
@@ -188,6 +203,6 @@ doi: 10.1109/ICPP.2014.9](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumbe
 
 [2]: Blattner, T.; "A Hybrid CPU/GPU Pipeline Workflow System". Master's thesis, 2013. University of Maryland Baltimore County
 
-Contact Us
-=========
+# Contact Us
+
 Timothy Blattner (timothy.blattner ( at ) nist.gov)
