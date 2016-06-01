@@ -193,20 +193,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   }
 
   /**
-   * Determines if the MemoryManager is terminated or not.
-   * The MemoryManager is terminated if the input connector no longer has data for the
-   * MemoryManager
-   *
-   * @param inputConnector the Connector producing data for the MemoryManager
-   * @return whether the MemoryManager is terminated or not
-   * @retval TRUE if the MemoryManager is ready to be terminated
-   * @retval FALSE if the MemoryManager is not ready to be terminated
-   */
-  bool isTerminated(std::shared_ptr<BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
-
-  /**
    * Gets the size of the MemoryPool
    * @return
    */

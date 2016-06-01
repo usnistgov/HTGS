@@ -17,8 +17,10 @@
 
 namespace htgs {
 /**
+ *
  * @class ProducerConsumerKey ProducerConsumerKey.hpp <htgs/core/graph/history/ProducerConsumerKey.hpp>
  * @brief Provides the functionality for copying an edge in a TaskGraph
+ *
  * @note This function should only be called by the HTGS API
  */
 class ProducerConsumerKey {

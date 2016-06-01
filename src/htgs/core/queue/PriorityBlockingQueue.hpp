@@ -101,8 +101,10 @@ class PriorityBlockingQueue {
   }
 
   /**
+   * @internal
    * Removes an element from the priority queue
    * @return an element from the priority queue
+   *
    * @note This function is not thread safe.
    */
   T remove() {

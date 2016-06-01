@@ -75,9 +75,11 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Creates a rule manager with rules and the names of the rules
    * @param rules the rules
    * @param ruleNames the names of each rule
+   *
    * @note This function should only be called by the HTGS API
    */
   RuleManager(std::shared_ptr<std::list<std::shared_ptr<IRule<T, U>>>> rules, std::string ruleNames) {
@@ -110,10 +112,12 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Initializes the RuleManager.
    *
    * @param pipelineId the pipelineID
    * @param numPipelines the number of pipelines
+   *
    * @note This function should only be called by the HTGS API
    */
   void initialize(int pipelineId, int numPipelines)
@@ -123,8 +127,10 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Shuts down the RuleManager.
    * Will also shutdown each IRule associated with the RuleManager
+   *
    * @note This function should only be called by the HTGS API
    */
   void shutdown() {
@@ -144,9 +150,11 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Creates a copy of the RuleManager.
    * The original and all copies share the same set of rules and access them synchronously.
    * @return the RuleManager copy
+   *
    * @note This function should only be called by the HTGS API
    */
   RuleManager<T, U> *copy() {
@@ -154,19 +162,23 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Checks whether the RuleManager is terminated or not
    * @param inputConnector the input connector for the RuleManager
    * @return Whether the RuleManager is terminated or not
    * @retval TRUE if the RuleManager is terminated
    * @retval FALSE if the RuleManager is not terminated
+   *
    * @note This function should only be called by the HTGS API
    */
   bool isTerminated(std::shared_ptr<BaseConnector> inputConnector) { return this->_isTerminated; }
 
   /**
+   * @internal
    * Processes the input data, which is forwarded to each IRule synchronously.
    * The output for all IRules are aggregated and shipped to the output Connector.
    * @param data the input data
+   *
    * @note This function should only be called by the HTGS API
    */
   void executeTask(std::shared_ptr<T> data) {
@@ -222,8 +234,10 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Sets the output connector that the RuleManager is attached to
    * @param connector the output connector
+   *
    * @note This function should only be called by the HTGS API
    */
   void setOutputConnector(std::shared_ptr<BaseConnector> connector) {
@@ -234,8 +248,10 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Gets the output connector associated with the RuleManager
    * @return the output connector
+   *
    * @note This function should only be called by the HTGS API
    */
   std::shared_ptr<BaseConnector> getConnector() {
@@ -243,8 +259,10 @@ class RuleManager: public BaseRuleManager<T> {
   }
 
   /**
+   * @internal
    * Sets the output connector that the RuleManager is attached to
    * @param connector the output connector
+   *
    * @note This function should only be called by the HTGS API
    */
   void setOutputConnector(std::shared_ptr<Connector<U>> connector) {

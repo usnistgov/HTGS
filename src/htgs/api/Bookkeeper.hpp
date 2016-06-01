@@ -113,7 +113,6 @@ class Bookkeeper: public ITask<T, VoidData> {
    * Executes the bookkeeper on data.
    * The bookkeeper forwards the data to each rule manager.
    * @param data the data
-   *
    * @note This function should only be called by the HTGS API
    */
   void executeTask(std::shared_ptr<T> data) {
@@ -148,8 +147,7 @@ class Bookkeeper: public ITask<T, VoidData> {
   /**
    * Initializes the bookkeeper and all RuleManagers.
    * @param pipelineId the pipeline id
-   * @param numPipelines the number of pipelines   
-   *
+   * @param numPipelines the number of pipelines
    * @note This function should only be called by the HTGS API
    */
   void initialize(int pipelineId, int numPipelines) {
@@ -160,7 +158,6 @@ class Bookkeeper: public ITask<T, VoidData> {
 
   /**
    * Shuts down this bookkeeper and all of it's RuleManagers
-   *
    * @note This function should only be called by the HTGS API
    */
   void shutdown() {
@@ -174,23 +171,9 @@ class Bookkeeper: public ITask<T, VoidData> {
   /**
    * Creates a shallow copy of this bookkeeper
    * @return a shallow copy (No rule managers) of this bookkeeper
-   *
    * @note This function should only be called by the HTGS API
    */
   Bookkeeper<T> *copy() { return new Bookkeeper<T>(); }
-
-  /**
-   * Checks if this bookkeeper is ready to be terminated
-   * @param inputConnector the input connector that sends data to this bookkeeper
-   * @return whether the bookkeeper can be terminated, uses inputConnector->isInputTerminated()
-   * @retval TRUE if it is ready to be terminated
-   * @retval FALSE if it is not ready to be terminated
-   *
-   * @note This function should only be called by the HTGS API
-   */
-  bool isTerminated(std::shared_ptr<BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
 
   /**
    * Generates the dot notation for the bookkeeper

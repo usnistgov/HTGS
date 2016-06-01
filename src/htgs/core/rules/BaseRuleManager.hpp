@@ -37,9 +37,11 @@ class BaseRuleManager: public BaseBaseRuleManager {
   virtual ~BaseRuleManager() { }
 
   /**
+   * @internal
    * Processes the input data, which is forwarded to each IRule synchronously.
    * The output for all IRules are aggregated and shipped to the output Connector.
    * @param data the input data
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void executeTask(std::shared_ptr<T> data) {
@@ -48,10 +50,12 @@ class BaseRuleManager: public BaseBaseRuleManager {
   }
 
   /**
+   * @internal
    * Initializes the RuleManager.
    *
    * @param pipelineId the pipelineID
    * @param numPipelines the number of pipelines
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void initialize(int pipelineId, int numPipelines) {
@@ -60,8 +64,10 @@ class BaseRuleManager: public BaseBaseRuleManager {
   }
 
   /**
+   * @internal
    * Shuts down the RuleManager.
    * Will also shutdown each IRule associated with the RuleManager
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void shutdown() {
@@ -70,11 +76,13 @@ class BaseRuleManager: public BaseBaseRuleManager {
   }
 
   /**
+   * @internal
    * Checks whether the RuleManager is terminated or not
    * @param inputConnector the input connector for the RuleManager
    * @return Whether the RuleManager is terminated or not
    * @retval TRUE if the RuleManager is terminated
    * @retval FALSE if the RuleManager is not terminated
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual bool isTerminated(std::shared_ptr<BaseConnector> inputConnector) {
@@ -92,9 +100,11 @@ class BaseRuleManager: public BaseBaseRuleManager {
   }
 
   /**
+   * @internal
    * Creates a copy of the RuleManager.
    * The original and all copies share the same set of rules and access them synchronously.
    * @return the RuleManager copy
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual BaseRuleManager<T> *copy() {
@@ -112,8 +122,10 @@ class BaseRuleManager: public BaseBaseRuleManager {
   }
 
   /**
+   * @internal
    * Gets the output connector associated with the RuleManager
    * @return the output connector
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual std::shared_ptr<BaseConnector> getConnector() {
@@ -122,8 +134,10 @@ class BaseRuleManager: public BaseBaseRuleManager {
   }
 
   /**
+   * @internal
    * Sets the output connector that the RuleManager is attached to
    * @param connector the output connector
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void setOutputConnector(std::shared_ptr<BaseConnector> connector) {

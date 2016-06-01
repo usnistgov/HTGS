@@ -96,8 +96,10 @@ class BlockingQueue {
   }
 
   /**
+   * @internal
    * Removes an element from the queue
    * @return an element from the queue
+   *
    * @note This function is not thread safe.
    */
   T remove() {

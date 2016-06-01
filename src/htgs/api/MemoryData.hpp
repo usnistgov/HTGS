@@ -87,8 +87,10 @@ class MemoryData: public IData {
   }
 
   /**
+   * @internal
    * Sets the pipelineId associated with the MemoryManager that allocated the memory
    * @param id the pipielineId
+   *
    * @note This function should only be called by the HTGS API
    */
   void setPipelineId(int id) { this->pipelineId = id; }
@@ -119,8 +121,10 @@ class MemoryData: public IData {
   }
 
   /**
+   * @internal
    * Checks whether the memory can be recycled/released by the MemoryManager
    * @return whether the memory is ready to be recycled/released by the MemoryManager
+   *
    * @note This function should only be called by the HTGS API
    */
   bool canReleaseMemory() {
@@ -128,7 +132,9 @@ class MemoryData: public IData {
   }
 
   /**
+   * @internal
    * Updates the state of the memory when it is received by the MemoryManager
+   *
    * @note This function should only be called by the HTGS API
    */
   void memoryUsed() {
@@ -136,7 +142,9 @@ class MemoryData: public IData {
   }
 
   /**
+   * @internal
    * Allocates the memory that this MemoryData is using
+   *
    * @note This function should only be called by the HTGS API
    */
   void memAlloc() { this->memory = this->allocator->memAlloc(); }
@@ -148,14 +156,18 @@ class MemoryData: public IData {
   T get() { return this->memory; }
 
   /**
+   * @internal
    * Frees the memory that this MemoryData is managing
+   *
    * @note This function should only be called by the HTGS API
    */
   void memFree() { this->allocator->memFree(this->memory); }
 
   /**
+   * @internal
    * Creates a copy of this MemoryData
    * @return the copy
+   *
    * @note This function should only be called by the HTGS API
    */
   MemoryData<T> *copy() { return new MemoryData<T>(this->allocator); }

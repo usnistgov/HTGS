@@ -90,7 +90,6 @@ class MemoryData;
  * virtual void debug() { ... }
  * virtual std::string getName() { return "SimpleCudaTask"; }
  * virtual htgs::ITask<PCIAMData, CCFData> *copy() { return new SimpleCudaTask(...) }
- * virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) { return inputConnector->isInputTerminated(); }
  *
  * private:
  *   double *localMemory;
@@ -241,7 +240,6 @@ class ICudaTask: public ITask<T, U> {
    * @param ownerTask the owner of the task
    * @param pipelineConnectorList the list of connectors that connect to other duplicate
    * ICudaTask's in an execution pipeline
-   *
    * @note This function should only be called by the HTGS API
    */
   void initialize(int pipelineId, int numPipeline, TaskScheduler<T, U> *ownerTask,
@@ -284,7 +282,6 @@ class ICudaTask: public ITask<T, U> {
 
   /**
    * Shutsdown the ICudaTask
-   *
    * @note This function should only be called by the HTGS API
    */
   void shutdown() {
@@ -294,7 +291,6 @@ class ICudaTask: public ITask<T, U> {
   /**
    * Executes the ICudaTask on some data
    * @param data the data executed on
-   *
    * @note This function should only be called by the HTGS API
    */
   void executeTask(std::shared_ptr<T> data) {

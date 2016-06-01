@@ -98,7 +98,7 @@ class ExecutionPipeline: public ITask<T, U> {
   ExecutionPipeline(int numPipelines, TaskGraph<T, U> *graph) {
     this->numPipelines = numPipelines;
     this->graph = graph;
-    this->input = new Bookkeeper<T>();
+    this->inputBk = new Bookkeeper<T>();
     this->runtimes = new std::list<Runtime *>();
     this->inputRules = new std::list<std::shared_ptr<IRule<T, T>> >();
     this->graphs = new std::list<TaskGraph<T, U> *>();
@@ -113,7 +113,7 @@ class ExecutionPipeline: public ITask<T, U> {
   ExecutionPipeline(int numPipelines, TaskGraph<T, U> *graph, std::list<std::shared_ptr<IRule<T, T> >> *rules) {
     this->numPipelines = numPipelines;
     this->graph = graph;
-    this->input = new Bookkeeper<T>();
+    this->inputBk = new Bookkeeper<T>();
     this->runtimes = new std::list<Runtime *>();
     this->inputRules = rules;
     this->graphs = new std::list<TaskGraph<T, U> *>();
@@ -130,8 +130,8 @@ class ExecutionPipeline: public ITask<T, U> {
     delete runtimes;
     runtimes = nullptr;
 
-    delete input;
-    input = nullptr;
+    delete inputBk;
+    inputBk = nullptr;
 
     delete graphs;
     graphs = nullptr;
@@ -153,14 +153,11 @@ class ExecutionPipeline: public ITask<T, U> {
   /**
    * Initializes the execution pipeline and duplicates the task graph numPipeline times.
    *
-   * @note This function should only be called by the HTGS API
-   *
    * @param pipelineId the pipelineId for the execution pipeline task
    * @param numPipeline the number of pipelines for the graph holding the execution pipeline
    * @param ownerTask the owner task
    * @param pipelineConnectorList the list of connectors that connect to other duplicate
    * execution pipelines in an execution pipeline
-   *
    * @note This function should only be called by the HTGS API
    */
   void initialize(int pipelineId, int numPipeline, TaskScheduler<T, U> *ownerTask,
@@ -181,7 +178,7 @@ class ExecutionPipeline: public ITask<T, U> {
     ruleManager->setOutputConnector(graph->getInputConnector());
     ruleManager->initialize(0, this->numPipelines);
 
-    this->input->addRuleManager(ruleManager);
+    this->inputBk->addRuleManager(ruleManager);
 
     // Update outputs for task graph to go to the execution pipeline output
     graph->updateGraphOutputProducers(ownerTask->getOutputConnector(), true);
@@ -202,7 +199,7 @@ class ExecutionPipeline: public ITask<T, U> {
       ruleManager->setOutputConnector(graphCopy->getInputConnector());
       ruleManager->initialize(i, this->numPipelines);
 
-      this->input->addRuleManager(ruleManager);
+      this->inputBk->addRuleManager(ruleManager);
 
       // Update outputs for task graph to go to the execution pipeline output
       graphCopy->updateGraphOutputProducers(ownerTask->getOutputConnector(), true);
@@ -221,12 +218,11 @@ class ExecutionPipeline: public ITask<T, U> {
 
   /**
    * Shuts down the execution pipeline.
-   *
    * @note This function should only be called by the HTGS API
    */
   void shutdown() {
     DEBUG("Shutting down " << this->getName());
-    this->input->shutdown();
+    this->inputBk->shutdown();
 
     for (Runtime *r : *this->runtimes) {
       r->waitForRuntime();
@@ -237,12 +233,11 @@ class ExecutionPipeline: public ITask<T, U> {
    * Executes the execution pipeline task on data and forwards that data to the input rules.
    * The input rules should parse the data and determine the correct pipelineId to forward the data to.
    * @param data the data to be forwarded to the proper execution pipeline
-   *
    * @note This function should only be called by the HTGS API
    */
   void executeTask(std::shared_ptr<T> data) {
     if (data != nullptr) {
-      this->input->executeTask(data);
+      this->inputBk->executeTask(data);
     }
   }
 
@@ -265,25 +260,12 @@ class ExecutionPipeline: public ITask<T, U> {
   }
 
   /**
-   * Checks if this execution pipeline is ready to be terminated
-   * @param inputConnector the input connector that sends data to this bookkeeper
-   * @return whether the execution pipeline can be terminated, uses inputConnector->isInputTerminated()
-   * @retval TRUE if it is ready to be terminated
-   * @retval FALSE if it is not ready to be terminated
-   *
-   * @note This function should only be called by the HTGS API
-   */
-  bool isTerminated(std::shared_ptr<BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
-
-  /**
    * Provides debugging output for the execution pipeline.
    * @note \#define DEBUG_FLAG to enable debugging
    */
   void debug() {
     DEBUG(this->getName() << " " << numPipelines << " pipelines; details:");
-    input->debug();
+    inputBk->debug();
   }
 
   /**
@@ -359,7 +341,7 @@ class ExecutionPipeline: public ITask<T, U> {
 
  private:
   int numPipelines; //!< The number of pipelines that will spawn from the ExecutionPipeline
-  Bookkeeper<T> *input; //!< The input Bookkeeper for the ExecutionPipeline
+  Bookkeeper<T> *inputBk; //!< The input Bookkeeper for the ExecutionPipeline
   TaskGraph<T, U> *graph; //!< The graph that the ExecutionPipeline manages, duplicates, and executes
   std::list<std::shared_ptr<IRule<T, T>>> *inputRules; //!< The rules associated with the input Bookkeeper for decomposition
   std::list<Runtime *>

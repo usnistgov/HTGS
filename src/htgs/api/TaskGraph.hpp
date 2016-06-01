@@ -551,8 +551,10 @@ class TaskGraph: public BaseTaskGraph {
   }
 
   /**
+   * @internal
    * Updates the TaskGraph input consumer
    * @param connector the connector to update the input consumers
+   *
    * @note This function should only be called by the HTGS API
    */
   void updateGraphInputConsumers(std::shared_ptr<Connector<T>> connector) {
@@ -564,9 +566,11 @@ class TaskGraph: public BaseTaskGraph {
   }
 
   /**
+   * @internal
    * Updates the TaskGraph output producers
    * @param connector the connector to update the output producers
    * @param increment whether to increment the number of producers for the connector
+   *
    * @note This function should only be called by the HTGS API
    */
   void updateGraphOutputProducers(std::shared_ptr<Connector<U>> connector, bool increment) {
@@ -1174,9 +1178,11 @@ class TaskGraph: public BaseTaskGraph {
   }
 
   /**
+   * @internal
    * Updates the pipelineIds and the number of pipelines for all tasks in the TaskGraph
    * @param pipelineId the pipeline Id
    * @param numPipelines the number of pipelines
+   *
    * @note This function should only be called by the HTGS API
    */
   void updateIdAndNumPipelines(int pipelineId, int numPipelines) {

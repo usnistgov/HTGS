@@ -43,9 +43,11 @@ class BaseConnector {
   virtual ~BaseConnector() { }
 
   /**
+   * @internal
    * Awakens all Tasks that are consuming data from this connector.
    * This function passes nullptr to each consumer to check whether that consumer is ready to be
    * terminated.
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void wakeupConsumer() {
@@ -65,7 +67,9 @@ class BaseConnector {
   }
 
   /**
+   * @internal
    * Indicates to the Connector that the producer has finished producing data for the Connector.
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void producerFinished() {
@@ -82,8 +86,10 @@ class BaseConnector {
   }
 
   /**
+   * @internal
    * Creates a copy of the BaseConnector
    * @return a copy of the BaseConnector
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual BaseConnector *copy() {
@@ -92,7 +98,9 @@ class BaseConnector {
   }
 
   /**
+   * @internal
    * Increments the number of tasks producing data for the Connector
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void incrementInputTaskCount() {

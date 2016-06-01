@@ -49,8 +49,10 @@ class BaseITask {
   virtual std::string getName() = 0;
 
   /**
+   * @internal
    * Virtual function used for Bookkeeper
    * @param ruleManager the RuleManager to add
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void addRuleManager(BaseBaseRuleManager *ruleManager) {
@@ -59,8 +61,10 @@ class BaseITask {
   }
 
   /**
+   * @internal
    * Sets the pipeline Id for this ITask.
    * @param pipelineId the pipelineId
+   *
    * @note This function should only be used by the HTGS API
    */
   virtual void setPipelineId(int pipelineId) {
@@ -68,11 +72,13 @@ class BaseITask {
     throw std::bad_function_call();  }
 
   /**
+   * @internal
    * Virtual function for attaching a memGetter Connector.
    * The memGetter Connector is the output Connector for a MemoryManager.
    * @param name the name of the memory edge.
    * @param connector the connector of the MemoryManager to attach.
    * @param type the memory manager type
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void attachMemGetter(std::string name, std::shared_ptr<BaseConnector> connector, MMType type) {
@@ -81,6 +87,7 @@ class BaseITask {
   }
 
   /**
+   * @internal
    * Virtual function for attached a memReleaser Connector.
    * The memReleaser Connector is the input Connector for a MemoryManager.
    * @param name the name of the memory edge.

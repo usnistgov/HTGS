@@ -37,8 +37,10 @@ class BaseBaseRuleManager {
   virtual ~BaseBaseRuleManager() { }
 
   /**
+   * @internal
    * Creates a copy of the RuleManager
    * @return the copy of the RuleManager
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual BaseBaseRuleManager *copy() {
@@ -56,8 +58,10 @@ class BaseBaseRuleManager {
   }
 
   /**
+   * @internal
    * Sets the output connector that the RuleManager is producing data for.
    * @param connector the connector the RuleManager will produce data for.
+   *
    * @note This function should only be called by the HTGS API
    */
   virtual void setOutputConnector(std::shared_ptr<BaseConnector> connector) {

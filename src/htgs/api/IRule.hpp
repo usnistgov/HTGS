@@ -115,11 +115,11 @@ class IRule : public BaseIRule {
   }
 
   /**
+   * @internal
    * Applies the virtual rule function and processes output
    * @param data the input data
    * @param pipelineId the pipelineId
    * @return the results of the rule function
-   *
    * @note This function should only be called by the HTGS API
    */
   std::list<std::shared_ptr<U>> *applyRuleFunction(std::shared_ptr<T> data, int pipelineId) {
@@ -160,7 +160,6 @@ class IRule : public BaseIRule {
   /**
    * Virtual function that handles when a rule is being shutdown for a particular pipelineId
    * @param pipelineId the pipelineId to shutdown
-   *
    * @note This function can be used to release memory, but if there are multiple pipelines
    * managed by an ExecutionPipeline, then the memory release should occur in a destructor.
    */

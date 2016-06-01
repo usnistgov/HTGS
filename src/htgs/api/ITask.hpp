@@ -146,6 +146,7 @@ class MemoryData;
  *
  *   virtual htgs::ITask<Data1, Data2> *copy() { return new ReadTask(this->getNumThreads(), memorySize); }
  *
+ *   // Optional. Default will check inputConnector->isInputTerminated();
  *   virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) { return inputConnector->isInputTerminated(); }
  *
  *  private:
@@ -260,6 +261,7 @@ class ITask: public BaseITask {
   virtual ~ITask() { }
 
   /**
+   * @internal
    * Sets the pipeline Id for this ITask.
    * @param pipelineId the pipelineId
    * @note This function should only be used by the HTGS API
@@ -269,6 +271,7 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Sets the number of threads associated with this ITask.
    * @param numThreads the number of  threads associated with the ITask
    * @note This function will only be applied if the TaskGraph holding this ITask has not been copied or executed using a RunTime
@@ -288,6 +291,7 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Sets whether this task is polling for data or not.
    * If the task is polling and the timeout period expires, then the ITask will be passed
    * the value nullptr to executeTask()
@@ -299,6 +303,7 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Sets the timeout time for polling in microseconds.
    * Polling should be set to true if this is to be used ( setPoll() )
    * @param microTimeoutTime the timeout time for polling
@@ -362,8 +367,10 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Copies the ITask including its list of memGetters and memReleasers
    * @return a deep copy of the ITask
+   *
    * @note This function should only be called by the HTGS API
    */
   ITask<T, U> *copyITask() {
@@ -378,6 +385,7 @@ class ITask: public BaseITask {
 
 
   /**
+   * @internal
    * Retrieves memory from a memory edge
    * @param name the name of the memory edge
    * @param releaseRule the release rule to be associated with the newly acquired memory
@@ -385,6 +393,7 @@ class ITask: public BaseITask {
    * @tparam V the MemoryData type
    * @note The name specified must have been attached to this ITask as a memGetter using
    * the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()
+   *
    * @note This function will block if no memory is available, ensure the
    * memory pool size is sufficient based on memory release rules and data flow.
    * @note Memory edge must be defined as MMType::Static
@@ -401,6 +410,7 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Retrieves memory from a memory edge
    * @param name the name of the memory edge
    * @param releaseRule the release rule to be associated with the newly acquired memory
@@ -409,6 +419,7 @@ class ITask: public BaseITask {
    * @tparam V the MemoryData type
    * @note The name specified must have been attached to this ITask as a memGetter using
    * the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()
+   *
    * @note This function will block if no memory is available, ensure the
    * memory pool size is sufficient based on memory release rules and data flow.
    * @note Memory edge must be defined as MMType::Dynamic
@@ -426,12 +437,14 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Retrieves memory from a memory edge that is managed by the user.
    * Should use this function to throttle the allocator to ensure not too many elements are allocated.
    * The number of elements is associated with the MemoryManager edge pool size.
    * @param name the name of the memory edge
    * @note The name specified must have been attached to this ITask as a memGetter using the
    * TaskGraph::addUserManagedMemoryManagerEdge routine, which can be verified using hasMemGetter()
+   *
    * @note This function will block if no memory is available, ensure the memory pool size
    * is sufficient based on how you handle memory. Should be used in conjunction with memRelease
    * @note Memory edge must be defined as MMType::UserManaged by using the TaskGraph::addUserManagedMemoryManagerEdge
@@ -519,10 +532,12 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Attaches a memGetter to this ITask
    * @param name the name of the memory edge
    * @param connector the connector for the MemoryManager
    * @param type the memory manager type
+   *
    * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
    */
   void attachMemGetter(std::string name, std::shared_ptr<BaseConnector> connector, MMType type) {
@@ -550,11 +565,13 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Attaches a memReleaser to this ITask
    * @param name the name of the memory edge
    * @param connector the conector for the MemoryManager
    * @param type the memory manager type
    * @param outsideMemManGraph indicates if this ITask exists outside of the graph where the memory manager is
+   *
    * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
    */
   void attachMemReleaser(std::string name, std::shared_ptr<BaseConnector> connector, MMType type, bool outsideMemManGraph) {
@@ -594,11 +611,13 @@ class ITask: public BaseITask {
   };
 
   /**
+   * @internal
    * Initializes an ITask
    * @param pipelineId the pipelineId
    * @param numPipeline the number of pipelines
    * @param ownerTask the owner task
    * @param pipelineConnectorList the pipelineConnectorList
+   *
    * @note This function should only be called by the HTGS API
    */
   void initializeITask(int pipelineId, int numPipeline, TaskScheduler<T, U> *ownerTask,
@@ -610,7 +629,9 @@ class ITask: public BaseITask {
   }
 
   /**
+   * @internal
    * Provides profile output for the ITask,
+   *
    * @note this function should only be called by the HTGS API
    */
   void profileITask() {

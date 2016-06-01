@@ -91,11 +91,13 @@ class Connector: public BaseConnector {
   }
 
   /**
+   * @internal
    * Polls for data for a consumer given a timeout.
    * @param timeout the timeout time in microseconds
    * @return the data or nullptr
    * @retval DATA the next data that is on the priority queue
    * @retval nullptr if the timeout time expires
+   *
    * @note This function will block until data is available or the timeout time has expired.
    */
   std::shared_ptr<T> pollConsumeData(long timeout) {
@@ -104,8 +106,10 @@ class Connector: public BaseConnector {
   }
 
   /**
+   * @internal
    * Consumes data from the priority queue.
    * @return the data
+   *
    * @note This function will block until data is available.
    */
   std::shared_ptr<T> consumeData() {
