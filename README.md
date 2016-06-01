@@ -1,32 +1,46 @@
-# Hybrid Task Graph Scheduler (HTGS) - An application programming interface to generate hybrid pipeline workflow systems
+# Hybrid Task Graph Scheduler (HTGS)
+
+An application programming interface to generate hybrid pipeline workflow systems
 
 The API is designed to aid in creating task graphs for algorithms to obtain performance across CPUs and multiple co-processors.
 
-Installation Instructions {#install}
+Installation Instructions
 ========
 ## Dependencies:
 1) g++/gcc version 4.8.4+
+
 2) pthreads
+
 3) doxygen (optional)
 
 ## Building and testing HTGS:
-1) Download the Zip at 
+1) Download the [Zip](https://github.com/usnistgov/HTGS/archive/master.zip)
+
 2) Extract
+
 3) Create 'build' directory
+
 4) In 'build' directory run cmake-gui $HTGS directory$ (or ccmake)
+
 5) Configure parameters, such as CMAKE_INSTALL_PREFIX and whether to create the documentation or run google test suite
-6) Generate make file 
+
+6) Generate make file
+
 7) Run 'make'
+
 8) Run 'make install'
 
+
 To build the documentation run:
+
 'make doc'
 
 To execute the test suite run:
+
 'make run-test' after running make
 
 
-Motivation {#motivation}
+Motivation
 =========
 Modern compute systems are highly complex to program on, particularly when trying to balance among multiple GPU cards,
 multi-core CPUs, and multiple disks. The hybrid task graph scheduler application programmer interface (HTGS API)
@@ -40,13 +54,13 @@ to a particular device (CPU/GPU) and manages the data based on programmer-define
 applications to work within memory limits.
 
 
-Approach {#approach}
+Approach
 =======
 The intent of the hybrid task graph scheduler (HTGS) API is to transform an algorithm into a hybrid TaskGraph, which is
 used to fully utilize a high performance compute system (multi-core CPUs, multiple accelerators, and multiple disks).
 The elements of the hybrid TaskGraph are created using an object-oriented approach where the components within the TaskGraph
 are interfaces that are used to implement depedencies, memory rules, decomposition rules, and computational functions.
-Connecting these components with data edges formulates the TaskGraph. Speciality ITask objects can also be defined to expand the API 
+Connecting these components with data edges formulates the TaskGraph. Speciality ITask objects can also be defined to expand the API
 to enable new types of computation on hybrid systems; for example, the HTGS API defines an ICudaTask for NVIDIA CUDA GPUs.
 
 The hybrid TaskGraph is a technique inspired by past research where an algorithm is represented as a hybrid pipeline
@@ -77,7 +91,7 @@ For CUDA memory, a CudaMemoryManager is used.
 
 
 
-Steps to Programming with HTGS {#steps}
+Steps to Programming with HTGS
 ======
 There are three steps involved in implementing an algorithm using HTGS.
 
@@ -105,8 +119,10 @@ an IRule that processes the dependency, which should produce work for the ITask 
 Overview of HTGS {#overview}
 ============
 The HTGS API is split into two modules:
+
 1. The User API
    - Classes that begin with 'I' denote interfaces that are implemented: ITask, IMemoryReleaseRule, etc.
+
 2. The Core API
 
 The user API is found in <htgs/api/...> and contains the API that programmers use to define a TaskGraph. The majority
@@ -115,19 +131,20 @@ The user API is found in <htgs/api/...> and contains the API that programmers us
 The core API is found in <htgs/core/...> and holds the underlying sub-systems that the user API operates with.
 
 Although there is a separation between the user and core APIs, there is a method to add new functionality into HTGS.
-The [ICustomEdge](@ref htgs::ICustomEdge) is an interface that informs a TaskGraph on how to create a customized edge between
+The [ICustomEdge](https://pages.nist.gov/HTGS/doxygen/classhtgs_1_1_i_custom_edge.html) is an interface that informs a TaskGraph on how to create a customized edge between
 producer and consumer ITasks.
 The new types of edges can either directly connect two ITask's together or two TaskSchedulers.
 The main limiting factor of the ICustomEdge is it assumes that both ITasks will be added to the same TaskGraph.
 If the two ITasks must be in two different TaskGraphs, then a new type of TaskGraph will need to be created by inheriting
-the [TaskGraph](@ref htgs::TaskGraph) class.
+the [TaskGraph](https://pages.nist.gov/HTGS/doxygen/classhtgs_1_1_task_graph.html) class.
 
 
 Examples {#examples}
 =========
 
-[Tutorial 1](@ref tutorial1)
-[Tutorial 2](@ref tutorial2)
+[Tutorial 1](https://pages.nist.gov/HTGS/doxygen/tutorial1.html)
+
+[Tutorial 2](https://pages.nist.gov/HTGS/doxygen/tutorial2.html)
 
 - How to represent data using IData
 - How to create an ITask
@@ -146,9 +163,13 @@ Examples {#examples}
 Credits {#credits}
 =========
 Timothy Blattner
+
 Walid Keyrouz
+
 Milton Halem
+
 Mary Brady
+
 Shuvra Bhattacharyya
 
 How to cite our work {#cite-us}
@@ -156,6 +177,7 @@ How to cite our work {#cite-us}
 If you are using the HTGS API in your research please use one of the following methods to cite us.
 
 1) Cite the github page
+
 2) T. Blattner, W. Keyrouz, M. Halem, M. Brady and S. S. Bhattacharyya, "A hybrid task graph scheduler for high performance image processing workflows," 2015 IEEE Global Conference on Signal and Information Processing (GlobalSIP), Orlando, FL, 2015, pp. 634-637.
 
 
