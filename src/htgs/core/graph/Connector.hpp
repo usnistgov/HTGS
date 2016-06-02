@@ -215,7 +215,7 @@ class Connector: public BaseConnector {
 #else
   BlockingQueue<std::shared_ptr<T>>
 #endif
-      queue; //!< The pblocking queue associated with the connector (thread safe) (can be switched to a priority queue using the USE_PRIORITY_QUEUE directive)
+      queue; //!< The blocking queue associated with the connector (thread safe) (can be switched to a priority queue using the USE_PRIORITY_QUEUE directive)
   std::atomic_long producerTaskCount; //!< The number of producers adding data to the connector
 };
 }
