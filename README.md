@@ -208,4 +208,4 @@ doi: 10.1109/ICPP.2014.9](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumbe
 
 # Contact Us
 
-<a target="_blank" href="mailto:timothy.blattner@nist.gov">Timothy Blattner (timothy.blattner ( at ) nist.gov)</a>
+<a target="_blank" href="mailto:timothy.blattner@nist.gov">Timothy Blattner (timothy.blattner ( at ) nist.gov</a>
