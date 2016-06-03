@@ -1,4 +1,0 @@
-<map id="htgs::ICudaTask&lt; T, U &gt;" name="htgs::ICudaTask&lt; T, U &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="20,80,159,107"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_base_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="30,5,148,32"/>
-</map>

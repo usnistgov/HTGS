@@ -1,6 +1,0 @@
-<map id="htgs::BaseTaskScheduler" name="htgs::BaseTaskScheduler">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_scheduler.html" title="Encapsulates an ITask to interact with an ITask&#39;s functionality. " alt="" coords="267,5,410,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_scheduler.html" title="htgs::TaskScheduler\l\&lt; MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;" alt="" coords="227,69,451,125"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_scheduler.html" title="htgs::TaskScheduler\l\&lt; T, U \&gt;" alt="" coords="267,149,410,190"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_task_scheduler.html" title="htgs::TaskScheduler\l\&lt; T, VoidData \&gt;" alt="" coords="267,214,410,255"/>
-</map>

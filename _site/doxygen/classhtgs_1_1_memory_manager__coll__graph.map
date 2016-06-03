@@ -1,7 +1,0 @@
-<map id="htgs::MemoryManager&lt; T &gt;" name="htgs::MemoryManager&lt; T &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;" alt="" coords="32,323,213,365"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_base_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="5,217,123,244"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_scheduler.html" title="htgs::TaskScheduler\l\&lt; MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;" alt="" coords="147,203,369,259"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_base_task_scheduler.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="146,5,317,32"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_base_task_scheduler_runtime_thread.html" title="Manages a BaseTaskScheduler that is bound to a thread for execution. " alt="" coords="221,97,443,138"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="htgs::TaskScheduler::getName" name="htgs::TaskScheduler::getName">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_scheduler.html#a682818907ef3b9fd0362e7c5bf30c877" title="Initializes the TaskScheduler. " alt="" coords="203,5,346,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_scheduler.html#a71cc79974889afd323be591cdadd00a5" title="Shuts down the TaskScheduler. " alt="" coords="203,70,346,111"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_scheduler.html#adadcd3eb36713aac51d2c0b51179a713" title="Executes the TaskScheduler. " alt="" coords="197,135,352,177"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_task_scheduler.html#a5408820abe547574846daaa2e7bce64e" title="Provides debug output. " alt="" coords="203,201,346,242"/>
-</map>

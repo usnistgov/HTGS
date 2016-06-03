@@ -1,3 +1,0 @@
-<map id="htgs::ICudaTask::hasPeerToPeerCopy" name="htgs::ICudaTask::hasPeerToPeerCopy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_cuda_task.html#a70470776641d6134e2dd9bd1bbe2d226" title="Checks if the requested pipelineId requires GPU&#45;to&#45;GPU copy. " alt="" coords="230,12,434,39"/>
-</map>

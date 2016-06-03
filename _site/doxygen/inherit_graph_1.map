@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classhtgs_1_1_base_base_rule_manager.html" title="Parent class for BaseRuleManager, which removes all template arguments for RuleManager. " alt="" coords="5,37,197,64"/>
-<area shape="rect" id="node2" href="$classhtgs_1_1_base_rule_manager.html" title="htgs::BaseRuleManager\&lt; T \&gt;" alt="" coords="247,12,441,39"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_base_rule_manager.html" title="Parent class for the RuleManager that removes the output template type of the RuleManager. " alt="" coords="246,63,442,89"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). " alt="" coords="491,5,631,46"/>
-</map>

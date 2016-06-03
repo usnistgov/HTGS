@@ -1,5 +1,0 @@
-<map id="htgs::BlockingQueue::Dequeue" name="htgs::BlockingQueue::Dequeue">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#a214a654d8291fd69c33653bc573dc56c" title="Consumes data from the priority queue. " alt="" coords="198,60,402,87"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41" title="Retrieves memory from a memory edge. " alt="" coords="462,5,637,61"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_task.html#a322b23d307ce1b12d302ce2d622f8308" title="Retrieves memory from a memory edge that is managed by the user. " alt="" coords="451,85,648,141"/>
-</map>
