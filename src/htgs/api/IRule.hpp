@@ -195,27 +195,27 @@ class IRule : public BaseIRule {
 
   /**
    * Allocates a two dimensional state container using the input type of the IRule.
-   * @param width the width of the state container
    * @param height the height of the state container
+   * @param width the width of the state container
    * @return a pointer to the state container allocated
    */
-  StateContainer<std::shared_ptr<T>> *allocStateContainer(int width, int height)
+  StateContainer<std::shared_ptr<T>> *allocStateContainer(int height, int width)
   {
-    return new StateContainer<std::shared_ptr<T>>(width, height, nullptr);
+    return new StateContainer<std::shared_ptr<T>>(height, width, nullptr);
   }
 
   /**
    * Allocates a two dimensional state container using the template argument.
-   * @param width the width of the state container
    * @param height the height of the state container
+   * @param width the width of the state container
    * @param defaultValue the value that represents no data or default value
    * @return a pointer to the state container allocated
    * @tparam V the state container type
    */
   template <class V>
-  StateContainer<V> *allocStateContainer(int width, int height, V defaultValue)
+  StateContainer<V> *allocStateContainer(int height, int width, V defaultValue)
   {
-    return new StateContainer<V>(width, height, defaultValue);
+    return new StateContainer<V>(height, width, defaultValue);
   }
 
   /**
