@@ -15,13 +15,11 @@
 class MultiMemData : public htgs::IData {
 
  public:
-  MultiMemData(int pipelineId, int numAllocators) : pipelineId(pipelineId)
-  {
+  MultiMemData(int pipelineId, int numAllocators) : pipelineId(pipelineId) {
     memVector.resize(numAllocators);
   }
 
-  void setMem(int index, std::shared_ptr<htgs::MemoryData<int *>> mem)
-  {
+  void setMem(int index, std::shared_ptr<htgs::MemoryData<int *>> mem) {
     memVector[index] = mem;
   }
 

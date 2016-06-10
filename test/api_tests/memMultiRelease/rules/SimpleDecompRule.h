@@ -17,8 +17,7 @@
 class SimpleDecompRule : public htgs::IRule<InputData, InputData> {
 
  public:
-  SimpleDecompRule(int numPipelines)
-  {
+  SimpleDecompRule(int numPipelines) {
     this->numPipelines = numPipelines;
   }
 
