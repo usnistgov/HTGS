@@ -25,10 +25,10 @@ class MatrixLoadRule : public htgs::IRule<MatrixBlockData<MatrixMemoryData_t>, M
       blockHeightA(blockHeightA), blockWidthA(blockWidthA), blockHeightB(blockHeightB), blockWidthB(blockWidthB)
   {
     for (int i = 0; i < blockWidthA; i++)
-      this->matrixCState.push_back(this->allocStateContainer<MatrixState>(blockWidthA, blockHeightB, MatrixState::NONE));
+      this->matrixCState.push_back(this->allocStateContainer<MatrixState>(blockHeightB, blockWidthA, MatrixState::NONE));
 
-    this->matrixAState = this->allocStateContainer(blockWidthA, blockHeightA);
-    this->matrixBState = this->allocStateContainer(blockWidthB, blockHeightB);
+    this->matrixAState = this->allocStateContainer(blockHeightA, blockWidthA);
+    this->matrixBState = this->allocStateContainer(blockHeightB, blockWidthB);
   }
 
   ~MatrixLoadRule() {

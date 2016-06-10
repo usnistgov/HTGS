@@ -19,7 +19,7 @@
 class MatrixOutputRule : public htgs::IRule<MatrixBlockData<double *>, MatrixBlockData<double *> > {
 public:
     MatrixOutputRule(int blockWidth, int blockHeight, int blockWidthMatrixA) {
-      matrixCountContainer = this->allocStateContainer<int>(blockWidth, blockHeight, 0);
+      matrixCountContainer = this->allocStateContainer<int>(blockHeight, blockWidth, 0);
       numBlocks = 2 * blockWidthMatrixA - 1;
     }
 

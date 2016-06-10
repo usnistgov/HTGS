@@ -19,7 +19,7 @@
 class MatrixAccumulateRule : public htgs::IRule<MatrixBlockData<double *>, MatrixBlockMulData<double *> > {
 public:
     MatrixAccumulateRule(int blockWidth, int blockHeight, int blockWidthMatrixA) {
-      matrixContainer = this->allocStateContainer(blockWidth, blockHeight);
+      matrixContainer = this->allocStateContainer(blockHeight, blockWidth);
       totalCount = blockWidth * blockHeight * blockWidthMatrixA + blockWidth * blockHeight * (blockWidthMatrixA-1);
       count = 0;
     }
