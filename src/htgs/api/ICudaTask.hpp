@@ -385,6 +385,8 @@ class ICudaTask: public ITask<T, U> {
   std::vector<int> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
   std::unordered_map<int, CUcontext> peerContexts; //!< The mapping of CudaId to CUDA Context that has peer-to-peer
 };
+
+
 }
 #endif //USE_CUDA
 #endif //HTGS_CUDATASK_H

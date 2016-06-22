@@ -13,8 +13,7 @@
 class MemAllocDistributeRule : public htgs::IRule<MultiMemData, MultiMemData> {
 
  public:
-  MemAllocDistributeRule(int numPipelines)
-  {
+  MemAllocDistributeRule(int numPipelines) {
     this->numPipelines = numPipelines;
   }
 
