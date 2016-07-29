@@ -381,6 +381,43 @@ class StateContainer {
     return data[index] != emptyData;
   }
 
+  /**
+   * Prints the state of the state container.
+   * Iterates over all elements and prints a 1 if data is not equal to the empty data,
+   * otherwise it prints 0.
+   */
+  void printState()
+  {
+    for (int r = 0; r < height; r++)
+    {
+      for (int c = 0; c < width; c++)
+      {
+        if (this->has(r, c))
+          std::cout << "1";
+        else
+          std::cout << "0";
+      }
+      std::cout << std::endl;
+    }
+  }
+
+  /**
+   * Prints the contents of the state container.
+   * Iterates over all elements and prints the contents within.
+   */
+  void printContents()
+  {
+    for (int r = 0; r < height; r++)
+    {
+      for (int c = 0; c < width; c++)
+      {
+        std::cout << this->get(r, c) << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+
+
  private:
   /**
    * Computes the one dimensional index from two dimension

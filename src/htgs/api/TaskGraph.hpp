@@ -1321,10 +1321,24 @@ class TaskGraph: public BaseTaskGraph {
   void addGraphInputConsumer(BaseTaskScheduler *task) {
     DEBUG_VERBOSE("Adding task graph input consumer: " << task << " to input connector " << this->input);
 
-    task->setInputConnector(input);
+    std::shared_ptr<Connector<T>> connector;
+
+    // If the task consuming is already in the graph, then use that task's connector
+    if (this->consumerTaskConnectorMap->find(task) != this->consumerTaskConnectorMap->end()) {
+      connector = std::dynamic_pointer_cast<Connector<T>>(this->consumerTaskConnectorMap->find(task)->second);
+      this->input = connector;
+      this->consumerTaskConnectorMap->insert(ConnectorPair(task, connector));
+    }
+    else {
+      // task not found, use the graph's input
+      connector = this->input;
+      task->setInputConnector(connector);
+      this->consumerTaskConnectorMap->insert(ConnectorPair(task, connector));
+    }
+
     this->graphInputConsumers->push_back(task);
 
-    updateGraphHistory(task, false, false);
+    updateGraphHistory(task, true, false);
   }
 
   void addGraphOutputProducer(BaseTaskScheduler *task) {
@@ -1335,7 +1349,7 @@ class TaskGraph: public BaseTaskGraph {
 
     this->graphOutputProducers->push_back(task);
 
-    updateGraphHistory(task, false, false);
+    updateGraphHistory(task, false, true);
   }
 
   void addGraphMemoryManagerEdge(std::string name, BaseITask *memGetter, BaseTaskScheduler *memTask,
