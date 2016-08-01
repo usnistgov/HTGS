@@ -190,6 +190,12 @@ class RuleManager: public BaseRuleManager<T> {
       {
         std::unique_lock<std::mutex> lock(rule->getMutex());
         if (rule->isRuleTerminated(this->pipelineId)) {
+          // If the rule is terminated before it got a chance to run, then indicate that it should be terminated
+          if (rule->isFirstRun())
+          {
+            isTerminated = true;
+            rule->setNotFirstRun();
+          }
           continue;
         }
 

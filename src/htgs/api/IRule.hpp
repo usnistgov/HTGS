@@ -104,6 +104,8 @@ class IRule : public BaseIRule {
    */
   IRule() {
     this->output = new std::list<std::shared_ptr<U>>();
+    firstRun = true;
+
   }
 
   /**
@@ -125,6 +127,7 @@ class IRule : public BaseIRule {
   std::list<std::shared_ptr<U>> *applyRuleFunction(std::shared_ptr<T> data, int pipelineId) {
     this->output->clear();
     applyRule(data, pipelineId);
+    firstRun = false;
     return output;
   }
 
@@ -156,6 +159,24 @@ class IRule : public BaseIRule {
    * @note The rule will automatically be terminated if the input ITask has terminated.
    */
   virtual bool isRuleTerminated(int pipelineId) { return false; }
+
+  /**
+   * Gets whether this rule has executed before or not.
+   * Used for determining if the rule can terminate the RuleManager early.
+   * @return whether the rule has executed before or not
+   * @retval TRUE if this is the first time the rule has executed
+   * @retval FALSE if this is not the first time the rule has executed
+   */
+  bool isFirstRun() const {
+    return firstRun;
+  }
+
+  /**
+   * Sets that this IRule has run.
+   */
+  void setNotFirstRun() {
+    this->firstRun = false;
+  }
 
   /**
    * Virtual function that handles when a rule is being shutdown for a particular pipelineId
@@ -247,6 +268,8 @@ class IRule : public BaseIRule {
       *output; //!< The list of output that is produced by the IRule (cleared before applying rule)
   std::mutex
       mutex; //!< The mutex associated with this IRule to ensure no more than one thread is processing the rule at a time
+
+  bool firstRun; //!< Check to see if the rule has not been executed before, used for early termination
 };
 
 /**
