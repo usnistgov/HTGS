@@ -257,7 +257,7 @@ class IRule : public BaseIRule {
    * @tparam V the state container type
    */
   template <class V>
-  StateContainer<V> *allocStateContainer(int size, V &defaultValue)
+  StateContainer<V> *allocStateContainer(int size, V defaultValue)
   {
     return new StateContainer<V>(size, 0, defaultValue);
   }
