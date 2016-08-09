@@ -15,6 +15,7 @@
 #define HTGS_MEMORYDATA_H
 
 #include <stddef.h>
+#include <htgs/core/queue/PriorityBlockingQueue.hpp>
 #include "IMemoryAllocator.hpp"
 #include "IMemoryReleaseRule.hpp"
 #include "IData.hpp"
@@ -118,6 +119,14 @@ class MemoryData: public IData {
       memoryReleaseRule = nullptr;
     }
     this->memoryReleaseRule = rule;
+  }
+
+  /**
+   * Gets the memory release rule associated with the memory data
+   * @return the memory release rule
+   */
+  IMemoryReleaseRule *getMemoryReleaseRule() const {
+    return this->memoryReleaseRule;
   }
 
   /**
