@@ -325,7 +325,7 @@ class StateContainer {
   }
 
   /**
-   * Sets a value at a row column
+   * Sets a value (by reference) at a row column
    * @param row the row
    * @param col the column
    * @param value the value
@@ -335,11 +335,30 @@ class StateContainer {
   }
 
   /**
-   * Sets a value at an index
+   * Sets a value at a row column (uses assignment operator)
+   * @param row the row
+   * @param col the column
+   * @param value the value
+   */
+  void assign(int row, int col, T value) const {
+    data[computeIndex(row, col)] = value;
+  }
+
+  /**
+   * Sets a value (by reference) at an index
    * @param index the index
    * @param value the value
    */
   void set(int index, T &value) const {
+    data[index] = value;
+  }
+
+  /**
+   * Sets a value at an index (uses assignment operator)
+   * @param index the index
+   * @param value the value
+   */
+  void assign(int index, T value) const {
     data[index] = value;
   }
 
