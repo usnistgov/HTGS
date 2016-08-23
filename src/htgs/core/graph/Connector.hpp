@@ -15,7 +15,9 @@
 
 
 #include <atomic>
+#include <cxxabi.h>
 
+#include "TaskGraphDotGenFlags.h"
 #include "../task/TaskScheduler.hpp"
 #include "../queue/BlockingQueue.hpp"
 #include "../../debug/debug_message.h"
@@ -168,6 +170,23 @@ class Connector: public BaseConnector {
 #endif
   }
 
+
+  /**
+   * Gets the demangled type name of the connector
+   * @return the demangled type name
+   */
+  std::string typeName()
+  {
+    int status;
+    char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
+    std::string ret(realName);
+
+    free(realName);
+
+    return ret;
+
+  }
+
   /**
    * Provides profile output for the consume operation
    * @param numThreads the number of threads associated with consuming data
@@ -182,6 +201,17 @@ class Connector: public BaseConnector {
         std::cout << "consume (per thread) wait time: " << (queue.getDequeueWaitTime()/numThreads) << " us, lock time: " << (queue.getDequeueLockTime()/numThreads) << " us" << std::endl;
 #endif
   }
+
+  int getMaxQueueSize()
+  {
+#ifdef PROFILE
+    return queue.getQueueActiveMaxSize();
+#else
+    return 0;
+#endif
+
+  }
+
 
   /**
    * Gets the id used for dot graphs for GraphViz
@@ -201,10 +231,10 @@ class Connector: public BaseConnector {
    * Generates the dot representation for this connector
    * @return the dot representation
    */
-  virtual std::string genDot() {
+  virtual std::string genDot(int flags) {
 
 //    return getDotId() + "[label=\"\",shape=box,style=filled,color=black,width=.2,height=.2];\n";
-    return getDotId() + "[label=\"" + std::to_string(this->getProducerCount()) +"\",shape=box,style=rounded,color=black,width=.2,height=.2];\n";
+    return getDotId() + "[label=\"" + std::to_string(this->getProducerCount()) + "\",shape=box,style=rounded,color=black,width=.2,height=.2];\n";
 
   }
 

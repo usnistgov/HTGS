@@ -21,12 +21,11 @@
 #include <memory>
 #include <list>
 #include <assert.h>
-
+#include <sstream>
 
 #include "../debug/debug_message.h"
 #include "MemoryData.hpp"
 #include "../core/task/BaseITask.hpp"
-#include "../core/graph/BaseConnector.hpp"
 #include "../core/graph/Connector.hpp"
 #include "../core/memory/MMType.h"
 
@@ -729,38 +728,84 @@ class ITask: public BaseITask {
   virtual void profile() { }
 
   /**
+  * Gets the demangled input type name of the connector
+  * @return the demangled type name for the input
+  */
+  std::string inTypeName()
+  {
+    int status;
+    char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
+    std::string ret(realName);
+
+    free(realName);
+
+    return ret;
+
+  }
+
+  /**
+   * Gets the demangled output type name of the connector
+   * @return the demangled output type name for the input
+   */
+  std::string outTypeName()
+  {
+    int status;
+    char *realName = abi::__cxa_demangle(typeid(U).name(), 0, 0, &status);
+    std::string ret(realName);
+
+    free(realName);
+
+    return ret;
+
+  }
+
+  /**
+   * Gets the name of the ITask with it's pipeline ID
+   * @return  the name of the task with the pipeline ID
+   */
+  std::string getNameWithPipID() { return this->getName() + std::to_string(this->pipelineId); }
+
+  /**
+   * Gets the pipeline ID
+   * @return the pipeline id
+   */
+  int getPipelineId()
+  {
+    return this->pipelineId;
+  }
+
+  /**
    * Creates a dot notation representation for this task
    * @param input the input connector for this task
    * @param output the output connector for this task
    * @return the dot notation for the task.
    */
-  std::string getDot(std::shared_ptr<BaseConnector> input, std::shared_ptr<BaseConnector> output) {
+  std::string getDot(int flags, std::shared_ptr<BaseConnector> input, std::shared_ptr<BaseConnector> output) {
     std::string dotId = this->getDotId();
     std::ostringstream oss;
+    oss << genDot(flags, dotId, input, output);
 
-    if (memReleaser->size() > 0) {
-      for (const auto &kv : *this->memReleaser) {
-        if (this->isMemReleaserOutsideGraph(kv.first))
-        {
-          for (auto connector : *kv.second)
-          {
-            oss << dotId << " -> " << connector->getDotId() << ";" << std::endl;
+    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) == 0) {
+      if (memReleaser->size() > 0) {
+        for (const auto &kv : *this->memReleaser) {
+          if (this->isMemReleaserOutsideGraph(kv.first)) {
+            for (auto connector : *kv.second) {
+              oss << dotId << " -> " << connector->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
+            }
+          } else {
+            oss << dotId << " -> " << kv.second->at((unsigned long) this->pipelineId)->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
           }
         }
-        else {
-          oss << dotId << " -> " << kv.second->at((unsigned long) this->pipelineId)->getDotId() << ";" << std::endl;
+
+      }
+
+      if (memGetter->size() > 0) {
+        for (const auto &kv : *this->memGetter) {
+          oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << "[label=\"alloc\", color=sienna];" << std::endl;
         }
       }
-
     }
 
-    if (memGetter->size() > 0) {
-      for (const auto &kv : *this->memGetter) {
-        oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << ";" << std::endl;
-      }
-    }
-
-    oss << genDot(dotId, input, output);
     return oss.str();
   }
 
@@ -771,28 +816,46 @@ class ITask: public BaseITask {
    * @param output the output connector for this task
    * @return the dot that represents the interaction between the input/output and the internal custom dot notation
    */
-  virtual std::string genDot(std::string dotId, std::shared_ptr<BaseConnector> input, std::shared_ptr<BaseConnector> output) {
+  virtual std::string genDot(int flags, std::string dotId, std::shared_ptr<BaseConnector> input, std::shared_ptr<BaseConnector> output) {
     std::ostringstream oss;
+
     oss << input->getDotId() << " -> " << dotId << ";" << std::endl;
-    oss << input->genDot();
+    oss << input->genDot(flags);
 
     if (output != nullptr) {
       oss << dotId << " -> " << output->getDotId() << ";" << std::endl;
-      oss << output->genDot();
+      oss << output->genDot(flags);
     }
 
-    oss << genDot(dotId);
+    oss << genDot(flags, dotId);
 
     return oss.str();
   }
   /**
    * Virtual function that adds additional dot attributes to this node.
+   * @param flags the dot gen flags
+   * @param dotId the for the node in dot
    * @return the additiona dota attributes for the dot graph representation
    */
-  virtual std::string genDot(std::string dotId) {
-    return dotId + "[label=\"" + this->getName() + "\"];\n";
+  virtual std::string genDot(int flags, std::string dotId) {
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
+    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+    return dotId + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
   }
 
+#ifdef PROFILE
+  virtual std::string getDotProfile(int flags,
+                                    std::unordered_map<std::string, double> *mmap, double val,
+                                    std::string desc, std::unordered_map<std::string, std::string> *colorMap)
+  {
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
+    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+    return this->getDotId() + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\n" + desc + "\n" + std::to_string(val) + "\",shape=box,style=filled,penwidth=5,fillcolor=white,color=\""+colorMap->at(this->getNameWithPipID()) + "\",width=.2,height=.2];\n";
+  }
+  virtual void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
+  virtual void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
+  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)  {}
+#endif
 
   /**
    * Gets the id used for dot nodes.

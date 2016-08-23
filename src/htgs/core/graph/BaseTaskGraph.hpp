@@ -16,6 +16,9 @@
 #include "../task/BaseTaskScheduler.hpp"
 
 namespace htgs {
+
+
+
 /**
  * @class BaseTaskGraph BaseTaskGraph.hpp <htgs/core/graph/BaseTaskGraph.hpp>
  * @brief Creates a parent TaskGraph that removes the template arguments.
@@ -46,6 +49,18 @@ class BaseTaskGraph {
    */
   virtual void writeDotToFile(std::string file) = 0;
 
+  /**
+   * Writes the dot representation of the task graph to disk
+   * @param file the file path (will not create directories)
+   * @param dotGenFlags the various dot file generation flags to use
+   */
+  virtual void writeDotToFile(std::string file, int dotGenFlags) = 0;
+
+#ifdef PROFILE
+  virtual void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap) = 0;
+  virtual void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap) = 0;
+  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap) = 0;
+#endif
 };
 
 

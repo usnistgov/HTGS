@@ -268,6 +268,55 @@ class ExecutionPipeline: public ITask<T, U> {
     inputBk->debug();
   }
 
+#ifdef PROFILE
+  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)
+  {
+    for (auto g : *graphs)
+    {
+      g->gatherComputeTime(mmap);
+    }
+  }
+
+
+  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)
+  {
+    for (auto g : *graphs)
+    {
+      g->gatherWaitTime(mmap);
+    }
+  }
+
+  void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)
+  {
+    for (auto g : *graphs)
+    {
+      g->gatherMaxQSize(mmap);
+    }
+  }
+
+  std::string getDotProfile(int flags,
+                            std::unordered_map<std::string, double> *mmap, double val,
+                            std::string desc, std::unordered_map<std::string, std::string> *colorMap)
+  {
+    std::ostringstream oss;
+
+    if (graphs->size() > 0)
+    {
+      for (auto g : *graphs)
+      {
+        oss << g->genProfileGraph(flags, mmap, desc, colorMap);
+      }
+    }
+    else
+    {
+      oss << graph->genProfileGraph(flags, mmap, desc, colorMap);
+    }
+
+    return oss.str();
+  }
+
+#endif
+
   /**
    * Virtual function that adds additional dot attributes to this node.
    * @param idStr the id string for this task
@@ -275,11 +324,10 @@ class ExecutionPipeline: public ITask<T, U> {
    * @param outputConn the output connector for this task
    * @return the additional dot attributes for the dot graph representation
    */
-  std::string genDot(std::string idStr, std::shared_ptr<BaseConnector> inputConn, std::shared_ptr<BaseConnector> outputConn) {
+  std::string genDot(int flags, std::string idStr, std::shared_ptr<BaseConnector> inputConn, std::shared_ptr<BaseConnector> outputConn) {
     std::ostringstream oss;
 
-    oss << inputConn->genDot();
-
+    oss << inputConn->genDot(flags);
 
     // Get inputRule edge name
     std::string inputRuleNames;
@@ -319,7 +367,7 @@ class ExecutionPipeline: public ITask<T, U> {
         oss << "style=filled;" << std::endl;
         oss << "node [style=filled];";
         oss << "color=lightgrey;" << std::endl;
-        oss << g->genDotGraphContent();
+        oss << g->genDotGraphContent(flags);
         oss << "}" << std::endl;
         pipeline++;
       }
@@ -331,7 +379,7 @@ class ExecutionPipeline: public ITask<T, U> {
       oss << "node [style=filled];";
       oss << "color=lightgrey;" << std::endl;
       graph->updateGraphOutputProducers(std::dynamic_pointer_cast<Connector<U>>(outputConn), false);
-      oss << graph->genDotGraphContent();
+      oss << graph->genDotGraphContent(flags);
       oss << "}" << std::endl;
     }
 

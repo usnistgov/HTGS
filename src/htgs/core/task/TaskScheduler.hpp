@@ -77,6 +77,7 @@ class TaskScheduler: public BaseTaskScheduler {
     this->poll = false;
     this->timeout = 0L;
     this->numThreads = numThreads;
+    this->threadId = 0;
     this->isStartTask = isStartTask;
     this->inputConnector = nullptr;
     this->outputConnector = nullptr;
@@ -105,6 +106,7 @@ class TaskScheduler: public BaseTaskScheduler {
     this->poll = poll;
     this->timeout = microTimeoutTime;
     this->numThreads = numThreads;
+    this->threadId = 0;
     this->isStartTask = isStartTask;
     this->inputConnector = nullptr;
     this->outputConnector = nullptr;
@@ -134,6 +136,7 @@ class TaskScheduler: public BaseTaskScheduler {
     this->poll = poll;
     this->timeout = microTimeoutTime;
     this->numThreads = numThreads;
+    this->threadId = 0;
     this->isStartTask = isStartTask;
     this->inputConnector = nullptr;
     this->outputConnector = nullptr;
@@ -480,9 +483,23 @@ class TaskScheduler: public BaseTaskScheduler {
   /**
    * Gets the dot notation for this TaskScheduler.
    */
-  std::string getDot() {
-    return this->taskFunction->getDot(this->inputConnector, this->outputConnector);
+  std::string getDot(int flags) {
+    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
+      return this->taskFunction->getDot(flags, this->inputConnector, this->outputConnector);
+    } else if (this->threadId == 0){
+      return this->taskFunction->getDot(flags, this->inputConnector, this->outputConnector);
+    }
+    else
+    {
+      return "";
+    }
   }
+
+  /**
+   * Gets the name of the ITask with it's pipeline ID
+   * @return  the name of the task with the pipeline ID
+   */
+  std::string getNameWithPipID() { return this->taskFunction->getNameWithPipID(); }
 
   /**
    * Adds the result data to the output connector
@@ -492,6 +509,50 @@ class TaskScheduler: public BaseTaskScheduler {
     if (this->outputConnector != nullptr)
       this->outputConnector->produceData(result);
   }
+#ifdef PROFILE
+  std::string genDotProfile(int flags, std::unordered_map<std::string, double> *mmap, std::string desc,
+                            std::unordered_map<std::string, std::string> *colorMap) {
+    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
+      double val = 0.0;
+      if (desc == "Compute Time (sec): ")
+        val = this->taskComputeTime / 1000000;
+      else if (desc == "Wait Time (sec): ")
+        val = this->taskWaitTime / 1000000;
+      else if (desc == "Max Q Size: ")
+        val = this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;
+      return this->taskFunction->getDotProfile(flags, mmap, val, desc, colorMap);
+    } else if (this->threadId == 0){
+      return this->taskFunction->getDotProfile(flags, mmap, mmap->at(this->getNameWithPipID()), desc, colorMap);
+    }
+    else
+    {
+      return "";
+    }
+  }
+
+  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)
+  {
+    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskComputeTime));
+    this->taskFunction->gatherComputeTime(mmap);
+  }
+
+  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)
+  {
+    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskWaitTime));
+    this->taskFunction->gatherWaitTime(mmap);
+  }
+
+  void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)
+  {
+    if (inputConnector != nullptr)
+      mmap->insert(std::pair<std::string, int>(this->getNameWithPipID(), this->inputConnector->getMaxQueueSize()));
+    this->taskFunction->gatherMaxQSize(mmap);
+  }
+
+  long long int getComputeTime() { return taskComputeTime; }
+  long long int getWaitTime() { return taskWaitTime; }
+  int getMaxQueueSize() { return this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;}
+#endif
 
  private:
   //! @cond Doxygen_Suppress

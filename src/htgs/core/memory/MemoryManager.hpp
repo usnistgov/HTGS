@@ -216,10 +216,61 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   std::string getMemoryManagerName() { return name; }
 
   /**
+    * Gets the demangled type name of the connector
+    * @return the demangled type name
+    */
+  std::string typeName()
+  {
+    int status;
+    char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
+    std::string ret(realName);
+
+    free(realName);
+
+    return ret;
+
+  }
+
+
+  /**
    * Gets the memory manager type.
    * @return the memory manager type.
    */
   MMType getType() const { return type; }
+
+  virtual std::string genDot(int flags,
+                             std::string dotId,
+                             std::shared_ptr<BaseConnector> input,
+                             std::shared_ptr<BaseConnector> output) {
+
+    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) != 0) {
+      return "";
+    }
+
+    std::ostringstream oss;
+
+    oss << input->getDotId() << " -> " << dotId << "[color=sienna];" << std::endl;
+    oss << input->getDotId() + "[label=\"" + this->typeName() + "\",shape=box,style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
+
+    if (output != nullptr) {
+      oss << dotId << " -> " << output->getDotId() << "[color=sienna];" << std::endl;
+      oss << output->getDotId() + "[label=\""+ this->typeName() +"\",shape=box,style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
+    }
+
+    oss << dotId + "[label=\"" + this->getName() + "\",color=sienna];\n";
+
+    return oss.str();
+
+  }
+
+#ifdef PROFILE
+  std::string getDotProfile(int flags,
+                            std::unordered_map<std::string, double> *mmap, double val,
+                            std::string desc, std::unordered_map<std::string, std::string> *colorMap)
+  {
+    return "";
+  }
+#endif
 
  private:
   std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>

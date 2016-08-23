@@ -178,7 +178,7 @@ class Bookkeeper: public ITask<T, VoidData> {
   /**
    * Generates the dot notation for the bookkeeper
    */
-  std::string genDot(std::string idStr) {
+  std::string genDot(int flags, std::string idStr) {
     std::ostringstream oss;
     for (BaseRuleManager<T> *ruleMan : *ruleManagers) {
       std::ostringstream ruleManOss;
@@ -188,12 +188,22 @@ class Bookkeeper: public ITask<T, VoidData> {
       ruleManStr.erase(0, 1);
       oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getRuleNames() << "\"];" << std::endl;
     }
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName()) : "");
 
-    oss << idStr + "[label=\"Bookkeeper\"];\n";
+    oss << idStr + "[label=\"Bookkeeper" + inOutLabel + "\"];\n";
 
     return oss.str();
   }
 
+#ifdef PROFILE
+  std::string getDotProfile(int flags,
+                                    std::unordered_map<std::string, double> *mmap, double val,
+                                    std::string desc, std::unordered_map<std::string, std::string> *colorMap)
+  {
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName()) : "");
+    return this->getDotId() + "[label=\"" + "Bookkeeper" + inOutLabel + "\n" + desc + "\n" + std::to_string(val) + "\",shape=box,style=filled,fillcolor=white,penwidth=5,color=\""+colorMap->at(this->getNameWithPipID()) + "\",width=.2,height=.2];\n";
+  }
+#endif
 
  private:
   std::list<BaseRuleManager<T> *> *ruleManagers; //!< The list of ruleManagers (one per consumer)

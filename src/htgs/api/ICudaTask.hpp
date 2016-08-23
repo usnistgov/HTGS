@@ -363,6 +363,12 @@ class ICudaTask: public ITask<T, U> {
     return "Unnamed GPU ITask";
   }
 
+  virtual std::string genDot(int flags, std::string dotId) {
+    std::string inOutLabel = (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\nin: "+this->inTypeName()+"\nout: "+this->outTypeName()) : "");
+    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+    return dotId + "[label=\"" + this->getName()  + threadLabel + inOutLabel + "\",style=filled,fillcolor=forestgreen,shape=box,color=black,width=.2,height=.2];\n";
+  }
+
   /**
    * Pure virtual function that copies this ICudaTask
    * @return the copy of the ICudaTask

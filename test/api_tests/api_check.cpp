@@ -8,6 +8,7 @@
 //
 
 #include <gtest/gtest.h>
+
 #include "simpleGraphTests.h"
 #include "matrixMulGraphTests.h"
 #include "memMultiReleaseGraphTests.h"
@@ -290,5 +291,9 @@ TEST(MemReleaseOutsideGraph, GraphExecution) {
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  int ret = RUN_ALL_TESTS();
+
+  return ret;
+
 }
+

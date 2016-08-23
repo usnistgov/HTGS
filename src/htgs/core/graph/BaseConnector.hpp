@@ -140,9 +140,10 @@ class BaseConnector {
 
   /**
    * Generates the dot representation for this connector
+   * @param flags dot gen flags
    * @return the dot representation
    */
-  virtual std::string genDot() {
+  virtual std::string genDot(int flags) {
     std::cerr << "Called BaseConnector 'genDot' virtual function" << std::endl;
     throw std::bad_function_call();
   }

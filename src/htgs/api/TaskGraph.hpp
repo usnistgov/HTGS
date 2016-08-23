@@ -19,6 +19,7 @@
 #include <fstream>
 #include <cassert>
 
+#include "../core/graph/TaskGraphDotGenFlags.h"
 #include "../core/memory/VoidMemoryAllocator.hpp"
 #include "Bookkeeper.hpp"
 #include "VoidData.hpp"
@@ -414,30 +415,38 @@ class TaskGraph: public BaseTaskGraph {
    * @param file the file path (will not create directories)
    */
   void writeDotToFile(std::string file) {
+    writeDotToFile(file, 0);
+  }
+
+  void writeDotToFile(std::string file, int flags) {
     std::ofstream f(file);
-    f << genDotGraph();
+    f << genDotGraph(flags);
     f.flush();
 
     std::cout << "Writing dot file for task graph to " << file << std::endl;
   }
 
+
   /**
    * Generate the content only of the graph (excludes all graph definitions and attributes)
    */
-  std::string genDotGraphContent() {
+  std::string genDotGraphContent(int flags) {
     std::ostringstream oss;
 
     for (BaseTaskScheduler *bTask : *vertices) {
-      oss << bTask->getDot();
+      oss << bTask->getDot(flags);
     }
 
-    if (memReleaser->size() > 0) {
-      for (const auto &kv : *this->memReleaser) {
-        auto connector = kv.second->at(this->pipelineId);
-        oss << std::string("mainThread") << " -> " << connector->getDotId() << ";" << std::endl;
-      }
+    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) != 0) {
 
-      oss << "mainThread[label=\"Main Thread\"];\n";
+      if (memReleaser->size() > 0) {
+        for (const auto &kv : *this->memReleaser) {
+          auto connector = kv.second->at(this->pipelineId);
+          oss << std::string("mainThread") << " -> " << connector->getDotId() << ";" << std::endl;
+        }
+
+        oss << "mainThread[label=\"Main Thread\"];\n";
+      }
     }
 
     return oss.str();
@@ -446,7 +455,7 @@ class TaskGraph: public BaseTaskGraph {
   /**
    * Generates the dot graph as a string
    */
-  std::string genDotGraph() {
+  std::string genDotGraph(int flags) {
     std::ostringstream oss;
 
     oss << "digraph { rankdir=\"TB\"" << std::endl;
@@ -456,32 +465,223 @@ class TaskGraph: public BaseTaskGraph {
     oss << "graph [compound=true];" << std::endl;
 
     for (BaseTaskScheduler *bTask : *vertices) {
-      oss << bTask->getDot();
+      oss << bTask->getDot(flags);
     }
 
     if (this->graphInputConsumers->size() > 0)
-      oss << this->input->getDotId() << "[label=\"Graph Input\n" << this->input->getProducerCount() << "\"];" << std::endl;
+      oss << this->input->getDotId() << "[label=\"Graph Input\n" << this->input->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->input->typeName()) : "") << "\"];" << std::endl;
 
     if (this->graphOutputProducers->size() > 0)
-      oss << "{ rank = sink; " << this->output->getDotId() << "[label=\"Graph Output\n" << this->output->getProducerCount() << "\"]; }" << std::endl;
+      oss << "{ rank = sink; " << this->output->getDotId() << "[label=\"Graph Output\n" << this->output->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->output->typeName()) : "") << "\"]; }" << std::endl;
 
 
-    if (memReleaser->size() > 0) {
-      for (const auto &kv : *this->memReleaser) {
-        for (const auto &memConnector : *kv.second)
-          oss << std::string("mainThread") << " -> " << memConnector->getDotId() << ";" << std::endl;
+    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) == 0) {
+      if (memReleaser->size() > 0) {
+        for (const auto &kv : *this->memReleaser) {
+          for (const auto &memConnector : *kv.second)
+            oss << std::string("mainThread") << " -> " << memConnector->getDotId() << ";" << std::endl;
+        }
       }
     }
 
     if (oss.str().find("mainThread") != std::string::npos)
     {
-      oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = Sienna]; }\n";
+      oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = aquamarine4]; }\n";
     }
+
+
+#ifdef PROFILE
+    std::string desc = "";
+    std::unordered_map<std::string, double> *timeMap;
+    std::unordered_map<std::string, std::string> *colorMap;
+
+    if ((flags & DOTGEN_FLAG_SHOW_PROFILE_COMP_TIME) != 0)
+    {
+      desc = "Compute Time (sec): ";
+      timeMap = this->getComputeTimeAverages();
+
+    }
+    else if ((flags & DOTGEN_FLAG_SHOW_PROFILE_WAIT_TIME) != 0)
+    {
+      desc = "Wait Time (sec): ";
+      timeMap = this->getWaitTimeAverages();
+    }
+    else if ((flags & DOTGEN_FLAG_SHOW_PROFILE_MAX_Q_SZ) != 0)
+    {
+      desc = "Max Q Size";
+      timeMap = this->getMaxQSizeAverages();
+    }
+
+    if (desc != "") {
+      colorMap = this->genColorMap(timeMap);
+      oss << this->genProfileGraph(flags, timeMap, desc, colorMap);
+    }
+#endif
 
     oss << "}" << std::endl;
 
     return oss.str();
   }
+
+
+#ifdef PROFILE
+  std::unordered_map<std::string, double> *getComputeTimeAverages()
+  {
+    std::unordered_multimap<std::string, long long int> mmap;
+
+    this->gatherComputeTime(&mmap);
+
+    return computeAverages<long long int>(&mmap, 1000000.0);
+  }
+
+  std::unordered_map<std::string, double> *getWaitTimeAverages()
+  {
+    std::unordered_multimap<std::string, long long int> mmap;
+
+    this->gatherWaitTime(&mmap);
+
+    return computeAverages<long long int>(&mmap, 1000000.0);
+  }
+
+  std::unordered_map<std::string, double> *getMaxQSizeAverages()
+  {
+    std::unordered_multimap<std::string, int> mmap;
+
+    this->gatherMaxQSize(&mmap);
+
+    return computeAverages<int>(&mmap, 1.0);
+  }
+
+  template <typename Type>
+  std::unordered_map<std::string, double> *computeAverages(std::unordered_multimap<std::string, Type> *mmap, double divisor)
+  {
+    std::unordered_map<std::string, double> *ret = new std::unordered_map<std::string, double>();
+    std::string current("");
+    Type total;
+    int count = 0;
+    // Loop over each
+    for (auto v : *mmap)
+    {
+      if (current != v.first) {
+        if (count != 0)
+        {
+          double avg = (double)total / (double) count;
+          ret->insert(std::pair<std::string, double>(current, (avg/divisor)));
+        }
+        else if (current != "")
+        {
+          ret->insert(std::pair<std::string, double>(current, 0.0));
+        }
+
+        current = v.first;
+        total = 0;
+        count = 0;
+      }
+
+      if (v.second > 0) {
+        total += v.second;
+        count++;
+      }
+    }
+    return ret;
+  }
+
+  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap) {
+    for (BaseTaskScheduler *bTask : *vertices) {
+      bTask->gatherComputeTime(mmap);
+    }
+  }
+
+
+  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap) {
+    for (BaseTaskScheduler *bTask : *vertices) {
+      bTask->gatherWaitTime(mmap);
+    }
+  }
+
+  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap) {
+    for (BaseTaskScheduler *bTask : *vertices) {
+      bTask->gatherMaxQSize(mmap);
+    }
+  }
+
+  std::unordered_map<std::string, std::string> *genColorMap(std::unordered_map<std::string, double> *mmap)
+  {
+    std::unordered_map<std::string, std::string> *colorMap = new std::unordered_map<std::string, std::string>();
+
+    int rColor[10] = {0,0,0,0,85,170,255,255,255,255};
+    int gColor[10] = {0,85,170,255,255,255,255,170,85,0};
+    int bColor[10] = {255,255,255,255,170,85,0,0,0,0};
+
+    std::deque<double> vals;
+    double maxTime = 0.0;
+    double totalTime = 0.0;
+    for (auto v : *mmap)
+    {
+      if (v.second > 0) {
+        totalTime += v.second;
+      }
+
+      if (maxTime < v.second)
+        maxTime = v.second;
+    }
+
+    for (auto v : *mmap)
+    {
+      if (v.second == 0.0) {
+        colorMap->insert(std::pair<std::string, std::string>(v.first, "black"));
+        continue;
+      }
+
+      int red = 0;
+      int green = 0;
+      int blue = 0;
+
+      // compute percentage of totalTime
+      int perc = (int) (v.second / maxTime * 100.0);
+
+      if (perc % 10 != 0)
+        perc = perc + 10 - (perc % 10);
+
+      int index = (perc / 10);
+
+      if (index < 0)
+        index = 0;
+
+      if (index >= 10)
+        index = 9;
+
+      red = rColor[index];
+      green = gColor[index];
+      blue = bColor[index];
+
+      char hexcol[16];
+
+      snprintf(hexcol, sizeof(hexcol), "%02x%02x%02x", red & 0xff, green & 0xff ,blue & 0xff);
+      std::string color(hexcol);
+      color = "#" + color;
+
+      colorMap->insert(std::pair<std::string, std::string>(v.first, color));
+
+    }
+
+    return colorMap;
+  }
+
+  std::string genProfileGraph(int flags, std::unordered_map<std::string, double> *mmap, std::string desc, std::unordered_map<std::string, std::string> *colorMap) {
+    std::ostringstream oss;
+
+    for (BaseTaskScheduler *bTask : *vertices) {
+      if (mmap->find(bTask->getNameWithPipID()) == mmap->end()) {
+        continue;
+      }
+
+      oss << bTask->genDotProfile(flags, mmap, desc, colorMap);
+    }
+
+    return oss.str();
+  }
+#endif
 
   /**
    * Produces data for the input of the TaskGraph.

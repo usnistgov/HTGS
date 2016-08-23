@@ -16,6 +16,7 @@
 class BaseITask;
 
 #include <atomic>
+#include <memory>
 #include "../graph/BaseConnector.hpp"
 #include "../task/BaseITask.hpp"
 #include "../../debug/debug_message.h"
@@ -133,6 +134,14 @@ class BaseTaskScheduler {
     std::cerr << "Called BaseTaskScheduler 'getName' virtual function" << std::endl;
     throw std::bad_function_call();
   }
+  /**
+   * Gets the name of the ITask with it's pipeline ID
+   * @return  the name of the task with the pipeline ID
+   */
+  virtual std::string getNameWithPipID() {
+    std::cerr << "Called BaseTaskScheduler 'getNameWithPipID' virtual function" << std::endl;
+    throw std::bad_function_call();
+  }
 
   /**
    * Gets the ITask function associated with the Task
@@ -223,11 +232,24 @@ class BaseTaskScheduler {
 
   /**
    * Gets the dot notation for this task.
+   * @param flags gen dot flags
    */
-  virtual std::string getDot() {
+  virtual std::string getDot(int flags) {
     std::cerr << "Called BaseTaskScheduler 'getDot' virtual function" << std::endl;
     throw std::bad_function_call();
   }
+
+
+#ifdef PROFILE
+  virtual long long int getComputeTime() { return 0; }
+  virtual long long int getWaitTime() { return 0; }
+  virtual int getMaxQueueSize() { return 0;}
+  virtual void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap) {}
+  virtual void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap) {}
+  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap) {}
+  virtual std::string genDotProfile(int flags, std::unordered_map<std::string, double> *mmap, std::string desc, std::unordered_map<std::string, std::string> *colorMap) { return "";}
+#endif
+
 
 };
 
@@ -318,7 +340,6 @@ class BaseTaskSchedulerRuntimeThread {
    * finished processing its last data.
    */
   void terminate() { this->terminated = true; }
-
 
  private:
   volatile bool terminated; //!< Whether the thread is ready to be terminated or not
