@@ -515,6 +515,9 @@ class TaskGraph: public BaseTaskGraph {
     if (desc != "") {
       colorMap = this->genColorMap(timeMap);
       oss << this->genProfileGraph(flags, timeMap, desc, colorMap);
+
+      delete timeMap;
+      delete colorMap;
     }
 #endif
 
