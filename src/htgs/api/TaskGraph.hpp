@@ -560,7 +560,7 @@ class TaskGraph: public BaseTaskGraph {
   {
     std::unordered_map<std::string, double> *ret = new std::unordered_map<std::string, double>();
     std::string current("");
-    Type total;
+    Type total = 0;
     int count = 0;
     // Loop over each
     for (auto v : *mmap)
