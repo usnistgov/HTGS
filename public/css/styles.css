@@ -107,7 +107,7 @@ pre code {
 }
 .header.navbar-fixed-top .logo a {
   color: #fff;
-  background: url('HTGS-Logo-color.png');
+  background: url('HTGS-Logo-color-small.png');
 }
 .header.navbar-fixed-top .main-nav .nav .nav-item a {
   color: #666666;
@@ -119,14 +119,14 @@ pre code {
 }
 .header .logo a {
   color: #17baef;
-  background: url('HTGS-Logo-nocolor.png') no-repeat;
+  background: url('HTGS-Logo-nocolor-small.png') no-repeat;
   display: inline-block;
   width: 113px;
   height: 32px;
 }
 .header .logo a:hover {
   text-decoration: none;
-  background: url('HTGS-Logo-selected.png') no-repeat;
+  background: url('HTGS-Logo-selected-small.png') no-repeat;
 }
 .header .main-nav button {
   background: #074f66;
