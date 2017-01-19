@@ -120,7 +120,7 @@ pre code {
 .header .logo a {
   color: #17baef;
   background: url('HTGS-Logo-nocolor.png') no-repeat;
-  display: block;
+  display: inline-block;
   width: 113px;
   height: 32px;
 }
