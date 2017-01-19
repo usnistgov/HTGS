@@ -92,7 +92,7 @@ pre code {
 }
 /* ======= Header ======= */
 .header {
-  padding: 10px 0;
+  padding: 6px 0;
   background: #17baef;
   color: #fff;
   position: fixed;
@@ -115,7 +115,7 @@ pre code {
 .header .logo {
   margin: 0;
   font-size: 26px;
-  padding-top: 2px;
+  padding-top: 8px;
 }
 .header .logo a {
   color: #17baef;
