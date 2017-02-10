@@ -6,3 +6,19 @@
 install(DIRECTORY htgs
         DESTINATION include
         COMPONENT headers)
+
+
+
+if (BUILD_MAIN)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wl,--no-as-needed ${CMAKE_THREAD_LIBS_INIT}")
+
+FILE(GLOB_RECURSE INC_ALL "*.hpp" "*.h")
+find_package(Threads REQUIRED)
+link_libraries(${CMAKE_THREAD_LIBS_INIT})
+
+INCLUDE_DIRECTORIES(".")
+add_executable(main "main.cpp" ${INC_ALL})
+
+
+endif(BUILD_MAIN)
