@@ -19,11 +19,12 @@
 #include <fstream>
 #include <cassert>
 
-#include "../core/graph/TaskGraphDotGenFlags.h"
+#include "../core/graph/AnyTaskGraph.hpp"
+#include "htgs/types/TaskGraphDotGenFlags.hpp"
 #include "../core/memory/VoidMemoryAllocator.hpp"
 #include "Bookkeeper.hpp"
-#include "VoidData.hpp"
-#include "../core/task/BaseTaskScheduler.hpp"
+#include "htgs/types/VoidData.hpp"
+#include "htgs/core/task/AnyTaskScheduler.hpp"
 #include "../core/graph/BaseTaskGraph.hpp"
 #include "../core/graph/history/ProducerConsumerKey.hpp"
 #include "../core/graph/history/BookkeeperKey.hpp"
@@ -40,98 +41,98 @@ namespace htgs {
  * @typedef ConnectorMap
  * Creates a mapping between a Task and it's input Connector.
  */
-typedef std::map<BaseTaskScheduler *, std::shared_ptr<BaseConnector>> ConnectorMap;
+typedef std::map<AnyTaskScheduler *, std::shared_ptr<AnyConnector>> ConnectorMap;
 
 /**
  * @typedef ConnectorPair
  * Defines a pair to be added into a ConnectorMap.
  */
-typedef std::pair<BaseTaskScheduler *, std::shared_ptr<BaseConnector>> ConnectorPair;
+typedef std::pair<AnyTaskScheduler *, std::shared_ptr<AnyConnector>> ConnectorPair;
 
 /**
  * @typedef ITaskMap
  * Creates a mapping between an ITask and it's Task handler.
  */
-typedef std::map<BaseITask *, BaseTaskScheduler *> ITaskMap;
+typedef std::map<AnyITask *, AnyTaskScheduler *> ITaskMap;
 
 /**
  * @typedef ITaskPair
  * Defines a pair to be added into an ITaskMap
  */
-typedef std::pair<BaseITask *, BaseTaskScheduler *> ITaskPair;
+typedef std::pair<AnyITask *, AnyTaskScheduler *> ITaskPair;
 
 /**
  * @typedef RuleEdgeMap
  * Creates a mapping between two ITask's and the RuleManager that manages the rules between the two ITask's.
  * The first ITask represents the Bookkeeper, the second is the consumer ITask
  */
-typedef std::map<std::pair<BaseITask *, BaseITask *>, BaseBaseRuleManager *> RuleEdgeMap;
+typedef std::map<std::pair<AnyITask *, AnyITask *>, BaseBaseRuleManager *> RuleEdgeMap;
 
 /**
  * @typedef RuleEdgePair
  * Defines a pair to be added into a RuleEdgeMap
  */
-typedef std::pair<std::pair<BaseITask *, BaseITask *>, BaseBaseRuleManager *> RuleEdgePair;
+typedef std::pair<std::pair<AnyITask *, AnyITask *>, BaseBaseRuleManager *> RuleEdgePair;
 
 /**
  * @typedef CustomEdgeMap
  * Defines a mapping between a producer/consumer ITask and the ICustomEdge that it uses.
  */
-typedef std::map<std::pair<BaseTaskScheduler *, BaseTaskScheduler *>, ICustomEdge *> CustomEdgeMap;
+typedef std::map<std::pair<AnyTaskScheduler *, AnyTaskScheduler *>, ICustomEdge *> CustomEdgeMap;
 
 /**
  * @typedef CustomEdgePair
  * Defines a pair to be added to the CustomEdgeMap
  */
-typedef std::pair<std::pair<BaseTaskScheduler *, BaseTaskScheduler *>, ICustomEdge *> CustomEdgePair;
+typedef std::pair<std::pair<AnyTaskScheduler *, AnyTaskScheduler *>, ICustomEdge *> CustomEdgePair;
 
 /**
  * @typedef MemAllocMap
  * Defines a mapping between a BaseMemoryAllocator and its shared_ptr
  */
-typedef std::map<BaseMemoryAllocator *, std::shared_ptr<BaseMemoryAllocator>> MemAllocMap;
+typedef std::map<Any *, std::shared_ptr<Any>> MemAllocMap;
 
 /**
  * @typedef MemAllocPair;
  * Defines a pair to be added to the MemAllocMap
  */
-typedef std::pair<BaseMemoryAllocator *, std::shared_ptr<BaseMemoryAllocator>> MemAllocPair;
+typedef std::pair<Any *, std::shared_ptr<Any>> MemAllocPair;
 
 /**
  * @typedef MemManagerMap
  * Defines a mapping between the memory edge name and the memory manager that is managing that edge.
  */
-typedef std::map<std::string, BaseITask *> MemManagerMap;
+typedef std::map<std::string, AnyITask *> MemManagerMap;
 
 /**
  * @typedef MemManagerPair
  * Defines a pair to be added to the MemManagerMap
  */
-typedef std::pair<std::string, BaseITask *> MemManagerPair;
+typedef std::pair<std::string, AnyITask *> MemManagerPair;
 
 /**
  * @typedef MemGetterMap
  * Defines a mapping between the memory getter BaseITask and the MemManagerMap
  */
-typedef std::map<BaseITask *, MemManagerMap *> MemGetterMap;
+typedef std::map<AnyITask *, MemManagerMap *> MemGetterMap;
 
 /**
  * @typedef MemGetterPair
  * Defines a pair to be added to the MemGetterMap
  */
-typedef std::pair<BaseITask *, MemManagerMap *> MemGetterPair;
+typedef std::pair<AnyITask *, MemManagerMap *> MemGetterPair;
 
 /**
  * @typedef IRuleMap
  * Defines a mapping between an IRule pointer and the shared pointer of that IRule
  */
-typedef std::map<BaseIRule *, std::shared_ptr<BaseIRule>> IRuleMap;
+typedef std::map<AnyIRule *, std::shared_ptr<AnyIRule>> IRuleMap;
 
 /**
  * @typedef IRulePair
  * Defines a pair to be added to the IRuleMap
  */
-typedef std::pair<BaseIRule *, std::shared_ptr<BaseIRule>> IRulePair;
+typedef std::pair<AnyIRule *, std::shared_ptr<AnyIRule>> IRulePair;
 
  /**
  * Structure that compares a custom edge pair
@@ -249,7 +250,7 @@ struct CustomEdgeComparator
  * @tparam U the output data type for the TaskGraph, U must derive from IData.
  */
 template<class T, class U>
-class TaskGraph: public BaseTaskGraph {
+class TaskGraph: public AnyTaskGraph {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -263,11 +264,11 @@ class TaskGraph: public BaseTaskGraph {
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
     this->pipelineId = 0;
 
-    graphInputConsumers = new std::list<BaseTaskScheduler *>();
-    graphOutputProducers = new std::list<BaseTaskScheduler *>();
+    graphInputConsumers = new std::list<AnyTaskScheduler *>();
+    graphOutputProducers = new std::list<AnyTaskScheduler *>();
 
-    edges = new std::list<std::shared_ptr<BaseConnector>>();
-    vertices = new std::list<BaseTaskScheduler *>();
+    edges = new std::list<std::shared_ptr<AnyConnector>>();
+    vertices = new std::list<AnyTaskScheduler *>();
 
     producerConsumerKeys = new std::list<ProducerConsumerKey *>();
     bookkeeperKeys = new std::list<BookkeeperKey *>();
@@ -287,7 +288,7 @@ class TaskGraph: public BaseTaskGraph {
 
     iRuleMap = new IRuleMap();
 
-    memReleaser = std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> >> (new std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> >());
+    memReleaser = std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> (new std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >());
     mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
   }
 
@@ -301,11 +302,11 @@ class TaskGraph: public BaseTaskGraph {
     this->output = output;
     this->pipelineId = 0;
 
-    graphInputConsumers = new std::list<BaseTaskScheduler *>();
-    graphOutputProducers = new std::list<BaseTaskScheduler *>();
+    graphInputConsumers = new std::list<AnyTaskScheduler *>();
+    graphOutputProducers = new std::list<AnyTaskScheduler *>();
 
-    edges = new std::list<std::shared_ptr<BaseConnector>>();
-    vertices = new std::list<BaseTaskScheduler *>();
+    edges = new std::list<std::shared_ptr<AnyConnector>>();
+    vertices = new std::list<AnyTaskScheduler *>();
 
     producerConsumerKeys = new std::list<ProducerConsumerKey *>();
     bookkeeperKeys = new std::list<BookkeeperKey *>();
@@ -325,7 +326,7 @@ class TaskGraph: public BaseTaskGraph {
 
     iRuleMap = new IRuleMap();
 
-    memReleaser = std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> >> (new std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> >());
+    memReleaser = std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> (new std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >());
     mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
   }
 
@@ -334,7 +335,7 @@ class TaskGraph: public BaseTaskGraph {
    */
   ~TaskGraph() {
     // ONLY release memory for things inside graph (edges/vertices)
-    for (BaseTaskScheduler *task : *vertices) {
+    for (AnyTaskScheduler *task : *vertices) {
       if (task != nullptr) {
         delete task;
         task = nullptr;
@@ -433,7 +434,7 @@ class TaskGraph: public BaseTaskGraph {
   std::string genDotGraphContent(int flags) {
     std::ostringstream oss;
 
-    for (BaseTaskScheduler *bTask : *vertices) {
+    for (AnyTaskScheduler *bTask : *vertices) {
       oss << bTask->getDot(flags);
     }
 
@@ -464,7 +465,7 @@ class TaskGraph: public BaseTaskGraph {
     oss << "edge[fontsize=10, fontname=\"Verdana\"];" << std::endl;
     oss << "graph [compound=true];" << std::endl;
 
-    for (BaseTaskScheduler *bTask : *vertices) {
+    for (AnyTaskScheduler *bTask : *vertices) {
       oss << bTask->getDot(flags);
     }
 
@@ -590,20 +591,20 @@ class TaskGraph: public BaseTaskGraph {
   }
 
   void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap) {
-    for (BaseTaskScheduler *bTask : *vertices) {
+    for (AnyTaskScheduler *bTask : *vertices) {
       bTask->gatherComputeTime(mmap);
     }
   }
 
 
   void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap) {
-    for (BaseTaskScheduler *bTask : *vertices) {
+    for (AnyTaskScheduler *bTask : *vertices) {
       bTask->gatherWaitTime(mmap);
     }
   }
 
   virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap) {
-    for (BaseTaskScheduler *bTask : *vertices) {
+    for (AnyTaskScheduler *bTask : *vertices) {
       bTask->gatherMaxQSize(mmap);
     }
   }
@@ -674,7 +675,7 @@ class TaskGraph: public BaseTaskGraph {
   std::string genProfileGraph(int flags, std::unordered_map<std::string, double> *mmap, std::string desc, std::unordered_map<std::string, std::string> *colorMap) {
     std::ostringstream oss;
 
-    for (BaseTaskScheduler *bTask : *vertices) {
+    for (AnyTaskScheduler *bTask : *vertices) {
       if (mmap->find(bTask->getNameWithPipID()) == mmap->end()) {
         continue;
       }
@@ -761,7 +762,7 @@ class TaskGraph: public BaseTaskGraph {
    * @note This function should only be called by the HTGS API
    */
   void updateGraphInputConsumers(std::shared_ptr<Connector<T>> connector) {
-    for (BaseTaskScheduler *bs : *this->graphInputConsumers) {
+    for (AnyTaskScheduler *bs : *this->graphInputConsumers) {
       bs->setInputConnector(connector);
     }
 
@@ -777,7 +778,7 @@ class TaskGraph: public BaseTaskGraph {
    * @note This function should only be called by the HTGS API
    */
   void updateGraphOutputProducers(std::shared_ptr<Connector<U>> connector, bool increment) {
-    for (BaseTaskScheduler *bs : *this->graphOutputProducers) {
+    for (AnyTaskScheduler *bs : *this->graphOutputProducers) {
       bs->setOutputConnector(connector);
       if (increment)
           connector->incrementInputTaskCount();
@@ -790,7 +791,7 @@ class TaskGraph: public BaseTaskGraph {
    * Gets the output producers associated with this TaskGraph
    * @return the output producers for the TaskGraph
    */
-  std::list<BaseTaskScheduler *> *getOutputProducers() {
+  std::list<AnyTaskScheduler *> *getOutputProducers() {
     return this->graphOutputProducers;
   }
 
@@ -849,25 +850,25 @@ class TaskGraph: public BaseTaskGraph {
     graphCopy->setMemReleaser(this->memReleaser);
     graphCopy->setPipelineId(pipelineId);
 
-    std::map<BaseTaskScheduler *, BaseTaskScheduler *> copyMap;
-    std::map<BaseITask *, BaseITask *> copyITaskMap;
+    std::map<AnyTaskScheduler *, AnyTaskScheduler *> copyMap;
+    std::map<AnyITask *, AnyITask *> copyITaskMap;
 
     // Create a clone map to lookup pointers
-    for (BaseTaskScheduler *task : *this->vertices) {
-      BaseTaskScheduler *taskCopy = task->copy(false);
+    for (AnyTaskScheduler *task : *this->vertices) {
+      AnyTaskScheduler *taskCopy = task->copy(false);
       taskCopy->setPipelineId(pipelineId);
       taskCopy->setNumPipelines(numPipelines);
-      copyMap.insert(std::pair<BaseTaskScheduler *, BaseTaskScheduler *>(task, taskCopy));
-      copyITaskMap.insert(std::pair<BaseITask *, BaseITask *>(task->getTaskFunction(), taskCopy->getTaskFunction()));
+      copyMap.insert(std::pair<AnyTaskScheduler *, AnyTaskScheduler *>(task, taskCopy));
+      copyITaskMap.insert(std::pair<AnyITask *, AnyITask *>(task->getTaskFunction(), taskCopy->getTaskFunction()));
     }
 
     // Copy producer consumers
     for (ProducerConsumerKey *prConKey : *this->producerConsumerKeys) {
-      BaseTaskScheduler *producer = prConKey->getProducer();
-      BaseTaskScheduler *consumer = prConKey->getConsumer();
+      AnyTaskScheduler *producer = prConKey->getProducer();
+      AnyTaskScheduler *consumer = prConKey->getConsumer();
 
-      BaseTaskScheduler *producerCopy = copyMap.find(producer)->second;
-      BaseTaskScheduler *consumerCopy = copyMap.find(consumer)->second;
+      AnyTaskScheduler *producerCopy = copyMap.find(producer)->second;
+      AnyTaskScheduler *consumerCopy = copyMap.find(consumer)->second;
 
       graphCopy->addEdge(producerCopy, consumerCopy, producer->getOutputBaseConnector());
 
@@ -876,14 +877,14 @@ class TaskGraph: public BaseTaskGraph {
 
     // Copy bookkeepers
     for (BookkeeperKey *bkKey : *this->bookkeeperKeys) {
-      BaseTaskScheduler *bkTask = bkKey->getBkTask();
+      AnyTaskScheduler *bkTask = bkKey->getBkTask();
       BaseBaseRuleManager *ruleMan = bkKey->getRuleMan();
-      BaseTaskScheduler *outputTask = bkKey->getOutputTask();
+      AnyTaskScheduler *outputTask = bkKey->getOutputTask();
 
-      BaseTaskScheduler *outputTaskCopy = copyMap.find(outputTask)->second;
-      BaseTaskScheduler *bkTaskCopy = copyMap.find(bkTask)->second;
+      AnyTaskScheduler *outputTaskCopy = copyMap.find(outputTask)->second;
+      AnyTaskScheduler *bkTaskCopy = copyMap.find(bkTask)->second;
       BaseBaseRuleManager *ruleManCopy = ruleMan->copy();
-      BaseITask *bkITask = bkTaskCopy->getTaskFunction();
+      AnyITask *bkITask = bkTaskCopy->getTaskFunction();
 
       graphCopy->addRuleManager(bkTaskCopy, bkITask, ruleManCopy, outputTaskCopy, ruleMan->getConnector());
 
@@ -892,14 +893,14 @@ class TaskGraph: public BaseTaskGraph {
     }
 
     for (CustomEdgePair cep : *customEdgeList) {
-      BaseTaskScheduler *producerTask = cep.first.first;
-      BaseTaskScheduler *consumerTask = cep.first.second;
+      AnyTaskScheduler *producerTask = cep.first.first;
+      AnyTaskScheduler *consumerTask = cep.first.second;
 
       ICustomEdge *customEdge = cep.second;
 
       // Find copy
-      BaseTaskScheduler *producerTaskCopy = copyMap.find(producerTask)->second;
-      BaseTaskScheduler *consumerTaskCopy = copyMap.find(consumerTask)->second;
+      AnyTaskScheduler *producerTaskCopy = copyMap.find(producerTask)->second;
+      AnyTaskScheduler *consumerTaskCopy = copyMap.find(consumerTask)->second;
 
       ICustomEdge *customEdgeCopy = customEdge->copy();
 
@@ -908,31 +909,31 @@ class TaskGraph: public BaseTaskGraph {
 
 
     // Copy graph input consumers
-    for (BaseTaskScheduler *task : *this->graphInputConsumers) {
-      BaseTaskScheduler *taskCopy = copyMap.find(task)->second;
+    for (AnyTaskScheduler *task : *this->graphInputConsumers) {
+      AnyTaskScheduler *taskCopy = copyMap.find(task)->second;
       graphCopy->addGraphInputConsumer(taskCopy);
     }
 
     // Copy graph output producers
-    for (BaseTaskScheduler *task : *this->graphOutputProducers) {
-      BaseTaskScheduler *taskCopy = copyMap.find(task)->second;
+    for (AnyTaskScheduler *task : *this->graphOutputProducers) {
+      AnyTaskScheduler *taskCopy = copyMap.find(task)->second;
       graphCopy->addGraphOutputProducer(taskCopy);
     }
 
     // Copy memory managers
     for (MemoryManagerKey *mmKey : *this->memoryManagerKeys) {
       std::string name = mmKey->getName();
-      BaseITask *memGetter = mmKey->getMemGetter();
-      BaseITask *memReleaser = mmKey->getMemReleaser();
-      BaseTaskScheduler *memTask = mmKey->getMemTask();
+      AnyITask *memGetter = mmKey->getMemGetter();
+      AnyITask *memReleaser = mmKey->getMemReleaser();
+      AnyTaskScheduler *memTask = mmKey->getMemTask();
 
-      BaseITask *memGetterCopy = nullptr;
+      AnyITask *memGetterCopy = nullptr;
       if (copyITaskMap.find(memGetter) != copyITaskMap.end())
         memGetterCopy = copyITaskMap.find(memGetter)->second;
       else
         memGetterCopy = memGetter;
 
-      BaseITask *memReleaserCopy = nullptr;
+      AnyITask *memReleaserCopy = nullptr;
       if (memReleaser != nullptr) {
         if (copyITaskMap.find(memReleaser) != copyITaskMap.end())
           memReleaserCopy = copyITaskMap.find(memReleaser)->second;
@@ -941,7 +942,7 @@ class TaskGraph: public BaseTaskGraph {
       }
 
 
-      BaseTaskScheduler *memTaskCopy = copyMap.find(memTask)->second;
+      AnyTaskScheduler *memTaskCopy = copyMap.find(memTask)->second;
 
 
       if (memReleaserCopy == nullptr)
@@ -1003,7 +1004,7 @@ class TaskGraph: public BaseTaskGraph {
    * @param customEdge the custom edge to be added
    */
   void addCustomEdge(ICustomEdge *customEdge) {
-    BaseTaskScheduler *producerTask = nullptr;
+    AnyTaskScheduler *producerTask = nullptr;
 
     if (this->iTaskMap->find(customEdge->getProducerITask()) != this->iTaskMap->end()) {
       producerTask = this->iTaskMap->find(customEdge->getProducerITask())->second;
@@ -1021,7 +1022,7 @@ class TaskGraph: public BaseTaskGraph {
       this->iTaskMap->insert(ITaskPair(customEdge->getProducerITask(), producerTask));
     }
 
-    BaseTaskScheduler *consumerTask = nullptr;
+    AnyTaskScheduler *consumerTask = nullptr;
     if (this->iTaskMap->find(customEdge->getConsumerITask()) != this->iTaskMap->end()) {
       consumerTask = this->iTaskMap->find(customEdge->getConsumerITask())->second;
     }
@@ -1038,18 +1039,18 @@ class TaskGraph: public BaseTaskGraph {
       this->iTaskMap->insert(ITaskPair(customEdge->getConsumerITask(), consumerTask));
     }
 
-    std::shared_ptr<BaseConnector> connector = nullptr;
+    std::shared_ptr<AnyConnector> connector = nullptr;
     if (customEdge->useConnector()) {
       if (consumerTaskConnectorMap->find(consumerTask) != this->consumerTaskConnectorMap->end()) {
         connector = this->consumerTaskConnectorMap->find(consumerTask)->second;
       }
       else {
-        connector = std::shared_ptr<BaseConnector>(customEdge->createConnector());
+        connector = std::shared_ptr<AnyConnector>(customEdge->createConnector());
         consumerTaskConnectorMap->insert(ConnectorPair(consumerTask, connector));
       }
     }
 
-    std::pair<BaseTaskScheduler *, BaseTaskScheduler *> prodConsPair(producerTask, consumerTask);
+    std::pair<AnyTaskScheduler *, AnyTaskScheduler *> prodConsPair(producerTask, consumerTask);
 
     CustomEdgePair testPair(prodConsPair, customEdge);
     auto i = std::find_if(customEdgeList->begin(), customEdgeList->end(), CustomEdgeComparator(testPair));
@@ -1076,7 +1077,7 @@ class TaskGraph: public BaseTaskGraph {
    * @tparam V the type of memory; i.e., 'double *'
    */
   template <class V>
-  void addMemoryManagerEdge(BaseITask *memGetter, BaseITask *memReleaser, MemoryManager<V> *memoryManager, bool ignoreMemGetterErrors)
+  void addMemoryManagerEdge(AnyITask *memGetter, AnyITask *memReleaser, MemoryManager<V> *memoryManager, bool ignoreMemGetterErrors)
   {
     // Check if the Memory Manager task exists or not
     // If it does then get that task and do not create connectors
@@ -1115,7 +1116,7 @@ class TaskGraph: public BaseTaskGraph {
    * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
    */
   template <class V>
-  void addCudaMemoryManagerEdge(std::string name, BaseITask *memGetter, BaseITask *memReleaser,
+  void addCudaMemoryManagerEdge(std::string name, AnyITask *memGetter, AnyITask *memReleaser,
           IMemoryAllocator<V> *allocator, int memoryPoolSize, MMType type, CUcontext * contexts) {
 
       if (!hasITask(memGetter)) {
@@ -1141,8 +1142,8 @@ class TaskGraph: public BaseTaskGraph {
    * @param memoryPoolSize the size of the memory pool
    */
   void addUserManagedMemoryManagerEdge(std::string name,
-                                       BaseITask *memGetter,
-                                       BaseITask *memReleaser,
+                                       AnyITask *memGetter,
+                                       AnyITask *memReleaser,
                                        int memoryPoolSize) {
     addMemoryManagerEdge(name, memGetter, memReleaser, new VoidMemoryAllocator(), memoryPoolSize, MMType::UserManaged);
   }
@@ -1159,7 +1160,7 @@ class TaskGraph: public BaseTaskGraph {
    * @tparam V the type of memory; i.e., 'double *'
    */
   template<class V>
-  void addMemoryManagerEdge(std::string name, BaseITask *memGetter, BaseITask *memReleaser,
+  void addMemoryManagerEdge(std::string name, AnyITask *memGetter, AnyITask *memReleaser,
                             IMemoryAllocator<V> *allocator, int memoryPoolSize, MMType type) {
 
     if (!hasITask(memGetter)) {
@@ -1187,7 +1188,7 @@ class TaskGraph: public BaseTaskGraph {
   * @param memoryPoolSize the size of the memory pool
   */
   void addGraphUserManagedMemoryManagerEdge(std::string name,
-                                       BaseITask *memGetter,
+                                       AnyITask *memGetter,
                                        int memoryPoolSize) {
     addGraphMemoryManagerEdge(name, memGetter, new VoidMemoryAllocator(), memoryPoolSize, MMType::UserManaged);
   }
@@ -1204,7 +1205,7 @@ class TaskGraph: public BaseTaskGraph {
    * @tparam V the type of memory; i.e., 'double *'
    */
   template <class V>
-  void addGraphMemoryManagerEdge(std::string name, BaseITask *memGetter,
+  void addGraphMemoryManagerEdge(std::string name, AnyITask *memGetter,
                                  IMemoryAllocator<V> *allocator, int memoryPoolSize, MMType type)
   {
     if (!hasITask(memGetter)) {
@@ -1228,17 +1229,17 @@ class TaskGraph: public BaseTaskGraph {
         " at connector " <<
         memTask->getInputBaseConnector());
 
-    std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> vector;
+    std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> vector;
 
     if (hasMemReleaser(name))
       vector = memReleaser->find(name)->second;
     else
-      vector = std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>(new std::vector<std::shared_ptr<BaseConnector>>());
+      vector = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
 
     vector->push_back(memTask->getInputBaseConnector());
 
     mmTypeMap->insert(std::pair<std::string, MMType>(name, type));
-    memReleaser->insert(std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>>(name, vector));
+    memReleaser->insert(std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>>(name, vector));
 
     memTask->getInputBaseConnector()->incrementInputTaskCount();
 
@@ -1272,7 +1273,7 @@ class TaskGraph: public BaseTaskGraph {
   void memRelease(std::string name, std::shared_ptr<MemoryData<V>> memory) {
     assert(this->mmTypeMap->find(name)->second == MMType::Static
                || this->mmTypeMap->find(name)->second == MMType::Dynamic);
-    std::shared_ptr<BaseConnector> conn = memReleaser->find(name)->second->at((unsigned long) memory->getPipelineId());
+    std::shared_ptr<AnyConnector> conn = memReleaser->find(name)->second->at((unsigned long) memory->getPipelineId());
     std::shared_ptr<Connector<MemoryData<V>>> connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
     connector->produceData(memory);
   }
@@ -1291,7 +1292,7 @@ class TaskGraph: public BaseTaskGraph {
     std::shared_ptr<MemoryData<void *>> memory(new MemoryData<void *>(nullptr));
     memory->setPipelineId(pipelineId);
 
-    std::shared_ptr<BaseConnector> conn = memReleaser->find(name)->second->at((unsigned long) memory->getPipelineId());
+    std::shared_ptr<AnyConnector> conn = memReleaser->find(name)->second->at((unsigned long) memory->getPipelineId());
     std::shared_ptr<Connector<MemoryData<void *>>> connector = std::dynamic_pointer_cast<Connector<MemoryData<void *>>>(conn);
     connector->produceData(memory);
   }
@@ -1306,10 +1307,10 @@ class TaskGraph: public BaseTaskGraph {
   {
     DEBUG("TaskGraph" << " Shutting down " << memReleaser->size() <<
         " memory releasers");
-    for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> > pair : *this->memReleaser) {
+    for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> > pair : *this->memReleaser) {
       DEBUG("TaskGraph " << " Shutting down memory releaser : " <<
           pair.first << " with " << pair.second->size() << " connectors");
-      for (std::shared_ptr<BaseConnector> connector : *pair.second)
+      for (std::shared_ptr<AnyConnector> connector : *pair.second)
       {
         connector->producerFinished();
 
@@ -1325,7 +1326,7 @@ class TaskGraph: public BaseTaskGraph {
    * Gets the edges (Connector) associated with the TaskGraph
    * @return the list of connectors
    */
-  std::list<std::shared_ptr<BaseConnector>> *getEdges() const {
+  std::list<std::shared_ptr<AnyConnector>> *getEdges() const {
     return this->edges;
   }
 
@@ -1333,7 +1334,7 @@ class TaskGraph: public BaseTaskGraph {
    * Gets the vertices (BaseTaskScheduler) associated with the TaskGraph
    * @return the list of tasks
    */
-  std::list<BaseTaskScheduler *> *getVertices() const {
+  std::list<AnyTaskScheduler *> *getVertices() const {
     return this->vertices;
   }
 
@@ -1341,7 +1342,7 @@ class TaskGraph: public BaseTaskGraph {
    * Pure virtual function to add a copy of a TaskScheduler into the TaskGraph.
    * @param taskCopy the task that was copied.
    */
-  void addTaskCopy(BaseTaskScheduler *taskCopy)
+  void addTaskCopy(AnyTaskScheduler *taskCopy)
   {
     if (std::find(vertices->begin(), vertices->end(), taskCopy) == vertices->end()) {
       this->vertices->push_back(taskCopy);
@@ -1358,11 +1359,11 @@ class TaskGraph: public BaseTaskGraph {
     DEBUG("TaskGraph -- num vertices: " << vertices->size() << " num edges: " << edges->size() <<
         " -- DETAILS:");
 
-    for (BaseTaskScheduler *t : *vertices) {
+    for (AnyTaskScheduler *t : *vertices) {
       t->debug();
     }
 
-    for (std::shared_ptr<BaseConnector> c : *edges) {
+    for (std::shared_ptr<AnyConnector> c : *edges) {
       DEBUG("Connector: " << c << " total producers: " << c->getProducerCount());
     }
 
@@ -1391,7 +1392,7 @@ class TaskGraph: public BaseTaskGraph {
    * @note This function should only be called by the HTGS API
    */
   void updateIdAndNumPipelines(int pipelineId, int numPipelines) {
-    for (BaseTaskScheduler *t : *this->vertices) {
+    for (AnyTaskScheduler *t : *this->vertices) {
       t->setPipelineId(pipelineId);
       t->setNumPipelines(numPipelines);
       t->addPipelineConnector(pipelineId);
@@ -1423,7 +1424,7 @@ class TaskGraph: public BaseTaskGraph {
    * Sets the memory releaser mapping
    * @param memReleaser the memory releaser map
    */
-  void setMemReleaser(std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> >> memReleaser) {
+  void setMemReleaser(std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> memReleaser) {
     this->memReleaser = memReleaser;
   }
 
@@ -1486,7 +1487,7 @@ class TaskGraph: public BaseTaskGraph {
     updateGraphHistory(bkTask, false, false);
     updateGraphHistory(consumerTask, true, false);
 
-    std::pair<BaseITask *, BaseITask *> ruleEdge(bk, consumerTask->getTaskFunction());
+    std::pair<AnyITask *, AnyITask *> ruleEdge(bk, consumerTask->getTaskFunction());
     if (this->ruleEdgeMap->find(ruleEdge) == this->ruleEdgeMap->end()) {
       this->ruleEdgeMap->insert(RuleEdgePair(ruleEdge, ruleMan));
     }
@@ -1495,20 +1496,20 @@ class TaskGraph: public BaseTaskGraph {
   }
 
 
-  void addCustomEdge(BaseTaskScheduler *producerTask, BaseTaskScheduler *consumerTask, ICustomEdge *customEdge, int pipelineId) {
+  void addCustomEdge(AnyTaskScheduler *producerTask, AnyTaskScheduler *consumerTask, ICustomEdge *customEdge, int pipelineId) {
 
-    std::shared_ptr<BaseConnector> connector = nullptr;
+    std::shared_ptr<AnyConnector> connector = nullptr;
     if (customEdge->useConnector()) {
       if (consumerTaskConnectorMap->find(consumerTask) != this->consumerTaskConnectorMap->end()) {
         connector = this->consumerTaskConnectorMap->find(consumerTask)->second;
       }
       else {
-        connector = std::shared_ptr<BaseConnector>(customEdge->createConnector());
+        connector = std::shared_ptr<AnyConnector>(customEdge->createConnector());
         consumerTaskConnectorMap->insert(ConnectorPair(consumerTask, connector));
       }
     }
 
-    std::pair<BaseTaskScheduler *, BaseTaskScheduler *> prodConsPair(producerTask, consumerTask);
+    std::pair<AnyTaskScheduler *, AnyTaskScheduler *> prodConsPair(producerTask, consumerTask);
     CustomEdgePair testPair(prodConsPair, customEdge);
     auto i = std::find_if(customEdgeList->begin(), customEdgeList->end(), CustomEdgeComparator(testPair));
 
@@ -1521,7 +1522,7 @@ class TaskGraph: public BaseTaskGraph {
     updateGraphHistory(consumerTask, customEdge->useConnector(), false);
   }
 
-  void addGraphInputConsumer(BaseTaskScheduler *task) {
+  void addGraphInputConsumer(AnyTaskScheduler *task) {
     DEBUG_VERBOSE("Adding task graph input consumer: " << task << " to input connector " << this->input);
 
     std::shared_ptr<Connector<T>> connector;
@@ -1544,7 +1545,7 @@ class TaskGraph: public BaseTaskGraph {
     updateGraphHistory(task, true, false);
   }
 
-  void addGraphOutputProducer(BaseTaskScheduler *task) {
+  void addGraphOutputProducer(AnyTaskScheduler *task) {
     DEBUG_VERBOSE("Adding task graph output producer: " << task << " to output connector " << this->output);
 
     task->setOutputConnector(output);
@@ -1555,8 +1556,8 @@ class TaskGraph: public BaseTaskGraph {
     updateGraphHistory(task, false, true);
   }
 
-  void addGraphMemoryManagerEdge(std::string name, BaseITask *memGetter, BaseTaskScheduler *memTask,
-                                 std::shared_ptr<BaseConnector> connector, MMType type)
+  void addGraphMemoryManagerEdge(std::string name, AnyITask *memGetter, AnyTaskScheduler *memTask,
+                                 std::shared_ptr<AnyConnector> connector, MMType type)
   {
     // Check to make sure the memory edge's memgetter is already in the graph
     if (!hasITask(memGetter)) {
@@ -1565,13 +1566,13 @@ class TaskGraph: public BaseTaskGraph {
       throw std::invalid_argument("Must add iTask to graph before adding to memory edge");
     }
 
-    std::shared_ptr<BaseConnector> inputConnector;
-    std::shared_ptr<BaseConnector> outputConnector;
+    std::shared_ptr<AnyConnector> inputConnector;
+    std::shared_ptr<AnyConnector> outputConnector;
 
     // If the memManager is not in this graph, then create a new one and update the memTask
     if (std::find(this->vertices->begin(), this->vertices->end(), memTask) == this->vertices->end()) {
-      inputConnector = std::shared_ptr<BaseConnector>(connector->copy());
-      outputConnector = std::shared_ptr<BaseConnector>(connector->copy());
+      inputConnector = std::shared_ptr<AnyConnector>(connector->copy());
+      outputConnector = std::shared_ptr<AnyConnector>(connector->copy());
 
       memTask->setInputConnector(inputConnector);
       memTask->setOutputConnector(outputConnector);
@@ -1592,19 +1593,19 @@ class TaskGraph: public BaseTaskGraph {
     DEBUG("Adding memory releaser " << name << " to " << "TaskGraph"<< " " << memReleaser <<
         " at connector " << memTask->getInputBaseConnector());
 
-    std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> vector;
+    std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> vector;
 
     // Get the vector of connectors for the given edge name (1 pipeline per vector element)
     if (hasMemReleaser(name))
       vector = memReleaser->find(name)->second;
     else
-      vector = std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>(new std::vector<std::shared_ptr<BaseConnector>>());
+      vector = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
 
     // Add the connector
     vector->push_back(memTask->getInputBaseConnector());
 
     mmTypeMap->insert(std::pair<std::string, MMType>(name, type));
-    memReleaser->insert(std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>>(name, vector));
+    memReleaser->insert(std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>>(name, vector));
 
     inputConnector->incrementInputTaskCount();
 
@@ -1613,20 +1614,20 @@ class TaskGraph: public BaseTaskGraph {
     this->memoryManagerKeys->push_back(new MemoryManagerKey(name, memGetter, nullptr, memTask, type, false));
   }
 
-  void addMemoryManagerEdge(std::string name, BaseITask *memGetter, BaseITask *memReleaser, BaseTaskScheduler *memTask,
-                            std::shared_ptr<BaseConnector> connector, MMType type, bool isReleaserOutsideGraph) {
+  void addMemoryManagerEdge(std::string name, AnyITask *memGetter, AnyITask *memReleaser, AnyTaskScheduler *memTask,
+                            std::shared_ptr<AnyConnector> connector, MMType type, bool isReleaserOutsideGraph) {
     if (!hasITask(memGetter)) {
       std::cerr << " Must add iTask " << memGetter->getName() << " to graph before adding it as a memory edge"
           << std::endl;
       throw std::invalid_argument("Must add iTask to graph before adding as memory edge");
     }
-    std::shared_ptr<BaseConnector> inputConnector;
-    std::shared_ptr<BaseConnector> outputConnector;
+    std::shared_ptr<AnyConnector> inputConnector;
+    std::shared_ptr<AnyConnector> outputConnector;
 
     // If the memManager is not in this graph, then create a new one and update the memTask
     if (std::find(this->vertices->begin(), this->vertices->end(), memTask) == this->vertices->end()) {
-      inputConnector = std::shared_ptr<BaseConnector>(connector->copy());
-      outputConnector = std::shared_ptr<BaseConnector>(connector->copy());
+      inputConnector = std::shared_ptr<AnyConnector>(connector->copy());
+      outputConnector = std::shared_ptr<AnyConnector>(connector->copy());
 
       memTask->setInputConnector(inputConnector);
       memTask->setOutputConnector(outputConnector);
@@ -1656,21 +1657,21 @@ class TaskGraph: public BaseTaskGraph {
     this->memoryManagerKeys->push_back(new MemoryManagerKey(name, memGetter, memReleaser, memTask, type, isReleaserOutsideGraph));
   }
 
-  void addRuleManager(BaseTaskScheduler *bkTask,
-                      BaseITask *bk,
+  void addRuleManager(AnyTaskScheduler *bkTask,
+                      AnyITask *bk,
                       BaseBaseRuleManager *ruleMan,
-                      BaseTaskScheduler *consumerTask,
-                      std::shared_ptr<BaseConnector> origConnector) {
+                      AnyTaskScheduler *consumerTask,
+                      std::shared_ptr<AnyConnector> origConnector) {
     // Add rule to bookkeeper
     bk->addRuleManager(ruleMan);
 
-    std::shared_ptr<BaseConnector> connector;
+    std::shared_ptr<AnyConnector> connector;
     if (consumerTaskConnectorMap->find(consumerTask) != this->consumerTaskConnectorMap->end()) {
       connector = this->consumerTaskConnectorMap->find(consumerTask)->second;
       ruleMan->setOutputConnector(connector);
     }
     else {
-      connector = std::shared_ptr<BaseConnector>(origConnector->copy());
+      connector = std::shared_ptr<AnyConnector>(origConnector->copy());
       ruleMan->setOutputConnector(connector);
 
       consumerTask->setInputConnector(connector);
@@ -1683,8 +1684,8 @@ class TaskGraph: public BaseTaskGraph {
   }
 
 
-  void addEdge(BaseTaskScheduler *producer, BaseTaskScheduler *consumer, std::shared_ptr<BaseConnector> origConnector) {
-    std::shared_ptr<BaseConnector> connector;
+  void addEdge(AnyTaskScheduler *producer, AnyTaskScheduler *consumer, std::shared_ptr<AnyConnector> origConnector) {
+    std::shared_ptr<AnyConnector> connector;
 
     if (this->consumerTaskConnectorMap->find(consumer) != this->consumerTaskConnectorMap->end()) {
       connector = this->consumerTaskConnectorMap->find(consumer)->second;
@@ -1695,7 +1696,7 @@ class TaskGraph: public BaseTaskGraph {
       this->consumerTaskConnectorMap->insert(ConnectorPair(consumer, connector));
     }
     else {
-      connector = std::shared_ptr<BaseConnector>(origConnector->copy());
+      connector = std::shared_ptr<AnyConnector>(origConnector->copy());
 
       producer->setOutputConnector(connector);
       consumer->setInputConnector(connector);
@@ -1710,7 +1711,7 @@ class TaskGraph: public BaseTaskGraph {
     this->producerConsumerKeys->push_back(new ProducerConsumerKey(producer, consumer));
   }
 
-  bool hasITask(BaseITask *task)
+  bool hasITask(AnyITask *task)
   {
     return this->iTaskMap->find(task) != this->iTaskMap->end();
   }
@@ -1734,7 +1735,7 @@ class TaskGraph: public BaseTaskGraph {
   }
 
   template <class V>
-  MemoryManager<V> *getMemoryManager(BaseITask *memGetter, std::string name, int memoryPoolSize, std::shared_ptr<IMemoryAllocator<V>> allocP, MMType type, bool *ignoreMemGetterErrors)
+  MemoryManager<V> *getMemoryManager(AnyITask *memGetter, std::string name, int memoryPoolSize, std::shared_ptr<IMemoryAllocator<V>> allocP, MMType type, bool *ignoreMemGetterErrors)
   {
     MemoryManager<V> *memManager;
 
@@ -1773,7 +1774,7 @@ class TaskGraph: public BaseTaskGraph {
 
 #ifdef USE_CUDA
   template <class V>
-  CudaMemoryManager<V> *getCudaMemoryManager(BaseITask *memGetter, std::string name, int memoryPoolSize, std::shared_ptr<IMemoryAllocator<V>> allocP, MMType type, CUcontext *contexts, bool *ignoreMemGetterErrors)
+  CudaMemoryManager<V> *getCudaMemoryManager(AnyITask *memGetter, std::string name, int memoryPoolSize, std::shared_ptr<IMemoryAllocator<V>> allocP, MMType type, CUcontext *contexts, bool *ignoreMemGetterErrors)
   {
     CudaMemoryManager<V> *memManager;
 
@@ -1843,7 +1844,7 @@ class TaskGraph: public BaseTaskGraph {
   RuleManager<V, W> *getRuleManager(Bookkeeper<V> *bk, ITask<W, X> *consumer)
   {
     RuleManager<V, W> *ruleMan;
-    std::pair<BaseITask *, BaseITask *> ruleEdge(bk, consumer);
+    std::pair<AnyITask *, AnyITask *> ruleEdge(bk, consumer);
     if (this->ruleEdgeMap->find(ruleEdge) != this->ruleEdgeMap->end()) {
       ruleMan = (RuleManager<V, W> *) this->ruleEdgeMap->find(ruleEdge)->second;
     }
@@ -1860,7 +1861,7 @@ class TaskGraph: public BaseTaskGraph {
   {
     std::shared_ptr<IRule<V, W>> iRuleShr;
     if (this->iRuleMap->find(iRule) != this->iRuleMap->end()) {
-      std::shared_ptr<BaseIRule> baseRulePtr = this->iRuleMap->find(iRule)->second;
+      std::shared_ptr<AnyIRule> baseRulePtr = this->iRuleMap->find(iRule)->second;
       iRuleShr = std::dynamic_pointer_cast<IRule<V, W>>(baseRulePtr);
     }
     else{
@@ -1870,7 +1871,7 @@ class TaskGraph: public BaseTaskGraph {
     return iRuleShr;
   };
 
-  void attachMemGetter(std::string name, BaseITask *memGetter, MMType type, std::shared_ptr<BaseConnector> connector, bool ignoreMemGetterErrors)
+  void attachMemGetter(std::string name, AnyITask *memGetter, MMType type, std::shared_ptr<AnyConnector> connector, bool ignoreMemGetterErrors)
   {
     DEBUG("Adding memory getter " << name << " to " << memGetter->getName() << " " << memGetter <<
         " at connector " << connector);
@@ -1887,7 +1888,7 @@ class TaskGraph: public BaseTaskGraph {
     memGetter->attachMemGetter(name, connector, type);
   }
 
-  void attachMemReleaser(std::string name, BaseITask *memReleaser, MMType type, std::shared_ptr<BaseConnector> connector, bool isReleaserOutsideGraph)
+  void attachMemReleaser(std::string name, AnyITask *memReleaser, MMType type, std::shared_ptr<AnyConnector> connector, bool isReleaserOutsideGraph)
   {
     DEBUG("Adding memory releaser " << name << " to " << memReleaser->getName() << " " << memReleaser <<
         " at connector " << connector);
@@ -1901,7 +1902,7 @@ class TaskGraph: public BaseTaskGraph {
     memReleaser->attachMemReleaser(name, connector, type, isReleaserOutsideGraph);
   }
 
-  void updateGraphHistory(BaseTaskScheduler *taskScheduler, bool addInputEdge, bool addOutputEdge)
+  void updateGraphHistory(AnyTaskScheduler *taskScheduler, bool addInputEdge, bool addOutputEdge)
   {
     if (taskScheduler == nullptr)
       return;
@@ -1930,13 +1931,13 @@ class TaskGraph: public BaseTaskGraph {
 
   //! @endcond
 
-  std::list<BaseTaskScheduler *>
+  std::list<AnyTaskScheduler *>
       *graphInputConsumers; //!< The list of consumers accessing the TaskGraph's input connector
-  std::list<BaseTaskScheduler *>
+  std::list<AnyTaskScheduler *>
       *graphOutputProducers; //!< The list of producers that are outputting data to the TaskGraph's output connector
 
-  std::list<std::shared_ptr<BaseConnector>> *edges; //!< The list of edges (Connector) for the TaskGraph
-  std::list<BaseTaskScheduler *> *vertices; //!< The list of vertices (BaseTaskScheduler) for the TaskGraph
+  std::list<std::shared_ptr<AnyConnector>> *edges; //!< The list of edges (Connector) for the TaskGraph
+  std::list<AnyTaskScheduler *> *vertices; //!< The list of vertices (BaseTaskScheduler) for the TaskGraph
 
   std::list<ProducerConsumerKey *>
       *producerConsumerKeys; //!< A list of producer-consumer pairs to aid in copying a TaskGraph
@@ -1960,7 +1961,7 @@ class TaskGraph: public BaseTaskGraph {
   MemAllocMap *memAllocMap; //!< A mapping for each IMemoryAllocator to its associated shared_ptr
 
 
-  std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>>>
+  std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>>>
       memReleaser; //!< A mapping from memory edge name to memory manager connector for releasing memory from the TaskGraph to a Task within the TaskGraph
   std::shared_ptr<std::unordered_map<std::string, MMType>> mmTypeMap; //!< A mapping from memory edge name to memory manager type for a TaskGraph
 

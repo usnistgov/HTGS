@@ -61,7 +61,7 @@ set(MEMMULTIRELEASE_SRC
 set(MEMRELEASEOUTSIDE_SRC
         memReleaseOutsideGraphTests.cpp
         memReleaseOutsideGraphTests.h
-        memTaskOutsideRelease/data/MultiMemData.h memTaskOutsideRelease/tasks/MemAllocTask.h memTaskOutsideRelease/tasks/MemReleaseTask.h memTaskOutsideRelease/rules/MemAllocDistributeRule.h ../../src/htgs/core/graph/TaskGraphDotGenFlags.h)
+        memTaskOutsideRelease/data/MultiMemData.h memTaskOutsideRelease/tasks/MemAllocTask.h memTaskOutsideRelease/tasks/MemReleaseTask.h memTaskOutsideRelease/rules/MemAllocDistributeRule.h ../../src/htgs/types/TaskGraphDotGenFlags.hpp)
 
 
 add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC}

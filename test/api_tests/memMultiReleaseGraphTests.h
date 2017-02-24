@@ -10,7 +10,7 @@
 #ifndef HTGS_MEMMULTIRELEASEGRAPHTESTS_H
 #define HTGS_MEMMULTIRELEASEGRAPHTESTS_H
 
-#include <htgs/core/memory/MMType.h>
+#include <htgs/types/MMType.h>
 
 void multiReleaseGraphCreation(bool useSeparateEdge, bool useGraphReleaser, htgs::MMType type);
 void multiReleaseGraphExecution(int numDataGen, int numReleasers, int numPipelines, bool useSeparateEdge, bool useGraphReleaser, htgs::MMType type);

@@ -17,20 +17,20 @@ class BaseITask;
 
 #include <atomic>
 #include <memory>
-#include "../graph/BaseConnector.hpp"
-#include "../task/BaseITask.hpp"
+#include "htgs/core/graph/AnyConnector.hpp"
+#include "AnyITask.hpp"
 #include "../../debug/debug_message.h"
-#include "BaseITask.hpp"
+#include "AnyITask.hpp"
 
 namespace htgs {
 template<class T, class U>
 class ITask;
 
-class BaseConnector;
+class AnyConnector;
 
 class BaseTaskSchedulerRuntimeThread;
 
-class BaseITask;
+class AnyITask;
 
 /**
  * @class BaseTaskScheduler BaseTaskScheduler.hpp <htgs/core/task/BaseTaskScheduler.hpp>
@@ -41,18 +41,18 @@ class BaseITask;
  *
  * @note This class should only be called by the HTGS API
  */
-class BaseTaskScheduler {
+class AnyTaskScheduler {
  public:
   /**
    * Destructor
    */
-  virtual ~BaseTaskScheduler() { };
+  virtual ~AnyTaskScheduler() { };
 
   /**
    * Executes the Task
    */
   virtual void executeTask() {
-    std::cerr << "Called BaseTaskScheduler 'executeTask' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'executeTask' virtual function" << std::endl;
     throw std::bad_function_call();
   };
 
@@ -60,7 +60,7 @@ class BaseTaskScheduler {
    * Initializes the Task
    */
   virtual void initialize() {
-    std::cerr << "Called BaseTaskScheduler 'initialize' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'initialize' virtual function" << std::endl;
     throw std::bad_function_call();
   };
 
@@ -68,7 +68,7 @@ class BaseTaskScheduler {
    * Shuts down the Task
    */
   virtual void shutdown() {
-    std::cerr << "Called BaseTaskScheduler 'shutdown' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'shutdown' virtual function" << std::endl;
     throw std::bad_function_call();
   };
 
@@ -77,8 +77,8 @@ class BaseTaskScheduler {
    * @param deep whether a deep copy is required
    * @return the Task copy
    */
-  virtual BaseTaskScheduler *copy(bool deep) {
-    std::cerr << "Called BaseTaskScheduler 'copy' virtual function" << std::endl;
+  virtual AnyTaskScheduler *copy(bool deep) {
+    std::cerr << "Called AnyTaskScheduler 'copy' virtual function" << std::endl;
     throw std::bad_function_call();
   };
 
@@ -86,8 +86,8 @@ class BaseTaskScheduler {
    * Gets the input BaseConnector
    * @return the input connector
    */
-  virtual std::shared_ptr<BaseConnector> getInputBaseConnector() {
-    std::cerr << "Called BaseTaskScheduler 'getInputBaseConnector' virtual function" << std::endl;
+  virtual std::shared_ptr<AnyConnector> getInputBaseConnector() {
+    std::cerr << "Called AnyTaskScheduler 'getInputBaseConnector' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -95,8 +95,8 @@ class BaseTaskScheduler {
    * Gets the output BaseConnector
    * @return the output connector
    */
-  virtual std::shared_ptr<BaseConnector> getOutputBaseConnector() {
-    std::cerr << "Called BaseTaskScheduler 'getOutputBaseConnector' virtual function" << std::endl;
+  virtual std::shared_ptr<AnyConnector> getOutputBaseConnector() {
+    std::cerr << "Called AnyTaskScheduler 'getOutputBaseConnector' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -104,8 +104,8 @@ class BaseTaskScheduler {
    * Sets the input BaseConnector
    * @param connector the input connector
    */
-  virtual void setInputConnector(std::shared_ptr<BaseConnector> connector) {
-    std::cerr << "Called BaseTaskScheduler 'setInputConnector' virtual function" << std::endl;
+  virtual void setInputConnector(std::shared_ptr<AnyConnector> connector) {
+    std::cerr << "Called AnyTaskScheduler 'setInputConnector' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -113,8 +113,8 @@ class BaseTaskScheduler {
    * Sets the output BaseConnector
    * @param connector the output connector
    */
-  virtual void setOutputConnector(std::shared_ptr<BaseConnector> connector) {
-    std::cerr << "Called BaseTaskScheduler 'setOutputConnector' virtual function" << std::endl;
+  virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) {
+    std::cerr << "Called AnyTaskScheduler 'setOutputConnector' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -122,7 +122,7 @@ class BaseTaskScheduler {
    * Provides debug output
    */
   virtual void debug() {
-    std::cerr << "Called BaseTaskScheduler 'debug' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'debug' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -131,7 +131,7 @@ class BaseTaskScheduler {
    * @return the name of the Task
    */
   virtual std::string getName() {
-    std::cerr << "Called BaseTaskScheduler 'getName' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'getName' virtual function" << std::endl;
     throw std::bad_function_call();
   }
   /**
@@ -139,7 +139,7 @@ class BaseTaskScheduler {
    * @return  the name of the task with the pipeline ID
    */
   virtual std::string getNameWithPipID() {
-    std::cerr << "Called BaseTaskScheduler 'getNameWithPipID' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'getNameWithPipID' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -147,8 +147,8 @@ class BaseTaskScheduler {
    * Gets the ITask function associated with the Task
    * @return the ITask
    */
-  virtual BaseITask *getTaskFunction() {
-    std::cerr << "Called BaseTaskScheduler 'getTaskFunction' virtual function" << std::endl;
+  virtual AnyITask *getTaskFunction() {
+    std::cerr << "Called AnyTaskScheduler 'getTaskFunction' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -159,7 +159,7 @@ class BaseTaskScheduler {
    * @retval FALSE if the Task is not alive
    */
   virtual bool isAlive() {
-    std::cerr << "Called BaseTaskScheduler 'isAlive' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'isAlive' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -168,7 +168,7 @@ class BaseTaskScheduler {
    * @param id the pipeline Id
    */
   virtual void setPipelineId(int id) {
-    std::cerr << "Called BaseTaskScheduler 'setPipelineId' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'setPipelineId' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -177,7 +177,7 @@ class BaseTaskScheduler {
    * @param numPipelines the number of pipelines
    */
   virtual void setNumPipelines(int numPipelines) {
-    std::cerr << "Called BaseTaskScheduler 'setNumPipelines' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'setNumPipelines' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -188,8 +188,8 @@ class BaseTaskScheduler {
    * @param pipelineId the pipeline Id
    * @param connector the connector to add
    */
-  virtual void addPipelineConnector(int pipelineId, std::shared_ptr<BaseConnector> connector) {
-    std::cerr << "Called BaseTaskScheduler 'addPipelineConnector' virtual function" << std::endl;
+  virtual void addPipelineConnector(int pipelineId, std::shared_ptr<AnyConnector> connector) {
+    std::cerr << "Called AnyTaskScheduler 'addPipelineConnector' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -200,7 +200,7 @@ class BaseTaskScheduler {
    * @param pipelineId the pipeline Id
    */
   virtual void addPipelineConnector(int pipelineId) {
-    std::cerr << "Called BaseTaskScheduler 'addPipelineConnector' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'addPipelineConnector' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -209,7 +209,7 @@ class BaseTaskScheduler {
    * @return the number of the threads that will execute the Task
    */
   virtual int getNumThreads() const {
-    std::cerr << "Called BaseTaskScheduler 'getNumThreads' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'getNumThreads' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -218,7 +218,7 @@ class BaseTaskScheduler {
    * @param runtimeThread the thread that is executing the task
    */
   virtual void setRuntimeThread(BaseTaskSchedulerRuntimeThread *runtimeThread) {
-    std::cerr << "Called BaseTaskScheduler 'setRuntimeThread' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'setRuntimeThread' virtual function" << std::endl;
     throw std::bad_function_call();
   }
   /**
@@ -226,7 +226,7 @@ class BaseTaskScheduler {
    * @param id the thread id
    */
   virtual void setThreadId(int id) {
-    std::cerr << "Called BaseTaskScheduler 'setThreadId' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'setThreadId' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -235,7 +235,7 @@ class BaseTaskScheduler {
    * @param flags gen dot flags
    */
   virtual std::string getDot(int flags) {
-    std::cerr << "Called BaseTaskScheduler 'getDot' virtual function" << std::endl;
+    std::cerr << "Called AnyTaskScheduler 'getDot' virtual function" << std::endl;
     throw std::bad_function_call();
   }
 
@@ -273,7 +273,7 @@ class BaseTaskSchedulerRuntimeThread {
    * @param task the task the thread is associated with
    * @param numThreads the number of threads that a task contains
    */
-  BaseTaskSchedulerRuntimeThread(int threadId, BaseTaskScheduler *task, std::shared_ptr<std::atomic_int> numThreads) {
+  BaseTaskSchedulerRuntimeThread(int threadId, AnyTaskScheduler *task, std::shared_ptr<std::atomic_int> numThreads) {
     this->task = task;
     this->terminated = false;
     this->numThreads = numThreads;
@@ -344,7 +344,7 @@ class BaseTaskSchedulerRuntimeThread {
  private:
   volatile bool terminated; //!< Whether the thread is ready to be terminated or not
   std::shared_ptr<std::atomic_int> numThreads; //!< The number of total threads managing the TaskScheduler
-  BaseTaskScheduler *task; //!< The TaskScheduler that is called from the thread
+  AnyTaskScheduler *task; //!< The TaskScheduler that is called from the thread
 };
 }
 

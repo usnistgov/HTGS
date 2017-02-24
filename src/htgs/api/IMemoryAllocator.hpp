@@ -14,7 +14,6 @@
 #ifndef HTGS_MEMORYALLOCATOR_H
 #define HTGS_MEMORYALLOCATOR_H
 #include <functional>
-#include "../core/memory/BaseMemoryAllocator.hpp"
 
 namespace htgs {
 /**
@@ -61,7 +60,7 @@ namespace htgs {
  * @tparam T the memory type
  */
 template<class T>
-class IMemoryAllocator : public BaseMemoryAllocator {
+class IMemoryAllocator {
  public:
   /**
    * Creates a memory allocator

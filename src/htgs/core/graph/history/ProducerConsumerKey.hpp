@@ -13,7 +13,7 @@
 #ifndef HTGS_PRODUCERCONSUMERKEY_H
 #define HTGS_PRODUCERCONSUMERKEY_H
 
-#include "../../task/BaseTaskScheduler.hpp"
+#include "htgs/core/task/AnyTaskScheduler.hpp"
 
 namespace htgs {
 /**
@@ -30,7 +30,7 @@ class ProducerConsumerKey {
    * @param producer the producer TaskScheduler
    * @param consumer the consumer TaskScheduler
    */
-  ProducerConsumerKey(BaseTaskScheduler *producer, BaseTaskScheduler *consumer) {
+  ProducerConsumerKey(AnyTaskScheduler *producer, AnyTaskScheduler *consumer) {
     this->producer = producer;
     this->consumer = consumer;
   }
@@ -44,7 +44,7 @@ class ProducerConsumerKey {
    * Gets the producer TaskScheduler
    * @return the producer TaskScheduler
    */
-  BaseTaskScheduler *getProducer() const {
+  AnyTaskScheduler *getProducer() const {
     return this->producer;
   }
 
@@ -52,13 +52,13 @@ class ProducerConsumerKey {
    * Gets the consumer TaskScheduler
    * @return the consumer TaskScheduler
    */
-  BaseTaskScheduler *getConsumer() const {
+  AnyTaskScheduler *getConsumer() const {
     return this->consumer;
   }
 
  private:
-  BaseTaskScheduler *producer; //!< The TaskScheduler that manages the producer
-  BaseTaskScheduler *consumer; //!< The TaskScheduler that manages the consumer
+  AnyTaskScheduler *producer; //!< The TaskScheduler that manages the producer
+  AnyTaskScheduler *consumer; //!< The TaskScheduler that manages the consumer
 };
 }
 

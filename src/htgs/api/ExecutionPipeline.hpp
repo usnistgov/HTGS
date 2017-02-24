@@ -161,7 +161,7 @@ class ExecutionPipeline: public ITask<T, U> {
    * @note This function should only be called by the HTGS API
    */
   void initialize(int pipelineId, int numPipeline, TaskScheduler<T, U> *ownerTask,
-                  std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> pipelineConnectorList) {
+                  std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) {
     DEBUG("Initializing Execution pipeline with " << this->numPipelines << " pipelines");
 
     this->graph->updateIdAndNumPipelines(0, this->numPipelines);
@@ -324,7 +324,7 @@ class ExecutionPipeline: public ITask<T, U> {
    * @param outputConn the output connector for this task
    * @return the additional dot attributes for the dot graph representation
    */
-  std::string genDot(int flags, std::string idStr, std::shared_ptr<BaseConnector> inputConn, std::shared_ptr<BaseConnector> outputConn) {
+  std::string genDot(int flags, std::string idStr, std::shared_ptr<AnyConnector> inputConn, std::shared_ptr<AnyConnector> outputConn) {
     std::ostringstream oss;
 
     oss << inputConn->genDot(flags);

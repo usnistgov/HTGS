@@ -14,7 +14,7 @@
 #ifndef HTGS_ICUSTOMEDGE_H
 #define HTGS_ICUSTOMEDGE_H
 
-#include "../core/graph/BaseConnector.hpp"
+#include "htgs/core/graph/AnyConnector.hpp"
 
 namespace htgs {
 
@@ -128,16 +128,16 @@ class ICustomEdge {
    * @param pipelineId the pipelineId that the taskGraph belongs to
    * @param taskGraph the taskGraph that the edge is added to
    */
-  virtual void applyGraphConnection(BaseTaskScheduler *producer,
-                                    BaseTaskScheduler *consumer,
-                                    std::shared_ptr<BaseConnector> connector,
+  virtual void applyGraphConnection(AnyTaskScheduler *producer,
+                                    AnyTaskScheduler *consumer,
+                                    std::shared_ptr<AnyConnector> connector,
                                     int pipelineId,
                                     htgs::BaseTaskGraph *taskGraph) = 0;
 
   /**
    * Creates the connector associated with the custom edge
    */
-  virtual BaseConnector *createConnector() = 0;
+  virtual AnyConnector *createConnector() = 0;
 
   /**
    * Creates the producer task for the custom edge (should be associated with the ProducerITask).
@@ -145,7 +145,7 @@ class ICustomEdge {
    * Task<T, U>::createTask(iTask);
    * @return the Task associated with the producer
    */
-  virtual BaseTaskScheduler *createProducerTask() = 0;
+  virtual AnyTaskScheduler *createProducerTask() = 0;
 
   /**
    * Creates the consumer task for the custom edge (should be associated with the ConsumerITask).
@@ -153,7 +153,7 @@ class ICustomEdge {
    * Task<T, U>::createTask(iTask);
    * @return the Task associated with the consumer
    */
-  virtual BaseTaskScheduler *createConsumerTask() = 0;
+  virtual AnyTaskScheduler *createConsumerTask() = 0;
 
   /**
    * Gets the ITask associated with the producer.
@@ -161,7 +161,7 @@ class ICustomEdge {
    * no task is found, then it will create the producer Task with createProducerTask
    * @return the ITask associated with the producer
    */
-  virtual BaseITask *getProducerITask() = 0;
+  virtual AnyITask *getProducerITask() = 0;
 
   /**
    * Gets the ITask associated with the consumer.
@@ -169,7 +169,7 @@ class ICustomEdge {
    * no task is found, then it will create the consumer Task with createConsumerTask
    * @return the ITask associated with the consumer
    */
-  virtual BaseITask *getConsumerITask() = 0;
+  virtual AnyITask *getConsumerITask() = 0;
 
   /**
    * Gets whether a Connector should be created for the edge.

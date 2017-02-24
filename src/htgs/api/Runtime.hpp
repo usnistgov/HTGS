@@ -17,7 +17,7 @@
 
 #include <thread>
 #include "../core/graph/BaseTaskGraph.hpp"
-#include "../core/task/BaseTaskScheduler.hpp"
+#include "htgs/core/task/AnyTaskScheduler.hpp"
 
 namespace htgs {
 /**
@@ -156,27 +156,27 @@ class Runtime {
     if (executed)
       return;
 
-    std::list<BaseTaskScheduler *> *vertices = this->graph->getVertices();
-    std::list<BaseTaskScheduler *> newVertices;
+    std::list<AnyTaskScheduler *> *vertices = this->graph->getVertices();
+    std::list<AnyTaskScheduler *> newVertices;
     DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
-    for (BaseTaskScheduler *task : *vertices) {
+    for (AnyTaskScheduler *task : *vertices) {
       int numThreads = task->getNumThreads();
 
       DEBUG_VERBOSE("Spawning " << numThreads << " threads for task " << task->getName());
 
       if (numThreads > 0) {
-        std::list<BaseTaskScheduler *> taskList;
+        std::list<AnyTaskScheduler *> taskList;
         std::shared_ptr<std::atomic_int> atomicNumThreads = std::shared_ptr<std::atomic_int>(new std::atomic_int(numThreads));
         taskList.push_back(task);
 
 
         for (int i = 1; i < numThreads; i++) {
-          BaseTaskScheduler *taskCopy = task->copy(true);
+          AnyTaskScheduler *taskCopy = task->copy(true);
           taskList.push_back(taskCopy);
           newVertices.push_back(taskCopy);
         }
         int threadId = 0;
-        for (BaseTaskScheduler *taskItem : taskList) {
+        for (AnyTaskScheduler *taskItem : taskList) {
           BaseTaskSchedulerRuntimeThread
               *runtimeThread = new BaseTaskSchedulerRuntimeThread(threadId, taskItem, atomicNumThreads);
           std::thread *thread = new std::thread(&BaseTaskSchedulerRuntimeThread::run, runtimeThread);
@@ -188,7 +188,7 @@ class Runtime {
       }
     }
 
-    for (BaseTaskScheduler *newVertex : newVertices)
+    for (AnyTaskScheduler *newVertex : newVertices)
     {
       graph->addTaskCopy(newVertex);
     }

@@ -4,45 +4,26 @@
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file VoidData.hpp
+ * @file BaseIRule.hpp
  * @author Timothy Blattner
- * @date Nov 16, 2015
+ * @date Apr 21, 2016
  *
- * @brief VoidData is used for data that is empty/void.
+ * @brief Base class for an htgs::IRule to hide the template arguments.
  * @details
- * Often used when a ITask or TaskGraph does not have an input or output to another ITask
  */
-#ifndef HTGS_VOIDDATA_H
-#define HTGS_VOIDDATA_H
+#ifndef HTGS_BASEIRULE_H
+#define HTGS_BASEIRULE_H
 
-#include <limits.h>
-#include "IData.hpp"
 
 namespace htgs {
-
-class IData;
-
 /**
- * @class VoidData VoidData.hpp <htgs/api/VoidData.hpp>
- *
- * @brief VoidData is used for data that is empty/void.
- *
- * Can be used with a ITask or TaskGraph that does not have an input or output to another ITask.
- *
- * Example
- * @code
- * // TaskGraph that has input type Data1, but no output type
- * TaskGraph<Data1, VoidData> task;
- * @endcode
- *
+ * @class AnyIRule BaseIRule.hpp <htgs/core/rules/IRule.hpp>
+ * @brief Base class for an htgs::IRule.
  */
-class VoidData: public IData {
+class AnyIRule {
  public:
-  /**
-   * Constructs VoidData
-   */
-  VoidData() { }
+  virtual ~AnyIRule() {}
 };
 }
 
-#endif //HTGS_VOIDDATA_H
+#endif //HTGS_BASEIRULE_H

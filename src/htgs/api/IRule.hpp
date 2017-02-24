@@ -18,7 +18,7 @@
 #include <functional>
 #include <list>
 #include <mutex>
-#include "../core/rules/BaseIRule.hpp"
+#include "htgs/core/rules/AnyIRule.hpp"
 
 #include "IData.hpp"
 
@@ -94,7 +94,7 @@ class StateContainer;
  *
  */
 template<class T, class U>
-class IRule : public BaseIRule {
+class IRule : public AnyIRule {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
  public:

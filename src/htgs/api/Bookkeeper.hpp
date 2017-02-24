@@ -15,15 +15,13 @@
 #ifndef HTGS_BOOKKEEPER_H
 #define HTGS_BOOKKEEPER_H
 
+
 #include "ITask.hpp"
-#include "VoidData.hpp"
-#include "../core/rules/RuleManager.hpp"
+#include "../types/VoidData.hpp"
+#include "../core/rules/AnyRuleSchedulerInOnly.hpp"
+#include "../core/rules/RuleScheduler.hpp"
 
 namespace htgs {
-
-template<class U>
-class BaseRuleManager;
-
 
 /**
  * @class Bookkeeper Bookkeeper.hpp <htgs/api/Bookkeeper.hpp>
@@ -66,14 +64,14 @@ class Bookkeeper: public ITask<T, VoidData> {
    * Constructs a bookkeeper
    */
   Bookkeeper() {
-    this->ruleManagers = new std::list<BaseRuleManager<T> *>();
+    this->ruleManagers = new std::list<AnyRuleSchedulerInOnly<T> *>();
   }
 
   /**
    * Destructor destroys RuleManager memory
    */
-  ~Bookkeeper() {
-    for (BaseRuleManager<T> *ruleManager : *ruleManagers) {
+  ~Bookkeeper() override {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
       delete ruleManager;
       ruleManager = nullptr;
     }
@@ -86,8 +84,8 @@ class Bookkeeper: public ITask<T, VoidData> {
    * @param ruleManager the rule manager
    * @note This function should only be called by the HTGS API - users of the HTGS API should instead use addRuleManager(RuleManager<T, U> *ruleManager)
    */
-  void addRuleManager(BaseBaseRuleManager *ruleManager) {
-    BaseRuleManager<T> *baseRuleMan = (BaseRuleManager<T> *) ruleManager;
+  void addRuleManager(AnyRuleScheduler *ruleManager) {
+    AnyRuleSchedulerInOnly<T> *baseRuleMan = (AnyRuleSchedulerInOnly<T> *) ruleManager;
 
     DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << baseRuleMan->getName());
 
@@ -101,7 +99,8 @@ class Bookkeeper: public ITask<T, VoidData> {
    * @tparam U the output type for the rulemanager (output edge type)
    */
   template<class U>
-  void addRuleManager(RuleManager<T, U> *ruleManager) {
+  void addRuleManager(RuleScheduler<T, U> *ruleManager) {
+
     DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << ruleManager->getName());
 
     ruleManagers->push_back(ruleManager);
@@ -115,8 +114,8 @@ class Bookkeeper: public ITask<T, VoidData> {
    * @param data the data
    * @note This function should only be called by the HTGS API
    */
-  void executeTask(std::shared_ptr<T> data) {
-    for (BaseRuleManager<T> *ruleManager : *ruleManagers) {
+  void executeTask(std::shared_ptr<T> data) override {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
 //      DEBUG_VERBOSE(this->getName() << " executing " + ruleManager->getName());
       ruleManager->executeTask(data);
     }
@@ -126,7 +125,7 @@ class Bookkeeper: public ITask<T, VoidData> {
    * Gets the name of this bookkeeper and all rule managers it controls.
    * @return the name of this bookkeeper
    */
-  std::string getName() {
+  std::string getName() override {
     return "Bookkeeper -- " + std::to_string(this->ruleManagers->size()) + " rule manager(s): " +
         this->ruleManagerInfo;
   }
@@ -135,9 +134,9 @@ class Bookkeeper: public ITask<T, VoidData> {
    * Provides debug output for the rule manager.
    * @note \#define DEBUG_FLAG to enable debugging
    */
-  void debug() {
+  void debug() override {
     DEBUG(this->getName() << " Details:");
-    for (BaseRuleManager<T> *ruleManager : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
       DEBUG("Executing rule manager: " << ruleManager->getName());
       ruleManager->debug();
     }
@@ -150,9 +149,9 @@ class Bookkeeper: public ITask<T, VoidData> {
    * @param numPipelines the number of pipelines
    * @note This function should only be called by the HTGS API
    */
-  void initialize(int pipelineId, int numPipelines) {
-    for (BaseRuleManager<T> *ruleManager : *ruleManagers) {
-      ruleManager->initialize(pipelineId, numPipelines);
+  void initialize() override {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
+      ruleManager->initialize(this->getPipelineId(), this->getNumPipeline());
     }
   }
 
@@ -163,7 +162,7 @@ class Bookkeeper: public ITask<T, VoidData> {
   void shutdown() {
 
     DEBUG("Shutting down " << this->getName());
-    for (BaseRuleManager<T> *ruleManager : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
       ruleManager->shutdown();
     }
   }
@@ -180,13 +179,13 @@ class Bookkeeper: public ITask<T, VoidData> {
    */
   std::string genDot(int flags, std::string idStr) {
     std::ostringstream oss;
-    for (BaseRuleManager<T> *ruleMan : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleMan : *ruleManagers) {
       std::ostringstream ruleManOss;
       ruleManOss << ruleMan->getConnector();
 
       std::string ruleManStr = ruleManOss.str();
       ruleManStr.erase(0, 1);
-      oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getRuleNames() << "\"];" << std::endl;
+      oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName() << "\"];" << std::endl;
     }
     std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName()) : "");
 
@@ -206,7 +205,7 @@ class Bookkeeper: public ITask<T, VoidData> {
 #endif
 
  private:
-  std::list<BaseRuleManager<T> *> *ruleManagers; //!< The list of ruleManagers (one per consumer)
+  std::list<AnyRuleSchedulerInOnly<T> *> *ruleManagers; //!< The list of ruleManagers (one per consumer)
   std::string ruleManagerInfo; //!< A string representation of all rule managers
 };
 }

@@ -1,25 +1,19 @@
-
 // NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software.
 // NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file BaseConnector.hpp
+ * @file AnyConnector.hpp
  * @author Timothy Blattner
  * @date Nov 23, 2015
  *
  * @brief Holds parent class for Connector, removes template type of Connector.
  */
-#ifndef HTGS_BASECONNECTOR_H
-#define HTGS_BASECONNECTOR_H
+#ifndef HTGS_ANYCONNECTOR_H
+#define HTGS_ANYCONNECTOR_H
 
-#include <bits/stl_list.h>
-#include <iostream>
-#include <functional>
-#include "../task/BaseTaskScheduler.hpp"
 
 namespace htgs {
-class BaseTaskScheduler;
 
 /**
  * @class BaseConnector BaseConnector.hpp <htgs/core/graph/BaseConnector.hpp>
@@ -35,12 +29,71 @@ class BaseTaskScheduler;
  * inputConnector->isInputTerminated();
  * @endcode
  */
-class BaseConnector {
+class AnyConnector {
  public:
+
   /**
    * Virtual destructor.
    */
-  virtual ~BaseConnector() { }
+  virtual ~AnyConnector() { }
+
+  /**
+  * @internal
+  * Indicates to the Connector that the producer has finished producing data for the Connector.
+  *
+  * @note This function should only be called by the HTGS API
+  */
+  void producerFinished() {
+    this->producerTaskCount -= 1;
+  }
+
+  /**
+   * Gets the number of producers producing data for the connector.
+   */
+  size_t getProducerCount() {
+    return this->producerTaskCount;
+  }
+
+  /**
+   * @internal
+   * Increments the number of tasks producing data for the Connector
+   *
+   * @note This function should only be called by the HTGS API
+   */
+  void incrementInputTaskCount() { this->producerTaskCount += 1; }
+
+  /**
+ * Gets the id used for dot graphs for GraphViz
+ * @return the unique id associated with this Connector
+ */
+  std::string getDotId() {
+    std::ostringstream inConn;
+    inConn << this;
+    std::string inConnStr = inConn.str();
+    inConnStr.erase(0, 1);
+
+    return inConnStr;
+  }
+
+  /**
+   * Generates the dot representation for this connector
+   * @param flags dot gen flags
+   * @return the dot representation
+   */
+  std::string genDot(int flags)
+  {
+    return getDotId() + "[label=\"" + std::to_string(this->getProducerCount()) + "\",shape=box,style=rounded,color=black,width=.2,height=.2];\n";
+
+  }
+
+  /**
+   * Checks whether the producer for this Connector has finished pushing data onto its priority queue.
+   * @return whether the input has terminated or not
+   * @retval TRUE if the input has terminated and no more data is in the priority queue.
+   * @retval FALSE if there is still data to be processed.
+   */
+  virtual bool isInputTerminated() = 0;
+
 
   /**
    * @internal
@@ -50,40 +103,8 @@ class BaseConnector {
    *
    * @note This function should only be called by the HTGS API
    */
-  virtual void wakeupConsumer() {
-    std::cerr << "Called BaseConnector 'wakeupConsumer' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual void wakeupConsumer() = 0;
 
-  /**
-   * Checks whether the producer for this Connector has finished pushing data onto its priority queue.
-   * @return whether the input has terminated or not
-   * @retval TRUE if the input has terminated and no more data is in the priority queue.
-   * @retval FALSE if there is still data to be processed.
-   */
-  virtual bool isInputTerminated() {
-    std::cerr << "Called BaseConnector 'isInputTerminated' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * @internal
-   * Indicates to the Connector that the producer has finished producing data for the Connector.
-   *
-   * @note This function should only be called by the HTGS API
-   */
-  virtual void producerFinished() {
-    std::cerr << "Called BaseConnector 'producerFinished' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * Gets the number of producers producing data for the connector.
-   */
-  virtual long getProducerCount() {
-    std::cerr << "Called BaseConnector 'getProducerCount' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
 
   /**
    * @internal
@@ -92,31 +113,16 @@ class BaseConnector {
    *
    * @note This function should only be called by the HTGS API
    */
-  virtual BaseConnector *copy() {
-    std::cerr << "Called BaseConnector 'copy' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual AnyConnector *copy() = 0;
 
-  /**
-   * @internal
-   * Increments the number of tasks producing data for the Connector
-   *
-   * @note This function should only be called by the HTGS API
-   */
-  virtual void incrementInputTaskCount() {
-    std::cerr << "Called BaseConnector 'incrementInputTaskCount' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+
 
   /**
    * Provide profile output for the produce operation
    * @param numThreads the number of threads associated with producing data
    * @note \#define PROFILE to enable profiling
    */
-  virtual void profileProduce(int numThreads) {
-    std::cerr << "Called BaseConnector 'profileProduce' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual void profileProduce(size_t numThreads) = 0;
 
   /**
    * Provides profile output for the consume operation
@@ -124,31 +130,14 @@ class BaseConnector {
    * @param showQueueSize whether to show the max queue size or not
    * @note \#define PROFILE to enable profiling
    */
-  virtual void profileConsume(int numThreads, bool showQueueSize) {
-    std::cerr << "Called BaseConnector 'profileConsume' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual void profileConsume(size_t numThreads, bool showQueueSize) = 0;
 
-  /**
-   * Gets the id used for dot graphs for GraphViz
-   * @return the unique id associated with this Connector
-   */
-  virtual std::string getDotId() {
-    std::cerr << "Called BaseConnector 'getDotId' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
 
-  /**
-   * Generates the dot representation for this connector
-   * @param flags dot gen flags
-   * @return the dot representation
-   */
-  virtual std::string genDot(int flags) {
-    std::cerr << "Called BaseConnector 'genDot' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+
+ private:
+  std::atomic_size_t producerTaskCount; //!< The number of producers adding data to the connector
 
 };
 }
 
-#endif //HTGS_BASECONNECTOR_H
+#endif //HTGS_ANYCONNECTOR_H

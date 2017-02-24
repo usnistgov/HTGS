@@ -4,30 +4,42 @@
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file BaseMemoryAllocator.hpp
+ * @file VoidData.hpp
  * @author Timothy Blattner
- * @date Feb 18, 2016
+ * @date Nov 16, 2015
  *
- * @brief Defines the base class for IMemoryAllocator
+ * @brief VoidData is used for data that is empty/void.
  * @details
+ * Often used when a ITask or TaskGraph does not have an input or output to another ITask
  */
-#ifndef HTGS_BASEMEMORYALLOCATOR_H
-#define HTGS_BASEMEMORYALLOCATOR_H
-namespace htgs {
-/**
- * @class BaseMemoryAllocator BaseMemoryAllocator.hpp <htgs/core/memory/BaseMemoryAllocator.hpp>
- * @brief Bsae class for IMemoryAllocator that removes template arguments for child.
- * @details
- * Allows for storing multiple types of IMemoryAllocators, which is
- * used by a TaskGraph to prevent IMemoryAllocator points being reinstantiated with its shared_ptr.
- */
-class BaseMemoryAllocator {
- public:
+#ifndef HTGS_VOIDDATA_H
+#define HTGS_VOIDDATA_H
 
+#include <limits.h>
+
+namespace htgs {
+
+/**
+ * @class VoidData VoidData.hpp <htgs/api/VoidData.hpp>
+ *
+ * @brief VoidData is used for data that is empty/void.
+ *
+ * Can be used with a ITask or TaskGraph that does not have an input or output to another ITask.
+ *
+ * Example
+ * @code
+ * // TaskGraph that has input type Data1, but no output type
+ * TaskGraph<Data1, VoidData> task;
+ * @endcode
+ *
+ */
+class VoidData: public IData {
+ public:
   /**
-   * Virtual destructor
+   * Constructs VoidData
    */
-  virtual ~BaseMemoryAllocator() {}
+  VoidData() { }
 };
 }
-#endif //HTGS_BASEMEMORYALLOCATOR_H
+
+#endif //HTGS_VOIDDATA_H

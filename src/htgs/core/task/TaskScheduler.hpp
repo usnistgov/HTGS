@@ -20,9 +20,9 @@
 #include <unordered_map>
 #include <mutex>
 #include <sstream>
-#include "../graph/BaseConnector.hpp"
+#include "htgs/core/graph/AnyConnector.hpp"
 #include "../../debug/debug_message.h"
-#include "BaseTaskScheduler.hpp"
+#include "AnyTaskScheduler.hpp"
 #include "../graph/Connector.hpp"
 #include "../../api/IData.hpp"
 #include "../../api/ITask.hpp"
@@ -57,7 +57,7 @@ class ITask;
  * @note \#define PROFILE to enable profiling.
  */
 template<class T, class U>
-class TaskScheduler: public BaseTaskScheduler {
+class TaskScheduler: public AnyTaskScheduler {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -84,7 +84,7 @@ class TaskScheduler: public BaseTaskScheduler {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
-    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>(new std::vector<std::shared_ptr<BaseConnector>>());
+    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
     this->runtimeThread = nullptr;
   }
 
@@ -113,7 +113,7 @@ class TaskScheduler: public BaseTaskScheduler {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
-    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>(new std::vector<std::shared_ptr<BaseConnector>>());
+    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
     this->runtimeThread = nullptr;
   }
 
@@ -129,7 +129,7 @@ class TaskScheduler: public BaseTaskScheduler {
    * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskScheduler and copies of this TaskScheduler
    */
   TaskScheduler(ITask<T, U> *taskFunction, int numThreads, bool isStartTask, bool poll, long microTimeoutTime,
-                int pipelineId, int numPipelines, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> pipelineConnectorList) {
+                int pipelineId, int numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) {
     this->taskFunction = taskFunction;
     this->taskComputeTime = 0L;
     this->taskWaitTime = 0L;
@@ -172,7 +172,7 @@ class TaskScheduler: public BaseTaskScheduler {
    * @param pipelineId the pipeline Id
    * @param connector the connector to add
    */
-  void addPipelineConnector(int pipelineId, std::shared_ptr<BaseConnector> connector) {
+  void addPipelineConnector(int pipelineId, std::shared_ptr<AnyConnector> connector) {
     (*pipelineConnectorList)[pipelineId] = connector;
   }
 
@@ -224,25 +224,25 @@ class TaskScheduler: public BaseTaskScheduler {
    * Gets the input BaseConnector
    * @return the input connector
    */
-  std::shared_ptr<BaseConnector> getInputBaseConnector() { return this->inputConnector; }
+  std::shared_ptr<AnyConnector> getInputBaseConnector() { return this->inputConnector; }
 
   /**
    * Gets the output BaseConnector
    * @return the output connector
    */
-  std::shared_ptr<BaseConnector> getOutputBaseConnector() { return this->outputConnector; }
+  std::shared_ptr<AnyConnector> getOutputBaseConnector() { return this->outputConnector; }
 
   /**
    * Sets the input BaseConnector
    * @param connector the input connector
    */
-  void setInputConnector(std::shared_ptr<BaseConnector> connector) { this->inputConnector = std::dynamic_pointer_cast<Connector<T>>(connector); }
+  void setInputConnector(std::shared_ptr<AnyConnector> connector) { this->inputConnector = std::dynamic_pointer_cast<Connector<T>>(connector); }
 
   /**
    * Sets the output BaseConnector
    * @param connector the output connector
    */
-  void setOutputConnector(std::shared_ptr<BaseConnector> connector) { this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector); }
+  void setOutputConnector(std::shared_ptr<AnyConnector> connector) { this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector); }
 
   /**
    * Gets the ITask function associated with the TaskScheduler
@@ -289,7 +289,7 @@ class TaskScheduler: public BaseTaskScheduler {
    * @param deep whether a deep copy is required
    * @return the TaskScheduler copy
    */
-  BaseTaskScheduler *copy(bool deep) {
+  AnyTaskScheduler *copy(bool deep) {
     ITask<T, U> *iTask;
     iTask = this->taskFunction->copyITask();
 
@@ -372,11 +372,11 @@ class TaskScheduler: public BaseTaskScheduler {
               this->outputConnector->wakeupConsumer();
           }
 
-          std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> >> memReleasers = this->taskFunction->getMemReleasers();
+          std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> memReleasers = this->taskFunction->getMemReleasers();
 
           DEBUG(prefix() << " " << this->getName() << " Shutting down " << memReleasers->size() <<
               " memory releasers");
-          for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> > pair : *memReleasers) {
+          for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> > pair : *memReleasers) {
 
 
             if (this->taskFunction->isMemReleaserOutsideGraph(pair.first))
@@ -395,7 +395,7 @@ class TaskScheduler: public BaseTaskScheduler {
             else {
               DEBUG(prefix() << " " << this->getName() << " Shutting down memory releaser : " <<
                   pair.first << " with " << pair.second->size() << " connectors");
-              std::shared_ptr<BaseConnector> connector = pair.second->at((unsigned long) this->pipelineId);
+              std::shared_ptr<AnyConnector> connector = pair.second->at((unsigned long) this->pipelineId);
               connector->producerFinished();
 
 
@@ -584,7 +584,7 @@ class TaskScheduler: public BaseTaskScheduler {
   int pipelineId; //!< The execution pipeline id
   int numPipelines; //!< The number of execution pipelines
 
-  std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>
+  std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>
       pipelineConnectorList; //!< The execution pipeline connector list (one for each pipeline that share the same ITask functionality)
   BaseTaskSchedulerRuntimeThread *runtimeThread; //!< The thread that is executing this task's runtime
 };

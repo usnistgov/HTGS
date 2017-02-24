@@ -17,7 +17,7 @@
 
 #include "../../api/ITask.hpp"
 #include "../../api/IMemoryAllocator.hpp"
-#include "MMType.h"
+#include "htgs/types/MMType.h"
 
 namespace htgs {
 
@@ -73,7 +73,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   /**
    * Destructor
    */
-  ~MemoryManager() {
+  ~MemoryManager() override {
     if (type == htgs::MMType::Static)
       pool->releaseAllMemory();
 
@@ -91,8 +91,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * execution pipelines in an execution pipeline
    */
   void initialize(int pipelineId, int numPipeline, TaskScheduler<MemoryData<T>, MemoryData<T>> *ownerTask,
-                  std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> pipelineConnectorList
-  ) {
+                  std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) override {
     this->pipelineId = pipelineId;
     MemoryData<T> *memory = new MemoryData<T>(this->allocator);
 
@@ -108,7 +107,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   /**
    * Shuts down the MemoryManager releasing memory that is inside of the pool.
    */
-  void shutdown() {
+  void shutdown() override{
     bool release = false;
     if (type == MMType::Static)
       release = true;
@@ -123,7 +122,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * the memory pool with MemoryData::canReleaseMemory().
    * @param data the MemoryData being processed
    */
-  void executeTask(std::shared_ptr<MemoryData<T>> data) {
+  void executeTask(std::shared_ptr<MemoryData<T>> data) override {
     if (data != nullptr) {
       if (data->getPipelineId() == this->pipelineId) {
 
@@ -159,7 +158,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   /**
    * Provides debug output for MemoryManager
    */
-  void debug() {
+  void debug() override {
     DEBUG(this->getName() << " max pool size: " << this->memoryPoolSize << " isEmpty? " << this->pool->isPoolEmpty());
   }
 
@@ -167,7 +166,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * Gets the name of the MemoryManager
    * @return
    */
-  virtual std::string getName() {
+  virtual std::string getName() override {
     std::string typeStr;
     switch (this->type) {
       case MMType::Static:
@@ -188,7 +187,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * Does not copy the contents of the MemoryPool.
    * @return the shallow copy of the MemoryManager
    */
-  virtual MemoryManager<T> *copy() {
+  virtual MemoryManager<T> *copy() override {
     return new MemoryManager<T>(this->name, this->memoryPoolSize, this->allocator, this->type);
   }
 
@@ -240,8 +239,8 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 
   virtual std::string genDot(int flags,
                              std::string dotId,
-                             std::shared_ptr<BaseConnector> input,
-                             std::shared_ptr<BaseConnector> output) {
+                             std::shared_ptr<AnyConnector> input,
+                             std::shared_ptr<AnyConnector> output) {
 
     if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) != 0) {
       return "";
@@ -273,12 +272,12 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 #endif
 
  private:
-  std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>>
+  std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>
       pipelineConnectorList; //!< The list of execution pipeline connectors one for each MemoryManager of the same type
   std::shared_ptr<IMemoryAllocator<T>> allocator; //!< The allocator used for allocating and freeing memory
-  int memoryPoolSize; //!< The size of the memory pool
+  size_t memoryPoolSize; //!< The size of the memory pool
   MemoryPool<T> *pool; //!< The memory pool
-  int pipelineId; //!< The execution pipeline id
+  size_t pipelineId; //!< The execution pipeline id
   std::string name; //!< The name of the memory manager
   MMType type; //!< The memory manager type
 

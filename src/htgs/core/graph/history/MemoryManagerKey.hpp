@@ -13,7 +13,7 @@
 #ifndef HTGS_MEMORYMANAGERKEY_H
 #define HTGS_MEMORYMANAGERKEY_H
 
-#include "../../task/BaseTaskScheduler.hpp"
+#include "htgs/core/task/AnyTaskScheduler.hpp"
 
 namespace htgs {
 /**
@@ -33,9 +33,9 @@ class MemoryManagerKey {
    * @param isReleaserOutsideGraph whether the mem releaser is outside of the graph or not
    */
   MemoryManagerKey(std::string name,
-                   BaseITask *memGetter,
-                   BaseITask *memReleaser,
-                   BaseTaskScheduler *memTask,
+                   AnyITask *memGetter,
+                   AnyITask *memReleaser,
+                   AnyTaskScheduler *memTask,
                    MMType type,
                    bool isReleaserOutsideGraph) {
     this->name = name;
@@ -63,7 +63,7 @@ class MemoryManagerKey {
    * Gets the ITask that is getting memory
    * @return the ITask getting memory
    */
-  BaseITask *getMemGetter() const {
+  AnyITask *getMemGetter() const {
     return this->memGetter;
   }
 
@@ -71,7 +71,7 @@ class MemoryManagerKey {
    * Gets the ITask that is releasing memory
    * @return the ITask releasing memory
    */
-  BaseITask *getMemReleaser() const {
+  AnyITask *getMemReleaser() const {
     return this->memReleaser;
   }
 
@@ -79,7 +79,7 @@ class MemoryManagerKey {
    * Gets the MemoryManager Task
    * @return the MemoryManager Task
    */
-  BaseTaskScheduler *getMemTask() const {
+  AnyTaskScheduler *getMemTask() const {
     return this->memTask;
   }
 
@@ -103,9 +103,9 @@ class MemoryManagerKey {
  private:
   MMType type; //!< The memory manager type
   std::string name; //!< The name of the memory edge
-  BaseITask *memGetter; //!< The ITask that is getting memory
-  BaseITask *memReleaser; //!< The ITask that is releasing memory
-  BaseTaskScheduler *memTask; //!< The TaskScheduler that manages the MemoryManager
+  AnyITask *memGetter; //!< The ITask that is getting memory
+  AnyITask *memReleaser; //!< The ITask that is releasing memory
+  AnyTaskScheduler *memTask; //!< The TaskScheduler that manages the MemoryManager
   bool isReleaserOutsideGraph; //!< Whether the memReleaser is outside the graph or not
 };
 }

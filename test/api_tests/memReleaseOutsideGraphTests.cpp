@@ -7,7 +7,7 @@
 // Created by tjb3 on 5/17/16.
 //
 
-#include <htgs/api/VoidData.hpp>
+#include <htgs/types/VoidData.hpp>
 #include <htgs/api/TaskGraph.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
 #include <gtest/gtest.h>
