@@ -12,6 +12,7 @@
 #ifndef HTGS_ANYCONNECTOR_H
 #define HTGS_ANYCONNECTOR_H
 
+#include <atomic>
 
 namespace htgs {
 

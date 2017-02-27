@@ -127,6 +127,16 @@ class AnyITask {
   virtual void initialize() = 0;
 
   /**
+ * Virtual function that is called when an ITask is checking if it can be terminated
+ * @param inputConnector the connector responsible for giving data to this Task
+ * @return whether the ITask can be terminated or not
+ * @retval TRUE if the ITask is ready to be terminated
+ * @retval FALSE if the ITask is not ready to be terminated
+ * @note By default this function checks if the input no longer sending data using inputConnector->isInputTerminated()
+ */
+  virtual bool canTerminate(std::shared_ptr<AnyConnector> inputConnector) = 0;
+
+  /**
    * Virtual function that generates the input/output and per-task dot notation
    * @param dotId the id for this task
    * @param input the input connector for this task
@@ -171,6 +181,41 @@ class AnyITask {
   * @return the demangled output type name for the input
   */
   virtual std::string outTypeName() = 0;
+
+  /**
+  * @internal
+  * Copies the ITask including its list of memGetters and memReleasers
+  * @return a deep copy of the ITask
+  *
+  * @note This function should only be called by the HTGS API
+  */
+  virtual AnyITask *copyITask() = 0;
+
+  /**
+ * Virtual function that adds additional dot attributes to this node.
+ * @param flags the dot gen flags
+ * @param dotId the for the node in dot
+ * @return the additiona dota attributes for the dot graph representation
+ */
+  virtual std::string genDot(int flags, std::string dotId) {
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
+    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+    return dotId + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
+  }
+
+#ifdef PROFILE
+  virtual std::string getDotProfile(int flags,
+                                    std::unordered_map<std::string, double> *mmap, double val,
+                                    std::string desc, std::unordered_map<std::string, std::string> *colorMap)
+  {
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
+    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+    return this->getDotId() + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\n" + desc + "\n" + std::to_string(val) + "\",shape=box,style=filled,penwidth=5,fillcolor=white,color=\""+colorMap->at(this->getNameWithPipID()) + "\",width=.2,height=.2];\n";
+  }
+  virtual void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
+  virtual void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
+  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)  {}
+#endif
 
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -253,21 +298,13 @@ class AnyITask {
     return this->microTimeoutTime;
   }
 
-  /**
- * @internal
- * Copies the ITask including its list of memGetters and memReleasers
- * @return a deep copy of the ITask
- *
- * @note This function should only be called by the HTGS API
- */
-  AnyITask *copyITask() {
-    AnyITask *iTaskCopy = copy();
 
-    this->setMemGetter(this->memGetter);
-    this->setMemReleaser(this->memReleaser);
-    this->setMMTypeMap(this->mmTypeMap);
-    this->setMemReleaserOutsideGraph(this->memReleaserOutsideGraph);
-    return iTaskCopy;
+  void copyMemoryEdges(AnyITask * iTaskCopy)
+  {
+    iTaskCopy->setGetMemoryEdges(this->memGetter);
+    iTaskCopy->setReleaseMemoryEdges(this->memReleaser);
+    iTaskCopy->setMMTypeMap(this->mmTypeMap);
+    iTaskCopy->setReleaseMemoryEdgeOutsideGraph(this->memReleaserOutsideGraph);
   }
 
   /**
@@ -381,7 +418,7 @@ class AnyITask {
    * @retval FALSE if the ITask does not have a memGetter with the specified name
    * @note To add a memGetter to this ITask use TaskGraph::addMemoryManagerEdge
    */
-  bool hasMemGetter(std::string name) {
+  bool hasGetMemoryEdge(std::string name) {
     return memGetter->find(name) != memGetter->end();
   }
 
@@ -393,11 +430,12 @@ class AnyITask {
    * @retval FALSE if the ITask does not have a memReleaser with the specified name
    * @note To add a memReleaser to this ITask use TaskGraph::addMemoryManagerEdge
    */
-  bool hasMemReleaser(std::string name) {
+  bool hasReleaseMemoryEdge(std::string name) {
     return memReleaser->find(name) != memReleaser->end();
   }
 
   /**
+   *
    * Checks whether this ITask contains a memReleaser that exists outside of the graph that the memory
    * edge exists.
    * @param name the name of the memReleaser edge
@@ -405,7 +443,8 @@ class AnyITask {
    * @retval TRUE if the memReleaser edge is in a graph that this ITask does not belong too
    * @retval FALSE if the memReleaser edge is in the graph that the ITask belongs too
    */
-  bool isMemReleaserOutsideGraph(std::string name) {
+  // TODO: This can be removed . . .
+  bool isReleaseMemoryOutsideGraph(std::string name) {
     return this->memReleaserOutsideGraph->at(name);
   }
 
@@ -418,9 +457,10 @@ class AnyITask {
    *
    * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
    */
-  void attachMemGetter(std::string name, std::shared_ptr<AnyConnector> connector, MMType type) {
+   // TODO: Rework for communication might simplify sending memory to neighbor pipelines . . .
+  void attachGetMemoryEdge(std::string name, std::shared_ptr<AnyConnector> connector, MMType type) {
     std::shared_ptr<ConnectorVector> vector;
-    if (hasMemGetter(name)) {
+    if (hasGetMemoryEdge(name)) {
       vector = memGetter->find(name)->second;
     }
     else {
@@ -452,9 +492,9 @@ class AnyITask {
    *
    * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
    */
-  void attachMemReleaser(std::string name, std::shared_ptr<AnyConnector> connector, MMType type, bool outsideMemManGraph) {
+  void attachReleaseMemoryEdge(std::string name, std::shared_ptr<AnyConnector> connector, MMType type, bool outsideMemManGraph) {
     std::shared_ptr<ConnectorVector> vector;
-    if (hasMemReleaser(name)) {
+    if (hasReleaseMemoryEdge(name)) {
       vector = memReleaser->find(name)->second;
     }
     else {
@@ -493,7 +533,7 @@ class AnyITask {
    * Gets the memReleaser mapping
    * @return the map for memReleasers
    */
-  std::shared_ptr<ConnectorVectorMap> getMemReleasers() {
+  std::shared_ptr<ConnectorVectorMap> getReleaseMemoryEdges() {
     return this->memReleaser;
   };
 
@@ -512,7 +552,8 @@ class AnyITask {
     if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) == 0) {
       if (memReleaser->size() > 0) {
         for (const auto &kv : *this->memReleaser) {
-          if (this->isMemReleaserOutsideGraph(kv.first)) {
+          // TODO: Should be able to rework this . . . ?
+          if (this->isReleaseMemoryOutsideGraph(kv.first)) {
             for (auto connector : *kv.second) {
               oss << dotId << " -> " << connector->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
             }
@@ -532,33 +573,6 @@ class AnyITask {
 
     return oss.str();
   }
-
-  /**
-   * Virtual function that adds additional dot attributes to this node.
-   * @param flags the dot gen flags
-   * @param dotId the for the node in dot
-   * @return the additiona dota attributes for the dot graph representation
-   */
-  virtual std::string genDot(int flags, std::string dotId) {
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
-    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-    return dotId + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
-  }
-
-#ifdef PROFILE
-  virtual std::string getDotProfile(int flags,
-                                    std::unordered_map<std::string, double> *mmap, double val,
-                                    std::string desc, std::unordered_map<std::string, std::string> *colorMap)
-  {
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
-    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-    return this->getDotId() + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\n" + desc + "\n" + std::to_string(val) + "\",shape=box,style=filled,penwidth=5,fillcolor=white,color=\""+colorMap->at(this->getNameWithPipID()) + "\",width=.2,height=.2];\n";
-  }
-  virtual void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
-  virtual void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
-  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)  {}
-#endif
-
 
   /**
    * @internal
@@ -604,17 +618,18 @@ class AnyITask {
    * Gets the name of the ITask with it's pipeline ID
    * @return  the name of the task with the pipeline ID
    */
-  std::string getNameWithPipID() { return this->getName() + std::to_string(this->pipelineId); }
+  std::string getNameWithPipelineId() { return this->getName() + std::to_string(this->pipelineId); }
 
  private:
 
   //! @cond Doxygen_Suppress
-  void setMemGetter(std::shared_ptr<ConnectorVectorMap> memGetter) { this->memGetter = memGetter; }
+  void setGetMemoryEdges(std::shared_ptr<ConnectorVectorMap> memGetter) { this->memGetter = memGetter; }
   void setMMTypeMap(std::shared_ptr<std::unordered_map<std::string, MMType>> pMap) { this->mmTypeMap = pMap; }
-  void setMemReleaser(std::shared_ptr<ConnectorVectorMap> memReleaser) {
+  void setReleaseMemoryEdges(std::shared_ptr<ConnectorVectorMap> memReleaser) {
     this->memReleaser = memReleaser;
   }
-  void setMemReleaserOutsideGraph(std::shared_ptr<std::unordered_map<std::string, bool>>memReleaserOutsideGraph) {
+  // TODO: Hopefully can get rid of this
+  void setReleaseMemoryEdgeOutsideGraph(std::shared_ptr<std::unordered_map<std::string, bool>> memReleaserOutsideGraph) {
     this->memReleaserOutsideGraph = memReleaserOutsideGraph;
   }
 

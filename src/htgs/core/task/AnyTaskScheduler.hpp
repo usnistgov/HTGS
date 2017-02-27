@@ -1,36 +1,26 @@
-
 // NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software.
 // NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file BaseTaskScheduler.hpp
+ * @file AnyTaskScheduler.hpp
  * @author Timothy Blattner
  * @date Nov 18, 2015
  *
  * @brief Implements the parent class for a Task to remove the template arguments and the BaseTaskRuntimeThread to attach a thread to a Task.
  */
-#ifndef HTGS_BASETASKSCHEDULER_H
-#define HTGS_BASETASKSCHEDULER_H
+#ifndef HTGS_ANYTASKSCHEDULER_HPP
+#define HTGS_ANYTASKSCHEDULER_HPP
 
-class BaseITask;
 
 #include <atomic>
 #include <memory>
-#include "htgs/core/graph/AnyConnector.hpp"
-#include "AnyITask.hpp"
-#include "../../debug/debug_message.h"
+#include <vector>
+#include <htgs/types/Types.hpp>
 #include "AnyITask.hpp"
 
 namespace htgs {
-template<class T, class U>
-class ITask;
-
-class AnyConnector;
-
-class BaseTaskSchedulerRuntimeThread;
-
-class AnyITask;
+class TaskSchedulerThread;
 
 /**
  * @class BaseTaskScheduler BaseTaskScheduler.hpp <htgs/core/task/BaseTaskScheduler.hpp>
@@ -43,237 +33,368 @@ class AnyITask;
  */
 class AnyTaskScheduler {
  public:
+
+  /**
+ * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
+ * @param taskFunction the functionality for the TaskScheduler
+ * @param numThreads the number of threads to operate with the TaskScheduler
+ * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
+ * @param pipelineId the pipeline Id associated with the TaskScheduler
+ * @param numPipelines the number of pipelines
+ */
+  AnyTaskScheduler(size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines) {
+    this->taskComputeTime = 0L;
+    this->taskWaitTime = 0L;
+    this->poll = false;
+    this->timeout = 0L;
+    this->numThreads = numThreads;
+    this->threadId = 0;
+    this->startTask = isStartTask;
+    this->pipelineId = pipelineId;
+    this->numPipelines = numPipelines;
+    this->alive = true;
+    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
+  }
+
+  /**
+   * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
+   * @param numThreads the number of threads to operate with the TaskScheduler
+   * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
+   * @param poll whether the TaskScheduler should poll for data
+   * @param microTimeoutTime the timeout time in microseconds
+   * @param pipelineId the pipeline Id associated with the TaskScheduler
+   * @param numPipelines the number of pipelines
+   */
+  AnyTaskScheduler(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime, size_t pipelineId, size_t numPipelines) {
+    this->taskComputeTime = 0L;
+    this->taskWaitTime = 0L;
+    this->poll = poll;
+    this->timeout = microTimeoutTime;
+    this->numThreads = numThreads;
+    this->threadId = 0;
+    this->startTask = isStartTask;
+    this->pipelineId = pipelineId;
+    this->numPipelines = numPipelines;
+    this->alive = true;
+    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
+  }
+
+  /**
+   * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters
+   * @param numThreads the number of threads to operate with the TaskScheduler
+   * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
+   * @param poll whether the TaskScheduler should poll for data
+   * @param microTimeoutTime the timeout time in microseconds
+   * @param pipelineId the pipeline Id associated with the TaskScheduler
+   * @param numPipelines the number of pipelines
+   * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskScheduler and copies of this TaskScheduler
+   */
+  AnyTaskScheduler(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
+  size_t pipelineId, size_t numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) {
+    this->taskComputeTime = 0L;
+    this->taskWaitTime = 0L;
+    this->poll = poll;
+    this->timeout = microTimeoutTime;
+    this->numThreads = numThreads;
+    this->threadId = 0;
+    this->startTask = isStartTask;
+    this->pipelineId = pipelineId;
+    this->numPipelines = numPipelines;
+    this->alive = true;
+    this->pipelineConnectorList = pipelineConnectorList;
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
   /**
    * Destructor
    */
   virtual ~AnyTaskScheduler() { };
 
   /**
-   * Executes the Task
-   */
-  virtual void executeTask() {
-    std::cerr << "Called AnyTaskScheduler 'executeTask' virtual function" << std::endl;
-    throw std::bad_function_call();
-  };
-
-  /**
-   * Initializes the Task
-   */
-  virtual void initialize() {
-    std::cerr << "Called AnyTaskScheduler 'initialize' virtual function" << std::endl;
-    throw std::bad_function_call();
-  };
-
-  /**
-   * Shuts down the Task
-   */
-  virtual void shutdown() {
-    std::cerr << "Called AnyTaskScheduler 'shutdown' virtual function" << std::endl;
-    throw std::bad_function_call();
-  };
-
-  /**
-   * Copies the Task
-   * @param deep whether a deep copy is required
-   * @return the Task copy
-   */
-  virtual AnyTaskScheduler *copy(bool deep) {
-    std::cerr << "Called AnyTaskScheduler 'copy' virtual function" << std::endl;
-    throw std::bad_function_call();
-  };
-
-  /**
-   * Gets the input BaseConnector
-   * @return the input connector
-   */
-  virtual std::shared_ptr<AnyConnector> getInputBaseConnector() {
-    std::cerr << "Called AnyTaskScheduler 'getInputBaseConnector' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * Gets the output BaseConnector
-   * @return the output connector
-   */
-  virtual std::shared_ptr<AnyConnector> getOutputBaseConnector() {
-    std::cerr << "Called AnyTaskScheduler 'getOutputBaseConnector' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * Sets the input BaseConnector
-   * @param connector the input connector
-   */
-  virtual void setInputConnector(std::shared_ptr<AnyConnector> connector) {
-    std::cerr << "Called AnyTaskScheduler 'setInputConnector' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * Sets the output BaseConnector
-   * @param connector the output connector
-   */
-  virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) {
-    std::cerr << "Called AnyTaskScheduler 'setOutputConnector' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * Provides debug output
-   */
-  virtual void debug() {
-    std::cerr << "Called AnyTaskScheduler 'debug' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * Gets the name of the Task
-   * @return the name of the Task
-   */
-  virtual std::string getName() {
-    std::cerr << "Called AnyTaskScheduler 'getName' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-  /**
-   * Gets the name of the ITask with it's pipeline ID
-   * @return  the name of the task with the pipeline ID
-   */
-  virtual std::string getNameWithPipID() {
-    std::cerr << "Called AnyTaskScheduler 'getNameWithPipID' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
-
-  /**
-   * Gets the ITask function associated with the Task
+   * Gets the ITask function associated with the TaskScheduler
    * @return the ITask
    */
-  virtual AnyITask *getTaskFunction() {
-    std::cerr << "Called AnyTaskScheduler 'getTaskFunction' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual AnyITask *getTaskFunction() = 0;
+
+  virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
+  virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
 
   /**
-   * Gets whether the Task is alive or not
-   * @return whether the Task is alive
-   * @retval TRUE if the Task is alive
-   * @retval FALSE if the Task is not alive
+   * Copies the TaskScheduler
+   * @param deep whether a deep copy is required
+   * @return the TaskScheduler copy
    */
-  virtual bool isAlive() {
-    std::cerr << "Called AnyTaskScheduler 'isAlive' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual AnyTaskScheduler *copy(bool deep)  = 0;
+
 
   /**
-   * Sets the pipeline Id associated with the Task
-   * @param id the pipeline Id
+   * Initializes the TaskScheduler
    */
-  virtual void setPipelineId(int id) {
-    std::cerr << "Called AnyTaskScheduler 'setPipelineId' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual void initialize() = 0;
+
 
   /**
-   * Sets the number of pipelines associated with the Task
-   * @param numPipelines the number of pipelines
+   * Executes the TaskScheduler.
+   * Using the following procedure:
+   * 0. If the ITask is a start task, then send ITask::executeTask with nullptr and set that it is no longer a startTask
+
+   * 1. Checks if the ITask::isTerminated, if it is then reduce thread pool count for the runtime and wakeup
+   * any tasks waiting on this TaskScheduler's input queue. If the thread pool count is zero, then indicate that
+   * this task is no longer producing data  and wakup all consumers waiting on the output connector. Also indicate
+   * this task is no longer releasing memory and wakeup
+   * all memory managers that this task is releasing memory to.
+   *
+   * 2. Get input from input Connector. (optional polls for data, if timeout period expires, then will recheck if the ITask is terminated and try to get input again)
+   *
+   * 3. If the data is not nullptr, then sends the data to the ITask::executeTask function.
+   *
+   * @note \#define PROFILE to enable profiling.
    */
-  virtual void setNumPipelines(int numPipelines) {
-    std::cerr << "Called AnyTaskScheduler 'setNumPipelines' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual void executeTask() = 0;
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Adds a Connector for a Task that is in an ExecutionPipeline
+   * Adds the input Connector for this TaskScheduler to the pipeline connector list.
    * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this Task that is within the same ExecutionPipeline.
+   * to a copy of this TaskScheduler that is within the same ExecutionPipeline.
+   * @param pipelineId the pipeline Id
+   */
+  void addPipelineConnector(size_t pipelineId) {
+    (*pipelineConnectorList)[pipelineId] = this->getInputConnector();
+  }
+
+  /**
+   * Adds a Connector for a TaskScheduler that is in an ExecutionPipeline
+   * Each Connector added represents one of the other Connectors that is attached
+   * to a copy of this TaskScheduler that is within the same ExecutionPipeline.
    * @param pipelineId the pipeline Id
    * @param connector the connector to add
    */
-  virtual void addPipelineConnector(int pipelineId, std::shared_ptr<AnyConnector> connector) {
-    std::cerr << "Called AnyTaskScheduler 'addPipelineConnector' virtual function" << std::endl;
-    throw std::bad_function_call();
+  void addPipelineConnector(size_t pipelineId, std::shared_ptr<AnyConnector> connector) {
+    (*pipelineConnectorList)[pipelineId] = connector;
   }
 
   /**
-   * Adds the input Connector for this task to the pipeline connector list.
-   * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this Task that is within the same ExecutionPipeline.
-   * @param pipelineId the pipeline Id
+   * Sets the number of pipelines associated with the TaskScheduler
+   * @param numPipelines the number of pipelines
    */
-  virtual void addPipelineConnector(int pipelineId) {
-    std::cerr << "Called AnyTaskScheduler 'addPipelineConnector' virtual function" << std::endl;
-    throw std::bad_function_call();
+  void setNumPipelines(size_t numPipelines) {
+    this->numPipelines = numPipelines;
+    if (this->pipelineConnectorList->capacity() < this->numPipelines) {
+      this->pipelineConnectorList->resize((unsigned long) this->numPipelines);
+    }
   }
 
   /**
-   * Gets the number of threads associated with this Task
-   * @return the number of the threads that will execute the Task
+   * Sets the pipeline Id associated with the TaskScheduler
+   * @param id the pipeline Id
    */
-  virtual int getNumThreads() const {
-    std::cerr << "Called AnyTaskScheduler 'getNumThreads' virtual function" << std::endl;
-    throw std::bad_function_call();
+  void setPipelineId(size_t id) {
+    this->pipelineId = id;
+    this->getTaskFunction()->setPipelineId(id);
+  }
+
+
+  /**
+   * Gets the number of threads associated with this TaskScheduler
+   * @return the number of the threads that will execute the TaskScheduler
+   */
+  size_t getNumThreads() const { return this->numThreads; }
+
+  bool isStartTask() { return this->startTask; }
+
+  size_t getPipelineId() { return this->pipelineId; }
+
+  size_t getNumPipelines() { return this->numPipelines; }
+
+  std::shared_ptr<ConnectorVector> getPipelineConnectors() { return this->pipelineConnectorList; }
+
+  bool isPoll() { return this->poll; }
+
+  size_t getTimeout() { return this->timeout; }
+
+  void setStartTask(bool val) { this->startTask = val; }
+
+  void setAlive(bool val) { this->alive = val; }
+
+  void incTaskComputeTime(long val) { this->taskComputeTime += val;}
+  void incWaitTime(long val) { this->taskWaitTime += val; }
+
+  /**
+   * Shuts down the TaskScheduler
+   */
+  void shutdown() {
+    DEBUG("shutting down: " << this->prefix() << " " << this->getName() << std::endl);
+    this->getTaskFunction()->shutdown();
   }
 
   /**
-   * Sets the thread that is executing this Task
-   * @param runtimeThread the thread that is executing the task
+   * Sets the thread that is executing this TaskScheduler
+   * @param runtimeThread the thread that is executing the TaskScheduler
    */
-  virtual void setRuntimeThread(BaseTaskSchedulerRuntimeThread *runtimeThread) {
-    std::cerr << "Called AnyTaskScheduler 'setRuntimeThread' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
+  virtual void setRuntimeThread(TaskSchedulerThread *runtimeThread) = 0;
+
   /**
-   * Sets the thread id associated with the Task
+   * Gets the name of the ITask
+   * @return the name of the ITask
+   */
+  std::string getName() { return this->getTaskFunction()->getName(); }
+
+  /**
+   * Gets whether the TaskScheduler is alive or not
+   * @return whether the TaskScheduler is alive
+   * @retval TRUE if the TaskScheduler is alive
+   * @retval FALSE if the TaskScheduler is not alive
+   */
+  bool isAlive() { return this->alive; }
+
+  /**
+   * Provides debug output
+   * @note \#define DEBUG_FLAG to enable debugging.
+   */
+  void debug() {
+    DEBUG(prefix() << this->getName() << " input connector: " << getInputConnector() << " output connector: " <<
+                   getOutputConnector() << " Details: " << std::endl);
+    this->getTaskFunction()->debug();
+  }
+
+
+  /**
+ * Gets the name of the ITask with it's pipeline ID
+ * @return  the name of the task with the pipeline ID
+ */
+  std::string getNameWithPipelineId() { return this->getTaskFunction()->getNameWithPipelineId(); }
+
+  /**
+ * Gets the dot notation for this TaskScheduler.
+ */
+  std::string getDot(int flags) {
+    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
+      return this->getTaskFunction()->genDot(flags, this->getInputConnector(), this->getOutputConnector());
+    } else if (this->threadId == 0){
+      return this->getTaskFunction()->genDot(flags, this->getInputConnector(), this->getOutputConnector());
+    }
+    else
+    {
+      return "";
+    }
+  }
+
+  /**
+   * Sets the thread id associated with the TaskScheduler
    * @param id the thread id
    */
-  virtual void setThreadId(int id) {
-    std::cerr << "Called AnyTaskScheduler 'setThreadId' virtual function" << std::endl;
-    throw std::bad_function_call();
+  void setThreadId(size_t id) {
+    this->threadId = id;
   }
 
-  /**
-   * Gets the dot notation for this task.
-   * @param flags gen dot flags
-   */
-  virtual std::string getDot(int flags) {
-    std::cerr << "Called AnyTaskScheduler 'getDot' virtual function" << std::endl;
-    throw std::bad_function_call();
-  }
 
 
 #ifdef PROFILE
-  virtual long long int getComputeTime() { return 0; }
-  virtual long long int getWaitTime() { return 0; }
-  virtual int getMaxQueueSize() { return 0;}
-  virtual void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap) {}
-  virtual void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap) {}
-  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap) {}
-  virtual std::string genDotProfile(int flags, std::unordered_map<std::string, double> *mmap, std::string desc, std::unordered_map<std::string, std::string> *colorMap) { return "";}
+  std::string genDotProfile(int flags, std::unordered_map<std::string, double> *mmap, std::string desc,
+                            std::unordered_map<std::string, std::string> *colorMap) {
+    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
+      double val = 0.0;
+      if (desc == "Compute Time (sec): ")
+        val = this->taskComputeTime / 1000000;
+      else if (desc == "Wait Time (sec): ")
+        val = this->taskWaitTime / 1000000;
+      else if (desc == "Max Q Size: ")
+        val = this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;
+      return this->taskFunction->getDotProfile(flags, mmap, val, desc, colorMap);
+    } else if (this->threadId == 0){
+      return this->taskFunction->getDotProfile(flags, mmap, mmap->at(this->getNameWithPipID()), desc, colorMap);
+    }
+    else
+    {
+      return "";
+    }
+  }
+
+  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)
+  {
+    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskComputeTime));
+    this->taskFunction->gatherComputeTime(mmap);
+  }
+
+  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)
+  {
+    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskWaitTime));
+    this->taskFunction->gatherWaitTime(mmap);
+  }
+
+  void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)
+  {
+    if (inputConnector != nullptr)
+      mmap->insert(std::pair<std::string, int>(this->getNameWithPipID(), this->inputConnector->getMaxQueueSize()));
+    this->taskFunction->gatherMaxQSize(mmap);
+  }
+
+  long long int getComputeTime() { return taskComputeTime; }
+  long long int getWaitTime() { return taskWaitTime; }
+  int getMaxQueueSize() { return this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;}
 #endif
 
 
+  //! @cond Doxygen_Suppress
+  std::string prefix() {
+    return std::string(
+        "Thread id: " + std::to_string(this->threadId) + " (out of " + std::to_string(this->numThreads)
+            + "); Pipeline id " + std::to_string(this->pipelineId) + " (out of " + std::to_string(this->numPipelines) +
+            ") ");
+  }
+  //! @endcond
+
+
+ private:
+
+  unsigned long long int taskComputeTime; //!< The total compute time for the task
+  unsigned long long int taskWaitTime; //!< The total wait time for the task
+
+  size_t timeout; //!< The timeout time for polling in microseconds
+  bool poll; //!< Whether the scheduler should poll for data
+
+  bool startTask; //!< Whether the task should start immediately
+  bool alive; //!< Whether the task is still alive
+
+  size_t threadId; //!< The thread id for the task (set after initialization)
+  size_t numThreads; //!< The number of threads spawned for the scheduler
+
+  size_t pipelineId; //!< The execution pipeline id
+  size_t numPipelines; //!< The number of execution pipelines
+
+  std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The execution pipeline connector list (one for each pipeline that share the same ITask functionality)
 };
 
+
 /**
- * @class BaseTaskSchedulerRuntimeThread BaseTaskScheduler.hpp <htgs/task/BaseTaskScheduler.hpp>
- * @brief Manages a BaseTaskScheduler that is bound to a thread for execution
+ * @class TaskSchedulerThread BaseTaskScheduler.hpp <htgs/task/AnyTaskScheduler.hpp>
+ * @brief Manages a TaskScheduler that is bound to a thread for execution
  * @details
  * A Runtime will spawn a thread and bind it to the run function
  * within this class. If a Task has more than one threads associated
  * with it, then this class is duplicated one per thread, each with
- * a separate copy of the original BaseTaskScheduler.
+ * a separate copy of the original TaskScheduler.
  *
  * @note This class should only be called by the HTGS API
  */
-class BaseTaskSchedulerRuntimeThread {
+class TaskSchedulerThread {
  public:
   /**
-   * Constructs a BaseTaskSchedulerRuntimeThread with a specified BaseTaskScheduler and atomic number of threads
-   * that is shared among all other threads that operate with a copy of the same BaseTaskScheduler
+   * Constructs a TaskSchedulerThread with a specified AnyTaskScheduler and atomic number of threads
+   * that is shared among all other threads that operate with a copy of the same AnyTaskScheduler
    * @param threadId the thread Id for the task
    * @param task the task the thread is associated with
    * @param numThreads the number of threads that a task contains
    */
-  BaseTaskSchedulerRuntimeThread(int threadId, AnyTaskScheduler *task, std::shared_ptr<std::atomic_int> numThreads) {
+  TaskSchedulerThread(size_t threadId, AnyTaskScheduler *task, std::shared_ptr<std::atomic_size_t> numThreads) {
     this->task = task;
     this->terminated = false;
     this->numThreads = numThreads;
@@ -284,7 +405,7 @@ class BaseTaskSchedulerRuntimeThread {
   /**
    * Destructor
    */
-  ~BaseTaskSchedulerRuntimeThread() {
+  ~TaskSchedulerThread() {
   }
 
   /**
@@ -307,7 +428,7 @@ class BaseTaskSchedulerRuntimeThread {
    * Gets the number of threads remaining
    * @return the number of threads remaining
    */
-  int getThreadsRemaining() { return *this->numThreads; }
+  size_t getThreadsRemaining() { return *this->numThreads; }
 
   /**
    * Decrements the number of threads remaining by one.
@@ -322,7 +443,7 @@ class BaseTaskSchedulerRuntimeThread {
    */
   bool decrementAndCheckNumThreadsRemaining() {
     // Performs pre-decrement
-    int current = this->numThreads->fetch_sub(1)-1;
+    size_t current = this->numThreads->fetch_sub(1) - 1;
     return current == 0;
   }
 
@@ -343,9 +464,10 @@ class BaseTaskSchedulerRuntimeThread {
 
  private:
   volatile bool terminated; //!< Whether the thread is ready to be terminated or not
-  std::shared_ptr<std::atomic_int> numThreads; //!< The number of total threads managing the TaskScheduler
+  std::shared_ptr<std::atomic_size_t> numThreads; //!< The number of total threads managing the TaskScheduler
   AnyTaskScheduler *task; //!< The TaskScheduler that is called from the thread
 };
+
 }
 
-#endif //HTGS_BASETASKSCHEDULER_H
+#endif //HTGS_ANYTASKSCHEDULER_HPP

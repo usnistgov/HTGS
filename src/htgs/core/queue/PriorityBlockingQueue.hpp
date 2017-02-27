@@ -19,8 +19,6 @@
 #include <iostream>
 #include <queue>
 
-#include "../../api/IData.hpp"
-
 namespace htgs {
 /**
  * @class PriorityBlockingQueue PriorityBlockingQueue.hpp <htgs/core/queue/PriorityBlockingQueue.hpp>

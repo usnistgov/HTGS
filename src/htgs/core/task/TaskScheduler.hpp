@@ -20,12 +20,8 @@
 #include <unordered_map>
 #include <mutex>
 #include <sstream>
-#include "htgs/core/graph/AnyConnector.hpp"
-#include "../../debug/debug_message.h"
-#include "AnyTaskScheduler.hpp"
-#include "../graph/Connector.hpp"
-#include "../../api/IData.hpp"
-#include "../../api/ITask.hpp"
+
+#include <htgs/core/task/AnyTaskScheduler.hpp>
 
 namespace htgs {
 #ifdef PROFILE
@@ -70,23 +66,9 @@ class TaskScheduler: public AnyTaskScheduler {
    * @param pipelineId the pipeline Id associated with the TaskScheduler
    * @param numPipelines the number of pipelines
    */
-  TaskScheduler(ITask<T, U> *taskFunction, int numThreads, bool isStartTask, int pipelineId, int numPipelines) {
-    this->taskFunction = taskFunction;
-    this->taskComputeTime = 0L;
-    this->taskWaitTime = 0L;
-    this->poll = false;
-    this->timeout = 0L;
-    this->numThreads = numThreads;
-    this->threadId = 0;
-    this->isStartTask = isStartTask;
-    this->inputConnector = nullptr;
-    this->outputConnector = nullptr;
-    this->pipelineId = pipelineId;
-    this->numPipelines = numPipelines;
-    this->alive = true;
-    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
-    this->runtimeThread = nullptr;
-  }
+  TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines) :
+      super(numThreads, isStartTask, pipelineId, numPipelines),
+      taskFunction(taskFunction), inputConnector(nullptr), outputConnector(nullptr), runtimeThread(nullptr) {}
 
   /**
    * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
@@ -98,24 +80,11 @@ class TaskScheduler: public AnyTaskScheduler {
    * @param pipelineId the pipeline Id associated with the TaskScheduler
    * @param numPipelines the number of pipelines
    */
-  TaskScheduler(ITask<T, U> *taskFunction, int numThreads, bool isStartTask, bool poll, long microTimeoutTime,
-                int pipelineId, int numPipelines) {
-    this->taskFunction = taskFunction;
-    this->taskComputeTime = 0L;
-    this->taskWaitTime = 0L;
-    this->poll = poll;
-    this->timeout = microTimeoutTime;
-    this->numThreads = numThreads;
-    this->threadId = 0;
-    this->isStartTask = isStartTask;
-    this->inputConnector = nullptr;
-    this->outputConnector = nullptr;
-    this->pipelineId = pipelineId;
-    this->numPipelines = numPipelines;
-    this->alive = true;
-    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
-    this->runtimeThread = nullptr;
-  }
+  TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
+                size_t pipelineId, size_t numPipelines) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines),
+                         taskFunction(taskFunction), inputConnector(nullptr), outputConnector(nullptr),
+                          runtimeThread(nullptr) {}
+
 
   /**
    * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters
@@ -128,24 +97,10 @@ class TaskScheduler: public AnyTaskScheduler {
    * @param numPipelines the number of pipelines
    * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskScheduler and copies of this TaskScheduler
    */
-  TaskScheduler(ITask<T, U> *taskFunction, int numThreads, bool isStartTask, bool poll, long microTimeoutTime,
-                int pipelineId, int numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) {
-    this->taskFunction = taskFunction;
-    this->taskComputeTime = 0L;
-    this->taskWaitTime = 0L;
-    this->poll = poll;
-    this->timeout = microTimeoutTime;
-    this->numThreads = numThreads;
-    this->threadId = 0;
-    this->isStartTask = isStartTask;
-    this->inputConnector = nullptr;
-    this->outputConnector = nullptr;
-    this->pipelineId = pipelineId;
-    this->numPipelines = numPipelines;
-    this->alive = true;
-    this->pipelineConnectorList = pipelineConnectorList;
-    this->runtimeThread = nullptr;
-  }
+  TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
+                size_t pipelineId, size_t numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
+      : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, pipelineConnectorList),
+        taskFunction(taskFunction), inputConnector(nullptr), outputConnector(nullptr), runtimeThread(nullptr) {}
 
   /**
    * Destructor
@@ -156,81 +111,23 @@ class TaskScheduler: public AnyTaskScheduler {
   }
 
   /**
-   * Adds the input Connector for this TaskScheduler to the pipeline connector list.
-   * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this TaskScheduler that is within the same ExecutionPipeline.
-   * @param pipelineId the pipeline Id
-   */
-  void addPipelineConnector(int pipelineId) {
-    (*pipelineConnectorList)[pipelineId] = this->getInputBaseConnector();
-  }
-
-  /**
-   * Adds a Connector for a TaskScheduler that is in an ExecutionPipeline
-   * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this TaskScheduler that is within the same ExecutionPipeline.
-   * @param pipelineId the pipeline Id
-   * @param connector the connector to add
-   */
-  void addPipelineConnector(int pipelineId, std::shared_ptr<AnyConnector> connector) {
-    (*pipelineConnectorList)[pipelineId] = connector;
-  }
-
-  /**
-   * Sets the pipeline Id associated with the TaskScheduler
-   * @param id the pipeline Id
-   */
-  void setPipelineId(int id) {
-    this->pipelineId = id;
-    this->taskFunction->setPipelineId(id);
-  }
-
-  /**
-   * Sets the number of pipelines associated with the TaskScheduler
-   * @param numPipelines the number of pipelines
-   */
-  void setNumPipelines(int numPipelines) {
-    this->numPipelines = numPipelines;
-    if (this->pipelineConnectorList->capacity() < this->numPipelines) {
-      this->pipelineConnectorList->resize((unsigned long) this->numPipelines);
-    }
-  }
-
-  /**
-   * Sets the input Connector
-   * @param connector the input connector
-   */
-  void setInputConnector(std::shared_ptr<Connector<T>> connector) { this->inputConnector = connector; }
-
-  /**
-   * Sets the output Connector
-   * @param connector the output connector
-   */
-  void setOutputConnector(std::shared_ptr<Connector<U>> connector) { this->outputConnector = connector; }
-
-  /**
-   * Gets the output Connector
-   * @return the output Connector
-   */
-  std::shared_ptr<Connector<U>> getOutputConnector() const { return this->outputConnector; }
-
-  /**
    * Gets the input Connector
    * @return the input connector
    */
-  std::shared_ptr<Connector<T>> getInputConnector() const { return this->inputConnector; }
+  std::shared_ptr<AnyConnector> getInputConnector() override { return this->inputConnector; }
 
   /**
-   * Gets the input BaseConnector
-   * @return the input connector
-   */
-  std::shared_ptr<AnyConnector> getInputBaseConnector() { return this->inputConnector; }
-
-  /**
-   * Gets the output BaseConnector
+   * Gets the output Connector
    * @return the output connector
    */
-  std::shared_ptr<AnyConnector> getOutputBaseConnector() { return this->outputConnector; }
+  std::shared_ptr<AnyConnector> getOutputConnector() override { return this->outputConnector; }
+
+  void initialize() override {
+    DEBUG("initializing: " << this->prefix() << " " << this->getName() << std::endl);
+    this->taskFunction->initialize(this->getPipelineId(), this->getNumPipelines(), this, this->getPipelineConnectors());
+  }
+
+  void setRuntimeThread(TaskSchedulerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }
 
   /**
    * Sets the input BaseConnector
@@ -244,158 +141,115 @@ class TaskScheduler: public AnyTaskScheduler {
    */
   void setOutputConnector(std::shared_ptr<AnyConnector> connector) { this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector); }
 
-  /**
-   * Gets the ITask function associated with the TaskScheduler
-   * @return the ITask
-   */
-  ITask<T, U> *getTaskFunction() { return this->taskFunction; };
-
-  /**
-   * Gets the number of threads associated with this TaskScheduler
-   * @return the number of the threads that will execute the TaskScheduler
-   */
-  int getNumThreads() const { return this->numThreads; }
-
-  /**
-   * Initializes the TaskScheduler
-   */
-  void initialize() {
-    DEBUG("initializing: " << this->prefix() << " " << this->getName() << std::endl);
-    this->taskFunction->initializeITask(this->pipelineId, this->numPipelines, this, this->pipelineConnectorList);
+  AnyITask *getTaskFunction() override {
+    return this->taskFunction;
   }
 
-  /**
-   * Shuts down the TaskScheduler
-   */
-  void shutdown() {
-    DEBUG("shutting down: " << this->prefix() << " " << this->getName() << std::endl);
-    this->taskFunction->shutdown();
-  }
-
-  /**
-   * Sets the thread that is executing this TaskScheduler
-   * @param runtimeThread the thread that is executing the TaskScheduler
-   */
-  void setRuntimeThread(BaseTaskSchedulerRuntimeThread *runtimeThread) { this->runtimeThread = runtimeThread; }
-
-  /**
-   * Gets the name of the ITask
-   * @return the name of the ITask
-   */
-  std::string getName() { return this->taskFunction->getName(); }
-
-  /**
-   * Copies the TaskScheduler
-   * @param deep whether a deep copy is required
-   * @return the TaskScheduler copy
-   */
-  AnyTaskScheduler *copy(bool deep) {
-    ITask<T, U> *iTask;
-    iTask = this->taskFunction->copyITask();
+  AnyTaskScheduler *copy(bool deep)  override {
+    ITask<T, U> *iTask = this->taskFunction->copyITask();
 
     TaskScheduler<T, U>
-        *newTask = new TaskScheduler<T, U>(iTask, this->numThreads, this->isStartTask, this->poll, this->timeout,
-                                           this->pipelineId, this->numPipelines, this->pipelineConnectorList);
+        *newTask = new TaskScheduler<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),
+                                           this->getPipelineId(), this->getNumPipelines(), this->getPipelineConnectors());
     if (deep) {
-      newTask->setInputConnector(this->getInputBaseConnector());
+      newTask->setInputConnector(this->getInputConnector());
       newTask->setOutputConnector(this->getOutputConnector());
     }
-    return newTask;
+    return (AnyTaskScheduler *) newTask;
   }
 
-  /**
-   * Executes the TaskScheduler.
-   * Using the following procedure:
-   * 0. If the ITask is a start task, then send ITask::executeTask with nullptr and set that it is no longer a startTask
-   
-   * 1. Checks if the ITask::isTerminated, if it is then reduce thread pool count for the runtime and wakeup
-   * any tasks waiting on this TaskScheduler's input queue. If the thread pool count is zero, then indicate that
-   * this task is no longer producing data  and wakup all consumers waiting on the output connector. Also indicate
-   * this task is no longer releasing memory and wakeup
-   * all memory managers that this task is releasing memory to.
-   *
-   * 2. Get input from input Connector. (optional polls for data, if timeout period expires, then will recheck if the ITask is terminated and try to get input again)
-   *
-   * 3. If the data is not nullptr, then sends the data to the ITask::executeTask function.
-   *
-   * @note \#define PROFILE to enable profiling.
-   */
   void executeTask() {
     std::shared_ptr<T> data = nullptr;
 
     DEBUG_VERBOSE(prefix() << "Running task: " << this->getName());
 
-    if (isStartTask) {
+    if (this->isStartTask()) {
       DEBUG_VERBOSE(prefix() << this->getName() << " is a start task");
-      isStartTask = false;
+      this->setStartTask(false);
       auto start = std::chrono::high_resolution_clock::now();
       this->taskFunction->executeTask(nullptr);
       auto finish = std::chrono::high_resolution_clock::now();
 
-      this->taskComputeTime += std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
+      this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
       return;
-    } else if (this->taskFunction->isTerminated(this->inputConnector)) {
+    } else if (this->taskFunction->canTerminate(this->inputConnector)) {
 
+      DEBUG(prefix() << this->getName() << " task function is terminated");
+      this->processTaskFunctionTerminated();
+
+      return;
+    }
+    auto start = std::chrono::high_resolution_clock::now();
+
+    if (this->isPoll())
+      data = this->inputConnector->pollConsumeData(this->getTimeout());
+    else
+      data = this->inputConnector->consumeData();
+
+    auto finish = std::chrono::high_resolution_clock::now();
+
+    this->incWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+
+    DEBUG_VERBOSE(prefix() << this->getName() << " received data: " << data << " from " << inputConnector);
+
+    if (data != nullptr) {
+      start = std::chrono::high_resolution_clock::now();
+      this->taskFunction->executeTask(data);
+      finish = std::chrono::high_resolution_clock::now();
+
+      this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+    }
+
+  }
+
+  void processTaskFunctionTerminated() {
 #ifdef PROFILE
-      {
-          std::unique_lock<std::mutex> lock(ioMutex);
+    {
+      // TODO: Handle mutex
+//          std::unique_lock<std::mutex> lock(ioMutex);
           std::cout << "===================== " << this->getName() << " "<< prefix() << " ===================" << std::endl;
           std::cout << "COMPUTE TIME: " << taskComputeTime << " us   WAIT TIME: " << taskWaitTime << " us" << std::endl;
 
-          if (this->inputConnector != nullptr) {
+          if (this->getInputConnector() != nullptr) {
               std::cout << "Input connector: ";
-              this->inputConnector->profileConsume(this->numThreads, true);
+              this->getInputConnector()->profileConsume(this->numThreads, true);
           }
-          if (this->outputConnector != nullptr) {
+          if (this->getOutputConnector() != nullptr) {
               std::cout << "Output connector: ";
-              this->outputConnector->profileProduce(this->numThreads);
+              this->getOutputConnector()->profileProduce(this->numThreads);
           }
-          this->taskFunction->profileITask();
+          this->getTaskFunction()->profileITask();
           std::cout << "-------------------------- " << this->getName() << " (thread: " << this->threadId << ") -------------------------- " << std::endl << std::endl;
       }
 #endif
 
+    this->setAlive(false);
+    this->getInputConnector()->wakeupConsumer();
 
-      DEBUG(prefix() << this->getName() << " task function is terminated");
-      this->alive = false;
-      this->inputConnector->wakeupConsumer();
+    if (this->runtimeThread != nullptr) {
+      this->runtimeThread->terminate();
 
+      if (this->runtimeThread->decrementAndCheckNumThreadsRemaining()) {
+        if (this->getOutputConnector() != nullptr) {
+          this->getOutputConnector()->producerFinished();
 
-      if (this->runtimeThread != nullptr) {
-        this->runtimeThread->terminate();
+          if (this->getOutputConnector()->isInputTerminated())
+            this->getOutputConnector()->wakeupConsumer();
+        }
 
-        if (this->runtimeThread->decrementAndCheckNumThreadsRemaining()) {
-          if (this->outputConnector != nullptr) {
-            this->outputConnector->producerFinished();
+        std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> memReleasers = this->getTaskFunction()->getReleaseMemoryEdges();
 
-            if (this->outputConnector->isInputTerminated())
-              this->outputConnector->wakeupConsumer();
-          }
-
-          std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> memReleasers = this->taskFunction->getMemReleasers();
-
-          DEBUG(prefix() << " " << this->getName() << " Shutting down " << memReleasers->size() <<
-              " memory releasers");
-          for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> > pair : *memReleasers) {
+        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memReleasers->size() <<
+                       " memory releasers");
+        for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> > pair : *memReleasers) {
 
 
-            if (this->taskFunction->isMemReleaserOutsideGraph(pair.first))
+          if (this->getTaskFunction()->isReleaseMemoryOutsideGraph(pair.first))
+          {
+            DEBUG(prefix() << " " << this->getName() << " Shutting down ALL memory releasers : " <<
+                           pair.first << " with " << pair.second->size() << " connectors");
+            for (auto connector : *pair.second)
             {
-              DEBUG(prefix() << " " << this->getName() << " Shutting down ALL memory releasers : " <<
-                  pair.first << " with " << pair.second->size() << " connectors");
-              for (auto connector : *pair.second)
-              {
-                connector->producerFinished();
-
-
-                if (connector->isInputTerminated())
-                  connector->wakeupConsumer();
-              }
-            }
-            else {
-              DEBUG(prefix() << " " << this->getName() << " Shutting down memory releaser : " <<
-                  pair.first << " with " << pair.second->size() << " connectors");
-              std::shared_ptr<AnyConnector> connector = pair.second->at((unsigned long) this->pipelineId);
               connector->producerFinished();
 
 
@@ -403,103 +257,47 @@ class TaskScheduler: public AnyTaskScheduler {
                 connector->wakeupConsumer();
             }
           }
+          else {
+            DEBUG(prefix() << " " << this->getName() << " Shutting down memory releaser : " <<
+                           pair.first << " with " << pair.second->size() << " connectors");
+            std::shared_ptr<AnyConnector> connector = pair.second->at(this->getPipelineId());
+            connector->producerFinished();
 
-        }
-      }
-      else {
-        if (this->outputConnector != nullptr) {
-          this->outputConnector->producerFinished();
 
-          if (this->outputConnector->isInputTerminated()) {
-            this->outputConnector->wakeupConsumer();
+            if (connector->isInputTerminated())
+              connector->wakeupConsumer();
           }
         }
+
       }
-      return;
     }
-    auto start = std::chrono::high_resolution_clock::now();
+    else {
+      if (this->getOutputConnector() != nullptr) {
+        this->getOutputConnector()->producerFinished();
 
-    if (poll)
-      data = this->inputConnector->pollConsumeData(this->timeout);
-    else
-      data = this->inputConnector->consumeData();
-
-    auto finish = std::chrono::high_resolution_clock::now();
-
-    this->taskWaitTime += std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
-
-    DEBUG_VERBOSE(prefix() << this->getName() << " received data: " << data << " from " << inputConnector);
-
-    if (data != nullptr) {
-      auto start = std::chrono::high_resolution_clock::now();
-      this->taskFunction->executeTask(data);
-      auto finish = std::chrono::high_resolution_clock::now();
-
-      this->taskComputeTime += std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
-    }
-
-  }
-
-  /**
-   * Creates a TaskScheduler using the parameters within the taskFunction
-   * @param taskFunction the task function to create the TaskScheduler from
-   */
-  static TaskScheduler<T, U> *createTask(ITask<T, U> *taskFunction) {
-    return new TaskScheduler<T, U>(taskFunction,
-                                   taskFunction->getNumThreads(),
-                                   taskFunction->getIsStartTask(),
-                                   taskFunction->isPoll(),
-                                   taskFunction->getMicroTimeoutTime(),
-                                   0,
-                                   1);
-  };
-
-  /**
-   * Gets whether the TaskScheduler is alive or not
-   * @return whether the TaskScheduler is alive
-   * @retval TRUE if the TaskScheduler is alive
-   * @retval FALSE if the TaskScheduler is not alive
-   */
-  bool isAlive() { return this->alive; }
-
-  /**
-   * Provides debug output
-   * @note \#define DEBUG_FLAG to enable debugging.
-   */
-  void debug() {
-    DEBUG(prefix() << this->getName() << " input connector: " << inputConnector << " output connector: " <<
-        outputConnector << " Details: " << std::endl);
-    this->taskFunction->debug();
-  }
-
-  /**
-   * Sets the thread id associated with the TaskScheduler
-   * @param id the thread id
-   */
-  void setThreadId(int id) {
-    this->threadId = id;
-  }
-
-  /**
-   * Gets the dot notation for this TaskScheduler.
-   */
-  std::string getDot(int flags) {
-    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
-      return this->taskFunction->getDot(flags, this->inputConnector, this->outputConnector);
-    } else if (this->threadId == 0){
-      return this->taskFunction->getDot(flags, this->inputConnector, this->outputConnector);
-    }
-    else
-    {
-      return "";
+        if (this->getOutputConnector()->isInputTerminated()) {
+          this->getOutputConnector()->wakeupConsumer();
+        }
+      }
     }
   }
 
-  /**
-   * Gets the name of the ITask with it's pipeline ID
-   * @return  the name of the task with the pipeline ID
-   */
-  std::string getNameWithPipID() { return this->taskFunction->getNameWithPipID(); }
+  // TODO: Remove?
+//  /**
+//   * Creates a TaskScheduler using the parameters within the taskFunction
+//   * @param taskFunction the task function to create the TaskScheduler from
+//   */
+//  static TaskScheduler<T, U> *createTask(ITask<T, U> *taskFunction) {
+//    return new TaskScheduler<T, U>(taskFunction,
+//                                   taskFunction->getNumThreads(),
+//                                   taskFunction->getIsStartTask(),
+//                                   taskFunction->isPoll(),
+//                                   taskFunction->getMicroTimeoutTime(),
+//                                   0,
+//                                   1);
+//  };
+
+
 
   /**
    * Adds the result data to the output connector
@@ -509,84 +307,18 @@ class TaskScheduler: public AnyTaskScheduler {
     if (this->outputConnector != nullptr)
       this->outputConnector->produceData(result);
   }
-#ifdef PROFILE
-  std::string genDotProfile(int flags, std::unordered_map<std::string, double> *mmap, std::string desc,
-                            std::unordered_map<std::string, std::string> *colorMap) {
-    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
-      double val = 0.0;
-      if (desc == "Compute Time (sec): ")
-        val = this->taskComputeTime / 1000000;
-      else if (desc == "Wait Time (sec): ")
-        val = this->taskWaitTime / 1000000;
-      else if (desc == "Max Q Size: ")
-        val = this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;
-      return this->taskFunction->getDotProfile(flags, mmap, val, desc, colorMap);
-    } else if (this->threadId == 0){
-      return this->taskFunction->getDotProfile(flags, mmap, mmap->at(this->getNameWithPipID()), desc, colorMap);
-    }
-    else
-    {
-      return "";
-    }
-  }
 
-  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)
-  {
-    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskComputeTime));
-    this->taskFunction->gatherComputeTime(mmap);
-  }
 
-  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)
-  {
-    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskWaitTime));
-    this->taskFunction->gatherWaitTime(mmap);
-  }
 
-  void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)
-  {
-    if (inputConnector != nullptr)
-      mmap->insert(std::pair<std::string, int>(this->getNameWithPipID(), this->inputConnector->getMaxQueueSize()));
-    this->taskFunction->gatherMaxQSize(mmap);
-  }
-
-  long long int getComputeTime() { return taskComputeTime; }
-  long long int getWaitTime() { return taskWaitTime; }
-  int getMaxQueueSize() { return this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;}
-#endif
 
  private:
-  //! @cond Doxygen_Suppress
-  std::string prefix() {
-    return std::string(
-        "Thread id: " + std::to_string(this->threadId) + " (out of " + std::to_string(this->numThreads)
-            + "); Pipeline id " + std::to_string(this->pipelineId) + " (out of " + std::to_string(this->numPipelines) +
-            ") ");
-  }
-  //! @endcond
+  typedef AnyTaskScheduler super;
 
   std::shared_ptr<Connector<T>> inputConnector; //!< The input connector for the scheduler (queue to get data from)
   std::shared_ptr<Connector<U>> outputConnector; //!< The output connector for the scheduler (queue to send data)
-
-  long long int taskComputeTime; //!< The total compute time for the task
-  long long int taskWaitTime; //!< The total wait time for the task
-
   ITask<T, U> *taskFunction; //!< The task that is managed by the scheduler
+  TaskSchedulerThread *runtimeThread; //!< The thread that is executing this task's runtime
 
-  long timeout; //!< The timeout time for polling in microseconds
-  bool poll; //!< Whether the scheduler should poll for data
-
-  bool isStartTask; //!< Whether the task should start immediately
-  bool alive; //!< Whether the task is still alive
-
-  int threadId; //!< The thread id for the task (set after initialization)
-  int numThreads; //!< The number of threads spawned for the scheduler
-
-  int pipelineId; //!< The execution pipeline id
-  int numPipelines; //!< The number of execution pipelines
-
-  std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>
-      pipelineConnectorList; //!< The execution pipeline connector list (one for each pipeline that share the same ITask functionality)
-  BaseTaskSchedulerRuntimeThread *runtimeThread; //!< The thread that is executing this task's runtime
 };
 }
 

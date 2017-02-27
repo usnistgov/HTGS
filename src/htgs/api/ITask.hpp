@@ -169,7 +169,7 @@ class ITask: public AnyITask {
    * Constructs an ITask with a specified number of threads.
    * @param numThreads the number of threads associated with this ITask
    */
-  ITask(int numThreads) : super(numThreads) {  }
+  ITask(size_t numThreads) : super(numThreads) {  }
 
   /**
    * Constructs an ITask with a specified number of threads as well as additional scheduling options.
@@ -179,30 +179,30 @@ class ITask: public AnyITask {
    * @param microTimeoutTime the timeout period for checking for data
    * @note If the ITask is declared as a start task or is polling, then executeTask() should properly handle nullptr data
    */
-  ITask(int numThreads, bool isStartTask, bool poll, long microTimeoutTime) : super(numThreads, isStartTask, poll, microTimeoutTime){ }
+  ITask(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime) : super(numThreads, isStartTask, poll, microTimeoutTime){ }
 
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  /**
-   * Destructor
-   */
-  virtual ~ITask() { }
+  virtual ~ITask() override { }
+
+  virtual void initialize() override {}
 
   /**
-  * Virtual function that is called when an ITask is being shutdown by it's owner thread.
-  */
-  virtual void shutdown() override {}
-
-  /**
-   * Pure virtual function that is called when an ITask's thread is to execute on data
-   * @param data the data to be executed
-   * @note To send output data use addResult()
-   * @note If the ITask is a start task or is polling, data might be nullptr
-   */
+ * Pure virtual function that is called when an ITask's thread is to execute on data
+ * @param data the data to be executed
+ * @note To send output data use addResult()
+ * @note If the ITask is a start task or is polling, data might be nullptr
+ */
   virtual void executeTask(std::shared_ptr<T> data) = 0;
+
+  virtual bool canTerminate(std::shared_ptr<AnyConnector> inputConnector)  override {
+    return inputConnector->isInputTerminated();
+  }
+
+  virtual void shutdown() override {}
 
   /**
    * Virtual function that gets the name of the ITask
@@ -212,22 +212,20 @@ class ITask: public AnyITask {
     return "UnnamedITask";
   }
 
-  /**
-   * Virtual function that is called when an ITask is checking if it can be terminated
-   * @param inputConnector the connector responsible for giving data to this Task
-   * @return whether the ITask can be terminated or not
-   * @retval TRUE if the ITask is ready to be terminated
-   * @retval FALSE if the ITask is not ready to be terminated
-   * @note By default this function checks if the input no longer sending data using inputConnector->isInputTerminated()
-   */
-  virtual bool isTerminated(std::shared_ptr<AnyConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
-
+  virtual ITask<T, U> *copy() = 0;
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+  ITask<T, U> *copyITask()
+  {
+    ITask<T,U> *iTaskCopy = copy();
+
+    copyMemoryEdges(iTaskCopy);
+
+    return iTaskCopy;
+  }
 
 
   /**
@@ -259,7 +257,7 @@ class ITask: public AnyITask {
    * @param pipelineConnectorList the list of connectors that connect to other duplicate
    * ICudaTask's in an execution pipeline
    */
-  void initialize(int pipelineId, int numPipeline, TaskScheduler<T, U> *ownerTask,
+  void initialize(size_t pipelineId, size_t numPipeline, TaskScheduler<T, U> *ownerTask,
                           std::shared_ptr<ConnectorVector> pipelineConnectorList) {
     this->ownerTask = ownerTask;
     this->pipelineConnectorList = pipelineConnectorList;

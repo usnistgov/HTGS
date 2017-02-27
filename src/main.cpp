@@ -1,9 +1,5 @@
 
-//#include <htgs/api/TaskGraph.hpp>
-//#include <htgs/core/rules/RuleScheduler.hpp>
-
 #include <htgs/api/Bookkeeper.hpp>
-#include <htgs/core/rules/RuleScheduler.hpp>
 
 class TestData : public htgs::IData {
   TestData(int v) : val(v){  }
@@ -29,6 +25,28 @@ class TestRule : public htgs::IRule<TestData, htgs::VoidData> {
   }
 };
 
+class TestTask : public htgs::ITask<TestData, htgs::VoidData> {
+ public:
+  ~TestTask() override {
+
+  }
+  void initialize() override {
+  }
+  void executeTask(std::shared_ptr<TestData> data) override {
+
+  }
+  void shutdown() override {
+
+  }
+  std::string getName() override {
+    return "TestTask";
+  }
+
+  TestTask *copy() override {
+    return new TestTask();
+  }
+};
+
 int main()
 {
 
@@ -40,6 +58,10 @@ int main()
   auto ruleSched = new htgs::RuleScheduler<TestData, htgs::VoidData>(testRule);
 
   bk->addRuleManager(ruleSched);
+
+  auto testTask = new TestTask();
+
+  auto test = new htgs::TaskScheduler<TestData, htgs::VoidData>(testTask, 1, false, 0, 1);
 
 //
 //  htgs::TaskGraph<htgs::VoidData, htgs::VoidData> *taskGraph = new htgs::TaskGraph<htgs::VoidData, htgs::VoidData>();
