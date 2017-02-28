@@ -10,8 +10,8 @@
  * @brief Implements parent ITask, removing template arguments.
  * @details
  */
-#ifndef HTGS_ANYITASK_H
-#define HTGS_ANYITASK_H
+#ifndef HTGS_ANYITASK_HPP
+#define HTGS_ANYITASK_HPP
 
 #include <memory>
 #include <cassert>
@@ -21,8 +21,8 @@
 #include <htgs/core/graph/Connector.hpp>
 #include <htgs/core/graph/AnyConnector.hpp>
 #include <htgs/types/Types.hpp>
-#include <htgs/types/MMType.h>
-#include <htgs/debug/debug_message.h>
+#include <htgs/types/MMType.hpp>
+#include <htgs/debug/debug_message.hpp>
 #include <htgs/types/TaskGraphDotGenFlags.hpp>
 
 namespace htgs {
@@ -42,14 +42,14 @@ class AnyITask {
  */
   AnyITask() {
     this->numThreads = 1;
-    this->isStartTask = false;
+    this->startTask = false;
     this->poll = false;
     this->microTimeoutTime = 0;
 
-    memGetter = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
-    memReleaser = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
+    getMemoryEdges = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
+    releaseMemoryEdges = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
     mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
-    memReleaserOutsideGraph = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
+    releseMemoryEdgeOutsideGraphMap = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
 
     this->pipelineId = 0;
   }
@@ -60,14 +60,14 @@ class AnyITask {
  */
   AnyITask(size_t numThreads) {
     this->numThreads = numThreads;
-    this->isStartTask = false;
+    this->startTask = false;
     this->poll = false;
     this->microTimeoutTime = 0L;
 
-    memGetter = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
-    memReleaser = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
+    getMemoryEdges = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
+    releaseMemoryEdges = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
     mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
-    memReleaserOutsideGraph = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
+    releseMemoryEdgeOutsideGraphMap = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
 
     this->pipelineId = 0;
   }
@@ -82,14 +82,14 @@ class AnyITask {
    */
   AnyITask(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime) {
     this->numThreads = numThreads;
-    this->isStartTask = isStartTask;
+    this->startTask = isStartTask;
     this->poll = poll;
     this->microTimeoutTime = microTimeoutTime;
 
-    memGetter = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
-    memReleaser = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
+    getMemoryEdges = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
+    releaseMemoryEdges = std::shared_ptr<ConnectorVectorMap> (new ConnectorVectorMap());
     mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
-    memReleaserOutsideGraph = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
+    releseMemoryEdgeOutsideGraphMap = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
 
     this->pipelineId = 0;
   }
@@ -229,7 +229,7 @@ class AnyITask {
   */
   void initialize(size_t pipelineId, size_t numPipeline) {
     this->pipelineId = pipelineId;
-    this->numPipeline = numPipeline;
+    this->numPipelines = numPipeline;
     this->initialize();
   }
 
@@ -257,9 +257,9 @@ class AnyITask {
    * Gets the number of pipelines for the task's execution pipeline
    * @return the number of pipelines
    */
-  size_t getNumPipeline()
+  size_t getNumPipelines()
   {
-    return this->numPipeline;
+    return this->numPipelines;
   }
 
   /**
@@ -276,8 +276,8 @@ class AnyITask {
    * @retval TRUE if the task will begin execution immediately when it is bound to a thread
    * @retval FALSE if the task must wait for data before it can begin exection
    */
-  bool getIsStartTask() const {
-    return this->isStartTask;
+  bool isStartTask() const {
+    return this->startTask;
   }
 
   /**
@@ -298,13 +298,17 @@ class AnyITask {
     return this->microTimeoutTime;
   }
 
-
+  /**
+   * Copies the memory edges from this AnyITask to another AnyITask
+   * @param iTaskCopy the other AnyITask to copy the memory edges too
+   */
   void copyMemoryEdges(AnyITask * iTaskCopy)
   {
-    iTaskCopy->setGetMemoryEdges(this->memGetter);
-    iTaskCopy->setReleaseMemoryEdges(this->memReleaser);
+    iTaskCopy->setGetMemoryEdges(this->getMemoryEdges);
+    iTaskCopy->setReleaseMemoryEdges(this->releaseMemoryEdges);
     iTaskCopy->setMMTypeMap(this->mmTypeMap);
-    iTaskCopy->setReleaseMemoryEdgeOutsideGraph(this->memReleaserOutsideGraph);
+    //TODO: This may not be needed . . .
+    iTaskCopy->setReleaseMemoryEdgeOutsideGraph(this->releseMemoryEdgeOutsideGraphMap);
   }
 
   /**
@@ -325,7 +329,6 @@ class AnyITask {
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule) {
     return getMemory<V>(name, releaseRule, MMType::Static, 0);
   }
-
 
   /**
    * @internal
@@ -403,7 +406,7 @@ class AnyITask {
    * @note Memory edge must be defined as MMType::UserManaged by using the TaskGraph::addUserManagedMemoryManagerEdge
    */
   void releaseUserManagedMemory(std::string name, int pipelineId) {
-    m_data_t<void *> memory(new MemoryData<void *>(nullptr));
+    m_data_t<void *> memory(new MemoryData<void *>(nullptr, name));
     memory->setPipelineId(pipelineId);
     releaseMemory<void *>(name, memory, MMType::UserManaged);
   }
@@ -419,7 +422,7 @@ class AnyITask {
    * @note To add a memGetter to this ITask use TaskGraph::addMemoryManagerEdge
    */
   bool hasGetMemoryEdge(std::string name) {
-    return memGetter->find(name) != memGetter->end();
+    return getMemoryEdges->find(name) != getMemoryEdges->end();
   }
 
   /**
@@ -431,7 +434,7 @@ class AnyITask {
    * @note To add a memReleaser to this ITask use TaskGraph::addMemoryManagerEdge
    */
   bool hasReleaseMemoryEdge(std::string name) {
-    return memReleaser->find(name) != memReleaser->end();
+    return releaseMemoryEdges->find(name) != releaseMemoryEdges->end();
   }
 
   /**
@@ -445,7 +448,7 @@ class AnyITask {
    */
   // TODO: This can be removed . . .
   bool isReleaseMemoryOutsideGraph(std::string name) {
-    return this->memReleaserOutsideGraph->at(name);
+    return this->releseMemoryEdgeOutsideGraphMap->at(name);
   }
 
   /**
@@ -461,7 +464,7 @@ class AnyITask {
   void attachGetMemoryEdge(std::string name, std::shared_ptr<AnyConnector> connector, MMType type) {
     std::shared_ptr<ConnectorVector> vector;
     if (hasGetMemoryEdge(name)) {
-      vector = memGetter->find(name)->second;
+      vector = getMemoryEdges->find(name)->second;
     }
     else {
       vector = std::shared_ptr<ConnectorVector>(new ConnectorVector());
@@ -478,8 +481,8 @@ class AnyITask {
     vector->push_back(connector);
 
     mmTypeMap->insert(std::pair<std::string, MMType>(name, type));
-    memGetter->insert(ConnectorVectorPair(name, vector));
-    DEBUG("Num memory getters " << memGetter->size() << " with " << vector->size() << " connectors");
+    getMemoryEdges->insert(ConnectorVectorPair(name, vector));
+    DEBUG("Num memory getters " << getMemoryEdges->size() << " with " << vector->size() << " connectors");
   }
 
   /**
@@ -492,10 +495,11 @@ class AnyITask {
    *
    * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
    */
+  // TODO: Rework for communication might simplify sending memory to neighbor pipelines . . .
   void attachReleaseMemoryEdge(std::string name, std::shared_ptr<AnyConnector> connector, MMType type, bool outsideMemManGraph) {
     std::shared_ptr<ConnectorVector> vector;
     if (hasReleaseMemoryEdge(name)) {
-      vector = memReleaser->find(name)->second;
+      vector = releaseMemoryEdges->find(name)->second;
     }
     else {
       vector = std::shared_ptr<ConnectorVector>(new ConnectorVector());
@@ -511,13 +515,13 @@ class AnyITask {
       exit(-1);
     }
 
-    memReleaserOutsideGraph->insert(std::pair<std::string, bool>(name, outsideMemManGraph));
+    releseMemoryEdgeOutsideGraphMap->insert(std::pair<std::string, bool>(name, outsideMemManGraph));
 
     vector->push_back(connector);
 
     mmTypeMap->insert(std::pair<std::string, MMType>(name, type));
-    memReleaser->insert(ConnectorVectorPair(name, vector));
-    DEBUG("Num memory releasers " << memReleaser->size() << " with " << vector->size() << " connectors");
+    releaseMemoryEdges->insert(ConnectorVectorPair(name, vector));
+    DEBUG("Num memory releasers " << releaseMemoryEdges->size() << " with " << vector->size() << " connectors");
   }
 
   /**
@@ -534,7 +538,7 @@ class AnyITask {
    * @return the map for memReleasers
    */
   std::shared_ptr<ConnectorVectorMap> getReleaseMemoryEdges() {
-    return this->memReleaser;
+    return this->releaseMemoryEdges;
   };
 
 
@@ -550,8 +554,8 @@ class AnyITask {
     oss << genDot(flags, dotId, input, output);
 
     if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) == 0) {
-      if (memReleaser->size() > 0) {
-        for (const auto &kv : *this->memReleaser) {
+      if (releaseMemoryEdges->size() > 0) {
+        for (const auto &kv : *this->releaseMemoryEdges) {
           // TODO: Should be able to rework this . . . ?
           if (this->isReleaseMemoryOutsideGraph(kv.first)) {
             for (auto connector : *kv.second) {
@@ -564,8 +568,8 @@ class AnyITask {
 
       }
 
-      if (memGetter->size() > 0) {
-        for (const auto &kv : *this->memGetter) {
+      if (getMemoryEdges->size() > 0) {
+        for (const auto &kv : *this->getMemoryEdges) {
           oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << "[label=\"alloc\", color=sienna];" << std::endl;
         }
       }
@@ -581,8 +585,8 @@ class AnyITask {
    * @note this function should only be called by the HTGS API
    */
   void profileITask() {
-    if (memReleaser->size() > 0) {
-      for (const auto &kv : *this->memReleaser) {
+    if (releaseMemoryEdges->size() > 0) {
+      for (const auto &kv : *this->releaseMemoryEdges) {
         std::cout << "Mem releaser: " << kv.first << " profile; ";
         // produce
         kv.second->at((unsigned long) this->pipelineId)->profileProduce(this->numThreads);
@@ -591,8 +595,8 @@ class AnyITask {
 
     }
 
-    if (memGetter->size() > 0) {
-      for (const auto &kv : *this->memGetter) {
+    if (getMemoryEdges->size() > 0) {
+      for (const auto &kv : *this->getMemoryEdges) {
         std::cout << "Mem getter: " << kv.first << " profile; ";
         // consume
         kv.second->at((unsigned long) this->pipelineId)->profileConsume(this->numThreads, false);
@@ -604,6 +608,7 @@ class AnyITask {
 
   /**
    * Gets the id used for dot nodes.
+   * @return the unique dot id (uses the memory address of this AnyITask)
    */
   std::string getDotId() {
     std::ostringstream id;
@@ -623,23 +628,24 @@ class AnyITask {
  private:
 
   //! @cond Doxygen_Suppress
-  void setGetMemoryEdges(std::shared_ptr<ConnectorVectorMap> memGetter) { this->memGetter = memGetter; }
+  void setGetMemoryEdges(std::shared_ptr<ConnectorVectorMap> memGetter) { this->getMemoryEdges = memGetter; }
   void setMMTypeMap(std::shared_ptr<std::unordered_map<std::string, MMType>> pMap) { this->mmTypeMap = pMap; }
   void setReleaseMemoryEdges(std::shared_ptr<ConnectorVectorMap> memReleaser) {
-    this->memReleaser = memReleaser;
+    this->releaseMemoryEdges = memReleaser;
   }
   // TODO: Hopefully can get rid of this
   void setReleaseMemoryEdgeOutsideGraph(std::shared_ptr<std::unordered_map<std::string, bool>> memReleaserOutsideGraph) {
-    this->memReleaserOutsideGraph = memReleaserOutsideGraph;
+    this->releseMemoryEdgeOutsideGraphMap = memReleaserOutsideGraph;
   }
 
+  // TODO: This may be reworked to no longer need the pipeline Id for getting memory
   template<class V>
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem)
   {
     assert(this->mmTypeMap->find(name) != this->mmTypeMap->end());
     assert(this->mmTypeMap->find(name)->second == type);
 
-    auto conn = memGetter->find(name)->second->at(this->pipelineId);
+    auto conn = getMemoryEdges->find(name)->second->at(this->pipelineId);
     auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
 
     m_data_t<V> memory = connector->consumeData();
@@ -652,13 +658,15 @@ class AnyITask {
     return memory;
   }
 
+  // TODO: This may be reworked to no longer get the release memory with the pipeline Id
+  // TODO: Could instead check the pipeline id of this task and the memory, if they are different then auto send to comm channel
   template<class V>
   void releaseMemory(std::string name, m_data_t<V> memory, MMType type)
   {
     assert(this->mmTypeMap->find(name) != this->mmTypeMap->end());
     assert(this->mmTypeMap->find(name)->second == type);
 
-    auto conn = memReleaser->find(name)->second->at(memory->getPipelineId());
+    auto conn = releaseMemoryEdges->find(name)->second->at(memory->getPipelineId());
     auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
 
     connector->produceData(memory);
@@ -668,19 +676,19 @@ class AnyITask {
 
 
   size_t numThreads; //!< The number of threads to be used with this ITask (forms a thread pool) used when creating a TaskScheduler
-  bool isStartTask; //!< Whether the ITask will be a start task used when creating a TaskScheduler
+  bool startTask; //!< Whether the ITask will be a start task used when creating a TaskScheduler
   bool poll; //!< Whether the ITask should poll for data used when creating a TaskScheduler
   size_t microTimeoutTime; //!< The timeout time for polling in microseconds used when creating a TaskScheduler
   size_t pipelineId; //!< The execution pipeline id for the ITask
-  size_t numPipeline;
+  size_t numPipelines;
 
-  std::shared_ptr<std::unordered_map<std::string, bool>> memReleaserOutsideGraph; //!< A mapping from a memory edge name to whether that memory edge is inside of another graph
-  std::shared_ptr<ConnectorVectorMap> memGetter; //!< A mapping from memory edge name to memory manager connector for getting memory
-  std::shared_ptr<ConnectorVectorMap> memReleaser; //!< A mapping from memory edge name to memory manager connector for releasing memory
+  std::shared_ptr<std::unordered_map<std::string, bool>> releseMemoryEdgeOutsideGraphMap; //!< A mapping from a memory edge name to whether that memory edge is inside of another graph
+  std::shared_ptr<ConnectorVectorMap> getMemoryEdges; //!< A mapping from memory edge name to memory manager connector for getting memory
+  std::shared_ptr<ConnectorVectorMap> releaseMemoryEdges; //!< A mapping from memory edge name to memory manager connector for releasing memory
   std::shared_ptr<std::unordered_map<std::string, MMType>> mmTypeMap; //!< A mapping from memory edge name to memory manager type
 
 
 };
 }
 
-#endif //HTGS_ANYITASK_H
+#endif //HTGS_ANYITASK_HPP

@@ -11,8 +11,8 @@
  * @brief Implements MemoryData used by a MemoryManager, which can be shared among multiple ITask
  * @details
  */
-#ifndef HTGS_MEMORYDATA_H
-#define HTGS_MEMORYDATA_H
+#ifndef HTGS_MEMORYDATA_HPP
+#define HTGS_MEMORYDATA_HPP
 
 #include <stddef.h>
 #include <htgs/core/queue/PriorityBlockingQueue.hpp>
@@ -66,8 +66,10 @@ class MemoryData: public IData {
   /**
    * Creates MemoryData with the specified IMemoryAllocator
    * @param allocator the memory allocator
+   * @param memoryManagerName the name of the memory manager that allocated this memory
    */
-  MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator) {
+  MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator, std::string memoryManagerName) {
+    this->memoryManagerName = memoryManagerName;
     this->allocator = allocator;
     if (allocator != nullptr)
       this->size = allocator->size();
@@ -94,19 +96,19 @@ class MemoryData: public IData {
    *
    * @note This function should only be called by the HTGS API
    */
-  void setPipelineId(int id) { this->pipelineId = id; }
+  void setPipelineId(size_t id) { this->pipelineId = id; }
 
   /**
    * Gets the pipelineId associated with the MemoryManager that allocated the memory
    * @return the pipelineId
    */
-  int getPipelineId() const { return this->pipelineId; }
+  size_t getPipelineId() const { return this->pipelineId; }
 
   /**
    * Gets the size of the memory that was allocated
    * @return the memory size
    */
-  long getSize() const { return this->size; }
+  size_t getSize() const { return this->size; }
 
   /**
    * Sets the memory release rule
@@ -179,7 +181,7 @@ class MemoryData: public IData {
    *
    * @note This function should only be called by the HTGS API
    */
-  MemoryData<T> *copy() { return new MemoryData<T>(this->allocator); }
+  MemoryData<T> *copy() { return new MemoryData<T>(this->allocator, this->memoryManagerName); }
 
   /**
    * Allocates the memory that this memory data is managed with the specified size
@@ -190,13 +192,22 @@ class MemoryData: public IData {
     this->size = size;
   }
 
+  /**
+   * Gets the memory manager name
+   * @return the memory manager name
+   */
+  const std::string &getMemoryManagerName() const {
+    return memoryManagerName;
+  }
+
  private:
-  int pipelineId; //!< The pipelineId associated with where this memory was managed
+  std::string memoryManagerName; //!< The name of the memory manager that allocated the memory
+  size_t pipelineId; //!< The pipelineId associated with where this memory was managed
   T memory; //!< The memory
-  long size; //!< The size of the memory (in elements)
+  size_t size; //!< The size of the memory (in elements)
   IMemoryReleaseRule *memoryReleaseRule; //!< The memory release rule associated with the memory
   std::shared_ptr<IMemoryAllocator<T>> allocator; //!< The allocator associated with the memory
 };
 }
 
-#endif //HTGS_MEMORY_H
+#endif //HTGS_MEMORY_HPP

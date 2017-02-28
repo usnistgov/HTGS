@@ -10,8 +10,8 @@
  *
  * @brief Provides the implementation for a MemoryManager for Cuda MemoryData
  */
-#ifndef HTGS_CUDAMEMORYMANAGER_H
-#define HTGS_CUDAMEMORYMANAGER_H
+#ifndef HTGS_CUDAMEMORYMANAGER_HPP
+#define HTGS_CUDAMEMORYMANAGER_HPP
 #ifdef USE_CUDA
 
 #include <cuda.h>
@@ -48,8 +48,7 @@ class CudaMemoryManager: public MemoryManager<T> {
                     CUcontext *contexts,
                     int memoryPoolSize,
                     std::shared_ptr<IMemoryAllocator <T>> memoryAllocator,
-                    MMType type) : MemoryManager<T>(name, memoryPoolSize,
-                                                    memoryAllocator, type) {
+                    MMType type) : MemoryManager<T>(name, memoryPoolSize, memoryAllocator, type) {
     this->contexts = contexts;
   }
 
@@ -58,22 +57,17 @@ class CudaMemoryManager: public MemoryManager<T> {
    * The initialize routine is called after a thread has been bound to the Task, thus enforcing the Task to
    * allocate memory on the specified Cuda GPU based on the pipelineId associated with the Task managing the
    * CudaMemoryManager.
-   * @param pipelineId the pipelineId of the Task
-   * @param numPipeline the number of pipelines
-   * @param ownerTask the owner Task
-   * @param pipelineConnectorList the list of connectors for the ExecutionPipline
    */
-  void initialize(int pipelineId, int numPipeline, TaskScheduler <MemoryData<T>, MemoryData<T>> *ownerTask,
-                  std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> pipelineConnectorList) {
-    cuCtxSetCurrent(this->contexts[pipelineId]);
-    MemoryManager<T>::initialize(pipelineId, numPipeline, ownerTask, pipelineConnectorList);
+  void initialize() override {
+    cuCtxSetCurrent(this->contexts[this->getPipelineId()]);
+    MemoryManager<T>::initialize();
   }
 
   /**
    * Gets the name of the CudaMemoryManager
    * @return
    */
-  std::string getName() {
+  std::string getName() override {
     return "Cuda" + MemoryManager<T>::getName();    
   }
 
@@ -81,7 +75,7 @@ class CudaMemoryManager: public MemoryManager<T> {
    * Creates a shallow copy of the CudaMemoryManager
    * @return the copy of the CudaMemoryManager
    */
-  MemoryManager <T> *copy() {
+  MemoryManager <T> *copy() override {
     return new CudaMemoryManager(this->getMemoryManagerName(),
                                  this->contexts,
                                  this->getMemoryPoolSize(),
@@ -95,4 +89,4 @@ class CudaMemoryManager: public MemoryManager<T> {
 
 }
 #endif //USE_CUDA
-#endif //HTGS_CUDAMEMORYMANAGER_H
+#endif //HTGS_CUDAMEMORYMANAGER_HPP

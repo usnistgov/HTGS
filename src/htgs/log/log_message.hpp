@@ -10,8 +10,8 @@
  *
  * @brief Provides functionality for log messaging
  */
-#ifndef HTGS_LOG_MESSAGE_H
-#define HTGS_LOG_MESSAGE_H
+#ifndef HTGS_LOG_MESSAGE_HPP
+#define HTGS_LOG_MESSAGE_HPP
 
 #include <iosfwd>
 #include <iostream>
@@ -102,4 +102,4 @@ struct lglog {
   //! @endcond
 };
 
-#endif //HTGS_LOG_MESSAGE_H
+#endif //HTGS_LOG_MESSAGE_HPP

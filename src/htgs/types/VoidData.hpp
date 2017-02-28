@@ -12,8 +12,8 @@
  * @details
  * Often used when a ITask or TaskGraph does not have an input or output to another ITask
  */
-#ifndef HTGS_VOIDDATA_H
-#define HTGS_VOIDDATA_H
+#ifndef HTGS_VOIDDATA_HPP
+#define HTGS_VOIDDATA_HPP
 
 #include <limits.h>
 
@@ -42,4 +42,4 @@ class VoidData: public IData {
 };
 }
 
-#endif //HTGS_VOIDDATA_H
+#endif //HTGS_VOIDDATA_HPP

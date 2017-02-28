@@ -11,18 +11,23 @@
  * @brief Provides an interface to send data along RuleManager edges for processing state and dependencies
  * @details
  */
-#ifndef HTGS_IRULE_H
-#define HTGS_IRULE_H
+#ifndef HTGS_IRULE_HPP
+#define HTGS_IRULE_HPP
 
 #include <iostream>
 #include <functional>
 #include <list>
 #include <mutex>
-#include "htgs/core/rules/AnyIRule.hpp"
+#include <htgs/core/rules/RuleScheduler.hpp>
+#include <htgs/core/rules/AnyIRule.hpp>
+#include <htgs/types/StateContainer.hpp>
 
 #include "IData.hpp"
 
 namespace htgs {
+
+template <class T, class U>
+class RuleScheduler;
 
 template <class T>
 class StateContainer;
@@ -102,33 +107,57 @@ class IRule : public AnyIRule {
   /**
    * Creates an IRule
    */
-  IRule() {
-    this->output = new std::list<std::shared_ptr<U>>();
-    firstRun = true;
+  IRule() { }
 
-  }
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
 
   /**
    * Destructor
    */
-  virtual ~IRule() {
-    delete output;
-    output = nullptr;
+  virtual ~IRule() override { }
+
+  virtual bool isRuleTerminated(size_t pipelineId) override { return false; }
+
+  virtual void shutdownRule(size_t pipelineId) override { }
+
+  virtual std::string getName() override {
+    return "Unnamed IRule";
   }
+
+  /**
+  * Pure virtual function to process input data.
+  * Use the addResult function to add values to the output edge.
+  * @param data the input data
+  * @param pipelineId the pipelineId
+  *
+  * @note To send data to the next edge use addResult
+  */
+  virtual void applyRule(std::shared_ptr<T> data, size_t pipelineId) = 0;
+
+  /**
+   * Initializes this IRule with a rule scheduler
+   * @param ruleScheduler the rule scheduler that is used for this IRule
+   */
+  void initialize(RuleScheduler<T, U> *ruleScheduler)
+  {
+    this->ruleScheduler = ruleScheduler;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
 
   /**
    * @internal
    * Applies the virtual rule function and processes output
    * @param data the input data
    * @param pipelineId the pipelineId
-   * @return the results of the rule function
    * @note This function should only be called by the HTGS API
    */
-  std::list<std::shared_ptr<U>> *applyRuleFunction(std::shared_ptr<T> data, int pipelineId) {
-    this->output->clear();
+  void applyRuleFunction(std::shared_ptr<T> data, size_t pipelineId) {
     applyRule(data, pipelineId);
-    firstRun = false;
-    return output;
   }
 
   /**
@@ -136,7 +165,7 @@ class IRule : public AnyIRule {
    * @param result the result value that is added
    */
   void addResult(std::shared_ptr<U> result) {
-    this->output->push_back(result);
+    this->ruleScheduler->addResult(result);
   }
 
   /**
@@ -145,73 +174,7 @@ class IRule : public AnyIRule {
    * @param result the result value that is added
    */
   void addResult(U *result) {
-    this->output->push_back(std::shared_ptr<U>(result));
-  }
-
-  /**
-   * Virtual function to determine if a rule is ready to be terminated.
-   * If there is no more data entering the RuleManager that is managing this IRule,
-   * then the rule will be automatically terminated.
-   * @param pipelineId the pipelineId associated with this rule
-   * @return whether the rule should be terminated or not
-   * @retval TRUE if the rule should be terminated
-   * @retval FALSE if the rule should not be terminated
-   * @note The rule will automatically be terminated if the input ITask has terminated.
-   */
-  virtual bool isRuleTerminated(int pipelineId) { return false; }
-
-  /**
-   * Gets whether this rule has executed before or not.
-   * Used for determining if the rule can terminate the RuleManager early.
-   * @return whether the rule has executed before or not
-   * @retval TRUE if this is the first time the rule has executed
-   * @retval FALSE if this is not the first time the rule has executed
-   */
-  bool isFirstRun() const {
-    return firstRun;
-  }
-
-  /**
-   * Sets that this IRule has run.
-   */
-  void setNotFirstRun() {
-    this->firstRun = false;
-  }
-
-  /**
-   * Virtual function that handles when a rule is being shutdown for a particular pipelineId
-   * @param pipelineId the pipelineId to shutdown
-   * @note This function can be used to release memory, but if there are multiple pipelines
-   * managed by an ExecutionPipeline, then the memory release should occur in a destructor.
-   */
-  virtual void shutdownRule(int pipelineId) { }
-
-  /**
-   * Pure virtual function to process input data.
-   * Use the addResult function to add values to the output edge.
-   * @param data the input data
-   * @param pipelineId the pipelineId
-   *
-   * @note To send data to the next edge use addResult
-   */
-  virtual void applyRule(std::shared_ptr<T> data, int pipelineId) = 0;
-
-  /**
-   * Virtual function to get the name of the IRule
-   * @return the name of the IRule
-   */
-  virtual std::string getName() {
-    return "Unnamed IRule";
-  }
-
-  /**
-   * Gets the mutex associated with this IRule
-   * @return the mutex
-   *
-   * @note This function should only be called by the HTGS API
-   */
-  std::mutex &getMutex() {
-    return mutex;
+    this->ruleScheduler->addResult(std::shared_ptr<U>(result));
   }
 
   /**
@@ -220,7 +183,7 @@ class IRule : public AnyIRule {
    * @param width the width of the state container
    * @return a pointer to the state container allocated
    */
-  StateContainer<std::shared_ptr<T>> *allocStateContainer(int height, int width)
+  StateContainer<std::shared_ptr<T>> *allocStateContainer(size_t height, size_t width)
   {
     return new StateContainer<std::shared_ptr<T>>(height, width, nullptr);
   }
@@ -234,7 +197,7 @@ class IRule : public AnyIRule {
    * @tparam V the state container type
    */
   template <class V>
-  StateContainer<V> *allocStateContainer(int height, int width, V defaultValue)
+  StateContainer<V> *allocStateContainer(size_t height, size_t width, V defaultValue)
   {
     return new StateContainer<V>(height, width, defaultValue);
   }
@@ -244,7 +207,7 @@ class IRule : public AnyIRule {
    * @param size the size of the state container
    * @return a pointer to the state container allocated
    */
-  StateContainer<std::shared_ptr<T>> *allocStateContainer(int size)
+  StateContainer<std::shared_ptr<T>> *allocStateContainer(size_t size)
   {
     return new StateContainer<std::shared_ptr<T>>(size, 0, nullptr);
   }
@@ -257,228 +220,18 @@ class IRule : public AnyIRule {
    * @tparam V the state container type
    */
   template <class V>
-  StateContainer<V> *allocStateContainer(int size, V defaultValue)
+  StateContainer<V> *allocStateContainer(size_t size, V defaultValue)
   {
     return new StateContainer<V>(size, 0, defaultValue);
   }
 
-
  private:
-  std::list<std::shared_ptr<U>>
-      *output; //!< The list of output that is produced by the IRule (cleared before applying rule)
-  std::mutex
-      mutex; //!< The mutex associated with this IRule to ensure no more than one thread is processing the rule at a time
+  RuleScheduler<T, U> *ruleScheduler; //!< The rule scheduler that schedules this IRule
 
-  bool firstRun; //!< Check to see if the rule has not been executed before, used for early termination
 };
 
-/**
- * @class StateContainer IRule.hpp <htgs/api/IRule.hpp>
- * @brief Class to hold one/two dimensional state information.
- * @details
- * This class provides a quick method for identifiying state information for data that is passed to an IRule.
- *
- * There are four helper functions to aid in creating a StateContainer within an IRule.
- *
- * The StateContainer provides three core functions for handling state.
- *
- * get - Retrieves a state value from a given index that may have been stored in the past
- * set - Sets a state value at an index
- * has - Checks whether a state value has been set at an index
- *
- * Using these functions, the IRule can quickly determine when data
- * dependencies are satisfied and get the data needed for passing to the next ITask.
- *
- * @tparam T the type of data for the state container
- *
- */
-template <class T>
-class StateContainer {
-
- public:
-  /**
-   * Constructs a state container with a width and height, and what it considers to be empty data.
-   * The empty data is used to initialize the array of data
-   * @param height the height of the state container
-   * @param width the width of the state container
-   * @param emptyData the data value that represents there is no data
-   */
-  StateContainer(int height, int width, T emptyData)
-  {
-    this->width = width;
-    this->height = height;
-    this->emptyData = emptyData;
-    data = new T[width*height];
-
-    for (int i = 0; i < width*height; i++)
-    {
-      data[i] = this->emptyData;
-    }
-  }
-
-  /**
-   * Destructor
-   */
-  ~StateContainer()
-  {
-    delete []data;
-  }
-
-  /**
-   * Sets a value (by reference) at a row column
-   * @param row the row
-   * @param col the column
-   * @param value the value
-   */
-  void set(int row, int col, T &value) const {
-    data[computeIndex(row, col)] = value;
-  }
-
-  /**
-   * Sets a value at a row column (uses assignment operator)
-   * @param row the row
-   * @param col the column
-   * @param value the value
-   */
-  void assign(int row, int col, T value) const {
-    data[computeIndex(row, col)] = value;
-  }
-
-  /**
-   * Sets a value (by reference) at an index
-   * @param index the index
-   * @param value the value
-   */
-  void set(int index, T &value) const {
-    data[index] = value;
-  }
-
-  /**
-   * Sets a value at an index (uses assignment operator)
-   * @param index the index
-   * @param value the value
-   */
-  void assign(int index, T value) const {
-    data[index] = value;
-  }
-
-  /**
-   * Gets a value from a row column
-   * @param row the row
-   * @param col the column
-   * @return the value at the specified row column
-   */
-  T &get(int row, int col) const {
-    return data[computeIndex(row, col)];
-  }
-
-  /**
-   * Gets a value from an index
-   * @param index the index
-   * @return the value at the specified index
-   */
-  T &get(int index) const {
-    return data[index];
-  }
-
-  /**
-   * Removes the data from the specified row and column
-   * @param row the row to remove data from
-   * @param col the column to remove data from
-   */
-  void remove (int row, int col) {
-    set(row, col, emptyData);
-  }
-
-  /**
-   * Removes the data from the specified index
-   * @param index the index to remove data from
-   */
-  void remove(int index) {
-    set(index, emptyData);
-  }
-
-  /**
-   * Checks whether the specified row column has data
-   * @param row the row
-   * @param col the column
-   * @return whether there is data at the specified row column
-   * @retval TRUE if there is data at the specified row column
-   * @retval FALSE if the data at the row column is 'emptyData'
-   * @note 'emptyData' is specified by the constructor of the StateContainer
-   */
-  bool has(int row, int col) const {
-    return data[computeIndex(row, col)] != emptyData;
-  }
-
-  /**
-   * Checks whether the specified index has data
-   * @param index the index
-   * @return whether there is data at the specified row column
-   * @retval TRUE if there is data at the specified row column
-   * @retval FALSE if the data at the row column is 'emptyData'
-   * @note 'emptyData' is specified by the constructor of the StateContainer
-   */
-  bool has(int index) const {
-    return data[index] != emptyData;
-  }
-
-  /**
-   * Prints the state of the state container.
-   * Iterates over all elements and prints a 1 if data is not equal to the empty data,
-   * otherwise it prints 0.
-   */
-  void printState()
-  {
-    for (int r = 0; r < height; r++)
-    {
-      for (int c = 0; c < width; c++)
-      {
-        if (this->has(r, c))
-          std::cout << "1";
-        else
-          std::cout << "0";
-      }
-      std::cout << std::endl;
-    }
-  }
-
-  /**
-   * Prints the contents of the state container.
-   * Iterates over all elements and prints the contents within.
-   */
-  void printContents()
-  {
-    for (int r = 0; r < height; r++)
-    {
-      for (int c = 0; c < width; c++)
-      {
-        std::cout << this->get(r, c) << " ";
-      }
-      std::cout << std::endl;
-    }
-  }
-
-
- private:
-  /**
-   * Computes the one dimensional index from two dimension
-   * @param row the row
-   * @param col the column
-   * @return the mapping from two dimensions to one dimension
-   */
-  int computeIndex(int row, int col) const
-  {
-    return row * width + col;
-  }
-
-  T *data; //!< The pointer to data for the StateContainer
-  int width; //!< The width of the StateContainer
-  int height; //!< The height of the StateContainer
-  T emptyData; //!< The data value that represents no data
-};
 
 }
 
 
-#endif //HTGS_IRULE_H
+#endif //HTGS_IRULE_HPP

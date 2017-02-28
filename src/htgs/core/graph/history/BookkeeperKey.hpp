@@ -13,8 +13,10 @@
 #ifndef HTGS_BOOKKEEPERKEY_H
 #define HTGS_BOOKKEEPERKEY_H
 
+#include <htgs/core/task/AnyTaskScheduler.hpp>
+#include <htgs/core/rules/AnyRuleScheduler.hpp>
 #include "htgs/core/task/AnyITask.hpp"
-#include "../../rules/BaseBaseRuleManager.hpp"
+#include "../../rules/AnyRuleScheduler.hpp"
 
 namespace htgs {
 
@@ -36,7 +38,7 @@ class BookkeeperKey {
    * @param ruleMan
    * @param outputTask
    */
-  BookkeeperKey(AnyTaskScheduler *bkTask, AnyITask *bk, BaseBaseRuleManager *ruleMan, AnyTaskScheduler *outputTask)
+  BookkeeperKey(AnyTaskScheduler *bkTask, AnyITask *bk, AnyRuleScheduler *ruleMan, AnyTaskScheduler *outputTask)
       : bkTask(
       bkTask),
         bk(bk),
@@ -68,7 +70,7 @@ class BookkeeperKey {
    * Gets the RuleManager
    * @return the RuleManager
    */
-  BaseBaseRuleManager *getRuleMan() const {
+  AnyRuleScheduler *getRuleMan() const {
     return ruleMan;
   }
 
@@ -83,7 +85,7 @@ class BookkeeperKey {
  private:
   AnyTaskScheduler *bkTask; //!< The TaskScheduler that manages the Bookkeeper ITask
   AnyITask *bk; //!< The ITask that is the Bookkeeper
-  BaseBaseRuleManager *ruleMan; //!< The RuleManager that connects the Bookkeeper to a consumer ITask
+  AnyRuleScheduler *ruleMan; //!< The RuleScheduler that connects the Bookkeeper to a consumer ITask
   AnyTaskScheduler *outputTask; //!< The TaskScheduler that manages the consumer ITask
 };
 }

@@ -10,8 +10,8 @@
  *
  * @brief Defines the Memory Manager types MMType
  */
-#ifndef HTGS_MMTYPE_H
-#define HTGS_MMTYPE_H
+#ifndef HTGS_MMTYPE_HPP
+#define HTGS_MMTYPE_HPP
 
 namespace htgs {
 /**
@@ -52,4 +52,4 @@ enum class MMType {
 };
 }
 
-#endif //HTGS_MMTYPE_H
+#endif //HTGS_MMTYPE_HPP

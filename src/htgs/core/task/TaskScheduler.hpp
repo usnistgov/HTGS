@@ -10,8 +10,8 @@
  *
  * @brief Implements a TaskScheduler that interacts with an ITask and holds the input and output Connector for the ITask
  */
-#ifndef HTGS_TASKSCHEDULER_H
-#define HTGS_TASKSCHEDULER_H
+#ifndef HTGS_TASKSCHEDULER_HPP
+#define HTGS_TASKSCHEDULER_HPP
 
 
 #include <chrono>
@@ -22,16 +22,9 @@
 #include <sstream>
 
 #include <htgs/core/task/AnyTaskScheduler.hpp>
+#include <htgs/api/ITask.hpp>
 
 namespace htgs {
-#ifdef PROFILE
-std::mutex ioMutex; //!< An ioMutex to synchronize writing to console
-#endif
-
-class IData;
-
-template<class T>
-class Connector;
 
 template<class T, class U>
 class ITask;
@@ -68,7 +61,7 @@ class TaskScheduler: public AnyTaskScheduler {
    */
   TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines) :
       super(numThreads, isStartTask, pipelineId, numPipelines),
-      taskFunction(taskFunction), inputConnector(nullptr), outputConnector(nullptr), runtimeThread(nullptr) {}
+      inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {}
 
   /**
    * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
@@ -82,8 +75,7 @@ class TaskScheduler: public AnyTaskScheduler {
    */
   TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
                 size_t pipelineId, size_t numPipelines) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines),
-                         taskFunction(taskFunction), inputConnector(nullptr), outputConnector(nullptr),
-                          runtimeThread(nullptr) {}
+                         inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {}
 
 
   /**
@@ -100,26 +92,23 @@ class TaskScheduler: public AnyTaskScheduler {
   TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
                 size_t pipelineId, size_t numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
       : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, pipelineConnectorList),
-        taskFunction(taskFunction), inputConnector(nullptr), outputConnector(nullptr), runtimeThread(nullptr) {}
+        inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {}
 
-  /**
-   * Destructor
-   */
-  ~TaskScheduler() {
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////// INHERITED FUNCTIONS /////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  ~TaskScheduler() override {
     delete taskFunction;
     taskFunction = nullptr;
   }
 
-  /**
-   * Gets the input Connector
-   * @return the input connector
-   */
+
   std::shared_ptr<AnyConnector> getInputConnector() override { return this->inputConnector; }
 
-  /**
-   * Gets the output Connector
-   * @return the output connector
-   */
+
   std::shared_ptr<AnyConnector> getOutputConnector() override { return this->outputConnector; }
 
   void initialize() override {
@@ -128,18 +117,6 @@ class TaskScheduler: public AnyTaskScheduler {
   }
 
   void setRuntimeThread(TaskSchedulerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }
-
-  /**
-   * Sets the input BaseConnector
-   * @param connector the input connector
-   */
-  void setInputConnector(std::shared_ptr<AnyConnector> connector) { this->inputConnector = std::dynamic_pointer_cast<Connector<T>>(connector); }
-
-  /**
-   * Sets the output BaseConnector
-   * @param connector the output connector
-   */
-  void setOutputConnector(std::shared_ptr<AnyConnector> connector) { this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector); }
 
   AnyITask *getTaskFunction() override {
     return this->taskFunction;
@@ -158,7 +135,7 @@ class TaskScheduler: public AnyTaskScheduler {
     return (AnyTaskScheduler *) newTask;
   }
 
-  void executeTask() {
+  void executeTask() override {
     std::shared_ptr<T> data = nullptr;
 
     DEBUG_VERBOSE(prefix() << "Running task: " << this->getName());
@@ -202,6 +179,38 @@ class TaskScheduler: public AnyTaskScheduler {
 
   }
 
+  ////////////////////////////////////////////////////////////////////////////////
+  //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Sets the input BaseConnector
+   * @param connector the input connector
+   */
+  void setInputConnector(std::shared_ptr<AnyConnector> connector) { this->inputConnector = std::dynamic_pointer_cast<Connector<T>>(connector); }
+
+  /**
+   * Sets the output BaseConnector
+   * @param connector the output connector
+   */
+  void setOutputConnector(std::shared_ptr<AnyConnector> connector) { this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector); }
+
+  /**
+   * Adds the result data to the output connector
+   * @param result the result that is added to the output for this task
+   */
+  void addResult(std::shared_ptr<U> result)
+  {
+    if (this->outputConnector != nullptr)
+      this->outputConnector->produceData(result);
+  }
+
+
+
+
+ private:
+
+  //! @cond Doxygen_Suppress
   void processTaskFunctionTerminated() {
 #ifdef PROFILE
     {
@@ -223,12 +232,17 @@ class TaskScheduler: public AnyTaskScheduler {
       }
 #endif
 
+    // Task is now terminated, so it is no longer alive
     this->setAlive(false);
+
+    // Wake up the threads for this task
     this->getInputConnector()->wakeupConsumer();
 
+    // If there is a runtime thread, then begin termination
     if (this->runtimeThread != nullptr) {
       this->runtimeThread->terminate();
 
+      // If this is the last thread for this task then close the output
       if (this->runtimeThread->decrementAndCheckNumThreadsRemaining()) {
         if (this->getOutputConnector() != nullptr) {
           this->getOutputConnector()->producerFinished();
@@ -237,21 +251,20 @@ class TaskScheduler: public AnyTaskScheduler {
             this->getOutputConnector()->wakeupConsumer();
         }
 
+        // Notify the memory release edge memory manager task that it is no longer receiving data
         std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> memReleasers = this->getTaskFunction()->getReleaseMemoryEdges();
 
-        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memReleasers->size() <<
-                       " memory releasers");
+        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memReleasers->size() << " memory releasers");
         for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> > pair : *memReleasers) {
 
-
+          // TODO: We should be able to remove all instances of 'odd' behavior like releasing memory that is not within this graph
           if (this->getTaskFunction()->isReleaseMemoryOutsideGraph(pair.first))
           {
-            DEBUG(prefix() << " " << this->getName() << " Shutting down ALL memory releasers : " <<
-                           pair.first << " with " << pair.second->size() << " connectors");
+            DEBUG(prefix() << " " << this->getName() << " Shutting down ALL memory releasers : " <<  pair.first
+                           << " with " << pair.second->size() << " connectors");
             for (auto connector : *pair.second)
             {
               connector->producerFinished();
-
 
               if (connector->isInputTerminated())
                 connector->wakeupConsumer();
@@ -281,37 +294,8 @@ class TaskScheduler: public AnyTaskScheduler {
       }
     }
   }
+  //! @endcond
 
-  // TODO: Remove?
-//  /**
-//   * Creates a TaskScheduler using the parameters within the taskFunction
-//   * @param taskFunction the task function to create the TaskScheduler from
-//   */
-//  static TaskScheduler<T, U> *createTask(ITask<T, U> *taskFunction) {
-//    return new TaskScheduler<T, U>(taskFunction,
-//                                   taskFunction->getNumThreads(),
-//                                   taskFunction->getIsStartTask(),
-//                                   taskFunction->isPoll(),
-//                                   taskFunction->getMicroTimeoutTime(),
-//                                   0,
-//                                   1);
-//  };
-
-
-
-  /**
-   * Adds the result data to the output connector
-   */
-  void addResult(std::shared_ptr<U> result)
-  {
-    if (this->outputConnector != nullptr)
-      this->outputConnector->produceData(result);
-  }
-
-
-
-
- private:
   typedef AnyTaskScheduler super;
 
   std::shared_ptr<Connector<T>> inputConnector; //!< The input connector for the scheduler (queue to get data from)
@@ -323,4 +307,4 @@ class TaskScheduler: public AnyTaskScheduler {
 }
 
 
-#endif //HTGS_TASKSCHEDULER_H
+#endif //HTGS_TASKSCHEDULER_HPP

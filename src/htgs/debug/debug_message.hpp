@@ -10,8 +10,8 @@
  *
  * @brief Provides functionality for debug messaging
  */
-#ifndef HTGS_DEBUG_MESSAGE_H
-#define HTGS_DEBUG_MESSAGE_H
+#ifndef HTGS_DEBUG_MESSAGE_HPP
+#define HTGS_DEBUG_MESSAGE_HPP
 
 #include <iosfwd>
 #include <iostream>
@@ -106,4 +106,4 @@ struct dbglog {
   //! @endcond
 };
 
-#endif //HTGS_DEBUG_MESSAGE_H
+#endif //HTGS_DEBUG_MESSAGE_HPP

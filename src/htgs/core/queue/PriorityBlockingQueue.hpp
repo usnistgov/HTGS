@@ -11,13 +11,14 @@
  * @brief Implements a thread-safe PriorityBlockingQueue
  * @details
  */
-#ifndef HTGS_PRIORITYBLOCKINGQUEUE_H
-#define HTGS_PRIORITYBLOCKINGQUEUE_H
+#ifndef HTGS_PRIORITYBLOCKINGQUEUE_HPP
+#define HTGS_PRIORITYBLOCKINGQUEUE_HPP
 
 #include <condition_variable>
 #include <ostream>
 #include <iostream>
 #include <queue>
+#include <htgs/api/IData.hpp>
 
 namespace htgs {
 /**
@@ -34,7 +35,7 @@ class PriorityBlockingQueue {
    * Creates a priority blocking queue that will only block a data requester when the queue is empty.
    */
   PriorityBlockingQueue() {
-    this->queueSize = -1;
+    this->queueSize = 0;
 #ifdef PROFILE
     this->queueActiveMaxSize = 0;
     this->dequeueLockTime = 0;
@@ -48,7 +49,7 @@ class PriorityBlockingQueue {
    * Creates a priority blocking queue that will block a data requester when the queue is empty or full.
    * @param qSize
    */
-  PriorityBlockingQueue(long qSize) {
+  PriorityBlockingQueue(size_t qSize) {
     this->queueSize = qSize;
 #ifdef PROFILE
     this->queueActiveMaxSize = 0;
@@ -71,8 +72,8 @@ class PriorityBlockingQueue {
     * This function should only be used if the queueSize > 0
     * @return the remaining size of the priority queue before it is full
     */
-  long remainingCapacity() {
-    if (queueSize <= 0) {
+  size_t remainingCapacity() {
+    if (queueSize == 0) {
       std::cerr << __FILE__ << ":" << __LINE__
           << "ERROR: Requesting remaining capacity on BlockingQueue that does not have a max size" << std::endl;
     }
@@ -93,7 +94,7 @@ class PriorityBlockingQueue {
    * Gets the number of elements in the priority queue
    * @return the number of elements in the priority queue
    */
-  long size() {
+  size_t size() {
     std::unique_lock<std::mutex> lock(this->mutex);
     return queue.size();
   }
@@ -181,7 +182,7 @@ class PriorityBlockingQueue {
    * @retval data if data exists prior to the timeout time
    * @retval nullptr if no data exists after the timeout time expires
    */
-  T poll(long timeout) {
+  T poll(size_t timeout) {
     std::unique_lock<std::mutex> lock(this->mutex);
     if (this->condition.wait_for(lock, std::chrono::microseconds(timeout),
                                  [=] { return !this->queue.empty(); })) {
@@ -193,36 +194,36 @@ class PriorityBlockingQueue {
   }
 
 #ifdef PROFILE
-  long long int getEnqueueLockTime() const {
+  unsigned long long int getEnqueueLockTime() const {
       return enqueueLockTime;
   }
 
-  long long int getDequeueLockTime() const {
+  unsigned long long int getDequeueLockTime() const {
       return dequeueLockTime;
   }
 
-  long long int getEnqueueWaitTime() const {
+  unsigned long long int getEnqueueWaitTime() const {
       return enqueueWaitTime;
   }
 
-  long long int getDequeueWaitTime() const {
+  unsigned long long int getDequeueWaitTime() const {
       return dequeueWaitTime;
   }
 
-  long getQueueActiveMaxSize() const {
+  size_t getQueueActiveMaxSize() const {
       return queueActiveMaxSize;
   }
 #endif
 
  private:
 #ifdef PROFILE
-  long long int enqueueLockTime; //!< The time to lock before enqueue
-  long long int dequeueLockTime; //!< The time to lock before dequeue
-  long long int enqueueWaitTime; //!< The time waiting to enqueue
-  long long int dequeueWaitTime; //!< The time waiting to dequeue
-  long queueActiveMaxSize; //!< The maximum size the queue reached in its lifetime
+  unsigned long long int enqueueLockTime; //!< The time to lock before enqueue
+  unsigned long long int dequeueLockTime; //!< The time to lock before dequeue
+  unsigned long long int enqueueWaitTime; //!< The time waiting to enqueue
+  unsigned long long int dequeueWaitTime; //!< The time waiting to dequeue
+  size_t queueActiveMaxSize; //!< The maximum size the queue reached in its lifetime
 #endif
-  long queueSize; //!< The maximum size of the queue, set to -1 for infinite size
+  size_t queueSize; //!< The maximum size of the queue, set to -1 for infinite size
   std::priority_queue<T, std::vector<T>, IData> queue; //!< The priority queue
   std::mutex mutex; //!< The mutex to ensure thread safety
   std::condition_variable condition; //!< The condition variable used for waking up waiting threads
@@ -230,5 +231,5 @@ class PriorityBlockingQueue {
 }
 
 
-#endif //HTGS_PRIORITYBLOCKINGQUEUE_H
+#endif //HTGS_PRIORITYBLOCKINGQUEUE_HPP
 

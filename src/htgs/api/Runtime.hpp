@@ -11,12 +11,12 @@
  * @brief Spawns threads and binds them to the appropriate ITask within a TaskGraph
  * @details
  */
-#ifndef HTGS_RUNTIME_H
-#define HTGS_RUNTIME_H
+#ifndef HTGS_RUNTIME_HPP
+#define HTGS_RUNTIME_HPP
 
 
 #include <thread>
-#include "../core/graph/BaseTaskGraph.hpp"
+#include "../core/graph/AnyTaskGraph.hpp"
 #include "htgs/core/task/AnyTaskScheduler.hpp"
 
 namespace htgs {
@@ -91,7 +91,7 @@ class Runtime {
    * Constructs a Runtime for a TaskGraph
    * @param graph the graph the Runtime is representing
    */
-  Runtime(BaseTaskGraph *graph) {
+  Runtime(AnyTaskGraph *graph) {
     this->graph = graph;
     this->executed = false;
   }
@@ -100,7 +100,7 @@ class Runtime {
    * Destructor
    */
   ~Runtime() {
-    for (BaseTaskSchedulerRuntimeThread *t : runtimeThreads) {
+    for (TaskSchedulerThread *t : runtimeThreads) {
       if (t) {
         delete t;
         t = nullptr;
@@ -144,7 +144,7 @@ class Runtime {
    * has finished processing its last data. Will not terminate threads that are in a WAIT state.
    */
   void terminateAll() {
-    for (BaseTaskSchedulerRuntimeThread *t : runtimeThreads) {
+    for (TaskSchedulerThread *t : runtimeThreads) {
       t->terminate();
     }
   }
@@ -153,6 +153,7 @@ class Runtime {
    * Executes the Runtime
    */
   void executeRuntime() {
+    // TODO: Spawn ioMutex and share ? ?
     if (executed)
       return;
 
@@ -160,13 +161,13 @@ class Runtime {
     std::list<AnyTaskScheduler *> newVertices;
     DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
     for (AnyTaskScheduler *task : *vertices) {
-      int numThreads = task->getNumThreads();
+      size_t numThreads = task->getNumThreads();
 
       DEBUG_VERBOSE("Spawning " << numThreads << " threads for task " << task->getName());
 
       if (numThreads > 0) {
         std::list<AnyTaskScheduler *> taskList;
-        std::shared_ptr<std::atomic_int> atomicNumThreads = std::shared_ptr<std::atomic_int>(new std::atomic_int(numThreads));
+        std::shared_ptr<std::atomic_size_t> atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(numThreads));
         taskList.push_back(task);
 
 
@@ -175,11 +176,10 @@ class Runtime {
           taskList.push_back(taskCopy);
           newVertices.push_back(taskCopy);
         }
-        int threadId = 0;
+        size_t threadId = 0;
         for (AnyTaskScheduler *taskItem : taskList) {
-          BaseTaskSchedulerRuntimeThread
-              *runtimeThread = new BaseTaskSchedulerRuntimeThread(threadId, taskItem, atomicNumThreads);
-          std::thread *thread = new std::thread(&BaseTaskSchedulerRuntimeThread::run, runtimeThread);
+          TaskSchedulerThread *runtimeThread = new TaskSchedulerThread(threadId, taskItem, atomicNumThreads);
+          std::thread *thread = new std::thread(&TaskSchedulerThread::run, runtimeThread);
           this->threads.push_back(thread);
           runtimeThreads.push_back(runtimeThread);
           threadId++;
@@ -199,12 +199,12 @@ class Runtime {
 
  private:
   std::list<std::thread *> threads; //!< A list of all threads spawned for the Runtime
-  BaseTaskGraph *graph; //!< The TaskGraph associated with the Runtime
-  std::list<BaseTaskSchedulerRuntimeThread *> runtimeThreads; //!< The list of TaskSchedulers bound to each thread
+  AnyTaskGraph *graph; //!< The TaskGraph associated with the Runtime
+  std::list<TaskSchedulerThread *> runtimeThreads; //!< The list of TaskSchedulers bound to each thread
   bool executed; //!< Whether the Runtime has been executed
 
 };
 }
 
 
-#endif //HTGS_RUNTIME_H
+#endif //HTGS_RUNTIME_HPP

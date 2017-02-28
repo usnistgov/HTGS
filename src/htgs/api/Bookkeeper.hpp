@@ -70,7 +70,7 @@ class Bookkeeper: public ITask<T, VoidData> {
   /**
    * Destructor destroys RuleManager memory
    */
-  ~Bookkeeper() override {
+  virtual ~Bookkeeper() override {
     for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
       delete ruleManager;
       ruleManager = nullptr;
@@ -151,7 +151,7 @@ class Bookkeeper: public ITask<T, VoidData> {
    */
   void initialize() override {
     for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
-      ruleManager->initialize(this->getPipelineId(), this->getNumPipeline());
+      ruleManager->initialize(this->getPipelineId(), this->getNumPipelines());
     }
   }
 

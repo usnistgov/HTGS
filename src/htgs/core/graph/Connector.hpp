@@ -10,8 +10,8 @@
  *
  * @brief Provides the Connector class for managing input/output of AbsData between Tasks
  */
-#ifndef HTGS_CONNECTOR_H
-#define HTGS_CONNECTOR_H
+#ifndef HTGS_CONNECTOR_HPP
+#define HTGS_CONNECTOR_HPP
 
 
 #include <atomic>
@@ -23,7 +23,7 @@
 #include <htgs/core/queue/PriorityBlockingQueue.hpp>
 #else
 #include <htgs/core/queue/BlockingQueue.hpp>
-#include <htgs/debug/debug_message.h>
+#include <htgs/debug/debug_message.hpp>
 #endif
 
 #include "AnyConnector.hpp"
@@ -36,6 +36,8 @@ namespace htgs {
  * @details
  * Each IData that is produced for the Connector is inserted based on
  * the priority specified by the IData (lowest order value first by default IData::getOrder()).
+ *
+ * Priority queue is enabled by defining the USE_PRIORITY_QUEUE directive during compilation.
  *
  * The Connector manages how many Tasks are producing and consuming data for a particular Connector.
  * For a given ITask, if that ITask has more than one thread associated with it, then each thread
@@ -96,12 +98,20 @@ class Connector: public AnyConnector {
 #endif
   }
 
+  void produceAnyData(std::shared_ptr<IData> data) override
+  {
+    DEBUG_VERBOSE("Connector " << this << " producing any data: " << data);
+    std::shared_ptr<T> dataCast = std::dynamic_pointer_cast<T>(data);
+    this->queue.Enqueue(dataCast);
+
+  }
+
   /**
    * @internal
    * Polls for data for a consumer given a timeout.
    * @param timeout the timeout time in microseconds
    * @return the data or nullptr
-   * @retval DATA the next data that is on the priority queue
+   * @retval DATA the next data that is on the queue
    * @retval nullptr if the timeout time expires
    *
    * @note This function will block until data is available or the timeout time has expired.
@@ -113,7 +123,7 @@ class Connector: public AnyConnector {
 
   /**
    * @internal
-   * Consumes data from the priority queue.
+   * Consumes data from the queue.
    * @return the data
    *
    * @note This function will block until data is available.
@@ -124,7 +134,7 @@ class Connector: public AnyConnector {
   }
 
   /**
-   * Produces data into the priority queue.
+   * Produces data into the queue.
    * @param data the data to be added
    */
   void produceData(std::shared_ptr<T> data) {
@@ -133,7 +143,7 @@ class Connector: public AnyConnector {
   }
 
   /**
-   * Produces a list of data adding each element into the prioirty queue.
+   * Produces a list of data adding each element into the queue.
    * @param data the list of data t obe added
    */
   void produceData(std::list<std::shared_ptr<T>> *data) {
@@ -143,6 +153,8 @@ class Connector: public AnyConnector {
       this->queue.Enqueue(v);
     }
   }
+
+
 
   /**
    * Gets the demangled type name of the connector
@@ -160,7 +172,6 @@ class Connector: public AnyConnector {
 
   }
 
-
  private:
   typedef AnyConnector super;
 
@@ -174,4 +185,4 @@ class Connector: public AnyConnector {
 }
 
 
-#endif //HTGS_CONNECTOR_H
+#endif //HTGS_CONNECTOR_HPP

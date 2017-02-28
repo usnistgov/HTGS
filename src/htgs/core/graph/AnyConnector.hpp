@@ -9,8 +9,8 @@
  *
  * @brief Holds parent class for Connector, removes template type of Connector.
  */
-#ifndef HTGS_ANYCONNECTOR_H
-#define HTGS_ANYCONNECTOR_H
+#ifndef HTGS_ANYCONNECTOR_HPP
+#define HTGS_ANYCONNECTOR_HPP
 
 #include <atomic>
 
@@ -117,6 +117,12 @@ class AnyConnector {
   virtual AnyConnector *copy() = 0;
 
 
+  /**
+   * Produces any data into the queue. This function should be used with care as the
+   * data will be dynamically cast the type of Connector.
+   * @param data the data that will be added to the Connector's queue.
+   */
+  virtual void produceAnyData(std::shared_ptr<IData> data) = 0;
 
   /**
    * Provide profile output for the produce operation
@@ -141,4 +147,4 @@ class AnyConnector {
 };
 }
 
-#endif //HTGS_ANYCONNECTOR_H
+#endif //HTGS_ANYCONNECTOR_HPP

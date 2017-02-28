@@ -12,8 +12,8 @@
  */
 #include <htgs/api/IMemoryAllocator.hpp>
 
-#ifndef HTGS_VOIDMEMORYALLOCATOR_H
-#define HTGS_VOIDMEMORYALLOCATOR_H
+#ifndef HTGS_VOIDMEMORYALLOCATOR_HPP
+#define HTGS_VOIDMEMORYALLOCATOR_HPP
 
 namespace htgs {
 
@@ -26,6 +26,7 @@ namespace htgs {
  * Doing so allows the memory manager to act as a throttling mechanism for memory managed by the user.
  * @note This class should only be called by the HTGS API
  */
+// TODO: Might be able to remove this
 class VoidMemoryAllocator: public IMemoryAllocator<void *> {
 
  public:
@@ -57,4 +58,4 @@ class VoidMemoryAllocator: public IMemoryAllocator<void *> {
 
 }
 
-#endif //HTGS_VOIDMEMORYALLOCATOR_H
+#endif //HTGS_VOIDMEMORYALLOCATOR_HPP

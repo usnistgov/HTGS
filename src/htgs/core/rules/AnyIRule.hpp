@@ -4,26 +4,68 @@
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file BaseIRule.hpp
+ * @file AnyIRule.hpp
  * @author Timothy Blattner
  * @date Apr 21, 2016
  *
  * @brief Base class for an htgs::IRule to hide the template arguments.
  * @details
  */
-#ifndef HTGS_BASEIRULE_H
-#define HTGS_BASEIRULE_H
+#ifndef HTGS_BASEIRULE_HPP
+#define HTGS_BASEIRULE_HPP
 
 
 namespace htgs {
 /**
- * @class AnyIRule BaseIRule.hpp <htgs/core/rules/IRule.hpp>
+ * @class AnyIRule AnyIRule.hpp <htgs/core/rules/AnyIRule.hpp>
  * @brief Base class for an htgs::IRule.
  */
 class AnyIRule {
  public:
+  /**
+   * Destructor
+   */
   virtual ~AnyIRule() {}
+
+  /**
+   * Virtual function to determine if a rule is ready to be terminated.
+   * If there is no more data entering the RuleManager that is managing this IRule,
+   * then the rule will be automatically terminated.
+   * @param pipelineId the pipelineId associated with this rule
+   * @return whether the rule should be terminated or not
+   * @retval TRUE if the rule should be terminated
+   * @retval FALSE if the rule should not be terminated
+   * @note The rule will automatically be terminated if the input ITask has terminated.
+   */
+  virtual bool isRuleTerminated(size_t pipelineId) = 0;
+
+  /**
+   * Virtual function that handles when a rule is being shutdown for a particular pipelineId
+   * @param pipelineId the pipelineId to shutdown
+   * @note This function can be used to release memory, but if there are multiple pipelines
+   * managed by an ExecutionPipeline, then the memory release should occur in a destructor.
+   */
+  virtual void shutdownRule(size_t pipelineId) = 0;
+
+  /**
+   * Virtual function to get the name of the IRule
+   * @return the name of the IRule
+   */
+  virtual std::string getName() = 0;
+
+  /**
+   * Gets the mutex associated with this IRule
+   * @return the mutex
+   *
+   * @note This function should only be called by the HTGS API
+   */
+  std::mutex &getMutex() {
+    return mutex;
+  }
+
+ private:
+  std::mutex mutex; //!< The mutex associated with this IRule to ensure no more than one thread is processing the rule at a time
 };
 }
 
-#endif //HTGS_BASEIRULE_H
+#endif //HTGS_BASEIRULE_HPP

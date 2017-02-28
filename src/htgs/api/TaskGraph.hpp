@@ -1106,8 +1106,8 @@ class TaskGraph: public AnyTaskGraph {
    * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
    * the TaskGraph.
    * @param name the name of the memory edge
-   * @param memGetter the ITask that is getting memory
-   * @param memReleaser the ITask that is releasing memory
+   * @param getMemoryEdges the ITask that is getting memory
+   * @param releaseMemoryEdges the ITask that is releasing memory
    * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
    * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
    * @param type the type of memory manager
@@ -1116,20 +1116,20 @@ class TaskGraph: public AnyTaskGraph {
    * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
    */
   template <class V>
-  void addCudaMemoryManagerEdge(std::string name, AnyITask *memGetter, AnyITask *memReleaser,
+  void addCudaMemoryManagerEdge(std::string name, AnyITask *getMemoryEdges, AnyITask *releaseMemoryEdges,
           IMemoryAllocator<V> *allocator, int memoryPoolSize, MMType type, CUcontext * contexts) {
 
-      if (!hasITask(memGetter)) {
-          std::cerr << " Must add iTask " << memGetter->getName() << " to graph before adding it as a memory edge" << std::endl;
+      if (!hasITask(getMemoryEdges)) {
+          std::cerr << " Must add iTask " << getMemoryEdges->getName() << " to graph before adding it as a memory edge" << std::endl;
           throw std::invalid_argument("Must add iTask to graph before adding as memory edge");
       }
 
       std::shared_ptr<IMemoryAllocator<V>> allocP = getMemoryAllocator(allocator);
 
       bool ignoreMemGetterErrors;
-      CudaMemoryManager<V> *memManager = getCudaMemoryManager(memGetter, name, memoryPoolSize, allocP, type, contexts, &ignoreMemGetterErrors);
+      CudaMemoryManager<V> *memManager = getCudaMemoryManager(getMemoryEdges, name, memoryPoolSize, allocP, type, contexts, &ignoreMemGetterErrors);
 
-      addMemoryManagerEdge(memGetter, memReleaser, memManager, ignoreMemGetterErrors);
+      addMemoryManagerEdge(getMemoryEdges, releaseMemoryEdges, memManager, ignoreMemGetterErrors);
   }
 #endif
 
@@ -1645,7 +1645,7 @@ class TaskGraph: public AnyTaskGraph {
     DEBUG("Adding memory releaser " << name << " to " << memReleaser->getName() << " " << memReleaser <<
         " at connector " << memTask->getInputBaseConnector());
 
-    // This functionality is internal to copying a graph, so inserting the memGetter/releaser with the same name is desired
+    // This functionality is internal to copying a graph, so inserting the getMemoryEdges/releaser with the same name is desired
     // One per pipeline
     memGetter->attachMemGetter(name, outputConnector, type);
     memReleaser->attachMemReleaser(name, inputConnector, type, isReleaserOutsideGraph);
@@ -1739,10 +1739,10 @@ class TaskGraph: public AnyTaskGraph {
   {
     MemoryManager<V> *memManager;
 
-    // Check if memGetter has a memory edge, if it does then check if the specified name is created
+    // Check if getMemoryEdges has a memory edge, if it does then check if the specified name is created
     if (memGetterMap->find(memGetter) == this->memGetterMap->end())
     {
-      // The memGetter does not have any memory edges associated with it
+      // The getMemoryEdges does not have any memory edges associated with it
       memManager = new MemoryManager<V>(name, memoryPoolSize, allocP, type);
       MemManagerMap *mmMap = new MemManagerMap();
       mmMap->insert(MemManagerPair(name, memManager));
@@ -1774,25 +1774,25 @@ class TaskGraph: public AnyTaskGraph {
 
 #ifdef USE_CUDA
   template <class V>
-  CudaMemoryManager<V> *getCudaMemoryManager(AnyITask *memGetter, std::string name, int memoryPoolSize, std::shared_ptr<IMemoryAllocator<V>> allocP, MMType type, CUcontext *contexts, bool *ignoreMemGetterErrors)
+  CudaMemoryManager<V> *getCudaMemoryManager(AnyITask *getMemoryEdges, std::string name, int memoryPoolSize, std::shared_ptr<IMemoryAllocator<V>> allocP, MMType type, CUcontext *contexts, bool *ignoreMemGetterErrors)
   {
     CudaMemoryManager<V> *memManager;
 
-    // Check if memGetter has a memory edge, if it does then check if the specified name is created
-    if (memGetterMap->find(memGetter) == this->memGetterMap->end())
+    // Check if getMemoryEdges has a memory edge, if it does then check if the specified name is created
+    if (memGetterMap->find(getMemoryEdges) == this->memGetterMap->end())
     {
-      // The memGetter does not have any memory edges associated with it
+      // The getMemoryEdges does not have any memory edges associated with it
       memManager = new CudaMemoryManager<V>(name, contexts, memoryPoolSize, allocP, type);
       MemManagerMap *mmMap = new MemManagerMap();
       mmMap->insert(MemManagerPair(name, memManager));
-      memGetterMap->insert(MemGetterPair(memGetter, mmMap));
+      memGetterMap->insert(MemGetterPair(getMemoryEdges, mmMap));
       *ignoreMemGetterErrors = false;
     }
     else
     {
       // MemGetter has some memory edges
       // Now identify if the specified named edge already exists
-      MemManagerMap *mmMap = memGetterMap->at(memGetter);
+      MemManagerMap *mmMap = memGetterMap->at(getMemoryEdges);
       if (mmMap->find(name) == mmMap->end())
       {
         // No memory manager found with name, create a new one and add it

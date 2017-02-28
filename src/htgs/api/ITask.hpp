@@ -11,8 +11,8 @@
  * @brief An interface to process input data and forward results within a TaskGraph
  * @details
  */
-#ifndef HTGS_ITASK_H
-#define HTGS_ITASK_H
+#ifndef HTGS_ITASK_HPP
+#define HTGS_ITASK_HPP
 
 #include <functional>
 #include <iostream>
@@ -218,6 +218,10 @@ class ITask: public AnyITask {
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * Copies the ITask (including a copy of all memory edges)
+   * @return the copy of the ITask
+   */
   ITask<T, U> *copyITask()
   {
     ITask<T,U> *iTaskCopy = copy();
@@ -227,6 +231,12 @@ class ITask: public AnyITask {
     return iTaskCopy;
   }
 
+  /**
+   * Gets the pipeline connector list
+   * @return the pipeline connector list
+   */
+   // TODO: This may be candidate for removal with new system
+  std::shared_ptr<ConnectorVector> getPipelineConnectorList() { return this->pipelineConnectorList; }
 
   /**
    * Adds results to the output list to be sent to the next connected ITask in a TaskGraph
@@ -296,6 +306,8 @@ class ITask: public AnyITask {
   typedef AnyITask super;
 
   TaskScheduler<T, U> *ownerTask; //!< The owner task for this ITask
+
+  // TODO: This may be candidate for removal with new system
   std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The connector list to communicate with other pipelines of the same task
 
 };
@@ -303,4 +315,4 @@ class ITask: public AnyITask {
 }
 
 
-#endif //HTGS_ITASK_H
+#endif //HTGS_ITASK_HPP

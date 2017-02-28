@@ -12,6 +12,9 @@
  */
 
 #ifdef USE_CUDA
+#ifndef HTGS_CUDATASK_HPP
+#define HTGS_CUDATASK_HPP
+
 #include <cuda.h>
 #include <vector>
 #include <unordered_map>
@@ -19,9 +22,6 @@
 #include <cuda_runtime_api.h>
 
 #include "ITask.hpp"
-
-#ifndef HTGS_CUDATASK_H
-#define HTGS_CUDATASK_H
 namespace htgs {
 
 template<class T>
@@ -130,18 +130,70 @@ class ICudaTask: public ITask<T, U> {
    * @param cudaIds the array of cudaIds
    * @param numGpus the number of GPUs
    */
-  ICudaTask(CUcontext *contexts, int *cudaIds, int numGpus) {
+  ICudaTask(CUcontext *contexts, size_t *cudaIds, size_t numGpus) {
     this->contexts = contexts;
     this->cudaIds = cudaIds;
     this->numGpus = numGpus;
   }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  virtual ~ICudaTask() override {}
+
+ /**
+  * Virtual function that is called when the ICudaTask has been initialized and is bound to a CUDA GPU.
+  */
+  virtual void initializeCudaGPU() { }
+
+  /**
+   * Executes the ICudaTask on some data. Use this->getStream() to acquire CUDA stream if needed.
+   * @param data the data executed on
+   */
+  void executeTask(std::shared_ptr<T> data) = 0;
+
+
+  /**
+   * Virtual function that is called when the ICudaTask is shutting down
+   */
+  virtual void shutdownCuda() {}
+
+  /**
+   * Virtual function that gets the name of this ICudaTask
+   * @return the name of the ICudaTask
+   */
+  virtual std::string getName() override {
+    return "Unnamed GPU ITask";
+  }
+
+  virtual std::string genDot(int flags, std::string dotId) override {
+    std::string inOutLabel = (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\nin: "+this->inTypeName()+"\nout: "+this->outTypeName()) : "");
+    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+    return dotId + "[label=\"" + this->getName()  + threadLabel + inOutLabel + "\",style=filled,fillcolor=forestgreen,shape=box,color=black,width=.2,height=.2];\n";
+  }
+
+  /**
+   * Pure virtual function that copies this ICudaTask
+   * @return the copy of the ICudaTask
+   */
+  virtual ITask<T, U> *copy() = 0;
+
+  /**
+   * Virtual function that can be used to provide debug information.
+   */
+  virtual void debug() override { }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
 
   /**
    * Gets the Cuda Id for this cudaTask.
    * Set only after this task has been bound to a thread during initialization.
    * @return the cudaId associated with this cudaTask
    */
-  int getCudaId() {
+  size_t getCudaId() {
     return this->cudaId;
   }
 
@@ -173,7 +225,7 @@ class ICudaTask: public ITask<T, U> {
    * @retval TRUE if copy is required
    * @retval FALSE if copy is not required
    */
-  bool requiresCopy(int pipelineId) {
+  bool requiresCopy(size_t pipelineId) {
     return std::find(this->nonPeerDevIds.begin(), this->nonPeerDevIds.end(), this->cudaIds[pipelineId])
         != this->nonPeerDevIds.end();
   }
@@ -198,7 +250,7 @@ class ICudaTask: public ITask<T, U> {
    * @retval TRUE if the pipeline id has peer to peer GPU copy
    * @retval FALSE if the pipeline id has peer to peer GPU copy
    */
-  bool hasPeerToPeerCopy(int pipelineId) { return !requiresCopy(cudaId); }
+  bool hasPeerToPeerCopy(size_t pipelineId) { return !requiresCopy(cudaId); }
 
   /**
    * Will automatically copy from one GPU to another (if it is required).
@@ -235,17 +287,11 @@ class ICudaTask: public ITask<T, U> {
 
   /**
    * Initializes the CudaTask to be bound to a particular GPU
-   * @param pipelineId the pipelineId of the task
-   * @param numPipeline the number of pipelines
-   * @param ownerTask the owner of the task
-   * @param pipelineConnectorList the list of connectors that connect to other duplicate
-   * ICudaTask's in an execution pipeline
    * @note This function should only be called by the HTGS API
    */
-  void initialize(int pipelineId, int numPipeline, TaskScheduler<T, U> *ownerTask,
-                  std::shared_ptr<std::vector<std::shared_ptr<BaseConnector>>> pipelineConnectorList) {
-    this->cudaId = this->cudaIds[pipelineId];
-    this->context = this->contexts[pipelineId];
+  void initialize() override final {
+    this->cudaId = this->cudaIds[this->getPipelineId()];
+    this->context = this->contexts[this->getPipelineId()];
 
     cuCtxSetCurrent(this->context);
 
@@ -263,7 +309,7 @@ class ICudaTask: public ITask<T, U> {
         CUdevice peerDev;
         cuDeviceGet(&peerDev, this->cudaIds[i]);
 
-        int canAccessPeer;
+        size_t canAccessPeer;
         cuDeviceCanAccessPeer(&canAccessPeer, dev, peerDev);
 
         if (canAccessPeer == 0) {
@@ -276,7 +322,7 @@ class ICudaTask: public ITask<T, U> {
       }
     }
 
-    this->initializeCudaGPU(this->context, this->stream, this->cudaId, this->numGpus, pipelineId, numPipeline);
+    this->initializeCudaGPU();
   }
 
 
@@ -284,17 +330,8 @@ class ICudaTask: public ITask<T, U> {
    * Shutsdown the ICudaTask
    * @note This function should only be called by the HTGS API
    */
-  void shutdown() {
+  void shutdown() override final {
     this->shutdownCuda();
-  }
-
-  /**
-   * Executes the ICudaTask on some data
-   * @param data the data executed on
-   * @note This function should only be called by the HTGS API
-   */
-  void executeTask(std::shared_ptr<T> data) {
-    executeGPUTask(data, this->stream);
   }
 
   /**
@@ -306,10 +343,18 @@ class ICudaTask: public ITask<T, U> {
   }
 
   /**
+   * Gets the CUDA stream for this CUDA task
+   * @return the CUDA stream
+   */
+  const CUstream &getStream() const {
+    return stream;
+  }
+
+  /**
    * Gets the cudaIds specified during ICudaTask construction
    * @return the cudaIds
    */
-  int *getCudaIds() {
+  size_t *getCudaIds() {
     return this->cudaIds;
   }
 
@@ -317,7 +362,7 @@ class ICudaTask: public ITask<T, U> {
    * Gets the number of GPUs specified during ICudaTask construction
    * @return the number of GPUs
    */
-  int getNumGPUs() {
+  size_t getNumGPUs() {
     return this->numGpus;
   }
 
@@ -330,70 +375,21 @@ class ICudaTask: public ITask<T, U> {
     cudaStreamSynchronize(stream);
   }
 
-
-  /**
-   * Virtual function that is called when the ICudaTask has been initialized.
-   * @param context the Cuda GPU context associated with this task
-   * @param stream the Cuda stream associated with this task
-   * @param cudaId the cuda ID associated with this task
-   * @param numGPUs the number GPUs available
-   * @param pipelineId the execution pipeline Id
-   * @param numPipelines the number of execution pipelines
-   */
-  virtual void initializeCudaGPU(CUcontext context, CUstream stream, int cudaId, int numGPUs, int pipelineId,
-                                 int numPipelines) { }
-
-  /**
-   * Pure virtual function that is called when the ICudaTask is executing on data
-   * @param data the data to be executed on
-   * @param stream the stream to use on the data (it is the same stream passed from initializeCudaGPU)
-   */
-  virtual void executeGPUTask(std::shared_ptr<T> data, CUstream stream) = 0;
-
-  /**
-   * Virtual function that is called when the ICudaTask is shutting down
-   */
-  virtual void shutdownCuda() {}
-
-  /**
-   * Virtual function that gets the name of this ICudaTask
-   * @return the name of the ICudaTask
-   */
-  virtual std::string getName() {
-    return "Unnamed GPU ITask";
-  }
-
-  virtual std::string genDot(int flags, std::string dotId) {
-    std::string inOutLabel = (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\nin: "+this->inTypeName()+"\nout: "+this->outTypeName()) : "");
-    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-    return dotId + "[label=\"" + this->getName()  + threadLabel + inOutLabel + "\",style=filled,fillcolor=forestgreen,shape=box,color=black,width=.2,height=.2];\n";
-  }
-
-  /**
-   * Pure virtual function that copies this ICudaTask
-   * @return the copy of the ICudaTask
-   */
-  virtual ITask<T, U> *copy() = 0;
-
-  /**
-   * Virtual function that can be used to provide debug information.
-   */
-  virtual void debug() { }
-
  private:
   CUcontext context; //!< The CUDA GPU context for the ICudaTask (set after initialize)
   CUstream stream; //!< The CUDA stream for the ICudaTask (set after initialize)
   CUcontext *contexts; //!< The array of CUDA contexts (one per GPU)
-  int *cudaIds; //!< The array of cuda Ids (one per GPU)
+  size_t *cudaIds; //!< The array of cuda Ids (one per GPU)
 
-  int numGpus; //!< The number of GPUs
-  int cudaId; //!< The CudaID for the ICudaTask (set after initialize)
-  std::vector<int> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
-  std::unordered_map<int, CUcontext> peerContexts; //!< The mapping of CudaId to CUDA Context that has peer-to-peer
+  size_t numGpus; //!< The number of GPUs
+  size_t cudaId; //!< The CudaID for the ICudaTask (set after initialize)
+  std::vector<size_t> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
+  std::unordered_map<size_t, CUcontext> peerContexts; //!< The mapping of CudaId to CUDA Context that has peer-to-peer
 };
 
 
 }
+#endif //HTGS_CUDATASK_HPP
 #endif //USE_CUDA
-#endif //HTGS_CUDATASK_H
+
 

@@ -17,7 +17,7 @@
 
 #include "../../api/ITask.hpp"
 #include "../../api/IMemoryAllocator.hpp"
-#include "htgs/types/MMType.h"
+#include "htgs/types/MMType.hpp"
 
 namespace htgs {
 
@@ -60,7 +60,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * @param memoryAllocator the allocator for how the memory pool allocates the memory.
    * @param type the type of memory manager to create
    */
-  MemoryManager(std::string name, int memoryPoolSize, std::shared_ptr<IMemoryAllocator<T>> memoryAllocator, MMType type) : ITask<
+  MemoryManager(std::string name, size_t memoryPoolSize, std::shared_ptr<IMemoryAllocator<T>> memoryAllocator, MMType type) : ITask<
       MemoryData<T>,
       MemoryData<T>>(1, true, false, 0L) {
     this->allocator = memoryAllocator;
@@ -84,23 +84,17 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   /**
    * Initializes the MemoryManager, filling the memory pool with allocated data.
    * All the memory is allocated once a thread has been bound to ITask.
-   * @param pipelineId the pipelineId associated with this MemoryManager
-   * @param numPipeline the number of pipelines
-   * @param ownerTask the Task that owns the MemoryManager
-   * @param pipelineConnectorList the list of connectors that connect to other duplicate
-   * execution pipelines in an execution pipeline
    */
-  void initialize(int pipelineId, int numPipeline, TaskScheduler<MemoryData<T>, MemoryData<T>> *ownerTask,
-                  std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) override {
-    this->pipelineId = pipelineId;
-    MemoryData<T> *memory = new MemoryData<T>(this->allocator);
+  void initialize() override {
+    this->pipelineId = this->getPipelineId();
+    MemoryData<T> *memory = new MemoryData<T>(this->allocator, this->getName());
 
     bool allocate = false;
     if (type == MMType::Static)
       allocate = true;
 
     this->pool->fillPool(memory, pipelineId, allocate);
-    this->pipelineConnectorList = pipelineConnectorList;
+    this->pipelineConnectorList = this->getPipelineConnectorList();
     delete memory;
   }
 
@@ -195,7 +189,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * Gets the size of the MemoryPool
    * @return
    */
-  int getMemoryPoolSize() {
+  size_t getMemoryPoolSize() {
     return this->memoryPoolSize;
   }
 
@@ -240,7 +234,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   virtual std::string genDot(int flags,
                              std::string dotId,
                              std::shared_ptr<AnyConnector> input,
-                             std::shared_ptr<AnyConnector> output) {
+                             std::shared_ptr<AnyConnector> output) override {
 
     if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) != 0) {
       return "";
@@ -265,15 +259,14 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 #ifdef PROFILE
   std::string getDotProfile(int flags,
                             std::unordered_map<std::string, double> *mmap, double val,
-                            std::string desc, std::unordered_map<std::string, std::string> *colorMap)
+                            std::string desc, std::unordered_map<std::string, std::string> *colorMap) override
   {
     return "";
   }
 #endif
 
  private:
-  std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>
-      pipelineConnectorList; //!< The list of execution pipeline connectors one for each MemoryManager of the same type
+  std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The list of execution pipeline connectors one for each MemoryManager of the same type
   std::shared_ptr<IMemoryAllocator<T>> allocator; //!< The allocator used for allocating and freeing memory
   size_t memoryPoolSize; //!< The size of the memory pool
   MemoryPool<T> *pool; //!< The memory pool

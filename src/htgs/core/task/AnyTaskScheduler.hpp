@@ -7,7 +7,7 @@
  * @author Timothy Blattner
  * @date Nov 18, 2015
  *
- * @brief Implements the parent class for a Task to remove the template arguments and the BaseTaskRuntimeThread to attach a thread to a Task.
+ * @brief Implements the parent class for a Task to remove the template arguments and the TaskSchedulerThread to attach a thread to a Task.
  */
 #ifndef HTGS_ANYTASKSCHEDULER_HPP
 #define HTGS_ANYTASKSCHEDULER_HPP
@@ -16,6 +16,7 @@
 #include <atomic>
 #include <memory>
 #include <vector>
+
 #include <htgs/types/Types.hpp>
 #include "AnyITask.hpp"
 
@@ -23,10 +24,10 @@ namespace htgs {
 class TaskSchedulerThread;
 
 /**
- * @class BaseTaskScheduler BaseTaskScheduler.hpp <htgs/core/task/BaseTaskScheduler.hpp>
+ * @class AnyTaskScheduler AnyTaskScheduler.hpp <htgs/core/task/AnyTaskScheduler.hpp>
  * @brief The parent class for a Task that removes the template arguments.
  * @details
- * The BaseTaskScheduler provides access to functionality that does not require template arguments and
+ * The AnyTaskScheduler provides access to functionality that does not require template arguments and
  * allows storage of a Task.
  *
  * @note This class should only be called by the HTGS API
@@ -35,7 +36,7 @@ class AnyTaskScheduler {
  public:
 
   /**
- * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
+ * Constructs an AnyTaskScheduler with an ITask as the task function and specific runtime parameters.
  * @param taskFunction the functionality for the TaskScheduler
  * @param numThreads the number of threads to operate with the TaskScheduler
  * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
@@ -57,7 +58,7 @@ class AnyTaskScheduler {
   }
 
   /**
-   * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
+   * Constructs an AnyTaskScheduler with an ITask as the task function and specific runtime parameters.
    * @param numThreads the number of threads to operate with the TaskScheduler
    * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
    * @param poll whether the TaskScheduler should poll for data
@@ -80,7 +81,7 @@ class AnyTaskScheduler {
   }
 
   /**
-   * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters
+   * Constructs an AnyTaskScheduler with an ITask as the task function and specific runtime parameters
    * @param numThreads the number of threads to operate with the TaskScheduler
    * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
    * @param poll whether the TaskScheduler should poll for data
@@ -120,7 +121,16 @@ class AnyTaskScheduler {
    */
   virtual AnyITask *getTaskFunction() = 0;
 
+  /**
+   * Gets the input Connector
+   * @return the input connector
+   */
   virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
+
+  /**
+   * Gets the output Connector
+   * @return the output connector
+   */
   virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
 
   /**
@@ -156,10 +166,17 @@ class AnyTaskScheduler {
    */
   virtual void executeTask() = 0;
 
+  /**
+   * Sets the thread that is executing this TaskScheduler
+   * @param runtimeThread the thread that is executing the TaskScheduler
+   */
+  virtual void setRuntimeThread(TaskSchedulerThread *runtimeThread) = 0;
+
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  // TODO: This may not be necessary with new changes .. .
   /**
    * Adds the input Connector for this TaskScheduler to the pipeline connector list.
    * Each Connector added represents one of the other Connectors that is attached
@@ -170,6 +187,7 @@ class AnyTaskScheduler {
     (*pipelineConnectorList)[pipelineId] = this->getInputConnector();
   }
 
+  // TODO: This may not be necessary with new changes . . .
   /**
    * Adds a Connector for a TaskScheduler that is in an ExecutionPipeline
    * Each Connector added represents one of the other Connectors that is attached
@@ -181,6 +199,14 @@ class AnyTaskScheduler {
     (*pipelineConnectorList)[pipelineId] = connector;
   }
 
+  // TODO: The pipeline connector list may not be necessary anymore . . .
+  /**
+   * Gets the pipeline connector list for this task
+   * @return the pipeline connector list
+   */
+  std::shared_ptr<ConnectorVector> getPipelineConnectors() { return this->pipelineConnectorList; }
+
+  // TODO: No need to resize with new changes . . .
   /**
    * Sets the number of pipelines associated with the TaskScheduler
    * @param numPipelines the number of pipelines
@@ -193,6 +219,12 @@ class AnyTaskScheduler {
   }
 
   /**
+   * Gets the number of pipelines that this task scheduler belongs too.
+   * @return the number of pipelines spawned from the execution pipeline task
+   */
+  size_t getNumPipelines() { return this->numPipelines; }
+
+  /**
    * Sets the pipeline Id associated with the TaskScheduler
    * @param id the pipeline Id
    */
@@ -201,6 +233,11 @@ class AnyTaskScheduler {
     this->getTaskFunction()->setPipelineId(id);
   }
 
+  /**
+   * Gets the pipeline identifer for this task from 0 to number of pipelines - 1.
+   * @return the pipeline identifier
+   */
+  size_t getPipelineId() { return this->pipelineId; }
 
   /**
    * Gets the number of threads associated with this TaskScheduler
@@ -208,23 +245,60 @@ class AnyTaskScheduler {
    */
   size_t getNumThreads() const { return this->numThreads; }
 
-  bool isStartTask() { return this->startTask; }
-
-  size_t getPipelineId() { return this->pipelineId; }
-
-  size_t getNumPipelines() { return this->numPipelines; }
-
-  std::shared_ptr<ConnectorVector> getPipelineConnectors() { return this->pipelineConnectorList; }
-
-  bool isPoll() { return this->poll; }
-
-  size_t getTimeout() { return this->timeout; }
-
-  void setStartTask(bool val) { this->startTask = val; }
-
+  /**
+   * Sets the alive state for this task scheduler
+   * @param val the value to set, true = alive, false = dead/terminating
+   */
   void setAlive(bool val) { this->alive = val; }
 
+  /**
+   * Gets whether the TaskScheduler is alive or not
+   * @return whether the TaskScheduler is alive
+   * @retval TRUE if the TaskScheduler is alive
+   * @retval FALSE if the TaskScheduler is not alive
+   */
+  bool isAlive() { return this->alive; }
+
+  /**
+   * Sets whether this task scheduler is a start task or not, which will immediately begin executing
+   * by sending nullptr data to the underlying task as soon as this task executes.
+   * @param val the value to set, true = is a start task, false = not a start task
+   * @note Should be set before a task begins executing (attached to a thread)
+   */
+  void setStartTask(bool val) { this->startTask = val; }
+
+  /**
+   * Gets whether this task scheduler will begin executing immediately with nullptr data or not.
+   * @return whether the task scheduler will start immediately.
+   * @retval TRUE if the task scheduler will begin executing immediately
+   * @retval FALSE if the task scheduler will not begin and wait for its first input data
+   */
+  bool isStartTask() { return this->startTask; }
+
+  /**
+   * Gets whether the task scheduler is polling for data or not
+   * @return whether the task scheduler is polling or not
+   * @retval TRUE if the task scheduler is polling for data from its input
+   * @retval FALSE if the task scheduler is not polling (waiting) for data from its input
+   */
+  bool isPoll() { return this->poll; }
+
+  /**
+   * Gets the timeout period in microseconds for the task when the task is polling for data.
+   * @return the timeout time in microseconds for polling
+   */
+  size_t getTimeout() { return this->timeout; }
+
+  /**
+   * Increments the compute time profile value
+   * @param val the value to increment by
+   */
   void incTaskComputeTime(long val) { this->taskComputeTime += val;}
+
+  /**
+   * Increments the wait time profile value
+   * @param val the value to increment by
+   */
   void incWaitTime(long val) { this->taskWaitTime += val; }
 
   /**
@@ -236,24 +310,11 @@ class AnyTaskScheduler {
   }
 
   /**
-   * Sets the thread that is executing this TaskScheduler
-   * @param runtimeThread the thread that is executing the TaskScheduler
-   */
-  virtual void setRuntimeThread(TaskSchedulerThread *runtimeThread) = 0;
-
-  /**
    * Gets the name of the ITask
    * @return the name of the ITask
    */
   std::string getName() { return this->getTaskFunction()->getName(); }
 
-  /**
-   * Gets whether the TaskScheduler is alive or not
-   * @return whether the TaskScheduler is alive
-   * @retval TRUE if the TaskScheduler is alive
-   * @retval FALSE if the TaskScheduler is not alive
-   */
-  bool isAlive() { return this->alive; }
 
   /**
    * Provides debug output
@@ -294,8 +355,6 @@ class AnyTaskScheduler {
   void setThreadId(size_t id) {
     this->threadId = id;
   }
-
-
 
 #ifdef PROFILE
   std::string genDotProfile(int flags, std::unordered_map<std::string, double> *mmap, std::string desc,
@@ -375,7 +434,7 @@ class AnyTaskScheduler {
 
 
 /**
- * @class TaskSchedulerThread BaseTaskScheduler.hpp <htgs/task/AnyTaskScheduler.hpp>
+ * @class TaskSchedulerThread AnyTaskScheduler.hpp <htgs/task/AnyTaskScheduler.hpp>
  * @brief Manages a TaskScheduler that is bound to a thread for execution
  * @details
  * A Runtime will spawn a thread and bind it to the run function

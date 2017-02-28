@@ -11,8 +11,8 @@
  * @brief Describes how memory is released.
  * @details
  */
-#ifndef HTGS_MEMORYRELEASERULE_H
-#define HTGS_MEMORYRELEASERULE_H
+#ifndef HTGS_MEMORYRELEASERULE_HPP
+#define HTGS_MEMORYRELEASERULE_HPP
 
 namespace htgs {
 /**
@@ -93,4 +93,4 @@ class IMemoryReleaseRule {
 };
 }
 
-#endif //HTGS_MEMORYRELEASERULE_H
+#endif //HTGS_MEMORYRELEASERULE_HPP

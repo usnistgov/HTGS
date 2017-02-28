@@ -11,8 +11,8 @@
  * @brief Implements the IData class, which is used for all data types entering/leaving a task graph
  * @details
  */
-#ifndef HTGS_IDATA_H
-#define HTGS_IDATA_H
+#ifndef HTGS_IDATA_HPP
+#define HTGS_IDATA_HPP
 
 #include <memory>
 #include <iostream>
@@ -74,7 +74,7 @@ class IData {
    * @param order the order in which a task will process the data (lowest value is processed first)
    * @note Must define the USE_PRIORITY_QUEUE directive to enable custom ordering between tasks.
    */
-  IData(int order) {
+  IData(size_t order) {
     this->order = order;
   }
 
@@ -125,14 +125,14 @@ class IData {
    * @brief Gets the order of this IData
    * @return the order
    */
-  int getOrder() const {
+  size_t getOrder() const {
     return order;
   }
 
  private:
-  int order; //!< The ordering of the data (lowest first)
+  size_t order; //!< The ordering of the data (lowest first)
 
 };
 }
 
-#endif //HTGS_IDATA_H
+#endif //HTGS_IDATA_HPP

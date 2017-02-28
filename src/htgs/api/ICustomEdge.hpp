@@ -11,9 +11,12 @@
  * @brief Provides an interface to define custom edges in a TaskGraph.
  * This is required if custom edges are to be duplicated for an ExecutionPipline.
  */
-#ifndef HTGS_ICUSTOMEDGE_H
-#define HTGS_ICUSTOMEDGE_H
+#ifndef HTGS_ICUSTOMEDGE_HPP
+#define HTGS_ICUSTOMEDGE_HPP
 
+#include <htgs/core/task/AnyITask.hpp>
+#include <htgs/core/task/AnyTaskScheduler.hpp>
+#include <htgs/core/graph/AnyTaskGraph.hpp>
 #include "htgs/core/graph/AnyConnector.hpp"
 
 namespace htgs {
@@ -132,7 +135,7 @@ class ICustomEdge {
                                     AnyTaskScheduler *consumer,
                                     std::shared_ptr<AnyConnector> connector,
                                     int pipelineId,
-                                    htgs::BaseTaskGraph *taskGraph) = 0;
+                                    AnyTaskGraph *taskGraph) = 0;
 
   /**
    * Creates the connector associated with the custom edge
@@ -187,5 +190,5 @@ class ICustomEdge {
 }
 
 
-#endif //HTGS_ICUSTOMEDGE_H
+#endif //HTGS_ICUSTOMEDGE_HPP
 

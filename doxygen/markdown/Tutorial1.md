@@ -187,7 +187,7 @@ The interaction between the ITask, TaskScheduler, and TaskScheduler's thread is 
 class AddTask : public htgs::ITask<InputData, OutputData>
 {
 public:
-    virtual void initialize(int pipelineId, int numPipeline) { }
+    virtual void initialize(int pipelineId, int numPipelines) { }
     virtual void shutdown() { }
     virtual void executeTask(std::shared_ptr<InputData> data) {
         // Adds x + y

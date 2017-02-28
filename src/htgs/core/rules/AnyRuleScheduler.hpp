@@ -3,11 +3,11 @@
 //
 
 /**
- * @file BaseRuleScheduler.hpp
+ * @file AnyRuleScheduler.hpp
  * @author Timothy Blattner
  * @date Feb 22, 2017
  *
- * @brief  Implements a BaseRuleScheduler, which connects a Bookkeeper to another ITask using an IRule.
+ * @brief  Implements a AnyRuleScheduler, which connects a Bookkeeper to another ITask using an IRule.
  * @details
  */
 
@@ -19,7 +19,7 @@
 namespace htgs {
 
 /**
- * @class BaseRuleScheduler BaseRuleScheduler.hpp <htgs/core/rules/BaseRuleScheduler.hpp>
+ * @class AnyRuleScheduler AnyRuleScheduler.hpp <htgs/core/rules/AnyRuleScheduler.hpp>
  * @brief Connects a Bookkeeper to another ITask using one IRule.
  * @details
  *
@@ -52,6 +52,12 @@ namespace htgs {
  */
 class AnyRuleScheduler {
  public:
+
+  /**
+   * Destructor
+   */
+  virtual ~AnyRuleScheduler() {}
+
   /**
    * @internal
    * Initializes the RuleScheduler.

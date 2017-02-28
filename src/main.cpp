@@ -11,15 +11,13 @@ class TestRule : public htgs::IRule<TestData, htgs::VoidData> {
   virtual ~TestRule() {
 
   }
-  virtual bool isRuleTerminated(int pipelineId) {
+  virtual bool isRuleTerminated(size_t pipelineId) {
     return false;
   }
-  virtual void shutdownRule(int pipelineId) {
+  virtual void shutdownRule(size_t pipelineId) {  }
 
-  }
-  virtual void applyRule(std::shared_ptr<TestData> data, int pipelineId) {
+  virtual void applyRule(std::shared_ptr<TestData> data, size_t pipelineId) {  }
 
-  }
   virtual std::string getName() {
     return "TestRuleName";
   }

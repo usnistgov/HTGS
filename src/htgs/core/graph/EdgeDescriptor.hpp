@@ -7,8 +7,8 @@
 
 class EdgeDescriptor {
 
-  virtual void applyEdge();
-  virtual EdgeDescriptor copy();
+  virtual void applyEdge() = 0;
+  virtual EdgeDescriptor copy() = 0;
 
 };
 

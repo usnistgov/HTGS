@@ -11,8 +11,8 @@
  * @brief Defines how memory is allocated and freed.
  * @details
  */
-#ifndef HTGS_MEMORYALLOCATOR_H
-#define HTGS_MEMORYALLOCATOR_H
+#ifndef HTGS_MEMORYALLOCATOR_HPP
+#define HTGS_MEMORYALLOCATOR_HPP
 #include <functional>
 
 namespace htgs {
@@ -106,4 +106,4 @@ class IMemoryAllocator {
 };
 }
 
-#endif //HTGS_MEMORYALLOCATOR_H
+#endif //HTGS_MEMORYALLOCATOR_HPP

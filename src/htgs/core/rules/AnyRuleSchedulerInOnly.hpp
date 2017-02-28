@@ -11,6 +11,12 @@ template<class T>
 class AnyRuleSchedulerInOnly : public AnyRuleScheduler {
 
  public:
+
+  /**
+   * Destructor
+   */
+  virtual ~AnyRuleSchedulerInOnly() override {}
+
   /**
  * @internal
  * Processes the input data, which is forwarded to the IRule synchronously.

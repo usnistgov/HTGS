@@ -10,13 +10,13 @@
  *
  * @brief Implements the MemoryPool class
  */
-#ifndef HTGS_MEMORYPOOL_H
-#define HTGS_MEMORYPOOL_H
+#ifndef HTGS_MEMORYPOOL_HPP
+#define HTGS_MEMORYPOOL_HPP
 
 #include <list>
 #include <iostream>
 #include <memory>
-#include "../../debug/debug_message.h"
+#include "htgs/debug/debug_message.hpp"
 #include "../queue/BlockingQueue.hpp"
 
 namespace htgs {
@@ -41,7 +41,7 @@ class MemoryPool {
    * Creates a memory pool with the specified size number of elements.
    * @param queueSize the number of elements in the memory pool.
    */
-  MemoryPool(long queueSize) {
+  MemoryPool(size_t queueSize) {
     this->memoryQueue = new BlockingQueue<std::shared_ptr<MemoryData<T>>>(queueSize);
     this->allMemory = new std::list<std::shared_ptr<MemoryData<T>>>();
     this->queueSize = queueSize;
@@ -77,7 +77,7 @@ class MemoryPool {
    * @param pipelineId the pipelineId associated with the memory.
    * @param allocate whether to allocate the memory before adding
    */
-  void fillPool(MemoryData<T> *memory, int pipelineId, bool allocate) const {
+  void fillPool(MemoryData<T> *memory, size_t pipelineId, bool allocate) const {
     long remainingSize = this->memoryQueue->remainingCapacity();
 
     DEBUG("Inserting " << remainingSize << " elements to memory pool");
@@ -117,8 +117,8 @@ class MemoryPool {
    * Empties the memory pool releasing memory that had been allocated.
    */
   void emptyPool(bool free) const {
-    long poolSize = this->memoryQueue->size();
-    for (long i = 0; i < poolSize; i++) {
+    size_t poolSize = this->memoryQueue->size();
+    for (size_t i = 0; i < poolSize; i++) {
       std::shared_ptr<MemoryData<T>> memory = this->memoryQueue->remove();
       if (free)
         memory->memFree();
@@ -145,10 +145,10 @@ class MemoryPool {
  private:
   std::list<std::shared_ptr<MemoryData<T>>> *allMemory; //!< The list of all memory that has been allocated by the memory pool
   BlockingQueue<std::shared_ptr<MemoryData<T>>> *memoryQueue; //!< A blocking queue for getting/recycling memory
-  long queueSize; //!< The size of the memory queue
+  size_t queueSize; //!< The size of the memory queue
 
 };
 }
 
 
-#endif //HTGS_MEMORYPOOL_H
+#endif //HTGS_MEMORYPOOL_HPP
