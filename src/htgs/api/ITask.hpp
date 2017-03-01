@@ -267,14 +267,13 @@ class ITask: public AnyITask {
    * @param pipelineConnectorList the list of connectors that connect to other duplicate
    * ICudaTask's in an execution pipeline
    */
+   // TODO: Can remove ownerTask and pipelineConnectorList
   void initialize(size_t pipelineId, size_t numPipeline, TaskScheduler<T, U> *ownerTask,
                           std::shared_ptr<ConnectorVector> pipelineConnectorList) {
     this->ownerTask = ownerTask;
     this->pipelineConnectorList = pipelineConnectorList;
     super::initialize(pipelineId, numPipeline);
-
   }
-
 
   std::string inTypeName() override final
   {
@@ -300,6 +299,14 @@ class ITask: public AnyITask {
 
   }
 
+  /**
+   * Sets the owner task scheduler for this ITask
+   * @param ownerTask the task scheduler that owns this ITask
+   */
+  void setTaskScheduler(TaskScheduler<T, U> *ownerTask)
+  {
+    this->ownerTask = ownerTask;
+  }
 
  private:
 

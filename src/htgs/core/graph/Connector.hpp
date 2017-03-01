@@ -160,7 +160,7 @@ class Connector: public AnyConnector {
    * Gets the demangled type name of the connector
    * @return the demangled type name
    */
-  std::string typeName()
+  std::string typeName() override
   {
     int status;
     char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);

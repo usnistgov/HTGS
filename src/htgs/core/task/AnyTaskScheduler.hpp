@@ -172,6 +172,18 @@ class AnyTaskScheduler {
    */
   virtual void setRuntimeThread(TaskSchedulerThread *runtimeThread) = 0;
 
+  /**
+   * Sets the input BaseConnector
+   * @param connector the input connector
+   */
+  virtual void setInputConnector(std::shared_ptr<AnyConnector> connector) = 0;
+
+  /**
+   * Sets the output BaseConnector
+   * @param connector the output connector
+   */
+  virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) = 0;
+
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////

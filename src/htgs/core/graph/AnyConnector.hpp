@@ -88,6 +88,12 @@ class AnyConnector {
   }
 
   /**
+   * Gets the demangled type name of the connector
+   * @return the demangled type name
+   */
+  virtual std::string typeName() = 0;
+
+  /**
    * Checks whether the producer for this Connector has finished pushing data onto its priority queue.
    * @return whether the input has terminated or not
    * @retval TRUE if the input has terminated and no more data is in the priority queue.

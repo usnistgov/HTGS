@@ -178,7 +178,7 @@ class ExecutionPipeline: public ITask<T, U> {
     ruleManager->setOutputConnector(graph->getInputConnector());
     ruleManager->initialize(0, this->numPipelines);
 
-    this->inputBk->addRuleManager(ruleManager);
+    this->inputBk->addRuleScheduler(ruleManager);
 
     // Update outputs for task graph to go to the execution pipeline output
     graph->updateGraphOutputProducers(ownerTask->getOutputConnector(), true);
@@ -199,7 +199,7 @@ class ExecutionPipeline: public ITask<T, U> {
       ruleManager->setOutputConnector(graphCopy->getInputConnector());
       ruleManager->initialize(i, this->numPipelines);
 
-      this->inputBk->addRuleManager(ruleManager);
+      this->inputBk->addRuleScheduler(ruleManager);
 
       // Update outputs for task graph to go to the execution pipeline output
       graphCopy->updateGraphOutputProducers(ownerTask->getOutputConnector(), true);

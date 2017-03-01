@@ -61,7 +61,9 @@ class TaskScheduler: public AnyTaskScheduler {
    */
   TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines) :
       super(numThreads, isStartTask, pipelineId, numPipelines),
-      inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {}
+      inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
+    taskFunction->setTaskScheduler(this);
+  }
 
   /**
    * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
@@ -75,7 +77,9 @@ class TaskScheduler: public AnyTaskScheduler {
    */
   TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
                 size_t pipelineId, size_t numPipelines) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines),
-                         inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {}
+                         inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
+    taskFunction->setTaskScheduler(this);
+  }
 
 
   /**
@@ -92,7 +96,9 @@ class TaskScheduler: public AnyTaskScheduler {
   TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
                 size_t pipelineId, size_t numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
       : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, pipelineConnectorList),
-        inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {}
+        inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
+    taskFunction->setTaskScheduler(this);
+  }
 
 
 
@@ -187,13 +193,24 @@ class TaskScheduler: public AnyTaskScheduler {
    * Sets the input BaseConnector
    * @param connector the input connector
    */
-  void setInputConnector(std::shared_ptr<AnyConnector> connector) { this->inputConnector = std::dynamic_pointer_cast<Connector<T>>(connector); }
+  void setInputConnector(std::shared_ptr<AnyConnector> connector) override {
+    if (connector != nullptr)
+      this->inputConnector = std::dynamic_pointer_cast<Connector<T>>(connector);
+    else
+      this->inputConnector = nullptr;
+
+  }
 
   /**
    * Sets the output BaseConnector
    * @param connector the output connector
    */
-  void setOutputConnector(std::shared_ptr<AnyConnector> connector) { this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector); }
+  void setOutputConnector(std::shared_ptr<AnyConnector> connector) override {
+    if (connector != nullptr)
+      this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector);
+    else
+      this->outputConnector = nullptr;
+  }
 
   /**
    * Adds the result data to the output connector

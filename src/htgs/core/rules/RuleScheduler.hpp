@@ -146,7 +146,6 @@ class RuleScheduler : public AnyRuleSchedulerInOnly<T> {
 
   void setOutputConnector(std::shared_ptr<AnyConnector> connector) override {
     this->connector = std::dynamic_pointer_cast<Connector<U>>(connector);
-    this->connector->incrementInputTaskCount();
     DEBUG_VERBOSE("Connector " << this->connector << " adding producer: " << this->getName() << " " << this <<
                                " to connector " << this->connector);
   }

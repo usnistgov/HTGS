@@ -64,80 +64,80 @@ class Bookkeeper: public ITask<T, VoidData> {
    * Constructs a bookkeeper
    */
   Bookkeeper() {
-    this->ruleManagers = new std::list<AnyRuleSchedulerInOnly<T> *>();
+    this->ruleSchedulers = new std::list<AnyRuleSchedulerInOnly<T> *>();
   }
 
   /**
    * Destructor destroys RuleManager memory
    */
   virtual ~Bookkeeper() override {
-    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleSchedulers) {
       delete ruleManager;
       ruleManager = nullptr;
     }
-    delete ruleManagers;
-    ruleManagers = nullptr;
+    delete ruleSchedulers;
+    ruleSchedulers = nullptr;
   }
 
   /**
-   * Adds rule manager to this bookkeeper
-   * @param ruleManager the rule manager
+   * Adds rule scheduler to this bookkeeper
+   * @param ruleScheduler the rule scheduler
    * @note This function should only be called by the HTGS API - users of the HTGS API should instead use addRuleManager(RuleManager<T, U> *ruleManager)
    */
-  void addRuleManager(AnyRuleScheduler *ruleManager) {
-    AnyRuleSchedulerInOnly<T> *baseRuleMan = (AnyRuleSchedulerInOnly<T> *) ruleManager;
+  void addRuleScheduler(AnyRuleScheduler *ruleScheduler) {
+    AnyRuleSchedulerInOnly<T> *baseRuleMan = (AnyRuleSchedulerInOnly<T> *) ruleScheduler;
 
-    DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << baseRuleMan->getName());
+    DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule scheduler " << baseRuleMan->getName());
 
-    ruleManagers->push_back(baseRuleMan);
-    ruleManagerInfo = ruleManagerInfo + " " + baseRuleMan->getName();
+    ruleSchedulers->push_back(baseRuleMan);
+    ruleSchedulerInfo = ruleSchedulerInfo + " " + baseRuleMan->getName();
   }
 
   /**
-   * Adds rule manager to this bookkeeper
-   * @param ruleManager the rule manager
-   * @tparam U the output type for the rulemanager (output edge type)
+   * Adds rule scheduler to this bookkeeper
+   * @param ruleScheduler the rule scheduler
+   * @tparam U the output type for the rulescheduler (output edge type)
    */
   template<class U>
-  void addRuleManager(RuleScheduler<T, U> *ruleManager) {
+  void addRuleScheduler(RuleScheduler<T, U> *ruleScheduler) {
 
-    DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << ruleManager->getName());
+    DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule scheduler " << ruleScheduler->getName());
 
-    ruleManagers->push_back(ruleManager);
+    ruleSchedulers->push_back(ruleScheduler);
 
-    ruleManagerInfo = ruleManagerInfo + " " + ruleManager->getName();
+    ruleSchedulerInfo = ruleSchedulerInfo + " " + ruleScheduler->getName();
   }
 
   /**
    * Executes the bookkeeper on data.
-   * The bookkeeper forwards the data to each rule manager.
+   * The bookkeeper forwards the data to each rule scheduler.
    * @param data the data
    * @note This function should only be called by the HTGS API
    */
   void executeTask(std::shared_ptr<T> data) override {
-    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleSchedulers) {
 //      DEBUG_VERBOSE(this->getName() << " executing " + ruleManager->getName());
       ruleManager->executeTask(data);
     }
   }
 
   /**
-   * Gets the name of this bookkeeper and all rule managers it controls.
+   * Gets the name of this bookkeeper and all rule schedulers it controls.
    * @return the name of this bookkeeper
    */
   std::string getName() override {
-    return "Bookkeeper -- " + std::to_string(this->ruleManagers->size()) + " rule manager(s): " +
-        this->ruleManagerInfo;
+    return "Bookkeeper -- " + std::to_string(this->ruleSchedulers->size()) + " rule scheduler(s): " +
+        this->ruleSchedulerInfo;
   }
 
   /**
-   * Provides debug output for the rule manager.
+   * Provides debug output for the rule scheduler.
    * @note \#define DEBUG_FLAG to enable debugging
    */
   void debug() override {
     DEBUG(this->getName() << " Details:");
-    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
-      DEBUG("Executing rule manager: " << ruleManager->getName());
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleSchedulers) {
+      DEBUG("Executing rule scheduler: " << ruleManager->getName());
       ruleManager->debug();
     }
 
@@ -150,7 +150,7 @@ class Bookkeeper: public ITask<T, VoidData> {
    * @note This function should only be called by the HTGS API
    */
   void initialize() override {
-    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleSchedulers) {
       ruleManager->initialize(this->getPipelineId(), this->getNumPipelines());
     }
   }
@@ -162,14 +162,14 @@ class Bookkeeper: public ITask<T, VoidData> {
   void shutdown() {
 
     DEBUG("Shutting down " << this->getName());
-    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleManager : *ruleSchedulers) {
       ruleManager->shutdown();
     }
   }
 
   /**
    * Creates a shallow copy of this bookkeeper
-   * @return a shallow copy (No rule managers) of this bookkeeper
+   * @return a shallow copy (No rule schedulers) of this bookkeeper
    * @note This function should only be called by the HTGS API
    */
   Bookkeeper<T> *copy() { return new Bookkeeper<T>(); }
@@ -179,7 +179,7 @@ class Bookkeeper: public ITask<T, VoidData> {
    */
   std::string genDot(int flags, std::string idStr) {
     std::ostringstream oss;
-    for (AnyRuleSchedulerInOnly<T> *ruleMan : *ruleManagers) {
+    for (AnyRuleSchedulerInOnly<T> *ruleMan : *ruleSchedulers) {
       std::ostringstream ruleManOss;
       ruleManOss << ruleMan->getConnector();
 
@@ -205,8 +205,8 @@ class Bookkeeper: public ITask<T, VoidData> {
 #endif
 
  private:
-  std::list<AnyRuleSchedulerInOnly<T> *> *ruleManagers; //!< The list of ruleManagers (one per consumer)
-  std::string ruleManagerInfo; //!< A string representation of all rule managers
+  std::list<AnyRuleSchedulerInOnly<T> *> *ruleSchedulers; //!< The list of ruleManagers (one per consumer)
+  std::string ruleSchedulerInfo; //!< A string representation of all rule schedulers
 };
 }
 

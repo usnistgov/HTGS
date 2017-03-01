@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <htgs/core/graph/AnyConnector.hpp>
 #include <htgs/api/MemoryData.hpp>
+#include <htgs/core/rules/AnyIRule.hpp>
+#include <map>
 
 namespace htgs {
 /**
@@ -34,6 +36,18 @@ typedef std::pair<std::string, std::shared_ptr<ConnectorVector>> ConnectorVector
 
 template <class V>
 using m_data_t = std::shared_ptr<MemoryData<V>>;
+
+/**
+ * @typedef IRuleMap
+ * Defines a mapping between an IRule pointer and the shared pointer of that IRule
+ */
+typedef std::map<AnyIRule *, std::shared_ptr<AnyIRule>> IRuleMap;
+
+/**
+ * @typedef IRulePair
+ * Defines a pair to be added to the IRuleMap
+ */
+typedef std::pair<AnyIRule *, std::shared_ptr<AnyIRule>> IRulePair;
 
 }
 #endif //HTGS_TYPES_HPP

@@ -13,6 +13,7 @@
 #ifndef HTGS_ANYITASK_HPP
 #define HTGS_ANYITASK_HPP
 
+class AnyTaskScheduler;
 #include <memory>
 #include <cassert>
 #include <sstream>
@@ -24,6 +25,7 @@
 #include <htgs/types/MMType.hpp>
 #include <htgs/debug/debug_message.hpp>
 #include <htgs/types/TaskGraphDotGenFlags.hpp>
+#include "AnyTaskScheduler.hpp"
 
 namespace htgs {
 
