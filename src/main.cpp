@@ -151,6 +151,9 @@ int main()
 
   }
 
+  // TODO: Test normal memory manager edge
+  tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[0], tasks[nVertices-1], 100);
+
   tGraph->copy(0, 1)->writeDotToFile("test.dot");
   tGraph->writeDotToFile("testorig.dot");
 

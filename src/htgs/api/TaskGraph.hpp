@@ -16,6 +16,8 @@
 
 #include <htgs/core/graph/edge/ProducerConsumerEdge.hpp>
 #include <htgs/core/graph/edge/RuleEdge.hpp>
+#include <htgs/core/graph/edge/MemoryEdge.hpp>
+#include <htgs/core/memory/VoidMemoryAllocator.hpp>
 
 namespace htgs {
 
@@ -451,17 +453,74 @@ class TaskGraph: public AnyTaskGraph {
     this->addEdgeDescriptor(re);
   }
 
-//  template<class V, class W, class X>
-//  void addRule(Bookkeeper<V> *bk, ITask<W, X> *consumer, IRule<V, W> * rule) {
-//    TaskScheduler<V, VoidData> *bkTask = getTaskScheduler(bk, false);
-//    TaskScheduler<W, X> *consumerTask = getTaskScheduler(consumer, false);
-//    RuleManager<V, W> *ruleMan = getRuleManager(bk, consumer);
-//    std::shared_ptr<IRule<V, W>> iRuleShr = getIRule(rule);
-//
-//    ruleMan->addRule(iRuleShr);
-//
-//    addRuleScheduler(bkTask, bk, ruleMan, consumerTask);
-//  }
+#ifdef USE_CUDA
+  /**
+   * Adds a CudaMemoryManager edge with the specified name to the TaskGraph.
+   * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
+   * the TaskGraph.
+   * @param name the name of the memory edge
+   * @param getMemoryEdges the ITask that is getting memory
+   * @param releaseMemoryEdges the ITask that is releasing memory
+   * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
+   * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
+   * @param type the type of memory manager
+   * @param contexts the array of all Cuda contexts
+   * @note the memoryPoolSize can cause out of memory errors for the GPU if the allocator->size() * memoryPoolSize exceeds the total GPU memory
+   * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
+   */
+  template <class V>
+  void addCudaMemoryManagerEdge(std::string name, AnyITask *getMemoryEdges, AnyITask *releaseMemoryEdges,
+          IMemoryAllocator<V> *allocator, int memoryPoolSize, MMType type, CUcontext * contexts) {
+    static_assert(std::is_base_of<IMemoryAllocator<V>, MemoryAllocator>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
+
+    std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
+
+    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, releaseMemoryTask, memAllocator, memoryPoolSize, MMType::UserManaged, type, contexts);
+    memEdge->applyEdge(this);
+    this->addEdgeDescriptor(memEdge);
+  }
+#endif
+
+  /**
+   * Adds a MemoryManager that is managed by the user.
+   * This edge will enable an ITask to use the MemoryManager to throttle how much data is allocated.
+   * @param name the name of the memory edge
+   * @param memGetter the ITask that will be getting memory
+   * @param memReleaser the ITask that will be releasing memory
+   * @param memoryPoolSize the size of the memory pool
+   */
+  void addUserManagedMemoryManagerEdge(std::string name,
+                                       AnyITask *getMemoryTask,
+                                       AnyITask *releaseMemoryTask,
+                                       size_t memoryPoolSize) {
+    auto voidAllocator = std::make_shared<VoidMemoryAllocator>();
+    MemoryEdge<void *> *memEdge = new MemoryEdge<void *>(name, getMemoryTask, releaseMemoryTask, voidAllocator, memoryPoolSize, MMType::UserManaged);
+    memEdge->applyEdge(this);
+    this->addEdgeDescriptor(memEdge);
+  }
+
+  /**
+   * Adds a MemoryManager edge with the specified name to the TaskGraph.
+   * @param name the name of the memory edge
+   * @param getMemoryTask the ITask that is getting memory
+   * @param releaseMemoryTask the ITask that is releasing memory
+   * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
+   * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
+   * @param type the type of memory manager
+   * @note the memoryPoolSize can cause out of memory errors for the system if the allocator->size() * memoryPoolSize exceeds the total system memory
+   * @tparam V the type of memory; i.e., 'double *'
+   */
+  template<class MemoryAllocator, class V>
+  void addMemoryManagerEdge(std::string name, AnyITask *getMemoryTask, AnyITask *releaseMemoryTask,
+                            std::shared_ptr<MemoryAllocator> *allocator, size_t memoryPoolSize, MMType type) {
+    static_assert(std::is_base_of<IMemoryAllocator<V>, MemoryAllocator>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
+
+    std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
+
+    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, releaseMemoryTask, memAllocator, memoryPoolSize, type);
+    memEdge->applyEdge(this);
+    this->addEdgeDescriptor(memEdge);
+  }
 
 
   AnyTaskScheduler *getGraphConsumerTaskScheduler() override {

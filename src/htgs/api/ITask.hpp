@@ -220,13 +220,15 @@ class ITask: public AnyITask {
 
   /**
    * Copies the ITask (including a copy of all memory edges)
+   * @param deep whether to do a deep copy and copy the memory managers as well
    * @return the copy of the ITask
    */
-  ITask<T, U> *copyITask()
+  ITask<T, U> *copyITask(bool deep) override
   {
     ITask<T,U> *iTaskCopy = copy();
 
-    copyMemoryEdges(iTaskCopy);
+    if (deep)
+      copyMemoryEdges(iTaskCopy);
 
     return iTaskCopy;
   }

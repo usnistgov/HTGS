@@ -129,7 +129,7 @@ class TaskScheduler: public AnyTaskScheduler {
   }
 
   AnyTaskScheduler *copy(bool deep)  override {
-    ITask<T, U> *iTask = this->taskFunction->copyITask();
+    ITask<T, U> *iTask = this->taskFunction->copyITask(deep);
 
     TaskScheduler<T, U>
         *newTask = new TaskScheduler<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),

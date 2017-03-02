@@ -193,7 +193,7 @@ class AnyITask {
   *
   * @note This function should only be called by the HTGS API
   */
-  virtual AnyITask *copyITask() = 0;
+  virtual AnyITask *copyITask(bool deep) = 0;
 
   /**
  * Virtual function that adds additional dot attributes to this node.
@@ -574,7 +574,7 @@ class AnyITask {
 
       if (getMemoryEdges->size() > 0) {
         for (const auto &kv : *this->getMemoryEdges) {
-          oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << "[label=\"alloc\", color=sienna];" << std::endl;
+          oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << "[label=\"get\", color=sienna];" << std::endl;
         }
       }
     }

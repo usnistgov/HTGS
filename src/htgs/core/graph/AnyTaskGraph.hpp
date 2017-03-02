@@ -88,6 +88,19 @@ class AnyTaskGraph {
 //    }
   }
 
+  AnyITask *getCopy(AnyITask *orig)
+  {
+//    TaskScheduler<T, U> *taskScheduler = nullptr;
+
+    for (auto tCopy : *taskCopyMap) {
+      if (tCopy.first == orig) {
+        return tCopy.second->getTaskFunction();
+      }
+    }
+
+    return nullptr;
+  }
+
   template <class T, class U>
   TaskScheduler<T, U> *getTaskScheduler(ITask<T, U> *task) {
 
@@ -283,6 +296,17 @@ class AnyTaskGraph {
     }
 
     return nullptr;
+  }
+
+  bool hasTask(AnyITask *task)
+  {
+    for (auto taskSched : *taskSchedulers)
+    {
+      if (taskSched->getTaskFunction() == task)
+        return true;
+    }
+
+    return false;
   }
 
  private:
