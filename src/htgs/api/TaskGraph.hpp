@@ -231,7 +231,7 @@ class TaskGraph: public AnyTaskGraph {
   /**
    * Constructs a TaskGraph
    */
-  TaskGraph() : AnyTaskGraph() {
+  TaskGraph() : AnyTaskGraph(0, 1) {
     this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
@@ -239,78 +239,65 @@ class TaskGraph: public AnyTaskGraph {
     graphProducerTaskScheduler = nullptr;
 
     edges = new std::list<EdgeDescriptor *>();
-
-//
-//    graphInputConsumers = new std::list<AnyTaskScheduler *>();
-//    graphOutputProducers = new std::list<AnyTaskScheduler *>();
-//
-//    edges = new std::list<std::shared_ptr<AnyConnector>>();
-//    vertices = new std::list<AnyTaskScheduler *>();
-//
-//    producerConsumerKeys = new std::list<ProducerConsumerKey *>();
-//    bookkeeperKeys = new std::list<BookkeeperKey *>();
-//    memoryManagerKeys = new std::list<MemoryManagerKey *>();
-//
-//    consumerTaskConnectorMap = new ConnectorMap();
-//
-//    iTaskMap = new ITaskMap();
-//
-//    ruleEdgeMap = new RuleEdgeMap();
-//
-//    customEdgeList = new std::list<CustomEdgePair>();
-//
-//    memAllocMap = new MemAllocMap();
-//
-//    memGetterMap = new MemGetterMap();
-//
-//
-//    memReleaser = std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> (new std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >());
-//    mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
   }
 
   /**
-   * Constructs a TaskGraph with the specified input and output Connector.
-   * @param input
-   * @param output
+   * Constructs a TaskGraph
    */
-   // TODO: Is this constructor necessary . . . (should be pipeline Id as alternate version . . .)
-  TaskGraph(std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output) : AnyTaskGraph() {
-    this->input = input;
-    this->output = output;
+  TaskGraph(size_t pipelineId, size_t numPipelines) : AnyTaskGraph(pipelineId, numPipelines) {
+    this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
+    this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
     graphConsumerTaskScheduler = nullptr;
     graphProducerTaskScheduler = nullptr;
 
     edges = new std::list<EdgeDescriptor *>();
-
-
-//    graphInputConsumers = new std::list<AnyTaskScheduler *>();
-//    graphOutputProducers = new std::list<AnyTaskScheduler *>();
-//
-//    edges = new std::list<std::shared_ptr<AnyConnector>>();
-//    vertices = new std::list<AnyTaskScheduler *>();
-//
-//    producerConsumerKeys = new std::list<ProducerConsumerKey *>();
-//    bookkeeperKeys = new std::list<BookkeeperKey *>();
-//    memoryManagerKeys = new std::list<MemoryManagerKey *>();
-//
-//    consumerTaskConnectorMap = new ConnectorMap();
-//
-//    iTaskMap = new ITaskMap();
-//
-//    ruleEdgeMap = new RuleEdgeMap();
-//
-//    customEdgeList = new std::list<CustomEdgePair>();
-//
-//    memAllocMap = new MemAllocMap();
-//
-//    memGetterMap = new MemGetterMap();
-//
-//    iRuleMap = new IRuleMap();
-//
-//    memReleaser = std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> (new std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >());
-//    mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
   }
+
+//
+//  /**
+//   * Constructs a TaskGraph with the specified input and output Connector.
+//   * @param input
+//   * @param output
+//   */
+//   // TODO: Is this constructor necessary . . . (should be pipeline Id as alternate version . . .)
+//  TaskGraph(std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output) : AnyTaskGraph() {
+//    this->input = input;
+//    this->output = output;
+//
+//    graphConsumerTaskScheduler = nullptr;
+//    graphProducerTaskScheduler = nullptr;
+//
+//    edges = new std::list<EdgeDescriptor *>();
+//
+//
+////    graphInputConsumers = new std::list<AnyTaskScheduler *>();
+////    graphOutputProducers = new std::list<AnyTaskScheduler *>();
+////
+////    edges = new std::list<std::shared_ptr<AnyConnector>>();
+////    vertices = new std::list<AnyTaskScheduler *>();
+////
+////    producerConsumerKeys = new std::list<ProducerConsumerKey *>();
+////    bookkeeperKeys = new std::list<BookkeeperKey *>();
+////    memoryManagerKeys = new std::list<MemoryManagerKey *>();
+////
+////    consumerTaskConnectorMap = new ConnectorMap();
+////
+////    iTaskMap = new ITaskMap();
+////
+////    ruleEdgeMap = new RuleEdgeMap();
+////
+////    customEdgeList = new std::list<CustomEdgePair>();
+////
+////    memAllocMap = new MemAllocMap();
+////
+////    memGetterMap = new MemGetterMap();
+////
+////    iRuleMap = new IRuleMap();
+////
+////    memReleaser = std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> (new std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >());
+////    mmTypeMap = std::shared_ptr<std::unordered_map<std::string, MMType>>(new std::unordered_map<std::string, MMType>());
+//  }
 
   /**
    * Destructor, handles releasing all ITask memory that is managed by the TaskGraph.
@@ -405,7 +392,46 @@ class TaskGraph: public AnyTaskGraph {
 //
 
   }
+  TaskGraph<T, U> *copy(size_t pipelineId, size_t numPipelines)
+  {
+    return copy(pipelineId, numPipelines, nullptr, nullptr);
+  }
 
+  TaskGraph<T, U> *copy(size_t pipelineId, size_t numPipelines, std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output)
+  {
+    TaskGraph<T, U> *graphCopy = new TaskGraph<T, U>(pipelineId, numPipelines);
+
+    // Copy the tasks to form lookup between old ITasks and new copies
+    graphCopy->copyTasks(this->getTaskSchedulers());
+
+    if (input != nullptr)
+    {
+      graphCopy->setInputConnector(input);
+    }
+
+    if (output != nullptr)
+    {
+      graphCopy->setOutputConnector(output);
+    }
+
+    // Copy the graph producer and consumer tasks
+    graphCopy->copyAndUpdateGraphConsumerTask(this->graphConsumerTaskScheduler);
+    graphCopy->copyAndUpdateGraphProducerTask(this->graphProducerTaskScheduler);
+
+
+    for (EdgeDescriptor *edgeDescriptor : *edges)
+    {
+      // Copy the edge, using the graph copy as a reference for where to get task copies
+      EdgeDescriptor *edgeCopy = edgeDescriptor->copy(graphCopy);
+
+      // Apply the edge on the graph copy
+      edgeCopy->applyEdge(graphCopy);
+
+      graphCopy->addEdgeDescriptor(edgeCopy);
+    }
+
+    return graphCopy;
+  }
 
   template<class V, class W, class X>
   void addEdge(ITask<V, W> *producer, ITask<W, X> *consumer)
@@ -415,10 +441,12 @@ class TaskGraph: public AnyTaskGraph {
     this->addEdgeDescriptor(pce);
   }
 
-  template<class V, class W, class X>
-  void addRuleEdge(Bookkeeper<V> *bookkeeper, IRule<V, W> *rule, ITask<W, X> *consumer)
+  template<class V, class IRuleType, class W, class X>
+  void addRuleEdge(Bookkeeper<V> *bookkeeper, std::shared_ptr<IRuleType> rule, ITask<W, X> *consumer)
   {
-    auto re = new RuleEdge<V, W, X>(bookkeeper, rule, consumer);
+    static_assert(std::is_base_of<IRule<V, W>, IRuleType>::value, "Type mismatch for IRule<V, W>, V must match the input type of the bookkeeper and W must match the input type of the consumer!");
+    std::shared_ptr<IRule<V, W>> ruleCast = std::static_pointer_cast<IRule<V, W>>(rule);
+    auto re = new RuleEdge<V, W, X>(bookkeeper, ruleCast, consumer);
     re->applyEdge(this);
     this->addEdgeDescriptor(re);
   }
@@ -452,6 +480,24 @@ class TaskGraph: public AnyTaskGraph {
     return this->output;
   }
 
+  void setInputConnector(std::shared_ptr<Connector<T>> input) {
+    this->input = input;
+  }
+
+  void setOutputConnector(std::shared_ptr<Connector<T>> output) {
+    this->output = output;
+  }
+
+  void incrementGraphProducer()
+  {
+    this->input->incrementInputTaskCount();
+  }
+
+  void decrementGraphProducer()
+  {
+    this->input->producerFinished();
+  }
+
   template<class W>
   void setGraphConsumerTask(ITask<T, W> *task)
   {
@@ -474,11 +520,85 @@ class TaskGraph: public AnyTaskGraph {
 //    if (this->graphProducerTaskScheduler != nullptr)
 //      this->graphProducerTaskScheduler->setOutputConnector(nullptr);
 
+    if (this->graphProducerTaskScheduler == nullptr)
+    {
+      this->output->incrementInputTaskCount();
+    }
+
     this->graphProducerTaskScheduler = this->getTaskScheduler(task);
 
     this->graphProducerTaskScheduler->setOutputConnector(this->output);
   }
 
+  /**
+   * Produces data for the input of the TaskGraph.
+   * Must specify the TaskGraph input using addGraphInputConsumer() and use
+   * incrementGraphInputProducer() to indicate an input stream is feeding data to the TaskGraph
+   *
+   * @param data the data being added to the TaskGraph input
+   *
+   * @note The data being passed will be wrapped into a std::shared_ptr<T>(data)
+   */
+  void produceData(T *data) {
+    std::shared_ptr<T> dataPtr = std::shared_ptr<T>(data);
+    this->input->produceData(dataPtr);
+  }
+
+  /**
+   * Produces data for the input of the TaskGraph.
+   * Must specify the TaskGraph input using addGraphInputConsumer() and use
+   * incrementGraphInputProducer() to indicate an input stream is feeding data to the TaskGraph
+   *
+   * @param data the data being added to the TaskGraph input
+   */
+  void produceData(std::shared_ptr<T> data) {
+    this->input->produceData(data);
+  }
+
+  /**
+   * Adds a list of data into the TaskGraph
+   * Must specify the TaskGraph input using addGraphInputConsumer() and use
+   * incrementGraphInputProducer() to indicate an input stream is feeding data to the TaskGraph
+   *
+   * @param dataList the list of data to be added.
+   */
+  void produceData(std::list<std::shared_ptr<T>> *dataList) {
+    this->input->produceData(dataList);
+    if (this->input->isInputTerminated())
+      this->input->wakeupConsumer();
+  }
+
+  /**
+   * Consumes data from the output of a TaskGraph.
+   * It is possible for consumeData to return nullptr if the last Task has finished.
+   * Therefore, when consuming data from a TaskGraph it is important to have a check for nullptr prior to
+   * processing that data.
+   * @return one data element from the output of the TaskGraph or nullptr if the last task is closing.
+   * @note The task producing data for the TaskGraph will send nullptr to the connector, so the thread consuming data
+   * should check for nullptr prior to processing the data.
+   */
+  std::shared_ptr<U> consumeData() {
+    return this->output->consumeData();
+  }
+
+  /**
+   * Polls for data from the output of the TaskGraph
+   * @param microTimeout the timeout time in microseconds
+   * @return the data or nullptr if the timeout period expires.
+   */
+  std::shared_ptr<U> pollData(long microTimeout) {
+    return this->output->pollConsumeData(microTimeout);
+  }
+
+  /**
+   * Checks if the output of the TaskGraph has finished producing data
+   * @return whether the output is finished or not
+   * @retval TRUE if the output is no longer producing data
+   * @retval FALSE if the output is not finished producing data
+   */
+  bool isOutputTerminated() {
+    return this->output->isInputTerminated();
+  }
 
 //  /**
 //   * Writes the dot representation of the task graph to disk
@@ -756,72 +876,7 @@ class TaskGraph: public AnyTaskGraph {
 //  }
 //#endif
 //
-//  /**
-//   * Produces data for the input of the TaskGraph.
-//   * Must specify the TaskGraph input using addGraphInputConsumer() and use
-//   * incrementGraphInputProducer() to indicate an input stream is feeding data to the TaskGraph
-//   *
-//   * @param data the data being added to the TaskGraph input
-//   *
-//   * @note The data being passed will be wrapped into a std::shared_ptr<T>(data)
-//   */
-//  void produceData(T *data) {
-//    this->input->produceData(std::shared_ptr<T>(data));
-//  }
-//
-//  /**
-//   * Produces data for the input of the TaskGraph.
-//   * Must specify the TaskGraph input using addGraphInputConsumer() and use
-//   * incrementGraphInputProducer() to indicate an input stream is feeding data to the TaskGraph
-//   *
-//   * @param data the data being added to the TaskGraph input
-//   */
-//  void produceData(std::shared_ptr<T> data) {
-//    this->input->produceData(data);
-//  }
-//
-//  /**
-//   * Adds a list of data into the TaskGraph
-//   * Must specify the TaskGraph input using addGraphInputConsumer() and use
-//   * incrementGraphInputProducer() to indicate an input stream is feeding data to the TaskGraph
-//   *
-//   * @param dataList the list of data to be added.
-//   */
-//  void produceData(std::list<std::shared_ptr<T>> *dataList) {
-//    this->input->produceData(dataList);
-//  }
-//
-//  /**
-//   * Consumes data from the output of a TaskGraph.
-//   * It is possible for consumeData to return nullptr if the last Task has finished.
-//   * Therefore, when consuming data from a TaskGraph it is important to have a check for nullptr prior to
-//   * processing that data.
-//   * @return one data element from the output of the TaskGraph or nullptr if the last task is closing.
-//   * @note The task producing data for the TaskGraph will send nullptr to the connector, so the thread consuming data
-//   * should check for nullptr prior to processing the data.
-//   */
-//  std::shared_ptr<U> consumeData() {
-//    return this->output->consumeData();
-//  }
-//
-//  /**
-//   * Polls for data from the output of the TaskGraph
-//   * @param microTimeout the timeout time in microseconds
-//   * @return the data or nullptr if the timeout period expires.
-//   */
-//  std::shared_ptr<U> pollData(long microTimeout) {
-//    return this->output->pollConsumeData(microTimeout);
-//  }
-//
-//  /**
-//   * Checks if the output of the TaskGraph has finished producing data
-//   * @return whether the output is finished or not
-//   * @retval TRUE if the output is no longer producing data
-//   * @retval FALSE if the output is not finished producing data
-//   */
-//  bool isOutputTerminated() {
-//    return this->output->isInputTerminated();
-//  }
+
 //
 //  /**
 //   * @internal
@@ -1982,6 +2037,29 @@ class TaskGraph: public AnyTaskGraph {
 //    }
 //  }
 
+
+  void copyAndUpdateGraphConsumerTask(AnyTaskScheduler *taskScheduler)
+  {
+    if (taskScheduler != nullptr) {
+      AnyTaskScheduler *copy = this->getTaskSchedulerCopy(taskScheduler->getTaskFunction());
+      this->graphConsumerTaskScheduler = copy;
+      this->graphConsumerTaskScheduler->setInputConnector(this->input);
+      this->addTaskScheduler(this->graphConsumerTaskScheduler);
+    }
+  }
+
+  void copyAndUpdateGraphProducerTask(AnyTaskScheduler *taskScheduler)
+  {
+    if (taskScheduler != nullptr) {
+      AnyTaskScheduler *copy = this->getTaskSchedulerCopy(taskScheduler->getTaskFunction());
+
+      // TODO: Number of active connections for Connector
+      this->graphProducerTaskScheduler = copy;
+      this->graphProducerTaskScheduler->setOutputConnector(this->output);
+      this->output->incrementInputTaskCount();
+      this->addTaskScheduler(this->graphProducerTaskScheduler);
+    }
+  }
 
   void addEdgeDescriptor(EdgeDescriptor *edge)
   {

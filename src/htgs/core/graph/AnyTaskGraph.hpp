@@ -5,8 +5,6 @@
 #ifndef HTGS_ANYTASKGRAPH_HPP
 #define HTGS_ANYTASKGRAPH_HPP
 
-class ProducerConsumerEdge;
-
 #include <list>
 #include <htgs/core/task/AnyTaskScheduler.hpp>
 #include <string>
@@ -16,17 +14,28 @@ class ProducerConsumerEdge;
 #include <htgs/core/graph/edge/EdgeDescriptor.hpp>
 #include <fstream>
 
+
 namespace htgs {
+
+/**
+ * @typedef ITaskMap
+ * Creates a mapping between an ITask and a task scheduler.
+ */
+typedef std::map<AnyITask *, AnyTaskScheduler *> ITaskMap;
+
+/**
+ * @typedef ITaskPair
+ * Defines a pair to be added into an ITaskMap
+ */
+typedef std::pair<AnyITask *, AnyTaskScheduler *> ITaskPair;
+
 
 class AnyTaskGraph {
  public:
 
-  AnyTaskGraph () {
+  AnyTaskGraph (size_t pipelineId, size_t numPipelines) : pipelineId(pipelineId), numPipelines(numPipelines) {
     taskSchedulers = new std::list<AnyTaskScheduler *>();
-    iRuleMap = new IRuleMap();
-
-    pipelineId = 0;
-    numPipelines = 1;
+    taskCopyMap = new ITaskMap();
   }
 
   virtual ~AnyTaskGraph() {
@@ -40,8 +49,8 @@ class AnyTaskGraph {
     }
     delete taskSchedulers;
 
-    delete iRuleMap;
-    iRuleMap = nullptr;
+    delete taskCopyMap;
+    taskCopyMap = nullptr;
   }
 
   /**
@@ -50,6 +59,33 @@ class AnyTaskGraph {
   */
   virtual std::list<AnyTaskScheduler *> *getTaskSchedulers() {
     return this->taskSchedulers;
+  }
+
+  template <class T, class U>
+  ITask<T, U> *getCopy(ITask<T, U> *orig)
+  {
+//    TaskScheduler<T, U> *taskScheduler = nullptr;
+
+    for (auto tCopy : *taskCopyMap) {
+      if (tCopy.first == orig) {
+        return (ITask<T, U> *)tCopy.second->getTaskFunction();
+      }
+    }
+
+    return nullptr;
+//
+//    // If the scheduler is found, then the copy was already made. return the one from the scheduler
+//    if (taskScheduler != nullptr) {
+//      return taskScheduler->getTaskFunction();
+//    } else{
+//      // If the scheduler is not found, then create a copy and add it
+//      ITask<T, U> *copy = orig->copyITask();
+//
+//      // Add the copy to this graph in case copy is called multiple times on same task
+//      taskScheduler = new TaskScheduler<T, U>(copy, copy->getNumThreads(), copy->isStartTask(), copy->isPoll(), copy->getMicroTimeoutTime(), pipelineId, numPipelines);
+//      this->taskSchedulers->push_back(taskScheduler);
+//      return copy;
+//    }
   }
 
   template <class T, class U>
@@ -76,10 +112,21 @@ class AnyTaskGraph {
 
   }
 
+  void addTaskScheduler(AnyTaskScheduler *taskScheduler)
+  {
+    for (auto tSched : *taskSchedulers)
+    {
+      if (tSched == taskScheduler)
+        return;
+    }
+
+    this->taskSchedulers->push_back(taskScheduler);
+  }
+
+
   size_t getPipelineId() { return this->pipelineId; }
 
   size_t getNumPipelines() { return this->numPipelines; }
-
 
   virtual AnyTaskScheduler *getGraphConsumerTaskScheduler() = 0;
   virtual AnyTaskScheduler *getGraphProducerTaskScheduler() = 0;
@@ -218,24 +265,43 @@ class AnyTaskGraph {
     return oss.str();
   }
 
-  template <class V, class W>
-  std::shared_ptr<IRule<V, W>> getIRule(IRule<V, W> *iRule)
+
+  void copyTasks(std::list<AnyTaskScheduler *> *tasks)
   {
-    std::shared_ptr<IRule<V, W>> iRuleShr;
-    if (this->iRuleMap->find(iRule) != this->iRuleMap->end()) {
-      std::shared_ptr<AnyIRule> baseRulePtr = this->iRuleMap->find(iRule)->second;
-      iRuleShr = std::dynamic_pointer_cast<IRule<V, W>>(baseRulePtr);
+    for (auto task : *tasks)
+    {
+      this->createCopy(task);
     }
-    else{
-      iRuleShr = std::shared_ptr<IRule<V, W>>(iRule);
-      this->iRuleMap->insert(IRulePair(iRule, iRuleShr));
+  }
+
+  AnyTaskScheduler *getTaskSchedulerCopy(AnyITask *iTask)
+  {
+    for (auto tCopy : *taskCopyMap) {
+      if (tCopy.first == iTask) {
+        return tCopy.second;
+      }
     }
-    return iRuleShr;
+
+    return nullptr;
   }
 
  private:
 
-  IRuleMap *iRuleMap;
+
+  void createCopy(AnyTaskScheduler *taskScheduler)
+  {
+    AnyITask *origITask = taskScheduler->getTaskFunction();
+
+    // If the original ITask is not in the taskCopyMap, then add a new copy and map it to the original
+    if (this->taskCopyMap->find(origITask) == this->taskCopyMap->end())
+    {
+      AnyTaskScheduler *taskSchedulerCopy = taskScheduler->copy(false);
+      taskCopyMap->insert(ITaskPair(origITask, taskSchedulerCopy));
+    }
+  }
+
+
+  ITaskMap *taskCopyMap;
   std::list<AnyTaskScheduler *> *taskSchedulers;
 
   size_t pipelineId; //!< The pipelineId for the task graph

@@ -14,7 +14,7 @@ class EdgeDescriptor {
  public:
   virtual ~EdgeDescriptor() {}
   virtual void applyEdge(AnyTaskGraph *graph) = 0;
-  virtual EdgeDescriptor *copy() = 0;
+  virtual EdgeDescriptor *copy(AnyTaskGraph *graph) = 0;
 
 };
 }

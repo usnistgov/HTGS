@@ -157,7 +157,7 @@ class Runtime {
     if (executed)
       return;
 
-    std::list<AnyTaskScheduler *> *vertices = this->graph->getVertices();
+    std::list<AnyTaskScheduler *> *vertices = this->graph->getTaskSchedulers();
     std::list<AnyTaskScheduler *> newVertices;
     DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
     for (AnyTaskScheduler *task : *vertices) {
@@ -171,7 +171,7 @@ class Runtime {
         taskList.push_back(task);
 
 
-        for (int i = 1; i < numThreads; i++) {
+        for (size_t i = 1; i < numThreads; i++) {
           AnyTaskScheduler *taskCopy = task->copy(true);
           taskList.push_back(taskCopy);
           newVertices.push_back(taskCopy);
@@ -190,7 +190,7 @@ class Runtime {
 
     for (AnyTaskScheduler *newVertex : newVertices)
     {
-      graph->addTaskCopy(newVertex);
+      graph->addTaskScheduler(newVertex);
     }
 
     this->executed = true;

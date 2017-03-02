@@ -17,7 +17,7 @@ class RuleEdge : public EdgeDescriptor
 {
  public:
 
-  RuleEdge(Bookkeeper<T> *bookkeeper, IRule<T, U> *rule, ITask<U, W> *consumer) : bookkeeper(bookkeeper), rule(rule), consumer(consumer) {}
+  RuleEdge(Bookkeeper<T> *bookkeeper, std::shared_ptr<IRule<T, U>> rule, ITask<U, W> *consumer) : bookkeeper(bookkeeper), rule(rule), consumer(consumer) {}
 
   ~RuleEdge() override {}
 
@@ -32,7 +32,7 @@ class RuleEdge : public EdgeDescriptor
       connector = std::shared_ptr<Connector<U>>(new Connector<U>());
     }
 
-    RuleScheduler<T, U> *ruleScheduler = new RuleScheduler<T, U>(graph->getIRule(rule));
+    RuleScheduler<T, U> *ruleScheduler = new RuleScheduler<T, U>(rule);
     ruleScheduler->setOutputConnector(connector);
 
     connector->incrementInputTaskCount();
@@ -41,14 +41,13 @@ class RuleEdge : public EdgeDescriptor
     bookkeeper->addRuleScheduler(ruleScheduler);
   }
 
-  EdgeDescriptor *copy() override {
-    // TODO: Need to pass graph in and "Get" the copies . . . Current version will not work, but gives general idea . . .
-    return new RuleEdge((Bookkeeper<T> *)bookkeeper->copyITask(), rule, consumer->copyITask());
+  EdgeDescriptor *copy(AnyTaskGraph *graph) override {
+    return new RuleEdge<T, U, W>((Bookkeeper<T> *)graph->getCopy(bookkeeper), rule, graph->getCopy(consumer));
   }
 
  private:
   Bookkeeper<T> *bookkeeper;
-  IRule<T, U> *rule;
+  std::shared_ptr<IRule<T, U>> rule;
   ITask<U, W> *consumer;
 };
 }

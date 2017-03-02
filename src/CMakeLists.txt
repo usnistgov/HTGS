@@ -19,5 +19,6 @@ link_libraries(${CMAKE_THREAD_LIBS_INIT})
 include_directories(".")
 
 add_executable(main "main.cpp" ${INC_ALL})
+add_executable(testShared "testShared.cpp" ${INC_ALL})
 
 endif(BUILD_MAIN)

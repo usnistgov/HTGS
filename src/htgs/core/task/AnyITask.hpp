@@ -148,8 +148,10 @@ class AnyITask {
   virtual std::string genDot(int flags, std::string dotId, std::shared_ptr<htgs::AnyConnector> input, std::shared_ptr<htgs::AnyConnector> output) {
     std::ostringstream oss;
 
-    oss << input->getDotId() << " -> " << dotId << ";" << std::endl;
-    oss << input->genDot(flags);
+    if (input != nullptr) {
+      oss << input->getDotId() << " -> " << dotId << ";" << std::endl;
+      oss << input->genDot(flags);
+    }
 
     if (output != nullptr) {
       oss << dotId << " -> " << output->getDotId() << ";" << std::endl;

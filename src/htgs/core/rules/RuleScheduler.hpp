@@ -121,6 +121,7 @@ class RuleScheduler : public AnyRuleSchedulerInOnly<T> {
     DEBUG_VERBOSE("Initialized " << this->getName() << " pipeline id: " << pipelineId);
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
+    this->rule->initialize(this);
   }
 
   void shutdown() override {
@@ -145,7 +146,7 @@ class RuleScheduler : public AnyRuleSchedulerInOnly<T> {
   }
 
   void setOutputConnector(std::shared_ptr<AnyConnector> connector) override {
-    this->connector = std::dynamic_pointer_cast<Connector<U>>(connector);
+    this->connector = std::static_pointer_cast<Connector<U>>(connector);
     DEBUG_VERBOSE("Connector " << this->connector << " adding producer: " << this->getName() << " " << this <<
                                " to connector " << this->connector);
   }

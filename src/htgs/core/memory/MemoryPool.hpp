@@ -93,7 +93,7 @@ class MemoryPool {
       if (allocate)
         newMemory->memAlloc();
 
-      std::shared_ptr<MemoryData<T>> shrMem(newMemory);
+      std::shared_ptr<MemoryData<T>> shrMem = std::shared_ptr<MemoryData<T>>(newMemory);
       this->memoryQueue->Enqueue(shrMem);
       this->allMemory->push_back(shrMem);
     }

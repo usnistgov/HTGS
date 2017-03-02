@@ -33,6 +33,8 @@ namespace htgs {
 class AnyConnector {
  public:
 
+  AnyConnector() : producerTaskCount(0) {}
+
   /**
    * Virtual destructor.
    */

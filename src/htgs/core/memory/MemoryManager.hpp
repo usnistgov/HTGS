@@ -138,7 +138,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
       }
       else {
         std::cerr << "Memory manager received data from another pipeline!" << std::endl;
-        std::shared_ptr<Connector<MemoryData<T>>> connector = std::dynamic_pointer_cast<Connector<MemoryData<T>>>(this->pipelineConnectorList->at(
+        std::shared_ptr<Connector<MemoryData<T>>> connector = std::static_pointer_cast<Connector<MemoryData<T>>>(this->pipelineConnectorList->at(
             (unsigned long) data->getPipelineId()));
         connector->produceData(data);
       }

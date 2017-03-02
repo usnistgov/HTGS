@@ -124,7 +124,7 @@ class TaskScheduler: public AnyTaskScheduler {
 
   void setRuntimeThread(TaskSchedulerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }
 
-  AnyITask *getTaskFunction() override {
+  ITask<T, U> *getTaskFunction() override {
     return this->taskFunction;
   }
 
@@ -195,7 +195,7 @@ class TaskScheduler: public AnyTaskScheduler {
    */
   void setInputConnector(std::shared_ptr<AnyConnector> connector) override {
     if (connector != nullptr)
-      this->inputConnector = std::dynamic_pointer_cast<Connector<T>>(connector);
+      this->inputConnector = std::static_pointer_cast<Connector<T>>(connector);
     else
       this->inputConnector = nullptr;
 
@@ -207,7 +207,7 @@ class TaskScheduler: public AnyTaskScheduler {
    */
   void setOutputConnector(std::shared_ptr<AnyConnector> connector) override {
     if (connector != nullptr)
-      this->outputConnector = std::dynamic_pointer_cast<Connector<U>>(connector);
+      this->outputConnector = std::static_pointer_cast<Connector<U>>(connector);
     else
       this->outputConnector = nullptr;
   }
