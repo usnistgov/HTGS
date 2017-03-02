@@ -468,10 +468,10 @@ class TaskGraph: public AnyTaskGraph {
    * @note the memoryPoolSize can cause out of memory errors for the GPU if the allocator->size() * memoryPoolSize exceeds the total GPU memory
    * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
    */
-  template <class V>
+  template <class IMemoryAllocatorType>
   void addCudaMemoryManagerEdge(std::string name, AnyITask *getMemoryEdges, AnyITask *releaseMemoryEdges,
-          IMemoryAllocator<V> *allocator, int memoryPoolSize, MMType type, CUcontext * contexts) {
-    static_assert(std::is_base_of<IMemoryAllocator<V>, MemoryAllocator>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
+          std::shared_ptr<IMemoryAllocatorType> allocator, size_t memoryPoolSize, MMType type, CUcontext * contexts) {
+    static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
@@ -510,10 +510,10 @@ class TaskGraph: public AnyTaskGraph {
    * @note the memoryPoolSize can cause out of memory errors for the system if the allocator->size() * memoryPoolSize exceeds the total system memory
    * @tparam V the type of memory; i.e., 'double *'
    */
-  template<class MemoryAllocator, class V>
+  template<class IMemoryAllocatorType, class V>
   void addMemoryManagerEdge(std::string name, AnyITask *getMemoryTask, AnyITask *releaseMemoryTask,
-                            std::shared_ptr<MemoryAllocator> *allocator, size_t memoryPoolSize, MMType type) {
-    static_assert(std::is_base_of<IMemoryAllocator<V>, MemoryAllocator>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
+                            std::shared_ptr<IMemoryAllocatorType> *allocator, size_t memoryPoolSize, MMType type) {
+    static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
