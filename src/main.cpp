@@ -1,3 +1,4 @@
+//#define DEBUG_FLAG
 
 #include <future>
 
@@ -93,6 +94,24 @@ class TestTask : public htgs::ITask<TestData, TestData> {
   int n;
 };
 
+class TestAllocator : public htgs::IMemoryAllocator<double *> {
+ public:
+  TestAllocator(size_t size) : IMemoryAllocator(size) {}
+
+  ~TestAllocator() override {
+  }
+
+  double *memAlloc(size_t size) override {
+    return new double[size];
+  }
+  double *memAlloc() override {
+    return new double[size()];
+  }
+  void memFree(double *&memory) override {
+    delete []memory;
+  }
+};
+
 int main()
 {
 
@@ -110,6 +129,8 @@ int main()
   auto testRule2 = std::make_shared<TestRule>("Rule2");
   auto testRule3 = std::make_shared<TestRule>("Rule3");
   auto testRule4 = std::make_shared<TestRule>("Rule4");
+
+  auto testAllocator = std::make_shared<TestAllocator>(10);
 
   auto tGraph = new htgs::TaskGraph<TestData, TestData>();
 
@@ -152,7 +173,8 @@ int main()
   }
 
   // TODO: Test normal memory manager edge
-  tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[0], tasks[nVertices-1], 100);
+  tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[1], tasks[nVertices-2], 100);
+  tGraph->addMemoryManagerEdge<double *>("TestMemory2", tasks[1], tasks[nVertices-2], testAllocator, 100, htgs::MMType::Static);
 
   tGraph->copy(0, 1)->writeDotToFile("test.dot");
   tGraph->writeDotToFile("testorig.dot");
@@ -189,7 +211,7 @@ int main()
   runtime->waitForRuntime();
 
 
-  execGraph->writeDotToFile("testExec.dot", DOTGEN_FLAG_SHOW_ALL_THREADING);
+  execGraph->writeDotToFile("testExec.dot");
 
   system("dot -Tpng -o testExec.png testExec.dot");
 

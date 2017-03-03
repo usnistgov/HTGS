@@ -288,6 +288,7 @@ class TaskScheduler: public AnyTaskScheduler {
             }
           }
           else {
+
             DEBUG(prefix() << " " << this->getName() << " Shutting down memory releaser : " <<
                            pair.first << " with " << pair.second->size() << " connectors");
             std::shared_ptr<AnyConnector> connector = pair.second->at(this->getPipelineId());

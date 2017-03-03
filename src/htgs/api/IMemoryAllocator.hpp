@@ -79,8 +79,7 @@ class IMemoryAllocator {
    * Gets the size
    * @return the size
    */
-  virtual 
-  size_t size() { return this->_size; }
+   size_t size() { return this->_size; }
 
 
   /**

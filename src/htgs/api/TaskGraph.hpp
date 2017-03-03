@@ -2,7 +2,6 @@
 // NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software.
 // NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
-
 /**
  * @file TaskGraph.hpp
  * @author Timothy Blattner
@@ -21,114 +20,6 @@
 
 namespace htgs {
 
-///**
-// * @typedef ConnectorMap
-// * Creates a mapping between a Task and it's input Connector.
-// */
-//typedef std::map<AnyTaskScheduler *, std::shared_ptr<AnyConnector>> ConnectorMap;
-//
-///**
-// * @typedef ConnectorPair
-// * Defines a pair to be added into a ConnectorMap.
-// */
-//typedef std::pair<AnyTaskScheduler *, std::shared_ptr<AnyConnector>> ConnectorPair;
-//
-///**
-// * @typedef ITaskMap
-// * Creates a mapping between an ITask and it's Task handler.
-// */
-//typedef std::map<AnyITask *, AnyTaskScheduler *> ITaskMap;
-//
-///**
-// * @typedef ITaskPair
-// * Defines a pair to be added into an ITaskMap
-// */
-//typedef std::pair<AnyITask *, AnyTaskScheduler *> ITaskPair;
-//
-///**
-// * @typedef RuleEdgeMap
-// * Creates a mapping between two ITask's and the RuleManager that manages the rules between the two ITask's.
-// * The first ITask represents the Bookkeeper, the second is the consumer ITask
-// */
-//typedef std::map<std::pair<AnyITask *, AnyITask *>, BaseBaseRuleManager *> RuleEdgeMap;
-//
-///**
-// * @typedef RuleEdgePair
-// * Defines a pair to be added into a RuleEdgeMap
-// */
-//typedef std::pair<std::pair<AnyITask *, AnyITask *>, BaseBaseRuleManager *> RuleEdgePair;
-//
-///**
-// * @typedef CustomEdgeMap
-// * Defines a mapping between a producer/consumer ITask and the ICustomEdge that it uses.
-// */
-//typedef std::map<std::pair<AnyTaskScheduler *, AnyTaskScheduler *>, ICustomEdge *> CustomEdgeMap;
-//
-///**
-// * @typedef CustomEdgePair
-// * Defines a pair to be added to the CustomEdgeMap
-// */
-//typedef std::pair<std::pair<AnyTaskScheduler *, AnyTaskScheduler *>, ICustomEdge *> CustomEdgePair;
-//
-///**
-// * @typedef MemAllocMap
-// * Defines a mapping between a BaseMemoryAllocator and its shared_ptr
-// */
-//typedef std::map<Any *, std::shared_ptr<Any>> MemAllocMap;
-//
-///**
-// * @typedef MemAllocPair;
-// * Defines a pair to be added to the MemAllocMap
-// */
-//typedef std::pair<Any *, std::shared_ptr<Any>> MemAllocPair;
-//
-///**
-// * @typedef MemManagerMap
-// * Defines a mapping between the memory edge name and the memory manager that is managing that edge.
-// */
-//typedef std::map<std::string, AnyITask *> MemManagerMap;
-//
-///**
-// * @typedef MemManagerPair
-// * Defines a pair to be added to the MemManagerMap
-// */
-//typedef std::pair<std::string, AnyITask *> MemManagerPair;
-//
-///**
-// * @typedef MemGetterMap
-// * Defines a mapping between the memory getter BaseITask and the MemManagerMap
-// */
-//typedef std::map<AnyITask *, MemManagerMap *> MemGetterMap;
-//
-///**
-// * @typedef MemGetterPair
-// * Defines a pair to be added to the MemGetterMap
-// */
-//typedef std::pair<AnyITask *, MemManagerMap *> MemGetterPair;
-//
-
-//
-// /**
-// * Structure that compares a custom edge pair
-// */
-//struct CustomEdgeComparator
-//{
-//  /**
-//   * Compares a custom edge pair
-//   * @param pair the custom edge pair
-//   */
-//  CustomEdgeComparator(CustomEdgePair pair) : _p(pair) { }
-//
-//  /**
-//   * Operator to compare a custom edge pair
-//   */
-//  bool operator() (CustomEdgePair const& p) {
-//    // Checks to ensure all elements of the custom edge pair are equivalent to the tested pair
-//    return p.first.first == _p.first.first && p.first.second == _p.first.second && p.second == p.second;
-//  }
-//  CustomEdgePair _p; //!< The custom edge pair to compare with
-//};
-  
 /**
  * @class TaskGraph TaskGraph.hpp <htgs/api/TaskGraph.hpp>
  * @brief Manages a group of connected ITasks and their connections.
@@ -510,9 +401,9 @@ class TaskGraph: public AnyTaskGraph {
    * @note the memoryPoolSize can cause out of memory errors for the system if the allocator->size() * memoryPoolSize exceeds the total system memory
    * @tparam V the type of memory; i.e., 'double *'
    */
-  template<class IMemoryAllocatorType, class V>
+  template<class V, class IMemoryAllocatorType>
   void addMemoryManagerEdge(std::string name, AnyITask *getMemoryTask, AnyITask *releaseMemoryTask,
-                            std::shared_ptr<IMemoryAllocatorType> *allocator, size_t memoryPoolSize, MMType type) {
+                            std::shared_ptr<IMemoryAllocatorType> allocator, size_t memoryPoolSize, MMType type) {
     static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);

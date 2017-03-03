@@ -87,6 +87,8 @@ class MemoryEdge : public EdgeDescriptor
     memTaskScheduler->setInputConnector(releaseMemoryConnector);
     memTaskScheduler->setOutputConnector(getMemoryConnector);
 
+    releaseMemoryConnector->incrementInputTaskCount();
+
     getMemoryTask->attachGetMemoryEdge(memoryEdgeName, getMemoryConnector, managerType);
 
     // TODO: Remove outside graph boolean
