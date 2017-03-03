@@ -38,12 +38,15 @@ class AnyTaskGraph {
     taskCopyMap = new ITaskMap();
   }
 
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
   virtual ~AnyTaskGraph() {
     for (auto task : *taskSchedulers)
     {
       if (task != nullptr)
       {
-        std::cout << "Deleting " << task->getName() << std::endl;
         delete task;
         task = nullptr;
       }
@@ -62,11 +65,19 @@ class AnyTaskGraph {
     return this->taskSchedulers;
   }
 
+  virtual AnyTaskScheduler *getGraphConsumerTaskScheduler() = 0;
+  virtual AnyTaskScheduler *getGraphProducerTaskScheduler() = 0;
+
+  virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
+  virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
   template <class T, class U>
   ITask<T, U> *getCopy(ITask<T, U> *orig)
   {
-//    TaskScheduler<T, U> *taskScheduler = nullptr;
-
     for (auto tCopy : *taskCopyMap) {
       if (tCopy.first == orig) {
         return (ITask<T, U> *)tCopy.second->getTaskFunction();
@@ -74,25 +85,10 @@ class AnyTaskGraph {
     }
 
     return nullptr;
-//
-//    // If the scheduler is found, then the copy was already made. return the one from the scheduler
-//    if (taskScheduler != nullptr) {
-//      return taskScheduler->getTaskFunction();
-//    } else{
-//      // If the scheduler is not found, then create a copy and add it
-//      ITask<T, U> *copy = orig->copyITask();
-//
-//      // Add the copy to this graph in case copy is called multiple times on same task
-//      taskScheduler = new TaskScheduler<T, U>(copy, copy->getNumThreads(), copy->isStartTask(), copy->isPoll(), copy->getMicroTimeoutTime(), pipelineId, numPipelines);
-//      this->taskSchedulers->push_back(taskScheduler);
-//      return copy;
-//    }
   }
 
   AnyITask *getCopy(AnyITask *orig)
   {
-//    TaskScheduler<T, U> *taskScheduler = nullptr;
-
     for (auto tCopy : *taskCopyMap) {
       if (tCopy.first == orig) {
         return tCopy.second->getTaskFunction();
@@ -141,26 +137,6 @@ class AnyTaskGraph {
   size_t getPipelineId() { return this->pipelineId; }
 
   size_t getNumPipelines() { return this->numPipelines; }
-
-  virtual AnyTaskScheduler *getGraphConsumerTaskScheduler() = 0;
-  virtual AnyTaskScheduler *getGraphProducerTaskScheduler() = 0;
-
-  virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
-  virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
-
-  /**
-   * Writes the dot representation of the task graph to disk
-   * @param file the file path (will not create directories)
-   */
-//  virtual void writeDotToFile(std::string file) = 0;
-
-  /**
-   * Writes the dot representation of the task graph to disk
-   * @param file the file path (will not create directories)
-   * @param dotGenFlags the various dot file generation flags to use
-   */
-//  virtual void writeDotToFile(std::string file, int dotGenFlags) = 0;
-
 
 
   /**
