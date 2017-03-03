@@ -61,7 +61,6 @@ class BlockingQueue {
    * Destructor
    */
   ~BlockingQueue() {
-
   }
 
   /**

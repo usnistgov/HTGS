@@ -66,7 +66,7 @@ class RuleScheduler : public AnyRuleSchedulerInOnly<T> {
    *
    * @note This function should only be called by the HTGS API
    */
-  RuleScheduler(std::shared_ptr<htgs::IRule<T, U>> rule) : rule(rule), pipelineId(0) { }
+  RuleScheduler(std::shared_ptr<htgs::IRule<T, U>> rule) : rule(rule), pipelineId(0), numPipelines(1), terminated(false) { }
 
   /**
    * Destructor

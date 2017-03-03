@@ -77,6 +77,7 @@ class AnyTaskScheduler {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
+    // TODO: Can get rid of this . . .
     this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
   }
 

@@ -8,11 +8,6 @@
 #include <htgs/core/memory/MemoryManager.hpp>
 #include "EdgeDescriptor.hpp"
 
-#ifdef USE_CUDA
-#include <cuda.h>
-#include <htgs/core/memory/CudaMemoryManager.hpp>
-#endif
-
 namespace htgs {
 template <class T>
 class MemoryEdge : public EdgeDescriptor
@@ -21,34 +16,12 @@ class MemoryEdge : public EdgeDescriptor
   MemoryEdge(const std::string &memoryEdgeName,
              AnyITask *getMemoryTask,
              AnyITask *releaseMemoryTask,
-             const std::shared_ptr<IMemoryAllocator<T>> &allocator,
-             size_t memoryPoolSize,
-             MMType managerType)
+             MemoryManager<T> *memoryManager)
       : memoryEdgeName(memoryEdgeName),
         getMemoryTask(getMemoryTask),
         releaseMemoryTask(releaseMemoryTask),
-        allocator(allocator),
-        memoryPoolSize(memoryPoolSize),
-        managerType(managerType),
-        cudaMemoryManager(false) {}
-
-#ifdef USE_CUDA
-  MemoryEdge(const std::string &memoryEdgeName,
-             AnyITask *getMemoryTask,
-             AnyITask *releaseMemoryTask,
-             const std::shared_ptr<IMemoryAllocator<T>> &allocator,
-             size_t memoryPoolSize,
-             MMType managerType,
-             CUcontext *contexts)
-      : memoryEdgeName(memoryEdgeName),
-        getMemoryTask(getMemoryTask),
-        releaseMemoryTask(releaseMemoryTask),
-        allocator(allocator),
-        memoryPoolSize(memoryPoolSize),
-        managerType(managerType),
-        cudaMemoryManager(true)
-        contexts(contexts) {}
-#endif
+        memoryManager(memoryManager)
+        {}
 
 ~MemoryEdge() override {
 
@@ -68,17 +41,6 @@ class MemoryEdge : public EdgeDescriptor
     if (!graph->hasTask(releaseMemoryTask))
       throw std::runtime_error("Error releaseMemoryTask: " + releaseMemoryTask->getName() + " must be added to the graph you are connecting the memory edge too.");
 
-    // Create the memory manager task . . .
-    MemoryManager<T> *memoryManager = nullptr;
-#ifdef USE_CUDA
-    if (cudaMemoryManager)
-      memoryManager = new CudaMemoryManager<T>(memoryEdgeName, contexts, memoryPoolSize, allocator, managerType);
-    else
-      memoryManager = new MemoryManager<T>(memoryEdgeName, memoryPoolSize, allocator, managerType);
-#else
-    memoryManager = new MemoryManager<T>(memoryEdgeName, memoryPoolSize, allocator, managerType);
-#endif
-
     auto memTaskScheduler = graph->getTaskScheduler(memoryManager);
 
     auto getMemoryConnector = std::shared_ptr<Connector<MemoryData<T>>>(new Connector<MemoryData<T>>());
@@ -89,37 +51,21 @@ class MemoryEdge : public EdgeDescriptor
 
     releaseMemoryConnector->incrementInputTaskCount();
 
-    getMemoryTask->attachGetMemoryEdge(memoryEdgeName, getMemoryConnector, managerType);
+    getMemoryTask->attachGetMemoryEdge(memoryEdgeName, getMemoryConnector, memoryManager->getType());
 
     // TODO: Remove outside graph boolean
-    releaseMemoryTask->attachReleaseMemoryEdge(memoryEdgeName, releaseMemoryConnector, managerType, false);
+    releaseMemoryTask->attachReleaseMemoryEdge(memoryEdgeName, releaseMemoryConnector, memoryManager->getType(), false);
 
   }
   EdgeDescriptor *copy(AnyTaskGraph *graph) override {
-#ifdef USE_CUDA
-    if (cudaMemoryManager)
-      return new MemoryEdge<T>(memoryEdgeName, graph->getCopy(getMemoryTask), graph->getCopy(releaseMemoryTask), allocator, memoryPoolSize, managerType, contexts);
-    else
-      return new MemoryEdge<T>(memoryEdgeName, graph->getCopy(getMemoryTask), graph->getCopy(releaseMemoryTask), allocator, memoryPoolSize, managerType);
-#else
-    return new MemoryEdge<T>(memoryEdgeName, graph->getCopy(getMemoryTask), graph->getCopy(releaseMemoryTask), allocator, memoryPoolSize, managerType);
-
-#endif
+    return new MemoryEdge<T>(memoryEdgeName, graph->getCopy(getMemoryTask), graph->getCopy(releaseMemoryTask), (MemoryManager<T> *)graph->getCopy(memoryManager));
   }
  private:
 
   std::string memoryEdgeName;
   AnyITask *getMemoryTask;
   AnyITask *releaseMemoryTask;
-  std::shared_ptr<IMemoryAllocator<T>> allocator;
-  size_t memoryPoolSize;
-  MMType managerType;
-
-  bool cudaMemoryManager;
-
-#ifdef USE_CUDA
-  CUcontext *contexts;
-#endif
+  MemoryManager<T> *memoryManager;
 
 };
 }

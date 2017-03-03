@@ -119,12 +119,14 @@ int main()
 
   int NUM_DATA = 10;
   bool useBK = true;
-  int nVertices = 5;
+  int nVertices = 3;
   TestData *testData;
 
 
+  htgs::Bookkeeper<TestData> *bk;
+  if (useBK)
+    bk = new htgs::Bookkeeper<TestData>();
 
-  htgs::Bookkeeper<TestData> *bk = new htgs::Bookkeeper<TestData>();
   auto testRule1 = std::make_shared<TestRule>("Rule1");
   auto testRule2 = std::make_shared<TestRule>("Rule2");
   auto testRule3 = std::make_shared<TestRule>("Rule3");
@@ -172,17 +174,19 @@ int main()
 
   }
 
-  // TODO: Test normal memory manager edge
   tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[1], tasks[nVertices-2], 100);
   tGraph->addMemoryManagerEdge<double *>("TestMemory2", tasks[1], tasks[nVertices-2], testAllocator, 100, htgs::MMType::Static);
 
-  tGraph->copy(0, 1)->writeDotToFile("test.dot");
   tGraph->writeDotToFile("testorig.dot");
 
-  system("dot -Tpng -o test.png test.dot");
+
   system("dot -Tpng -o testorig.png testorig.dot");
 
   auto execGraph = tGraph->copy(0, 1);
+  delete tGraph;
+
+  execGraph->writeDotToFile("test.png");
+  system("dot -Tpng -o test.png test.dot");
 
 
   execGraph->incrementGraphProducer();
@@ -215,5 +219,8 @@ int main()
 
   system("dot -Tpng -o testExec.png testExec.dot");
 
+  delete runtime;
+
   std::cout << "Test completed" << std::endl;
+
 }

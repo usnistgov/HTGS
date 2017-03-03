@@ -43,6 +43,7 @@ class AnyTaskGraph {
     {
       if (task != nullptr)
       {
+        std::cout << "Deleting " << task->getName() << std::endl;
         delete task;
         task = nullptr;
       }
@@ -321,6 +322,7 @@ class AnyTaskGraph {
     {
       AnyTaskScheduler *taskSchedulerCopy = taskScheduler->copy(false);
       taskCopyMap->insert(ITaskPair(origITask, taskSchedulerCopy));
+      taskSchedulers->push_back(taskSchedulerCopy);
     }
   }
 

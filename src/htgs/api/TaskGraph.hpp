@@ -366,7 +366,10 @@ class TaskGraph: public AnyTaskGraph {
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
-    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, releaseMemoryTask, memAllocator, memoryPoolSize, MMType::UserManaged, type, contexts);
+    MemoryManager<V> *memoryManager = new CudaMemoryManager<V>(name, contexts, memoryPoolSize, memAllocator, type);
+
+
+    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, releaseMemoryTask, memoryManager);
     memEdge->applyEdge(this);
     this->addEdgeDescriptor(memEdge);
   }
@@ -385,7 +388,9 @@ class TaskGraph: public AnyTaskGraph {
                                        AnyITask *releaseMemoryTask,
                                        size_t memoryPoolSize) {
     auto voidAllocator = std::make_shared<VoidMemoryAllocator>();
-    MemoryEdge<void *> *memEdge = new MemoryEdge<void *>(name, getMemoryTask, releaseMemoryTask, voidAllocator, memoryPoolSize, MMType::UserManaged);
+    MemoryManager<void *> *memoryManager = new MemoryManager<void *>(name, memoryPoolSize, voidAllocator, MMType::UserManaged);
+
+    MemoryEdge<void *> *memEdge = new MemoryEdge<void *>(name, getMemoryTask, releaseMemoryTask, memoryManager);
     memEdge->applyEdge(this);
     this->addEdgeDescriptor(memEdge);
   }
@@ -408,7 +413,9 @@ class TaskGraph: public AnyTaskGraph {
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
-    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, releaseMemoryTask, memAllocator, memoryPoolSize, type);
+    MemoryManager<V> *memoryManager = new MemoryManager<V>(name, memoryPoolSize, memAllocator, type);
+
+    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, releaseMemoryTask, memoryManager);
     memEdge->applyEdge(this);
     this->addEdgeDescriptor(memEdge);
   }
