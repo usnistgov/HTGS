@@ -310,6 +310,15 @@ class ITask: public AnyITask {
     this->ownerTask = ownerTask;
   }
 
+  /**
+   * Gets the owner task scheduler for this ITask
+   * @return the owner task scheduler
+   */
+  TaskScheduler<T, U> *getOwnerTaskScheduler()
+  {
+    return this->ownerTask;
+  }
+
  private:
 
   typedef AnyITask super;

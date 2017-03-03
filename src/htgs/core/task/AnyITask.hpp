@@ -258,6 +258,17 @@ class AnyITask {
   }
 
   /**
+   * @internal
+   * Sets the number of pipelines that this ITask belongs too.
+   * @param numPipelines the number of pipelines
+   *
+   * @note This function should only be used by the HTGS API
+   */
+  void setNumPipelines(size_t numPipelines) {
+    this->numPipelines = numPipelines;
+  }
+
+  /**
    * Gets the number of pipelines for the task's execution pipeline
    * @return the number of pipelines
    */

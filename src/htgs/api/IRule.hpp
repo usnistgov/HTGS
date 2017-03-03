@@ -107,7 +107,9 @@ class IRule : public AnyIRule {
   /**
    * Creates an IRule
    */
-  IRule() { }
+  IRule() {
+    ruleSchedulers = new std::vector<RuleScheduler<T, U> *>();
+  }
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
@@ -116,7 +118,12 @@ class IRule : public AnyIRule {
   /**
    * Destructor
    */
-  virtual ~IRule() override { }
+  virtual ~IRule() override {
+    if (ruleSchedulers != nullptr) {
+      delete ruleSchedulers;
+      ruleSchedulers = nullptr;
+    }
+  }
 
   virtual bool isRuleTerminated(size_t pipelineId) override { return false; }
 
@@ -136,18 +143,23 @@ class IRule : public AnyIRule {
   */
   virtual void applyRule(std::shared_ptr<T> data, size_t pipelineId) = 0;
 
-  /**
-   * Initializes this IRule with a rule scheduler
-   * @param ruleScheduler the rule scheduler that is used for this IRule
-   */
-  void initialize(RuleScheduler<T, U> *ruleScheduler)
-  {
-    this->ruleScheduler = ruleScheduler;
-  }
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+
+  /**
+   * Initializes this IRule with a rule scheduler
+   * @param ruleScheduler the rule scheduler that is used for this IRule
+   */
+  void initialize(RuleScheduler<T, U> *ruleScheduler, size_t pipelineId, size_t numPipelines)
+  {
+    if (ruleSchedulers->capacity() < numPipelines)
+      ruleSchedulers->resize(numPipelines);
+
+    (*ruleSchedulers)[pipelineId] = ruleScheduler;
+  }
 
   /**
    * @internal
@@ -157,6 +169,7 @@ class IRule : public AnyIRule {
    * @note This function should only be called by the HTGS API
    */
   void applyRuleFunction(std::shared_ptr<T> data, size_t pipelineId) {
+    this->currentPipelineId = pipelineId;
     applyRule(data, pipelineId);
   }
 
@@ -165,7 +178,7 @@ class IRule : public AnyIRule {
    * @param result the result value that is added
    */
   void addResult(std::shared_ptr<U> result) {
-    this->ruleScheduler->addResult(result);
+    (*ruleSchedulers)[currentPipelineId]->addResult(result);
   }
 
   /**
@@ -174,7 +187,7 @@ class IRule : public AnyIRule {
    * @param result the result value that is added
    */
   void addResult(U *result) {
-    this->ruleScheduler->addResult(std::shared_ptr<U>(result));
+    (*ruleSchedulers)[currentPipelineId]->addResult(std::shared_ptr<U>(result));
   }
 
   /**
@@ -226,7 +239,8 @@ class IRule : public AnyIRule {
   }
 
  private:
-  RuleScheduler<T, U> *ruleScheduler; //!< The rule scheduler that schedules this IRule
+  std::vector<RuleScheduler<T, U> *> *ruleSchedulers; //!< The rule scheduler that schedules this IRule
+  size_t currentPipelineId; //!< The current pipeline Id that this rule is using for processing output
 
 };
 

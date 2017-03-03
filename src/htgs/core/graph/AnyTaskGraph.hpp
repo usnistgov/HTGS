@@ -155,6 +155,22 @@ class AnyTaskGraph {
     std::cout << "Writing dot file for task graph to " << file << std::endl;
   }
 
+  /**
+   * @internal
+   * Updates the pipelineIds and the number of pipelines for all tasks in the TaskGraph
+   * @param pipelineId the pipeline Id
+   * @param numPipelines the number of pipelines
+   *
+   * @note This function should only be called by the HTGS API
+   */
+  void updateIdAndNumPipelines(size_t pipelineId, size_t numPipelines) {
+    for (auto t : *this->taskSchedulers) {
+      t->setPipelineId(pipelineId);
+      t->setNumPipelines(numPipelines);
+      // TODO: May be able to get rid of this
+      t->addPipelineConnector(pipelineId);
+    }
+  }
 
   /**
    * Generate the content only of the graph (excludes all graph definitions and attributes)

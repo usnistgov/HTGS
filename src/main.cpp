@@ -5,6 +5,7 @@
 #include <htgs/api/Bookkeeper.hpp>
 #include <htgs/api/TaskGraph.hpp>
 #include <htgs/api/Runtime.hpp>
+#include <htgs/api/ExecutionPipeline.hpp>
 
 class TestData : public htgs::IData {
  public:
@@ -119,7 +120,7 @@ int main()
 
   int NUM_DATA = 10;
   bool useBK = true;
-  int nVertices = 3;
+  int nVertices = 5;
   TestData *testData;
 
 
@@ -177,15 +178,20 @@ int main()
   tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[1], tasks[nVertices-2], 100);
   tGraph->addMemoryManagerEdge<double *>("TestMemory2", tasks[1], tasks[nVertices-2], testAllocator, 100, htgs::MMType::Static);
 
-  tGraph->writeDotToFile("testorig.dot");
 
+  auto mainGraph = new htgs::TaskGraph<TestData, TestData>();
 
+  auto execPipline = new htgs::ExecutionPipeline<TestData, TestData>(5, tGraph);
+
+  mainGraph->setGraphConsumerTask(execPipline);
+  mainGraph->setGraphProducerTask(execPipline);
+
+  auto execGraph = mainGraph;
+
+  mainGraph->writeDotToFile("testorig.dot");
   system("dot -Tpng -o testorig.png testorig.dot");
 
-  auto execGraph = tGraph->copy(0, 1);
-  delete tGraph;
-
-  execGraph->writeDotToFile("test.png");
+  execGraph->writeDotToFile("test.dot");
   system("dot -Tpng -o test.png test.dot");
 
 

@@ -121,7 +121,7 @@ class RuleScheduler : public AnyRuleSchedulerInOnly<T> {
     DEBUG_VERBOSE("Initialized " << this->getName() << " pipeline id: " << pipelineId);
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
-    this->rule->initialize(this);
+    this->rule->initialize(this, pipelineId, numPipelines);
   }
 
   void shutdown() override {

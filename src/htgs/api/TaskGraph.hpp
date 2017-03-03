@@ -476,6 +476,15 @@ class TaskGraph: public AnyTaskGraph {
     return this->output->isInputTerminated();
   }
 
+  void setOutputConnector(std::shared_ptr<AnyConnector> connector)
+  {
+    if (graphProducerTaskScheduler != nullptr)
+      graphProducerTaskScheduler->setOutputConnector(connector);
+
+    this->output = std::dynamic_pointer_cast<Connector<U>>(connector);
+
+  }
+
 //  /**
 //   * Writes the dot representation of the task graph to disk
 //   * @param file the file path (will not create directories)

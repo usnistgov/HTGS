@@ -226,6 +226,8 @@ class AnyTaskScheduler {
    */
   void setNumPipelines(size_t numPipelines) {
     this->numPipelines = numPipelines;
+    this->getTaskFunction()->setNumPipelines(numPipelines);
+    // TODO: May be able to remove pipelineConnectorList
     if (this->pipelineConnectorList->capacity() < this->numPipelines) {
       this->pipelineConnectorList->resize((unsigned long) this->numPipelines);
     }
