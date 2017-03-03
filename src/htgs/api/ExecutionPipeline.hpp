@@ -17,6 +17,8 @@
 #ifndef HTGS_EXECUTIONPIPELINE_H
 #define HTGS_EXECUTIONPIPELINE_H
 
+#include <cstring>
+
 #include <htgs/core/rules/ExecutionPipelineBroadcastRule.hpp>
 #include "ITask.hpp"
 #include "Bookkeeper.hpp"
@@ -152,13 +154,8 @@ class ExecutionPipeline: public ITask<T, U> {
   }
 
   /**
-   * Initializes the execution pipeline and duplicates the task graph numPipeline times.
+   * Initializes the execution pipeline and duplicates the task graph based on the number of pipelines.
    *
-   * @param pipelineId the pipelineId for the execution pipeline task
-   * @param numPipeline the number of pipelines for the graph holding the execution pipeline
-   * @param ownerTask the owner task
-   * @param pipelineConnectorList the list of connectors that connect to other duplicate
-   * execution pipelines in an execution pipeline
    * @note This function should only be called by the HTGS API
    */
   void initialize() {
@@ -167,6 +164,7 @@ class ExecutionPipeline: public ITask<T, U> {
     // Add a default broadcast rule if the pipeline has no rules
     if (this->inputRules->size() == 0)
     {
+      std::cerr << "Warning: Your execution pipeline does not have any decomposition rules... Adding the default broadcast rule" << std::endl;
       this->addInputRule(new ExecutionPipelineBroadcastRule<T>());
     }
 
