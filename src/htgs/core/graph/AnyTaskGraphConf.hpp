@@ -30,10 +30,10 @@ typedef std::map<AnyITask *, AnyTaskScheduler *> ITaskMap;
 typedef std::pair<AnyITask *, AnyTaskScheduler *> ITaskPair;
 
 
-class AnyTaskGraph {
+class AnyTaskGraphConf {
  public:
 
-  AnyTaskGraph (size_t pipelineId, size_t numPipelines) : pipelineId(pipelineId), numPipelines(numPipelines) {
+  AnyTaskGraphConf (size_t pipelineId, size_t numPipelines) : pipelineId(pipelineId), numPipelines(numPipelines) {
     taskSchedulers = new std::list<AnyTaskScheduler *>();
     taskCopyMap = new ITaskMap();
   }
@@ -42,7 +42,7 @@ class AnyTaskGraph {
   ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  virtual ~AnyTaskGraph() {
+  virtual ~AnyTaskGraphConf() {
     for (auto task : *taskSchedulers)
     {
       if (task != nullptr)
@@ -196,6 +196,12 @@ class AnyTaskGraph {
 
     return oss.str();
   }
+
+  /**
+   * Creates an exact copy of this task graph.
+   * @return a copy of the task graph.
+   */
+  virtual AnyTaskGraphConf *copy() = 0;
 
   /**
    * Generates the dot graph as a string

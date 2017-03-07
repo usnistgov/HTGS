@@ -7,8 +7,8 @@
 // Created by tjb3 on 4/18/16.
 //
 #include <gtest/gtest.h>
-#include <htgs/api/TaskGraph.hpp>
-#include <htgs/api/Runtime.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
+#include <htgs/api/TaskGraphRuntime.hpp>
 
 #include "matrixMulGraphTests.h"
 #include "matrixMul/data/MatrixRequestData.h"

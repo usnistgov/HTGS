@@ -54,6 +54,7 @@ class AnyITask {
     releseMemoryEdgeOutsideGraphMap = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
 
     this->pipelineId = 0;
+    this->numPipelines = 1;
   }
 
   /**
@@ -72,6 +73,7 @@ class AnyITask {
     releseMemoryEdgeOutsideGraphMap = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
 
     this->pipelineId = 0;
+    this->numPipelines = 1;
   }
 
   /**
@@ -94,6 +96,7 @@ class AnyITask {
     releseMemoryEdgeOutsideGraphMap = std::shared_ptr<std::unordered_map<std::string, bool>>(new std::unordered_map<std::string, bool>());
 
     this->pipelineId = 0;
+    this->numPipelines = 1;
   }
 
 
@@ -577,7 +580,9 @@ class AnyITask {
               oss << dotId << " -> " << connector->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
             }
           } else {
-            oss << dotId << " -> " << kv.second->at((unsigned long) this->pipelineId)->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
+            // TODO: Should no longer have to get pipelineId
+            oss << dotId << " -> " << kv.second->at(0)->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
+//            oss << dotId << " -> " << kv.second->at((unsigned long) this->pipelineId)->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
           }
         }
 
@@ -585,7 +590,9 @@ class AnyITask {
 
       if (getMemoryEdges->size() > 0) {
         for (const auto &kv : *this->getMemoryEdges) {
-          oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << "[label=\"get\", color=sienna];" << std::endl;
+          // TODO: Should no longer have to get pipelineId
+//          oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << "[label=\"get\", color=sienna];" << std::endl;
+          oss << kv.second->at(0)->getDotId() << " -> " << dotId << "[label=\"get\", color=sienna];" << std::endl;
         }
       }
     }
@@ -604,6 +611,7 @@ class AnyITask {
       for (const auto &kv : *this->releaseMemoryEdges) {
         std::cout << "Mem releaser: " << kv.first << " profile; ";
         // produce
+        // TODO: Should no longer have to get pipelineId
         kv.second->at((unsigned long) this->pipelineId)->profileProduce(this->numThreads);
 
       }
@@ -614,6 +622,7 @@ class AnyITask {
       for (const auto &kv : *this->getMemoryEdges) {
         std::cout << "Mem getter: " << kv.first << " profile; ";
         // consume
+        // TODO: Should no longer have to get pipelineId
         kv.second->at((unsigned long) this->pipelineId)->profileConsume(this->numThreads, false);
 
       }

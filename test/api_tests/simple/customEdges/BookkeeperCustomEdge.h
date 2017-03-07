@@ -13,7 +13,7 @@
 
 #include <htgs/api/ICustomEdge.hpp>
 #include <map>
-#include <htgs/api/TaskGraph.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
 
 template<class T, class U, class V>
 class BookkeeperCustomEdge: public htgs::ICustomEdge {

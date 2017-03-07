@@ -16,7 +16,7 @@
 
 
 #include <thread>
-#include "../core/graph/AnyTaskGraph.hpp"
+#include "htgs/core/graph/AnyTaskGraphConf.hpp"
 #include "htgs/core/task/AnyTaskScheduler.hpp"
 
 namespace htgs {
@@ -83,7 +83,7 @@ namespace htgs {
  * @endcode
  *
  */
-class Runtime {
+class TaskGraphRuntime {
 
  public:
 
@@ -91,7 +91,7 @@ class Runtime {
    * Constructs a Runtime for a TaskGraph
    * @param graph the graph the Runtime is representing
    */
-  Runtime(AnyTaskGraph *graph) {
+  TaskGraphRuntime(AnyTaskGraphConf *graph) {
     this->graph = graph;
     this->executed = false;
   }
@@ -99,7 +99,7 @@ class Runtime {
   /**
    * Destructor
    */
-  ~Runtime() {
+  ~TaskGraphRuntime() {
     for (TaskSchedulerThread *t : runtimeThreads) {
       if (t) {
         delete t;
@@ -199,7 +199,7 @@ class Runtime {
 
  private:
   std::list<std::thread *> threads; //!< A list of all threads spawned for the Runtime
-  AnyTaskGraph *graph; //!< The TaskGraph associated with the Runtime
+  AnyTaskGraphConf *graph; //!< The TaskGraph associated with the Runtime
   std::list<TaskSchedulerThread *> runtimeThreads; //!< The list of TaskSchedulers bound to each thread
   bool executed; //!< Whether the Runtime has been executed
 

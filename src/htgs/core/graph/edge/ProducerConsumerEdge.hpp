@@ -7,7 +7,7 @@
 
 #include "EdgeDescriptor.hpp"
 #include <htgs/api/ITask.hpp>
-#include <htgs/core/graph/AnyTaskGraph.hpp>
+#include <htgs/core/graph/AnyTaskGraphConf.hpp>
 
 namespace htgs {
 
@@ -20,7 +20,7 @@ class ProducerConsumerEdge : public EdgeDescriptor
 
   ~ProducerConsumerEdge() override {}
 
-  void applyEdge(AnyTaskGraph *graph) override {
+  void applyEdge(AnyTaskGraphConf *graph) override {
     // TODO: What if the connector is either the input or output of a graph . . .
     TaskScheduler<T, U> *producerTaskScheduler = graph->getTaskScheduler(producer);
     TaskScheduler<U, W> *consumerTaskScheduler = graph->getTaskScheduler(consumer);
@@ -37,7 +37,7 @@ class ProducerConsumerEdge : public EdgeDescriptor
     producerTaskScheduler->setOutputConnector(connector);
   }
 
-  EdgeDescriptor *copy(AnyTaskGraph *graph) override {
+  EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {
     return new ProducerConsumerEdge(graph->getCopy(producer), graph->getCopy(consumer));
   }
 

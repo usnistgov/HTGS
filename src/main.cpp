@@ -3,8 +3,8 @@
 #include <future>
 
 #include <htgs/api/Bookkeeper.hpp>
-#include <htgs/api/TaskGraph.hpp>
-#include <htgs/api/Runtime.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
+#include <htgs/api/TaskGraphRuntime.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
 
 class TestData : public htgs::IData {
@@ -84,7 +84,7 @@ class TestTask : public htgs::ITask<TestData, TestData> {
   }
   std::string getName() override {
     std::stringstream ss;
-    ss << "TestTask: " + std::to_string(n) << " " << this;
+    ss << "TestTask: " + std::to_string(n) << " " << this->getPipelineId() << ":" << this->getNumPipelines() << " :: " << this;
     return ss.str();
   }
 
@@ -113,6 +113,15 @@ class TestAllocator : public htgs::IMemoryAllocator<double *> {
   }
 };
 
+void writeDotPng(htgs::AnyTaskGraphConf *graph, std::string baseFileName)
+{
+  graph->writeDotToFile(baseFileName + ".dot");
+  std::string cmd("dot -Tpng -o " + baseFileName + ".png " + baseFileName + ".dot");
+  int ret = system(cmd.c_str());
+  if (ret != 0)
+    std::cout << "Unable to execute dot command. status code: " << ret << std::endl;
+}
+
 int main()
 {
 
@@ -135,7 +144,7 @@ int main()
 
   auto testAllocator = std::make_shared<TestAllocator>(10);
 
-  auto tGraph = new htgs::TaskGraph<TestData, TestData>();
+  auto tGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
 
   std::vector<TestTask *> tasks;
@@ -179,7 +188,7 @@ int main()
   tGraph->addMemoryManagerEdge<double *>("TestMemory2", tasks[1], tasks[nVertices-2], testAllocator, 100, htgs::MMType::Static);
 
 
-  auto mainGraph = new htgs::TaskGraph<TestData, TestData>();
+  auto mainGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
   auto execPipline = new htgs::ExecutionPipeline<TestData, TestData>(5, tGraph);
 
@@ -188,16 +197,15 @@ int main()
 
   auto execGraph = mainGraph;
 
-  mainGraph->writeDotToFile("testorig.dot");
-  system("dot -Tpng -o testorig.png testorig.dot");
+  writeDotPng(mainGraph, "testorig");
+  writeDotPng(mainGraph, "test");
 
-  execGraph->writeDotToFile("test.dot");
-  system("dot -Tpng -o test.png test.dot");
+
 
 
   execGraph->incrementGraphProducer();
 
-  auto runtime = new htgs::Runtime(execGraph);
+  auto runtime = new htgs::TaskGraphRuntime(execGraph);
 
   runtime->executeRuntime();
 
@@ -220,10 +228,7 @@ int main()
 
   runtime->waitForRuntime();
 
-
-  execGraph->writeDotToFile("testExec.dot");
-
-  system("dot -Tpng -o testExec.png testExec.dot");
+  writeDotPng(execGraph, "testExec");
 
   delete runtime;
 

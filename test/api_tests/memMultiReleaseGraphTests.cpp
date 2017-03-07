@@ -9,7 +9,7 @@
 
 #include "memMultiReleaseGraphTests.h"
 
-#include <htgs/api/TaskGraph.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
 #include <gtest/gtest.h>
 #include "memMultiRelease/data/ProcessedData.h"

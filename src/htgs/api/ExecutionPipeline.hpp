@@ -22,8 +22,8 @@
 #include <htgs/core/rules/ExecutionPipelineBroadcastRule.hpp>
 #include "ITask.hpp"
 #include "Bookkeeper.hpp"
-#include "TaskGraph.hpp"
-#include "Runtime.hpp"
+#include "TaskGraphConf.hpp"
+#include "TaskGraphRuntime.hpp"
 #include "IData.hpp"
 
 namespace htgs {
@@ -31,7 +31,7 @@ template<class V, class W>
 class IRule;
 
 template<class V, class W>
-class TaskGraph;
+class TaskGraphConf;
 
 /**
  * @class ExecutionPipeline ExecutionPipeline.hpp <htgs/api/ExecutionPipeline.hpp>
@@ -98,13 +98,13 @@ class ExecutionPipeline: public ITask<T, U> {
    * @param numPipelines the number of times to duplicate the graph
    * @param graph the graph that the execution pipeline manages
    */
-  ExecutionPipeline(size_t numPipelines, TaskGraph<T, U> *graph) {
+  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph) {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
-    this->runtimes = new std::list<Runtime *>();
+    this->runtimes = new std::list<TaskGraphRuntime *>();
     this->inputRules = new std::list<std::shared_ptr<IRule<T, T>> >();
-    this->graphs = new std::list<TaskGraph<T, U> *>();
+    this->graphs = new std::list<TaskGraphConf<T, U> *>();
   }
 
   /**
@@ -113,23 +113,27 @@ class ExecutionPipeline: public ITask<T, U> {
    * @param graph the graph that the execution pipeline manages
    * @param rules the list of decomposition rules that will be used for this pipeline
    */
-  ExecutionPipeline(size_t numPipelines, TaskGraph<T, U> *graph, std::list<std::shared_ptr<IRule<T, T> >> *rules) {
+  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, std::list<std::shared_ptr<IRule<T, T> >> *rules) {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
-    this->runtimes = new std::list<Runtime *>();
+    this->runtimes = new std::list<TaskGraphRuntime *>();
     this->inputRules = rules;
-    this->graphs = new std::list<TaskGraph<T, U> *>();
+    this->graphs = new std::list<TaskGraphConf<T, U> *>();
   }
 
   /**
    * Destructor that frees all memory allocated by the execution pipeline
    */
   ~ExecutionPipeline() {
-    for (Runtime *runtime : *runtimes) {
+    for (TaskGraphRuntime *runtime : *runtimes) {
       delete runtime;
       runtime = nullptr;
     }
+
+    delete graph;
+    graph = nullptr;
+
     delete runtimes;
     runtimes = nullptr;
 
@@ -164,35 +168,16 @@ class ExecutionPipeline: public ITask<T, U> {
     // Add a default broadcast rule if the pipeline has no rules
     if (this->inputRules->size() == 0)
     {
-      std::cerr << "Warning: Your execution pipeline does not have any decomposition rules... Adding the default broadcast rule" << std::endl;
+      std::cerr << "Warning: Your execution pipeline does not have any decomposition rules... We have added the default broadcast rule" << std::endl;
       this->addInputRule(new ExecutionPipelineBroadcastRule<T>());
     }
 
-
-    this->graph->updateIdAndNumPipelines(0, this->numPipelinesExec);
-
-    DEBUG("Adding pipeline 0");
-    for (std::shared_ptr<IRule<T, T>> rule : *this->inputRules) {
-
-      RuleScheduler<T, T> *ruleScheduler = new RuleScheduler<T, T>(rule);
-      ruleScheduler->setOutputConnector(graph->getInputConnector());
-      ruleScheduler->initialize(0, this->numPipelinesExec);
-
-      this->inputBk->addRuleScheduler(ruleScheduler);
-    }
-
+    // Create output connector using the execution pipelines output
     std::shared_ptr<Connector<U>> outputConnector = std::static_pointer_cast<Connector<U>>(this->getOwnerTaskScheduler()->getOutputConnector());
 
-    // Update outputs for task graph to go to the execution pipeline output
-    graph->setOutputConnector(outputConnector);
-    outputConnector->incrementInputTaskCount();
-
-    this->graph->incrementGraphProducer();
-    graphs->push_back(graph);
-
-    for (size_t i = 1; i < numPipelinesExec; i++) {
+    for (size_t i = 0; i < numPipelinesExec; i++) {
       DEBUG("Adding pipeline " << i);
-      TaskGraph<T, U> *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector);
+      TaskGraphConf<T, U> *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector);
 
       DEBUG("Setting up input and output of pipeline " << i);
 
@@ -210,8 +195,8 @@ class ExecutionPipeline: public ITask<T, U> {
 
     }
 
-    for (TaskGraph<T, U> *g : *graphs) {
-      Runtime *runtime = new Runtime(g);
+    for (TaskGraphConf<T, U> *g : *graphs) {
+      TaskGraphRuntime *runtime = new TaskGraphRuntime(g);
       runtime->executeRuntime();
       this->runtimes->push_back(runtime);
     }
@@ -226,7 +211,7 @@ class ExecutionPipeline: public ITask<T, U> {
     DEBUG("Shutting down " << this->getName());
     this->inputBk->shutdown();
 
-    for (Runtime *r : *this->runtimes) {
+    for (TaskGraphRuntime *r : *this->runtimes) {
       r->waitForRuntime();
     }
   }
@@ -389,10 +374,10 @@ class ExecutionPipeline: public ITask<T, U> {
  private:
   size_t numPipelinesExec; //!< The number of pipelines that will spawn from the ExecutionPipeline
   Bookkeeper<T> *inputBk; //!< The input Bookkeeper for the ExecutionPipeline
-  TaskGraph<T, U> *graph; //!< The graph that the ExecutionPipeline manages, duplicates, and executes
+  TaskGraphConf<T, U> *graph; //!< The graph that the ExecutionPipeline manages, duplicates, and executes
   std::list<std::shared_ptr<IRule<T, T>>> *inputRules; //!< The rules associated with the input Bookkeeper for decomposition
-  std::list<Runtime *> *runtimes; //!< The list of Runtimes that will execute the TaskGraphs (one for each duplicate TaskGraph)
-  std::list<TaskGraph<T, U> *> *graphs; //!< The list of duplicate TaskGraphs
+  std::list<TaskGraphRuntime *> *runtimes; //!< The list of Runtimes that will execute the TaskGraphs (one for each duplicate TaskGraph)
+  std::list<TaskGraphConf<T, U> *> *graphs; //!< The list of duplicate TaskGraphs
 };
 }
 

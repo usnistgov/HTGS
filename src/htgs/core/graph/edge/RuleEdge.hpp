@@ -7,7 +7,7 @@
 
 #include "EdgeDescriptor.hpp"
 #include <htgs/api/ITask.hpp>
-#include <htgs/core/graph/AnyTaskGraph.hpp>
+#include <htgs/core/graph/AnyTaskGraphConf.hpp>
 #include <htgs/api/Bookkeeper.hpp>
 
 namespace htgs {
@@ -21,7 +21,7 @@ class RuleEdge : public EdgeDescriptor
 
   ~RuleEdge() override {}
 
-  void applyEdge(AnyTaskGraph *graph) override {
+  void applyEdge(AnyTaskGraphConf *graph) override {
     graph->getTaskScheduler(bookkeeper);
     TaskScheduler<U, W> *consumerTaskScheduler = graph->getTaskScheduler(consumer);
 
@@ -41,7 +41,7 @@ class RuleEdge : public EdgeDescriptor
     bookkeeper->addRuleScheduler(ruleScheduler);
   }
 
-  EdgeDescriptor *copy(AnyTaskGraph *graph) override {
+  EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {
     return new RuleEdge<T, U, W>((Bookkeeper<T> *)graph->getCopy(bookkeeper), rule, graph->getCopy(consumer));
   }
 

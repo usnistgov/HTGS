@@ -26,7 +26,7 @@ class MemoryEdge : public EdgeDescriptor
 ~MemoryEdge() override {
 
   }
-  void applyEdge(AnyTaskGraph *graph) override {
+  void applyEdge(AnyTaskGraphConf *graph) override {
 
     // Check to make sure that the getMemoryTask or releaseMemoryTasks do not have this named edge already
     if (getMemoryTask->hasGetMemoryEdge(memoryEdgeName))
@@ -57,7 +57,7 @@ class MemoryEdge : public EdgeDescriptor
     releaseMemoryTask->attachReleaseMemoryEdge(memoryEdgeName, releaseMemoryConnector, memoryManager->getType(), false);
 
   }
-  EdgeDescriptor *copy(AnyTaskGraph *graph) override {
+  EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {
     return new MemoryEdge<T>(memoryEdgeName, graph->getCopy(getMemoryTask), graph->getCopy(releaseMemoryTask), (MemoryManager<T> *)graph->getCopy(memoryManager));
   }
  private:

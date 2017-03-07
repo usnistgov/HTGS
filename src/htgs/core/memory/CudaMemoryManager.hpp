@@ -23,7 +23,7 @@ namespace htgs {
  * @brief Implements a MemoryManager that binds the thread responsible for the MemoryManager to a Cuda GPU
  * prior to allocating memory.
  * @details
- * Once a Runtime binds a thread to the CudaMemoryManager and calls its initialize function, the Cuda GPU specified
+ * Once a TaskGraphRuntime binds a thread to the CudaMemoryManager and calls its initialize function, the Cuda GPU specified
  * by the pipelineId of the CudaMemoryManager is bound to the thread. The CUcontext passed in should match the
  * number of pipelines associated with this Task's ExecutionPipeline. If the Task is not associated with an
  * ExecutionPipeline, then the number of CUcontexts can be one or larger.

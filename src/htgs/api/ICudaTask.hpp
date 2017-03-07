@@ -32,7 +32,7 @@ class MemoryData;
  * \brief An ICudaTask is used to attach a task to an NVIDIA Cuda GPU.
  *
  * The task that inherits from this class will automatically be attached to
- * the GPU when launched by the RunTime from within a TaskGraph.
+ * the GPU when launched by the RunTime from within a TaskGraphConf.
  *
  * An ICudaTask may be bound to one or more GPUs if the task is added into an ExecutionPipeline.
  * The number of CUContexts must match the number of pipelines specified for the ExecutionPipeline.
@@ -100,7 +100,7 @@ class MemoryData;
  * Example usage:
  * @code
  *
- * htgs::TaskGraph<MatrixData, htgs::VoidData> *taskGraph = new htgs::TaskGraph<MatrixData, htgs::VoidData>();
+ * htgs::TaskGraphConf<MatrixData, htgs::VoidData> *taskGraph = new htgs::TaskGraphConf<MatrixData, htgs::VoidData>();
  *
  * SimpleCudaTask *cudaTask = new SimpleCudaTask(...);
  *

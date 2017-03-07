@@ -8,7 +8,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <htgs/api/TaskGraph.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
 #include "simple/data/SimpleData.h"
 #include "simple/memory/SimpleAllocator.h"

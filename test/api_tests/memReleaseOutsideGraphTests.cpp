@@ -8,7 +8,7 @@
 //
 
 #include <htgs/types/VoidData.hpp>
-#include <htgs/api/TaskGraph.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
 #include <gtest/gtest.h>
 #include "memReleaseOutsideGraphTests.h"

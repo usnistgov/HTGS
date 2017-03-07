@@ -121,7 +121,7 @@ namespace htgs {
  * @tparam U the output data type for the TaskGraph, U must derive from IData.
  */
 template<class T, class U>
-class TaskGraph: public AnyTaskGraph {
+class TaskGraphConf: public AnyTaskGraphConf {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -130,7 +130,7 @@ class TaskGraph: public AnyTaskGraph {
   /**
    * Constructs a TaskGraph
    */
-  TaskGraph() : AnyTaskGraph(0, 1) {
+  TaskGraphConf() : AnyTaskGraphConf(0, 1) {
     this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
@@ -145,7 +145,7 @@ class TaskGraph: public AnyTaskGraph {
    * @param pipelineId the pipelineId for this graph
    * @param numPipelines the number of pipelines for the graph
    */
-  TaskGraph(size_t pipelineId, size_t numPipelines) : AnyTaskGraph(pipelineId, numPipelines) {
+  TaskGraphConf(size_t pipelineId, size_t numPipelines) : AnyTaskGraphConf(pipelineId, numPipelines) {
     this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
@@ -158,7 +158,7 @@ class TaskGraph: public AnyTaskGraph {
   /**
    * Destructor, handles releasing all ITask memory that is managed by the TaskGraph.
    */
-  ~TaskGraph() override {
+  ~TaskGraphConf() override {
     for (auto edge : *edges)
     {
       if (edge != nullptr)
@@ -171,16 +171,23 @@ class TaskGraph: public AnyTaskGraph {
     edges = nullptr;
   }
 
+  AnyTaskGraphConf *copy() override
+  {
+    return copy(this->getPipelineId(), this->getNumPipelines());
+  }
+
+
   /**
    * Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines
    * @param pipelineId the pipeline Id
    * @param numPipelines the number of pipelines
    * @return the copy of the task graph
    */
-  TaskGraph<T, U> *copy(size_t pipelineId, size_t numPipelines)
+  TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines)
   {
     return copy(pipelineId, numPipelines, nullptr, nullptr);
   }
+
 
   /**
    * Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines, and updates the input
@@ -191,9 +198,9 @@ class TaskGraph: public AnyTaskGraph {
    * @param output the output connector to be used for the graph's output
    * @return the copy of the task graph
    */
-  TaskGraph<T, U> *copy(size_t pipelineId, size_t numPipelines, std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output)
+  TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines, std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output)
   {
-    TaskGraph<T, U> *graphCopy = new TaskGraph<T, U>(pipelineId, numPipelines);
+    TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines);
 
     // Copy the tasks to form lookup between old ITasks and new copies
     graphCopy->copyTasks(this->getTaskSchedulers());
@@ -223,6 +230,9 @@ class TaskGraph: public AnyTaskGraph {
 
       graphCopy->addEdgeDescriptor(edgeCopy);
     }
+
+    graphCopy->updateIdAndNumPipelines(pipelineId, numPipelines);
+
 
     return graphCopy;
   }
@@ -265,9 +275,9 @@ class TaskGraph: public AnyTaskGraph {
 
 #ifdef USE_CUDA
   /**
-   * Adds a CudaMemoryManager edge with the specified name to the TaskGraph.
+   * Adds a CudaMemoryManager edge with the specified name to the TaskGraphConf.
    * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
-   * the TaskGraph.
+   * the TaskGraphConf.
    * @param name the name of the memory edge
    * @param getMemoryEdges the ITask that is getting memory
    * @param releaseMemoryEdges the ITask that is releasing memory
@@ -462,7 +472,7 @@ class TaskGraph: public AnyTaskGraph {
    * @param microTimeout the timeout time in microseconds
    * @return the data or nullptr if the timeout period expires.
    */
-  std::shared_ptr<U> pollData(long microTimeout) {
+  std::shared_ptr<U> pollData(size_t microTimeout) {
     return this->output->pollConsumeData(microTimeout);
   }
 
@@ -764,13 +774,13 @@ class TaskGraph: public AnyTaskGraph {
 
 //
 //  /**
-//   * Provides debug output for the TaskGraph
+//   * Provides debug output for the TaskGraphConf
 //   * @note \#define DEBUG_FLAG to enable debugging
 //   */
 //  void debug() const {
 //
 //    DEBUG("-----------------------------------------------");
-//    DEBUG("TaskGraph -- num vertices: " << vertices->size() << " num edges: " << edges->size() <<
+//    DEBUG("TaskGraphConf -- num vertices: " << vertices->size() << " num edges: " << edges->size() <<
 //        " -- DETAILS:");
 //
 //    for (AnyTaskScheduler *t : *vertices) {
@@ -789,7 +799,7 @@ class TaskGraph: public AnyTaskGraph {
 //  }
 //
 //  /**
-//   * Processes all of the input for the TaskGraph until no more input is available
+//   * Processes all of the input for the TaskGraphConf until no more input is available
 //   * @note \#define DEBUG_FLAG to enable debugging
 //   */
 //  void debugInput() {

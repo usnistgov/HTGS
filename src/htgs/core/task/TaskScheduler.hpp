@@ -291,7 +291,9 @@ class TaskScheduler: public AnyTaskScheduler {
 
             DEBUG(prefix() << " " << this->getName() << " Shutting down memory releaser : " <<
                            pair.first << " with " << pair.second->size() << " connectors");
-            std::shared_ptr<AnyConnector> connector = pair.second->at(this->getPipelineId());
+            // TODO: This needs to be removed so that it doesn't lookup "0", should just deal with one per name
+            std::shared_ptr<AnyConnector> connector = pair.second->at(0);
+//            std::shared_ptr<AnyConnector> connector = pair.second->at(this->getPipelineId());
             connector->producerFinished();
 
 

@@ -6,15 +6,15 @@
 #define HTGS_EDGEDESCRIPTOR_HPP
 
 #include <cstddef>
-#include <htgs/core/graph/AnyTaskGraph.hpp>
+#include <htgs/core/graph/AnyTaskGraphConf.hpp>
 
 namespace htgs {
 
 class EdgeDescriptor {
  public:
   virtual ~EdgeDescriptor() {}
-  virtual void applyEdge(AnyTaskGraph *graph) = 0;
-  virtual EdgeDescriptor *copy(AnyTaskGraph *graph) = 0;
+  virtual void applyEdge(AnyTaskGraphConf *graph) = 0;
+  virtual EdgeDescriptor *copy(AnyTaskGraphConf *graph) = 0;
 
 };
 }
