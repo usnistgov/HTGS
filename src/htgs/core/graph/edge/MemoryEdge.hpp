@@ -23,9 +23,8 @@ class MemoryEdge : public EdgeDescriptor
         memoryManager(memoryManager)
         {}
 
-~MemoryEdge() override {
+~MemoryEdge() override { }
 
-  }
   void applyEdge(AnyTaskGraphConf *graph) override {
 
     // Check to make sure that the getMemoryTask or releaseMemoryTasks do not have this named edge already
@@ -41,13 +40,13 @@ class MemoryEdge : public EdgeDescriptor
     if (!graph->hasTask(releaseMemoryTask))
       throw std::runtime_error("Error releaseMemoryTask: " + releaseMemoryTask->getName() + " must be added to the graph you are connecting the memory edge too.");
 
-    auto memTaskScheduler = graph->getTaskScheduler(memoryManager);
+    auto memTaskManager = graph->getTaskManager(memoryManager);
 
     auto getMemoryConnector = std::shared_ptr<Connector<MemoryData<T>>>(new Connector<MemoryData<T>>());
     auto releaseMemoryConnector = std::shared_ptr<Connector<MemoryData<T>>>(new Connector<MemoryData<T>>());
 
-    memTaskScheduler->setInputConnector(releaseMemoryConnector);
-    memTaskScheduler->setOutputConnector(getMemoryConnector);
+    memTaskManager->setInputConnector(releaseMemoryConnector);
+    memTaskManager->setOutputConnector(getMemoryConnector);
 
     releaseMemoryConnector->incrementInputTaskCount();
 

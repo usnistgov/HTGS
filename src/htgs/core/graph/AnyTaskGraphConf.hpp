@@ -6,9 +6,9 @@
 #define HTGS_ANYTASKGRAPH_HPP
 
 #include <list>
-#include <htgs/core/task/AnyTaskScheduler.hpp>
+#include <htgs/core/task/AnyTaskManager.hpp>
 #include <string>
-#include <htgs/core/task/TaskScheduler.hpp>
+#include <htgs/core/task/TaskManager.hpp>
 #include <htgs/api/ITask.hpp>
 #include <cstddef>
 #include <htgs/core/graph/edge/EdgeDescriptor.hpp>
@@ -19,23 +19,28 @@ namespace htgs {
 
 /**
  * @typedef ITaskMap
- * Creates a mapping between an ITask and a task scheduler.
+ * Creates a mapping between an ITask and a task manager.
  */
-typedef std::map<AnyITask *, AnyTaskScheduler *> ITaskMap;
+typedef std::map<AnyITask *, AnyTaskManager *> ITaskMap;
 
 /**
  * @typedef ITaskPair
  * Defines a pair to be added into an ITaskMap
  */
-typedef std::pair<AnyITask *, AnyTaskScheduler *> ITaskPair;
+typedef std::pair<AnyITask *, AnyTaskManager *> ITaskPair;
 
 
 class AnyTaskGraphConf {
  public:
 
-  AnyTaskGraphConf (size_t pipelineId, size_t numPipelines) : pipelineId(pipelineId), numPipelines(numPipelines) {
-    taskSchedulers = new std::list<AnyTaskScheduler *>();
+  AnyTaskGraphConf (size_t pipelineId, size_t numPipelines, std::string baseAddress) : pipelineId(pipelineId), numPipelines(numPipelines) {
+    if (baseAddress == "")
+      this->address = std::to_string(pipelineId);
+    else
+      this->address = baseAddress + ":" + std::to_string(this->pipelineId);
+    taskManagers = new std::list<AnyTaskManager *>();
     taskCopyMap = new ITaskMap();
+    taskConnectorMap = new ConnectorMap();
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +48,7 @@ class AnyTaskGraphConf {
   ////////////////////////////////////////////////////////////////////////////////
 
   virtual ~AnyTaskGraphConf() {
-    for (auto task : *taskSchedulers)
+    for (auto task : *taskManagers)
     {
       if (task != nullptr)
       {
@@ -51,22 +56,25 @@ class AnyTaskGraphConf {
         task = nullptr;
       }
     }
-    delete taskSchedulers;
+    delete taskManagers;
 
     delete taskCopyMap;
     taskCopyMap = nullptr;
+
+    delete taskConnectorMap;
+    taskConnectorMap = nullptr;
   }
 
   /**
   * Pure virtual function to get the vertices of the TaskGraph
   * @return the vertices of the TaskGraph
   */
-  virtual std::list<AnyTaskScheduler *> *getTaskSchedulers() {
-    return this->taskSchedulers;
+  virtual std::list<AnyTaskManager *> *getTaskManagers() {
+    return this->taskManagers;
   }
 
-  virtual AnyTaskScheduler *getGraphConsumerTaskScheduler() = 0;
-  virtual AnyTaskScheduler *getGraphProducerTaskScheduler() = 0;
+  virtual AnyTaskManager *getGraphConsumerTaskManager() = 0;
+  virtual AnyTaskManager *getGraphProducerTaskManager() = 0;
 
   virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
   virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
@@ -99,38 +107,38 @@ class AnyTaskGraphConf {
   }
 
   template <class T, class U>
-  TaskScheduler<T, U> *getTaskScheduler(ITask<T, U> *task) {
+  TaskManager<T, U> *getTaskManager(ITask <T, U> *task) {
 
-    TaskScheduler<T, U> *taskScheduler = nullptr;
+    TaskManager<T, U> *taskManager = nullptr;
 
-    for (auto tSched : *taskSchedulers)
+    for (auto tSched : *taskManagers)
     {
       if (tSched->getTaskFunction() == task)
       {
-        taskScheduler = (TaskScheduler<T, U> *)tSched;
+        taskManager = (TaskManager<T, U> *)tSched;
         break;
       }
     }
 
-    if (taskScheduler == nullptr)
+    if (taskManager == nullptr)
     {
-      taskScheduler = new TaskScheduler<T, U>(task, task->getNumThreads(), task->isStartTask(), task->isPoll(), task->getMicroTimeoutTime(), pipelineId, numPipelines);
-      this->taskSchedulers->push_back(taskScheduler);
+      taskManager = new TaskManager<T, U>(task, task->getNumThreads(), task->isStartTask(), task->isPoll(), task->getMicroTimeoutTime(), pipelineId, numPipelines, address);
+      this->taskManagers->push_back(taskManager);
     }
 
-    return taskScheduler;
+    return taskManager;
 
   }
 
-  void addTaskScheduler(AnyTaskScheduler *taskScheduler)
+  void addTaskManager(AnyTaskManager *taskManager)
   {
-    for (auto tSched : *taskSchedulers)
+    for (auto tMan : *taskManagers)
     {
-      if (tSched == taskScheduler)
+      if (tMan == taskManager)
         return;
     }
 
-    this->taskSchedulers->push_back(taskScheduler);
+    this->taskManagers->push_back(taskManager);
   }
 
 
@@ -157,19 +165,23 @@ class AnyTaskGraphConf {
 
   /**
    * @internal
-   * Updates the pipelineIds and the number of pipelines for all tasks in the TaskGraph
-   * @param pipelineId the pipeline Id
-   * @param numPipelines the number of pipelines
+   * Updates the task managers addresses, pipelineIds and the number of pipelines for all tasks in the TaskGraph
    *
    * @note This function should only be called by the HTGS API
    */
-  void updateIdAndNumPipelines(size_t pipelineId, size_t numPipelines) {
-    for (auto t : *this->taskSchedulers) {
-      t->setPipelineId(pipelineId);
-      t->setNumPipelines(numPipelines);
-      // TODO: May be able to get rid of this
-      t->addPipelineConnector(pipelineId);
+  void updateTaskManagersAddressingAndPipelines() {
+    for (auto t : *this->taskManagers) {
+      t->updateAddressAndPipelines(address, this->pipelineId, this->numPipelines);
+//      t->setPipelineId(pipelineId);
+//      t->setNumPipelines(numPipelines);
+//      // TODO: May be able to get rid of this
+//      t->addPipelineConnector(pipelineId);
     }
+  }
+
+  std::string getAddress()
+  {
+    return this->address;
   }
 
   /**
@@ -178,7 +190,7 @@ class AnyTaskGraphConf {
   std::string genDotGraphContent(int flags) {
     std::ostringstream oss;
 
-    for (AnyTaskScheduler *bTask : *taskSchedulers) {
+    for (AnyTaskManager *bTask : *taskManagers) {
       oss << bTask->getDot(flags);
     }
 
@@ -215,14 +227,14 @@ class AnyTaskGraphConf {
     oss << "edge[fontsize=10, fontname=\"Verdana\"];" << std::endl;
     oss << "graph [compound=true];" << std::endl;
 
-    for (AnyTaskScheduler *bTask : *taskSchedulers) {
+    for (AnyTaskManager *bTask : *taskManagers) {
       oss << bTask->getDot(flags);
     }
 
-    if (getGraphConsumerTaskScheduler() != nullptr)
+    if (getGraphConsumerTaskManager() != nullptr)
       oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n" << this->getInputConnector()->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getInputConnector()->typeName()) : "") << "\"];" << std::endl;
 
-    if (getGraphProducerTaskScheduler() != nullptr)
+    if (getGraphProducerTaskManager() != nullptr)
       oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\n" << this->getOutputConnector()->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getOutputConnector()->typeName()) : "") << "\"]; }" << std::endl;
 
 
@@ -278,7 +290,7 @@ class AnyTaskGraphConf {
   }
 
 
-  void copyTasks(std::list<AnyTaskScheduler *> *tasks)
+  void copyTasks(std::list<AnyTaskManager *> *tasks)
   {
     for (auto task : *tasks)
     {
@@ -286,7 +298,7 @@ class AnyTaskGraphConf {
     }
   }
 
-  AnyTaskScheduler *getTaskSchedulerCopy(AnyITask *iTask)
+  AnyTaskManager *getTaskManagerCopy(AnyITask *iTask)
   {
     for (auto tCopy : *taskCopyMap) {
       if (tCopy.first == iTask) {
@@ -299,7 +311,7 @@ class AnyTaskGraphConf {
 
   bool hasTask(AnyITask *task)
   {
-    for (auto taskSched : *taskSchedulers)
+    for (auto taskSched : *taskManagers)
     {
       if (taskSched->getTaskFunction() == task)
         return true;
@@ -311,26 +323,30 @@ class AnyTaskGraphConf {
  private:
 
 
-  void createCopy(AnyTaskScheduler *taskScheduler)
+  void createCopy(AnyTaskManager *taskManager)
   {
-    AnyITask *origITask = taskScheduler->getTaskFunction();
+    AnyITask *origITask = taskManager->getTaskFunction();
 
     // If the original ITask is not in the taskCopyMap, then add a new copy and map it to the original
     if (this->taskCopyMap->find(origITask) == this->taskCopyMap->end())
     {
-      AnyTaskScheduler *taskSchedulerCopy = taskScheduler->copy(false);
-      taskCopyMap->insert(ITaskPair(origITask, taskSchedulerCopy));
-      taskSchedulers->push_back(taskSchedulerCopy);
+      AnyTaskManager *taskManagerCopy = taskManager->copy(false);
+      taskCopyMap->insert(ITaskPair(origITask, taskManagerCopy));
+      taskManagers->push_back(taskManagerCopy);
     }
   }
 
 
   ITaskMap *taskCopyMap;
-  std::list<AnyTaskScheduler *> *taskSchedulers;
+  std::list<AnyTaskManager *> *taskManagers;
+
+  ConnectorMap *taskConnectorMap;
+
 
   size_t pipelineId; //!< The pipelineId for the task graph
   size_t numPipelines; //!< The number of pipelines from this graph
 
+  std::string address; //!< The address for this task graph and its tasks
 
 };
 

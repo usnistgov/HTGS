@@ -17,7 +17,7 @@
 
 #include <thread>
 #include "htgs/core/graph/AnyTaskGraphConf.hpp"
-#include "htgs/core/task/AnyTaskScheduler.hpp"
+#include "htgs/core/task/AnyTaskManager.hpp"
 
 namespace htgs {
 /**
@@ -100,7 +100,7 @@ class TaskGraphRuntime {
    * Destructor
    */
   ~TaskGraphRuntime() {
-    for (TaskSchedulerThread *t : runtimeThreads) {
+    for (TaskManagerThread *t : runtimeThreads) {
       if (t) {
         delete t;
         t = nullptr;
@@ -144,7 +144,7 @@ class TaskGraphRuntime {
    * has finished processing its last data. Will not terminate threads that are in a WAIT state.
    */
   void terminateAll() {
-    for (TaskSchedulerThread *t : runtimeThreads) {
+    for (TaskManagerThread *t : runtimeThreads) {
       t->terminate();
     }
   }
@@ -157,29 +157,29 @@ class TaskGraphRuntime {
     if (executed)
       return;
 
-    std::list<AnyTaskScheduler *> *vertices = this->graph->getTaskSchedulers();
-    std::list<AnyTaskScheduler *> newVertices;
+    std::list<AnyTaskManager *> *vertices = this->graph->getTaskManagers();
+    std::list<AnyTaskManager *> newVertices;
     DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
-    for (AnyTaskScheduler *task : *vertices) {
+    for (AnyTaskManager *task : *vertices) {
       size_t numThreads = task->getNumThreads();
 
       DEBUG_VERBOSE("Spawning " << numThreads << " threads for task " << task->getName());
 
       if (numThreads > 0) {
-        std::list<AnyTaskScheduler *> taskList;
+        std::list<AnyTaskManager *> taskList;
         std::shared_ptr<std::atomic_size_t> atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(numThreads));
         taskList.push_back(task);
 
 
         for (size_t i = 1; i < numThreads; i++) {
-          AnyTaskScheduler *taskCopy = task->copy(true);
+          AnyTaskManager *taskCopy = task->copy(true);
           taskList.push_back(taskCopy);
           newVertices.push_back(taskCopy);
         }
         size_t threadId = 0;
-        for (AnyTaskScheduler *taskItem : taskList) {
-          TaskSchedulerThread *runtimeThread = new TaskSchedulerThread(threadId, taskItem, atomicNumThreads);
-          std::thread *thread = new std::thread(&TaskSchedulerThread::run, runtimeThread);
+        for (AnyTaskManager *taskItem : taskList) {
+          TaskManagerThread *runtimeThread = new TaskManagerThread(threadId, taskItem, atomicNumThreads);
+          std::thread *thread = new std::thread(&TaskManagerThread::run, runtimeThread);
           this->threads.push_back(thread);
           runtimeThreads.push_back(runtimeThread);
           threadId++;
@@ -188,9 +188,9 @@ class TaskGraphRuntime {
       }
     }
 
-    for (AnyTaskScheduler *newVertex : newVertices)
+    for (AnyTaskManager *newVertex : newVertices)
     {
-      graph->addTaskScheduler(newVertex);
+      graph->addTaskManager(newVertex);
     }
 
     this->executed = true;
@@ -200,7 +200,7 @@ class TaskGraphRuntime {
  private:
   std::list<std::thread *> threads; //!< A list of all threads spawned for the Runtime
   AnyTaskGraphConf *graph; //!< The TaskGraph associated with the Runtime
-  std::list<TaskSchedulerThread *> runtimeThreads; //!< The list of TaskSchedulers bound to each thread
+  std::list<TaskManagerThread *> runtimeThreads; //!< The list of TaskManagers bound to each thread
   bool executed; //!< Whether the Runtime has been executed
 
 };

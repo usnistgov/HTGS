@@ -47,7 +47,7 @@ class AnyConnector {
   * @note This function should only be called by the HTGS API
   */
   void producerFinished() {
-    this->producerTaskCount -= 1;
+    this->producerTaskCount--;
   }
 
   /**
@@ -63,7 +63,7 @@ class AnyConnector {
    *
    * @note This function should only be called by the HTGS API
    */
-  void incrementInputTaskCount() { this->producerTaskCount += 1; }
+  void incrementInputTaskCount() { this->producerTaskCount++; }
 
   /**
  * Gets the id used for dot graphs for GraphViz

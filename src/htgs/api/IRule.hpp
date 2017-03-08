@@ -18,7 +18,7 @@
 #include <functional>
 #include <list>
 #include <mutex>
-#include <htgs/core/rules/RuleScheduler.hpp>
+#include <htgs/core/rules/RuleManager.hpp>
 #include <htgs/core/rules/AnyIRule.hpp>
 #include <htgs/types/StateContainer.hpp>
 
@@ -27,7 +27,7 @@
 namespace htgs {
 
 template <class T, class U>
-class RuleScheduler;
+class RuleManager;
 
 template <class T>
 class StateContainer;
@@ -108,7 +108,7 @@ class IRule : public AnyIRule {
    * Creates an IRule
    */
   IRule() {
-    ruleSchedulers = new std::vector<RuleScheduler<T, U> *>();
+    output = new std::list<std::shared_ptr<U>>();
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -119,9 +119,10 @@ class IRule : public AnyIRule {
    * Destructor
    */
   virtual ~IRule() override {
-    if (ruleSchedulers != nullptr) {
-      delete ruleSchedulers;
-      ruleSchedulers = nullptr;
+    if (output != nullptr)
+    {
+      delete output;
+      output = nullptr;
     }
   }
 
@@ -148,29 +149,18 @@ class IRule : public AnyIRule {
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-
-  /**
-   * Initializes this IRule with a rule scheduler
-   * @param ruleScheduler the rule scheduler that is used for this IRule
-   */
-  void initialize(RuleScheduler<T, U> *ruleScheduler, size_t pipelineId, size_t numPipelines)
-  {
-    if (ruleSchedulers->capacity() < numPipelines)
-      ruleSchedulers->resize(numPipelines);
-
-    (*ruleSchedulers)[pipelineId] = ruleScheduler;
-  }
-
   /**
    * @internal
    * Applies the virtual rule function and processes output
    * @param data the input data
    * @param pipelineId the pipelineId
+   * @return the list of output
    * @note This function should only be called by the HTGS API
    */
-  void applyRuleFunction(std::shared_ptr<T> data, size_t pipelineId) {
-    this->currentPipelineId = pipelineId;
+  std::list<std::shared_ptr<U>> *applyRuleFunction(std::shared_ptr<T> data, size_t pipelineId) {
+    this->output->clear();
     applyRule(data, pipelineId);
+    return output;
   }
 
   /**
@@ -178,7 +168,7 @@ class IRule : public AnyIRule {
    * @param result the result value that is added
    */
   void addResult(std::shared_ptr<U> result) {
-    (*ruleSchedulers)[currentPipelineId]->addResult(result);
+    this->output->push_back(result);
   }
 
   /**
@@ -187,7 +177,7 @@ class IRule : public AnyIRule {
    * @param result the result value that is added
    */
   void addResult(U *result) {
-    (*ruleSchedulers)[currentPipelineId]->addResult(std::shared_ptr<U>(result));
+    this->output->push_back(std::shared_ptr<U>(result));
   }
 
   /**
@@ -239,9 +229,7 @@ class IRule : public AnyIRule {
   }
 
  private:
-  std::vector<RuleScheduler<T, U> *> *ruleSchedulers; //!< The rule scheduler that schedules this IRule
-  size_t currentPipelineId; //!< The current pipeline Id that this rule is using for processing output
-
+  std::list<std::shared_ptr<U>> * output;
 };
 
 

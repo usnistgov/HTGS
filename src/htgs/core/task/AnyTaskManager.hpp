@@ -3,14 +3,14 @@
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file AnyTaskScheduler.hpp
+ * @file AnyTaskManager.hpp
  * @author Timothy Blattner
  * @date Nov 18, 2015
  *
- * @brief Implements the parent class for a Task to remove the template arguments and the TaskSchedulerThread to attach a thread to a Task.
+ * @brief Implements the parent class for a Task to remove the template arguments and the TaskManagerThread to attach a thread to a Task.
  */
-#ifndef HTGS_ANYTASKSCHEDULER_HPP
-#define HTGS_ANYTASKSCHEDULER_HPP
+#ifndef HTGS_ANYTASKMANAGER_HPP
+#define HTGS_ANYTASKMANAGER_HPP
 
 
 #include <atomic>
@@ -21,29 +21,30 @@
 #include "AnyITask.hpp"
 
 namespace htgs {
-class TaskSchedulerThread;
+class TaskManagerThread;
 
 /**
- * @class AnyTaskScheduler AnyTaskScheduler.hpp <htgs/core/task/AnyTaskScheduler.hpp>
+ * @class AnyTaskManager AnyTaskManager.hpp <htgs/core/task/AnyTaskManager.hpp>
  * @brief The parent class for a Task that removes the template arguments.
  * @details
- * The AnyTaskScheduler provides access to functionality that does not require template arguments and
+ * The AnyTaskManager provides access to functionality that does not require template arguments and
  * allows storage of a Task.
  *
  * @note This class should only be called by the HTGS API
  */
-class AnyTaskScheduler {
+class AnyTaskManager {
  public:
 
   /**
- * Constructs an AnyTaskScheduler with an ITask as the task function and specific runtime parameters.
- * @param taskFunction the functionality for the TaskScheduler
- * @param numThreads the number of threads to operate with the TaskScheduler
- * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
- * @param pipelineId the pipeline Id associated with the TaskScheduler
+ * Constructs an AnyTaskManager with an ITask as the task function and specific runtime parameters.
+ * @param taskFunction the functionality for the TaskManager
+ * @param numThreads the number of threads to operate with the TaskManager
+ * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
+ * @param pipelineId the pipeline Id associated with the TaskManager
  * @param numPipelines the number of pipelines
+ * @param address the address of the task graph that owns this task
  */
-  AnyTaskScheduler(size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines) {
+  AnyTaskManager(size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines, std::string address) {
     this->taskComputeTime = 0L;
     this->taskWaitTime = 0L;
     this->poll = false;
@@ -54,19 +55,21 @@ class AnyTaskScheduler {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
+    this->address = address;
     this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
   }
 
   /**
-   * Constructs an AnyTaskScheduler with an ITask as the task function and specific runtime parameters.
-   * @param numThreads the number of threads to operate with the TaskScheduler
-   * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
-   * @param poll whether the TaskScheduler should poll for data
+   * Constructs an AnyTaskManager with an ITask as the task function and specific runtime parameters.
+   * @param numThreads the number of threads to operate with the TaskManager
+   * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
+   * @param poll whether the TaskManager should poll for data
    * @param microTimeoutTime the timeout time in microseconds
-   * @param pipelineId the pipeline Id associated with the TaskScheduler
+   * @param pipelineId the pipeline Id associated with the TaskManager
    * @param numPipelines the number of pipelines
+   * @param address the address of the task graph that owns this task
    */
-  AnyTaskScheduler(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime, size_t pipelineId, size_t numPipelines) {
+  AnyTaskManager(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime, size_t pipelineId, size_t numPipelines, std::string address) {
     this->taskComputeTime = 0L;
     this->taskWaitTime = 0L;
     this->poll = poll;
@@ -77,22 +80,24 @@ class AnyTaskScheduler {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
+    this->address = address;
     // TODO: Can get rid of this . . .
     this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
   }
 
   /**
-   * Constructs an AnyTaskScheduler with an ITask as the task function and specific runtime parameters
-   * @param numThreads the number of threads to operate with the TaskScheduler
-   * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
-   * @param poll whether the TaskScheduler should poll for data
+   * Constructs an AnyTaskManager with an ITask as the task function and specific runtime parameters
+   * @param numThreads the number of threads to operate with the TaskManager
+   * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
+   * @param poll whether the TaskManager should poll for data
    * @param microTimeoutTime the timeout time in microseconds
-   * @param pipelineId the pipeline Id associated with the TaskScheduler
+   * @param pipelineId the pipeline Id associated with the TaskManager
    * @param numPipelines the number of pipelines
-   * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskScheduler and copies of this TaskScheduler
+   * @param address the address of the task graph that owns this task
+   * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskManager and copies of this TaskManager
    */
-  AnyTaskScheduler(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-  size_t pipelineId, size_t numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) {
+  AnyTaskManager(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
+  size_t pipelineId, size_t numPipelines, std::string address, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) {
     this->taskComputeTime = 0L;
     this->taskWaitTime = 0L;
     this->poll = poll;
@@ -103,6 +108,7 @@ class AnyTaskScheduler {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
+    this->address = address;
     this->pipelineConnectorList = pipelineConnectorList;
   }
 
@@ -114,10 +120,10 @@ class AnyTaskScheduler {
   /**
    * Destructor
    */
-  virtual ~AnyTaskScheduler() { };
+  virtual ~AnyTaskManager() { };
 
   /**
-   * Gets the ITask function associated with the TaskScheduler
+   * Gets the ITask function associated with the TaskManager
    * @return the ITask
    */
   virtual AnyITask *getTaskFunction() = 0;
@@ -135,26 +141,26 @@ class AnyTaskScheduler {
   virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
 
   /**
-   * Copies the TaskScheduler
+   * Copies the TaskManager
    * @param deep whether a deep copy is required
-   * @return the TaskScheduler copy
+   * @return the TaskManager copy
    */
-  virtual AnyTaskScheduler *copy(bool deep)  = 0;
+  virtual AnyTaskManager *copy(bool deep)  = 0;
 
 
   /**
-   * Initializes the TaskScheduler
+   * Initializes the TaskManager
    */
   virtual void initialize() = 0;
 
 
   /**
-   * Executes the TaskScheduler.
+   * Executes the TaskManager.
    * Using the following procedure:
    * 0. If the ITask is a start task, then send ITask::executeTask with nullptr and set that it is no longer a startTask
 
    * 1. Checks if the ITask::isTerminated, if it is then reduce thread pool count for the runtime and wakeup
-   * any tasks waiting on this TaskScheduler's input queue. If the thread pool count is zero, then indicate that
+   * any tasks waiting on this TaskManager's input queue. If the thread pool count is zero, then indicate that
    * this task is no longer producing data  and wakup all consumers waiting on the output connector. Also indicate
    * this task is no longer releasing memory and wakeup
    * all memory managers that this task is releasing memory to.
@@ -168,10 +174,10 @@ class AnyTaskScheduler {
   virtual void executeTask() = 0;
 
   /**
-   * Sets the thread that is executing this TaskScheduler
-   * @param runtimeThread the thread that is executing the TaskScheduler
+   * Sets the thread that is executing this TaskManager
+   * @param runtimeThread the thread that is executing the TaskManager
    */
-  virtual void setRuntimeThread(TaskSchedulerThread *runtimeThread) = 0;
+  virtual void setRuntimeThread(TaskManagerThread *runtimeThread) = 0;
 
   /**
    * Sets the input BaseConnector
@@ -191,9 +197,9 @@ class AnyTaskScheduler {
 
   // TODO: This may not be necessary with new changes .. .
   /**
-   * Adds the input Connector for this TaskScheduler to the pipeline connector list.
+   * Adds the input Connector for this TaskManager to the pipeline connector list.
    * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this TaskScheduler that is within the same ExecutionPipeline.
+   * to a copy of this TaskManager that is within the same ExecutionPipeline.
    * @param pipelineId the pipeline Id
    */
   void addPipelineConnector(size_t pipelineId) {
@@ -202,9 +208,9 @@ class AnyTaskScheduler {
 
   // TODO: This may not be necessary with new changes . . .
   /**
-   * Adds a Connector for a TaskScheduler that is in an ExecutionPipeline
+   * Adds a Connector for a TaskManager that is in an ExecutionPipeline
    * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this TaskScheduler that is within the same ExecutionPipeline.
+   * to a copy of this TaskManager that is within the same ExecutionPipeline.
    * @param pipelineId the pipeline Id
    * @param connector the connector to add
    */
@@ -219,9 +225,21 @@ class AnyTaskScheduler {
    */
   std::shared_ptr<ConnectorVector> getPipelineConnectors() { return this->pipelineConnectorList; }
 
+  void updateAddressAndPipelines(std::string address, size_t pipelineId, size_t numPipelines)
+  {
+    this->numPipelines = numPipelines;
+    this->address = address;
+    this->pipelineId = pipelineId;
+  }
+
+  std::string getAddress()
+  {
+    return this->address;
+  }
+
   // TODO: No need to resize with new changes . . .
   /**
-   * Sets the number of pipelines associated with the TaskScheduler
+   * Sets the number of pipelines associated with the TaskManager
    * @param numPipelines the number of pipelines
    */
   void setNumPipelines(size_t numPipelines) {
@@ -234,13 +252,13 @@ class AnyTaskScheduler {
   }
 
   /**
-   * Gets the number of pipelines that this task scheduler belongs too.
+   * Gets the number of pipelines that this task manager belongs too.
    * @return the number of pipelines spawned from the execution pipeline task
    */
   size_t getNumPipelines() { return this->numPipelines; }
 
   /**
-   * Sets the pipeline Id associated with the TaskScheduler
+   * Sets the pipeline Id associated with the TaskManager
    * @param id the pipeline Id
    */
   void setPipelineId(size_t id) {
@@ -255,27 +273,27 @@ class AnyTaskScheduler {
   size_t getPipelineId() { return this->pipelineId; }
 
   /**
-   * Gets the number of threads associated with this TaskScheduler
-   * @return the number of the threads that will execute the TaskScheduler
+   * Gets the number of threads associated with this TaskManager
+   * @return the number of the threads that will execute the TaskManager
    */
   size_t getNumThreads() const { return this->numThreads; }
 
   /**
-   * Sets the alive state for this task scheduler
+   * Sets the alive state for this task manager
    * @param val the value to set, true = alive, false = dead/terminating
    */
   void setAlive(bool val) { this->alive = val; }
 
   /**
-   * Gets whether the TaskScheduler is alive or not
-   * @return whether the TaskScheduler is alive
-   * @retval TRUE if the TaskScheduler is alive
-   * @retval FALSE if the TaskScheduler is not alive
+   * Gets whether the TaskManager is alive or not
+   * @return whether the TaskManager is alive
+   * @retval TRUE if the TaskManager is alive
+   * @retval FALSE if the TaskManager is not alive
    */
   bool isAlive() { return this->alive; }
 
   /**
-   * Sets whether this task scheduler is a start task or not, which will immediately begin executing
+   * Sets whether this task manager is a start task or not, which will immediately begin executing
    * by sending nullptr data to the underlying task as soon as this task executes.
    * @param val the value to set, true = is a start task, false = not a start task
    * @note Should be set before a task begins executing (attached to a thread)
@@ -283,18 +301,18 @@ class AnyTaskScheduler {
   void setStartTask(bool val) { this->startTask = val; }
 
   /**
-   * Gets whether this task scheduler will begin executing immediately with nullptr data or not.
-   * @return whether the task scheduler will start immediately.
-   * @retval TRUE if the task scheduler will begin executing immediately
-   * @retval FALSE if the task scheduler will not begin and wait for its first input data
+   * Gets whether this task manager will begin executing immediately with nullptr data or not.
+   * @return whether the task manager will start immediately.
+   * @retval TRUE if the task manager will begin executing immediately
+   * @retval FALSE if the task manager will not begin and wait for its first input data
    */
   bool isStartTask() { return this->startTask; }
 
   /**
-   * Gets whether the task scheduler is polling for data or not
-   * @return whether the task scheduler is polling or not
-   * @retval TRUE if the task scheduler is polling for data from its input
-   * @retval FALSE if the task scheduler is not polling (waiting) for data from its input
+   * Gets whether the task manager is polling for data or not
+   * @return whether the task manager is polling or not
+   * @retval TRUE if the task manager is polling for data from its input
+   * @retval FALSE if the task manager is not polling (waiting) for data from its input
    */
   bool isPoll() { return this->poll; }
 
@@ -317,7 +335,7 @@ class AnyTaskScheduler {
   void incWaitTime(long val) { this->taskWaitTime += val; }
 
   /**
-   * Shuts down the TaskScheduler
+   * Shuts down the TaskManager
    */
   void shutdown() {
     DEBUG("shutting down: " << this->prefix() << " " << this->getName() << std::endl);
@@ -349,7 +367,7 @@ class AnyTaskScheduler {
   std::string getNameWithPipelineId() { return this->getTaskFunction()->getNameWithPipelineId(); }
 
   /**
- * Gets the dot notation for this TaskScheduler.
+ * Gets the dot notation for this TaskManager.
  */
   std::string getDot(int flags) {
     if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
@@ -364,7 +382,7 @@ class AnyTaskScheduler {
   }
 
   /**
-   * Sets the thread id associated with the TaskScheduler
+   * Sets the thread id associated with the TaskManager
    * @param id the thread id
    */
   void setThreadId(size_t id) {
@@ -433,42 +451,43 @@ class AnyTaskScheduler {
   unsigned long long int taskWaitTime; //!< The total wait time for the task
 
   size_t timeout; //!< The timeout time for polling in microseconds
-  bool poll; //!< Whether the scheduler should poll for data
+  bool poll; //!< Whether the manager should poll for data
 
   bool startTask; //!< Whether the task should start immediately
   bool alive; //!< Whether the task is still alive
 
   size_t threadId; //!< The thread id for the task (set after initialization)
-  size_t numThreads; //!< The number of threads spawned for the scheduler
+  size_t numThreads; //!< The number of threads spawned for the manager
 
   size_t pipelineId; //!< The execution pipeline id
   size_t numPipelines; //!< The number of execution pipelines
+  std::string address; //!< The address of the task graph this manager belongs too
 
   std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The execution pipeline connector list (one for each pipeline that share the same ITask functionality)
 };
 
 
 /**
- * @class TaskSchedulerThread AnyTaskScheduler.hpp <htgs/task/AnyTaskScheduler.hpp>
- * @brief Manages a TaskScheduler that is bound to a thread for execution
+ * @class TaskManagerThread AnyTaskManager.hpp <htgs/task/AnyTaskManager.hpp>
+ * @brief Manages a TaskManager that is bound to a thread for execution
  * @details
  * A Runtime will spawn a thread and bind it to the run function
  * within this class. If a Task has more than one threads associated
  * with it, then this class is duplicated one per thread, each with
- * a separate copy of the original TaskScheduler.
+ * a separate copy of the original TaskManager.
  *
  * @note This class should only be called by the HTGS API
  */
-class TaskSchedulerThread {
+class TaskManagerThread {
  public:
   /**
-   * Constructs a TaskSchedulerThread with a specified AnyTaskScheduler and atomic number of threads
-   * that is shared among all other threads that operate with a copy of the same AnyTaskScheduler
+   * Constructs a TaskManagerThread with a specified AnyTaskManager and atomic number of threads
+   * that is shared among all other threads that operate with a copy of the same AnyTaskManager
    * @param threadId the thread Id for the task
    * @param task the task the thread is associated with
    * @param numThreads the number of threads that a task contains
    */
-  TaskSchedulerThread(size_t threadId, AnyTaskScheduler *task, std::shared_ptr<std::atomic_size_t> numThreads) {
+  TaskManagerThread(size_t threadId, AnyTaskManager *task, std::shared_ptr<std::atomic_size_t> numThreads) {
     this->task = task;
     this->terminated = false;
     this->numThreads = numThreads;
@@ -479,7 +498,7 @@ class TaskSchedulerThread {
   /**
    * Destructor
    */
-  ~TaskSchedulerThread() {
+  ~TaskManagerThread() {
   }
 
   /**
@@ -538,10 +557,10 @@ class TaskSchedulerThread {
 
  private:
   volatile bool terminated; //!< Whether the thread is ready to be terminated or not
-  std::shared_ptr<std::atomic_size_t> numThreads; //!< The number of total threads managing the TaskScheduler
-  AnyTaskScheduler *task; //!< The TaskScheduler that is called from the thread
+  std::shared_ptr<std::atomic_size_t> numThreads; //!< The number of total threads managing the TaskManager
+  AnyTaskManager *task; //!< The TaskManager that is called from the thread
 };
 
 }
 
-#endif //HTGS_ANYTASKSCHEDULER_HPP
+#endif //HTGS_ANYTASKMANAGER_HPP

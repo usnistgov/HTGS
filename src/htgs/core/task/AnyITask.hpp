@@ -13,7 +13,6 @@
 #ifndef HTGS_ANYITASK_HPP
 #define HTGS_ANYITASK_HPP
 
-class AnyTaskScheduler;
 #include <memory>
 #include <cassert>
 #include <sstream>
@@ -25,7 +24,7 @@ class AnyTaskScheduler;
 #include <htgs/types/MMType.hpp>
 #include <htgs/debug/debug_message.hpp>
 #include <htgs/types/TaskGraphDotGenFlags.hpp>
-#include "AnyTaskScheduler.hpp"
+#include "AnyTaskManager.hpp"
 
 namespace htgs {
 
@@ -172,6 +171,12 @@ class AnyITask {
   virtual void debug() { }
 
   /**
+   * Provides debug output for a node in the dot graph.
+   * @return a string representation of the debug output that is added to the dot graph.
+   */
+  virtual std::string debugDotNode() { return "";}
+
+  /**
    * Virtual function that is called to provide profile output for the ITask
    * @note \#define PROFILE to enable profiling
    */
@@ -188,6 +193,12 @@ class AnyITask {
   * @return the demangled output type name for the input
   */
   virtual std::string outTypeName() = 0;
+
+  /**
+   * Gets the address from the owner task, which is the address of the task graph.
+   * @return the address
+   */
+  virtual std::string getAddress() = 0;
 
   /**
   * @internal
@@ -207,7 +218,9 @@ class AnyITask {
   virtual std::string genDot(int flags, std::string dotId) {
     std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
     std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-    return dotId + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
+    return dotId + "[label=\"" + this->getName() +
+        (this->debugDotNode() != "" ? ("\n"+this->debugDotNode()+"\n") : "") +
+        threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
   }
 
 #ifdef PROFILE
@@ -699,10 +712,10 @@ class AnyITask {
   //! @endcond
 
 
-  size_t numThreads; //!< The number of threads to be used with this ITask (forms a thread pool) used when creating a TaskScheduler
-  bool startTask; //!< Whether the ITask will be a start task used when creating a TaskScheduler
-  bool poll; //!< Whether the ITask should poll for data used when creating a TaskScheduler
-  size_t microTimeoutTime; //!< The timeout time for polling in microseconds used when creating a TaskScheduler
+  size_t numThreads; //!< The number of threads to be used with this ITask (forms a thread pool) used when creating a TaskManager
+  bool startTask; //!< Whether the ITask will be a start task used when creating a TaskManager
+  bool poll; //!< Whether the ITask should poll for data used when creating a TaskManager
+  size_t microTimeoutTime; //!< The timeout time for polling in microseconds used when creating a TaskManager
   size_t pipelineId; //!< The execution pipeline id for the ITask
   size_t numPipelines;
 

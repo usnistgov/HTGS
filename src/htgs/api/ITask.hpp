@@ -23,7 +23,7 @@
 #include <assert.h>
 #include <sstream>
 #include <htgs/core/graph/Connector.hpp>
-#include <htgs/core/task/TaskScheduler.hpp>
+#include <htgs/core/task/TaskManager.hpp>
 
 namespace htgs {
 
@@ -68,8 +68,9 @@ namespace htgs {
  * By doing so, the overall compute time of a TaskGraph can be evenly distributed. The number of threads in use for computation
  * should not exceed the number of logical cores on a system.
  *
+ * TODO: Rework comments
  * There are two types of initialize functions. The basic ITask::initialize(int pipelineId, int numPipelines) is
- * the most commonly used variant. The ITask::initialize(int pipelineId, int numPipeline, TaskScheduler<T, U> *ownerTask,
+ * the most commonly used variant. The ITask::initialize(int pipelineId, int numPipeline, TaskManager<T, U> *ownerTask,
  * std::shared_ptr<ConnectorVector> pipelineConnectorList) can be used for more advanced operations such as processing data from
  * other execution pipelines using the pipelineConnectorList.
  *
@@ -259,7 +260,7 @@ class ITask: public AnyITask {
 
   /**
    * Function that is called when an ITask is being initialized by it's owner thread.
-   * This initialize function contains some advanced parameters such as the TaskScheduler associated
+   * This initialize function contains some advanced parameters such as the TaskManager associated
    * with the ITask and the list of pipeline connectors. These parameters can be used for features such
    * as work stealing. If they are not needed, then override the initialize(int pipelineId, int numPipeline) function
    * instead.
@@ -270,7 +271,7 @@ class ITask: public AnyITask {
    * ICudaTask's in an execution pipeline
    */
    // TODO: Can remove ownerTask and pipelineConnectorList
-  void initialize(size_t pipelineId, size_t numPipeline, TaskScheduler<T, U> *ownerTask,
+  void initialize(size_t pipelineId, size_t numPipeline, TaskManager<T, U> *ownerTask,
                           std::shared_ptr<ConnectorVector> pipelineConnectorList) {
     this->ownerTask = ownerTask;
     this->pipelineConnectorList = pipelineConnectorList;
@@ -301,20 +302,25 @@ class ITask: public AnyITask {
 
   }
 
+  std::string getAddress() override final
+  {
+    return ownerTask->getAddress();
+  }
+
   /**
-   * Sets the owner task scheduler for this ITask
-   * @param ownerTask the task scheduler that owns this ITask
+   * Sets the owner task manager for this ITask
+   * @param ownerTask the task manager that owns this ITask
    */
-  void setTaskScheduler(TaskScheduler<T, U> *ownerTask)
+  void setTaskManager(TaskManager<T, U> *ownerTask)
   {
     this->ownerTask = ownerTask;
   }
 
   /**
-   * Gets the owner task scheduler for this ITask
-   * @return the owner task scheduler
+   * Gets the owner task manager for this ITask
+   * @return the owner task manager
    */
-  TaskScheduler<T, U> *getOwnerTaskScheduler()
+  TaskManager<T, U> *getOwnerTaskManager()
   {
     return this->ownerTask;
   }
@@ -323,7 +329,7 @@ class ITask: public AnyITask {
 
   typedef AnyITask super;
 
-  TaskScheduler<T, U> *ownerTask; //!< The owner task for this ITask
+  TaskManager<T, U> *ownerTask; //!< The owner task for this ITask
 
   // TODO: This may be candidate for removal with new system
   std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The connector list to communicate with other pipelines of the same task

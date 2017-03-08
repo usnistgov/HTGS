@@ -22,23 +22,23 @@ class RuleEdge : public EdgeDescriptor
   ~RuleEdge() override {}
 
   void applyEdge(AnyTaskGraphConf *graph) override {
-    graph->getTaskScheduler(bookkeeper);
-    TaskScheduler<U, W> *consumerTaskScheduler = graph->getTaskScheduler(consumer);
+    graph->getTaskManager(bookkeeper);
+    TaskManager<U, W> *consumerTaskManager = graph->getTaskManager(consumer);
 
-    auto connector = consumerTaskScheduler->getInputConnector();
+    auto connector = consumerTaskManager->getInputConnector();
 
     if (connector == nullptr)
     {
       connector = std::shared_ptr<Connector<U>>(new Connector<U>());
     }
 
-    RuleScheduler<T, U> *ruleScheduler = new RuleScheduler<T, U>(rule);
-    ruleScheduler->setOutputConnector(connector);
+    RuleManager<T, U> *ruleManager = new RuleManager<T, U>(rule);
+    ruleManager->setOutputConnector(connector);
 
     connector->incrementInputTaskCount();
 
-    consumerTaskScheduler->setInputConnector(connector);
-    bookkeeper->addRuleScheduler(ruleScheduler);
+    consumerTaskManager->setInputConnector(connector);
+    bookkeeper->addRuleManager(ruleManager);
   }
 
   EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {

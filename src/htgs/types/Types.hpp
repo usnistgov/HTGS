@@ -8,10 +8,26 @@
 #include <vector>
 #include <unordered_map>
 #include <htgs/core/graph/AnyConnector.hpp>
+#include <htgs/api/IRule.hpp>
 #include <htgs/api/MemoryData.hpp>
 #include <map>
 
 namespace htgs {
+
+template <class T, class U>
+using IRuleList = std::list<std::shared_ptr<IRule<T, U>>>;
+
+/**
+ * @typedef ConnectorMap
+ * A mapping between the name of a task and its connector
+ */
+typedef std::unordered_map<std::string, std::shared_ptr<AnyConnector>> ConnectorMap;
+
+/**
+ * @typedef ConnectorPair
+ * A pair used for the ConnectorMap
+ */
+typedef std::pair<std::string, std::shared_ptr<AnyConnector>> ConnectorPair;
 
 /**
  * @typedef ConnectorVector

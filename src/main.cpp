@@ -69,7 +69,7 @@ class TestRuleBad : public htgs::IRule<TestData, htgs::VoidData> {
 
 class TestTask : public htgs::ITask<TestData, TestData> {
  public:
-  TestTask(int n) : ITask(n), n(n) { }
+  TestTask(int n) : ITask(4), n(n) { }
 
   ~TestTask() override {
 
@@ -84,7 +84,13 @@ class TestTask : public htgs::ITask<TestData, TestData> {
   }
   std::string getName() override {
     std::stringstream ss;
-    ss << "TestTask: " + std::to_string(n) << " " << this->getPipelineId() << ":" << this->getNumPipelines() << " :: " << this;
+    ss << "TestTask" + std::to_string(n);
+    return ss.str();
+  }
+
+  std::string debugDotNode() override {
+    std::stringstream ss;
+    ss << "Addr: " << this->getAddress() << " (totPip: " << this->getNumPipelines() << ")\n" << this;
     return ss.str();
   }
 
@@ -116,7 +122,7 @@ class TestAllocator : public htgs::IMemoryAllocator<double *> {
 void writeDotPng(htgs::AnyTaskGraphConf *graph, std::string baseFileName)
 {
   graph->writeDotToFile(baseFileName + ".dot");
-  std::string cmd("dot -Tpng -o " + baseFileName + ".png " + baseFileName + ".dot");
+  std::string cmd("dot -Tpdf -o " + baseFileName + ".pdf " + baseFileName + ".dot");
   int ret = system(cmd.c_str());
   if (ret != 0)
     std::cout << "Unable to execute dot command. status code: " << ret << std::endl;
@@ -127,7 +133,7 @@ int main()
 
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
-  int NUM_DATA = 10;
+  int NUM_DATA = 100;
   bool useBK = true;
   int nVertices = 5;
   TestData *testData;
@@ -184,31 +190,56 @@ int main()
 
   }
 
-  tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[1], tasks[nVertices-2], 100);
-  tGraph->addMemoryManagerEdge<double *>("TestMemory2", tasks[1], tasks[nVertices-2], testAllocator, 100, htgs::MMType::Static);
+  if (nVertices > 4) {
+    tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[1], tasks[nVertices - 2], 100);
+    tGraph->addMemoryManagerEdge<double *>("TestMemory2",
+                                           tasks[1],
+                                           tasks[nVertices - 2],
+                                           testAllocator,
+                                           100,
+                                           htgs::MMType::Static);
+  }
 
 
   auto mainGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
-  auto execPipline = new htgs::ExecutionPipeline<TestData, TestData>(5, tGraph);
+  auto execPipeline = new htgs::ExecutionPipeline<TestData, TestData>(8, tGraph);
 
-  mainGraph->setGraphConsumerTask(execPipline);
-  mainGraph->setGraphProducerTask(execPipline);
+  execPipeline->addInputRule(new htgs::ExecutionPipelineBroadcastRule<TestData>());
 
-  auto execGraph = mainGraph;
+  auto testInput = new TestTask(1);
 
-  writeDotPng(mainGraph, "testorig");
-  writeDotPng(mainGraph, "test");
-
-
+  mainGraph->setGraphConsumerTask(testInput);
+  mainGraph->addEdge(testInput, execPipeline);
+  mainGraph->setGraphProducerTask(execPipeline);
 
 
-  execGraph->incrementGraphProducer();
+  auto execPipeline2 = new htgs::ExecutionPipeline<TestData, TestData>(100, mainGraph);
+
+  execPipeline2->addInputRule(new htgs::ExecutionPipelineBroadcastRule<TestData>());
+
+  auto finalGraph = new htgs::TaskGraphConf<TestData, TestData>();
+  finalGraph->setGraphConsumerTask(execPipeline2);
+  finalGraph->setGraphProducerTask(execPipeline2);
+
+
+  auto execGraph = finalGraph;
+
+//  writeDotPng(execGraph, "testorig");
+
+
+
+
+//  execGraph->incrementGraphProducer();
 
   auto runtime = new htgs::TaskGraphRuntime(execGraph);
 
   runtime->executeRuntime();
 
+//  for (int i = 0; i < NUM_DATA; i++)
+//  {
+//    writeDotPng(execGraph, "testExec");
+//  }
 
   for (int i = 0; i < NUM_DATA; i++)
   {
@@ -217,18 +248,28 @@ int main()
 
   execGraph->decrementGraphProducer();
 
+  int count = 0;
   while(!execGraph->isOutputTerminated())
   {
     auto data = execGraph->consumeData();
-    if (data == nullptr)
+    if (data == nullptr) {
       std::cout << "NULL DATA Received" << std::endl;
-    else
-      std::cout << "Data: " << data->getVal() << " received" << std::endl;
+    }
+//    else
+//      std::cout << "Data: " << data->getVal() << " received" << std::endl;
+
+//    if ((count % 9) == 0)
+//      writeDotPng(execGraph, "testExec");
+
+    count++;
+
   }
+
+  std::cout << "Finished processing " << count << " elements" << std::endl;
 
   runtime->waitForRuntime();
 
-  writeDotPng(execGraph, "testExec");
+//  writeDotPng(execGraph, "testExec");
 
   delete runtime;
 

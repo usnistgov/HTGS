@@ -22,10 +22,10 @@ class ProducerConsumerEdge : public EdgeDescriptor
 
   void applyEdge(AnyTaskGraphConf *graph) override {
     // TODO: What if the connector is either the input or output of a graph . . .
-    TaskScheduler<T, U> *producerTaskScheduler = graph->getTaskScheduler(producer);
-    TaskScheduler<U, W> *consumerTaskScheduler = graph->getTaskScheduler(consumer);
+    TaskManager<T, U> *producerTaskManager = graph->getTaskManager(producer);
+    TaskManager<U, W> *consumerTaskManager = graph->getTaskManager(consumer);
 
-    auto connector = consumerTaskScheduler->getInputConnector();
+    auto connector = consumerTaskManager->getInputConnector();
 
     if (connector == nullptr) {
       connector = std::shared_ptr<Connector<U>>(new Connector<U>());
@@ -33,8 +33,8 @@ class ProducerConsumerEdge : public EdgeDescriptor
 
     connector->incrementInputTaskCount();
 
-    consumerTaskScheduler->setInputConnector(connector);
-    producerTaskScheduler->setOutputConnector(connector);
+    consumerTaskManager->setInputConnector(connector);
+    producerTaskManager->setOutputConnector(connector);
   }
 
   EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {

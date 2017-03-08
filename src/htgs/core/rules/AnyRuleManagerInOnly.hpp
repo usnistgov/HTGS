@@ -2,20 +2,20 @@
 // Created by tjb3 on 2/24/17.
 //
 
-#ifndef HTGS_ANYRULESCHEDULERINONLY_HPP
-#define HTGS_ANYRULESCHEDULERINONLY_HPP
+#ifndef HTGS_ANYRULEMANAGERINONLY_HPP
+#define HTGS_ANYRULEMANAGERINONLY_HPP
 
-#include "AnyRuleScheduler.hpp"
+#include "AnyRuleManager.hpp"
 namespace htgs {
 template<class T>
-class AnyRuleSchedulerInOnly : public AnyRuleScheduler {
+class AnyRuleManagerInOnly : public AnyRuleManager {
 
  public:
 
   /**
    * Destructor
    */
-  virtual ~AnyRuleSchedulerInOnly() override {}
+  virtual ~AnyRuleManagerInOnly() override {}
 
   /**
  * @internal
@@ -31,4 +31,4 @@ class AnyRuleSchedulerInOnly : public AnyRuleScheduler {
 };
 
 }
-#endif //HTGS_ANYRULESCHEDULERINONLY_HPP
+#endif //HTGS_ANYRULEMANAGERINONLY_HPP

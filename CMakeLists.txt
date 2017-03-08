@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 2.7)
 project(htgs)
 
-set(CMAKE_VERBOSE_MAKEFILE  off)
+set(CMAKE_VERBOSE_MAKEFILE  on)
 
 find_package (Threads REQUIRED)
 # TODO: Add unit tests for CUDA

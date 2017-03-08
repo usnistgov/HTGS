@@ -4,14 +4,14 @@
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file TaskScheduler.hpp
+ * @file TaskManager.hpp
  * @author Timothy Blattner
  * @date Nov 16, 2015
  *
- * @brief Implements a TaskScheduler that interacts with an ITask and holds the input and output Connector for the ITask
+ * @brief Implements a TaskManager that interacts with an ITask and holds the input and output Connector for the ITask
  */
-#ifndef HTGS_TASKSCHEDULER_HPP
-#define HTGS_TASKSCHEDULER_HPP
+#ifndef HTGS_TASKMANAGER_HPP
+#define HTGS_TASKMANAGER_HPP
 
 
 #include <chrono>
@@ -21,7 +21,7 @@
 #include <mutex>
 #include <sstream>
 
-#include <htgs/core/task/AnyTaskScheduler.hpp>
+#include <htgs/core/task/AnyTaskManager.hpp>
 #include <htgs/api/ITask.hpp>
 
 namespace htgs {
@@ -30,74 +30,77 @@ template<class T, class U>
 class ITask;
 
 /**
- * @class TaskScheduler TaskScheduler.hpp <htgs/core/task/TaskScheduler.hpp>
+ * @class TaskManager TaskManager.hpp <htgs/core/task/TaskManager.hpp>
  * @brief Encapsulates an ITask to interact with an ITask's functionality.
  * @details
- * The TaskScheduler interacts with the BaseTaskSchedulerRuntimeThread to process an ITask's input and output data.
- * The core logic of a TaskScheduler is implemented with the ITask representing the computational and logic functionality.
+ * The TaskManager interacts with the BaseTaskManagerRuntimeThread to process an ITask's input and output data.
+ * The core logic of a TaskManager is implemented with the ITask representing the computational and logic functionality.
  *
- * When the TaskScheduler is ready to be terminated the thread associated with the TaskScheduler and the output Connector will be notified.
+ * When the TaskManager is ready to be terminated the thread associated with the TaskManager and the output Connector will be notified.
  * Using this approach each ITask that is terminated if the input Connector has finished producing data will be
  * closed.
  *
- * @tparam T the input data type for the TaskScheduler, T must derive from IData.
- * @tparam U the output data type for the TaskScheduler, U must derive from IData.
+ * @tparam T the input data type for the TaskManager, T must derive from IData.
+ * @tparam U the output data type for the TaskManager, U must derive from IData.
  * @note This class should only be called by the HTGS API
  * @note \#define PROFILE to enable profiling.
  */
 template<class T, class U>
-class TaskScheduler: public AnyTaskScheduler {
+class TaskManager: public AnyTaskManager {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
  public:
   /**
-   * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
-   * @param taskFunction the functionality for the TaskScheduler
-   * @param numThreads the number of threads to operate with the TaskScheduler
-   * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
-   * @param pipelineId the pipeline Id associated with the TaskScheduler
+   * Constructs a TaskManager with an ITask as the task function and specific runtime parameters.
+   * @param taskFunction the functionality for the TaskManager
+   * @param numThreads the number of threads to operate with the TaskManager
+   * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
+   * @param pipelineId the pipeline Id associated with the TaskManager
    * @param numPipelines the number of pipelines
+   * @param address the address of the task graph that owns this task
    */
-  TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines) :
-      super(numThreads, isStartTask, pipelineId, numPipelines),
+  TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines, std::string address) :
+      super(numThreads, isStartTask, pipelineId, numPipelines, address),
       inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
-    taskFunction->setTaskScheduler(this);
+    taskFunction->setTaskManager(this);
   }
 
   /**
-   * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters.
-   * @param taskFunction the functionality for the TaskScheduler
-   * @param numThreads the number of threads to operate with the TaskScheduler
-   * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
-   * @param poll whether the TaskScheduler should poll for data
+   * Constructs a TaskManager with an ITask as the task function and specific runtime parameters.
+   * @param taskFunction the functionality for the TaskManager
+   * @param numThreads the number of threads to operate with the TaskManager
+   * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
+   * @param poll whether the TaskManager should poll for data
    * @param microTimeoutTime the timeout time in microseconds
-   * @param pipelineId the pipeline Id associated with the TaskScheduler
+   * @param pipelineId the pipeline Id associated with the TaskManager
    * @param numPipelines the number of pipelines
+   * @param address the address of the task graph that owns this task
    */
-  TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-                size_t pipelineId, size_t numPipelines) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines),
+  TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
+                size_t pipelineId, size_t numPipelines, std::string address) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, address),
                          inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
-    taskFunction->setTaskScheduler(this);
+    taskFunction->setTaskManager(this);
   }
 
 
   /**
-   * Constructs a TaskScheduler with an ITask as the task function and specific runtime parameters
-   * @param taskFunction the functionality for the TaskScheduler
-   * @param numThreads the number of threads to operate with the TaskScheduler
-   * @param isStartTask whether the TaskScheduler is a start task or not (immediately launches the ITask::execute when bound to a thread)
-   * @param poll whether the TaskScheduler should poll for data
+   * Constructs a TaskManager with an ITask as the task function and specific runtime parameters
+   * @param taskFunction the functionality for the TaskManager
+   * @param numThreads the number of threads to operate with the TaskManager
+   * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
+   * @param poll whether the TaskManager should poll for data
    * @param microTimeoutTime the timeout time in microseconds
-   * @param pipelineId the pipeline Id associated with the TaskScheduler
+   * @param pipelineId the pipeline Id associated with the TaskManager
    * @param numPipelines the number of pipelines
-   * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskScheduler and copies of this TaskScheduler
+   * @param address the address of the task graph that owns this task
+   * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskManager and copies of this TaskManager
    */
-  TaskScheduler(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-                size_t pipelineId, size_t numPipelines, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
-      : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, pipelineConnectorList),
+  TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
+                size_t pipelineId, size_t numPipelines, std::string address, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
+      : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, address, pipelineConnectorList),
         inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
-    taskFunction->setTaskScheduler(this);
+    taskFunction->setTaskManager(this);
   }
 
 
@@ -106,7 +109,7 @@ class TaskScheduler: public AnyTaskScheduler {
   ////////////////////// INHERITED FUNCTIONS /////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  ~TaskScheduler() override {
+  ~TaskManager() override {
     delete taskFunction;
     taskFunction = nullptr;
   }
@@ -122,23 +125,23 @@ class TaskScheduler: public AnyTaskScheduler {
     this->taskFunction->initialize(this->getPipelineId(), this->getNumPipelines(), this, this->getPipelineConnectors());
   }
 
-  void setRuntimeThread(TaskSchedulerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }
+  void setRuntimeThread(TaskManagerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }
 
   ITask<T, U> *getTaskFunction() override {
     return this->taskFunction;
   }
 
-  AnyTaskScheduler *copy(bool deep)  override {
+  AnyTaskManager *copy(bool deep)  override {
     ITask<T, U> *iTask = this->taskFunction->copyITask(deep);
 
-    TaskScheduler<T, U>
-        *newTask = new TaskScheduler<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),
-                                           this->getPipelineId(), this->getNumPipelines(), this->getPipelineConnectors());
+    TaskManager<T, U>
+        *newTask = new TaskManager<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),
+                                           this->getPipelineId(), this->getNumPipelines(), this->getAddress(), this->getPipelineConnectors());
     if (deep) {
       newTask->setInputConnector(this->getInputConnector());
       newTask->setOutputConnector(this->getOutputConnector());
     }
-    return (AnyTaskScheduler *) newTask;
+    return (AnyTaskManager *) newTask;
   }
 
   void executeTask() override {
@@ -316,15 +319,15 @@ class TaskScheduler: public AnyTaskScheduler {
   }
   //! @endcond
 
-  typedef AnyTaskScheduler super;
+  typedef AnyTaskManager super;
 
-  std::shared_ptr<Connector<T>> inputConnector; //!< The input connector for the scheduler (queue to get data from)
-  std::shared_ptr<Connector<U>> outputConnector; //!< The output connector for the scheduler (queue to send data)
-  ITask<T, U> *taskFunction; //!< The task that is managed by the scheduler
-  TaskSchedulerThread *runtimeThread; //!< The thread that is executing this task's runtime
+  std::shared_ptr<Connector<T>> inputConnector; //!< The input connector for the manager (queue to get data from)
+  std::shared_ptr<Connector<U>> outputConnector; //!< The output connector for the manager (queue to send data)
+  ITask<T, U> *taskFunction; //!< The task that is managed by the manager
+  TaskManagerThread *runtimeThread; //!< The thread that is executing this task's runtime
 
 };
 }
 
 
-#endif //HTGS_TASKSCHEDULER_HPP
+#endif //HTGS_TASKMANAGER_HPP
