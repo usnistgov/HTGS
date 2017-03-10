@@ -16,6 +16,7 @@
 
 #include <stddef.h>
 #include <htgs/core/queue/PriorityBlockingQueue.hpp>
+#include <htgs/types/MMType.hpp>
 #include "IMemoryAllocator.hpp"
 #include "IMemoryReleaseRule.hpp"
 #include "IData.hpp"
@@ -68,7 +69,9 @@ class MemoryData: public IData {
    * @param allocator the memory allocator
    * @param memoryManagerName the name of the memory manager that allocated this memory
    */
-  MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator, std::string memoryManagerName) {
+  MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator, std::string address, std::string memoryManagerName, MMType type) {
+    this->type = type;
+    this->address = address;
     this->memoryManagerName = memoryManagerName;
     this->allocator = allocator;
     if (allocator != nullptr)
@@ -77,6 +80,7 @@ class MemoryData: public IData {
       this->size = 0;
     this->pipelineId = 0;
     this->memoryReleaseRule = nullptr;
+    this->memory = nullptr;
   }
 
   /**
@@ -87,6 +91,10 @@ class MemoryData: public IData {
       delete memoryReleaseRule;
       memoryReleaseRule = nullptr;
     }
+  }
+
+  const std::string &getAddress() const {
+    return address;
   }
 
   /**
@@ -172,7 +180,18 @@ class MemoryData: public IData {
    *
    * @note This function should only be called by the HTGS API
    */
-  void memFree() { this->allocator->memFree(this->memory); }
+  void memFree() {
+    if (this->memory)
+      this->allocator->memFree(this->memory);
+  }
+
+  /**
+   * Gets the type of memory that is associated with the memory manager
+   * @return the type of memory (either Dynamic or Static)
+   */
+  MMType getType() const {
+    return type;
+  }
 
   /**
    * @internal
@@ -181,7 +200,7 @@ class MemoryData: public IData {
    *
    * @note This function should only be called by the HTGS API
    */
-  MemoryData<T> *copy() { return new MemoryData<T>(this->allocator, this->memoryManagerName); }
+  MemoryData<T> *copy() { return new MemoryData<T>(this->allocator, this->address, this->memoryManagerName, this->type); }
 
   /**
    * Allocates the memory that this memory data is managed with the specified size
@@ -201,7 +220,9 @@ class MemoryData: public IData {
   }
 
  private:
+  MMType type; //!< The type of memory manager
   std::string memoryManagerName; //!< The name of the memory manager that allocated the memory
+  std::string address; //!< The address of the memory manager, used to release back
   size_t pipelineId; //!< The pipelineId associated with where this memory was managed
   T memory; //!< The memory
   size_t size; //!< The size of the memory (in elements)

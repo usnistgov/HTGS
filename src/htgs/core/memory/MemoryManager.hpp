@@ -70,12 +70,13 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
     this->type = type;
   }
 
+
+
   /**
    * Destructor
    */
   ~MemoryManager() override {
-    if (type == htgs::MMType::Static)
-      pool->releaseAllMemory();
+    pool->releaseAllMemory();
 
     delete pool;
     pool = nullptr;
@@ -86,26 +87,25 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * All the memory is allocated once a thread has been bound to ITask.
    */
   void initialize() override {
-    this->pipelineId = this->getPipelineId();
-    MemoryData<T> *memory = new MemoryData<T>(this->allocator, this->getName());
+    MemoryData<T> *memory = new MemoryData<T>(this->allocator, this->getAddress(), this->getName(), this->type);
 
     bool allocate = false;
     if (type == MMType::Static)
       allocate = true;
 
-    this->pool->fillPool(memory, pipelineId, allocate);
+    this->pool->fillPool(memory, this->getPipelineId(), allocate);
     this->pipelineConnectorList = this->getPipelineConnectorList();
     delete memory;
   }
 
   /**
-   * Shuts down the MemoryManager releasing memory that is inside of the pool.
+   * Shuts down the MemoryManager memory is only released when the underlying graph destructs the memory manager.
    */
   void shutdown() override{
-    bool release = false;
-    if (type == MMType::Static)
-      release = true;
-    this->pool->emptyPool(release);
+//    bool release = false;
+//    if (type == MMType::Static)
+//      release = true;
+//    this->pool->emptyPool(release);
   }
 
   /**
@@ -118,23 +118,19 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    */
   void executeTask(std::shared_ptr<MemoryData<T>> data) override {
     if (data != nullptr) {
-      if (data->getPipelineId() == this->pipelineId) {
+      if (data->getPipelineId() == this->getPipelineId()) {
 
-        if (type == MMType::UserManaged) {
-          this->pool->addMemory(data);
-        }
-        else {
-          data->memoryUsed();
+        data->memoryUsed();
 
-          if (data->canReleaseMemory()) {
-            if (type == MMType::Static)
-              this->pool->addMemory(data);
-            else if (type == MMType::Dynamic) {
-              data->memFree();
-              this->pool->addMemory(data);
-            }
+        if (data->canReleaseMemory()) {
+          if (type == MMType::Static)
+            this->pool->addMemory(data);
+          else if (type == MMType::Dynamic) {
+            data->memFree();
+            this->pool->addMemory(data);
           }
         }
+
       }
       else {
         std::cerr << "Memory manager received data from another pipeline!" << std::endl;
@@ -168,9 +164,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
         break;
       case MMType::Dynamic:
         typeStr = "dynamic";
-        break;
-      case MMType::UserManaged:
-        typeStr = "user managed";
         break;
     }
     return std::string("MM(" + typeStr + "): " + this->name);
@@ -270,7 +263,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   std::shared_ptr<IMemoryAllocator<T>> allocator; //!< The allocator used for allocating and freeing memory
   size_t memoryPoolSize; //!< The size of the memory pool
   MemoryPool<T> *pool; //!< The memory pool
-  size_t pipelineId; //!< The execution pipeline id
   std::string name; //!< The name of the memory manager
   MMType type; //!< The memory manager type
 

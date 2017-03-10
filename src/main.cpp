@@ -149,6 +149,7 @@ int main()
   auto testRule4 = std::make_shared<TestRule>("Rule4");
 
   auto testAllocator = std::make_shared<TestAllocator>(10);
+  auto voidAllocator = std::make_shared<htgs::VoidMemoryAllocator>();
 
   auto tGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
@@ -191,10 +192,9 @@ int main()
   }
 
   if (nVertices > 4) {
-    tGraph->addUserManagedMemoryManagerEdge("TestMemory", tasks[1], tasks[nVertices - 2], 100);
+    tGraph->addMemoryManagerEdge<void *>("TestMemory", tasks[1], voidAllocator, 100, htgs::MMType::Static);
     tGraph->addMemoryManagerEdge<double *>("TestMemory2",
                                            tasks[1],
-                                           tasks[nVertices - 2],
                                            testAllocator,
                                            100,
                                            htgs::MMType::Static);
@@ -203,7 +203,7 @@ int main()
 
   auto mainGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
-  auto execPipeline = new htgs::ExecutionPipeline<TestData, TestData>(100, tGraph);
+  auto execPipeline = new htgs::ExecutionPipeline<TestData, TestData>(2, tGraph);
 
   execPipeline->addInputRule(new htgs::ExecutionPipelineBroadcastRule<TestData>());
 
@@ -214,7 +214,7 @@ int main()
   mainGraph->setGraphProducerTask(execPipeline);
 
 
-  auto execPipeline2 = new htgs::ExecutionPipeline<TestData, TestData>(10, mainGraph);
+  auto execPipeline2 = new htgs::ExecutionPipeline<TestData, TestData>(2, mainGraph);
 
   execPipeline2->addInputRule(new htgs::ExecutionPipelineBroadcastRule<TestData>());
 

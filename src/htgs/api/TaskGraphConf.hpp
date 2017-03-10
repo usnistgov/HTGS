@@ -287,7 +287,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
    * the TaskGraphConf.
    * @param name the name of the memory edge
-   * @param getMemoryEdges the ITask that is getting memory
+   * @param memoryEdges the ITask that is getting memory
    * @param releaseMemoryEdges the ITask that is releasing memory
    * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
    * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
@@ -297,7 +297,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
    */
   template <class IMemoryAllocatorType>
-  void addCudaMemoryManagerEdge(std::string name, AnyITask *getMemoryEdges, AnyITask *releaseMemoryEdges,
+  void addCudaMemoryManagerEdge(std::string name, AnyITask *memoryEdges, AnyITask *releaseMemoryEdges,
           std::shared_ptr<IMemoryAllocatorType> allocator, size_t memoryPoolSize, MMType type, CUcontext * contexts) {
     static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
@@ -313,30 +313,9 @@ class TaskGraphConf: public AnyTaskGraphConf {
 #endif
 
   /**
-   * Adds a MemoryManager that is managed by the user.
-   * This edge will enable an ITask to use the MemoryManager to throttle how much data is allocated.
-   * @param name the name of the memory edge
-   * @param memGetter the ITask that will be getting memory
-   * @param memReleaser the ITask that will be releasing memory
-   * @param memoryPoolSize the size of the memory pool
-   */
-  void addUserManagedMemoryManagerEdge(std::string name,
-                                       AnyITask *getMemoryTask,
-                                       AnyITask *releaseMemoryTask,
-                                       size_t memoryPoolSize) {
-    auto voidAllocator = std::make_shared<VoidMemoryAllocator>();
-    MemoryManager<void *> *memoryManager = new MemoryManager<void *>(name, memoryPoolSize, voidAllocator, MMType::UserManaged);
-
-    MemoryEdge<void *> *memEdge = new MemoryEdge<void *>(name, getMemoryTask, releaseMemoryTask, memoryManager);
-    memEdge->applyEdge(this);
-    this->addEdgeDescriptor(memEdge);
-  }
-
-  /**
    * Adds a MemoryManager edge with the specified name to the TaskGraph.
    * @param name the name of the memory edge
    * @param getMemoryTask the ITask that is getting memory
-   * @param releaseMemoryTask the ITask that is releasing memory
    * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
    * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
    * @param type the type of memory manager
@@ -344,7 +323,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @tparam V the type of memory; i.e., 'double *'
    */
   template<class V, class IMemoryAllocatorType>
-  void addMemoryManagerEdge(std::string name, AnyITask *getMemoryTask, AnyITask *releaseMemoryTask,
+  void addMemoryManagerEdge(std::string name, AnyITask *getMemoryTask,
                             std::shared_ptr<IMemoryAllocatorType> allocator, size_t memoryPoolSize, MMType type) {
     static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
@@ -352,7 +331,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
     MemoryManager<V> *memoryManager = new MemoryManager<V>(name, memoryPoolSize, memAllocator, type);
 
-    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, releaseMemoryTask, memoryManager);
+    MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, memoryManager);
     memEdge->applyEdge(this);
     this->addEdgeDescriptor(memEdge);
   }

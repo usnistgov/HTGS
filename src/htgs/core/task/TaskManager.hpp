@@ -78,8 +78,8 @@ class TaskManager: public AnyTaskManager {
    * @param address the address of the task graph that owns this task
    */
   TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-                size_t pipelineId, size_t numPipelines, std::string address) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, address),
-                         inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
+              size_t pipelineId, size_t numPipelines, std::string address) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, address),
+                                                                             inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
     taskFunction->setTaskManager(this);
   }
 
@@ -97,7 +97,7 @@ class TaskManager: public AnyTaskManager {
    * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskManager and copies of this TaskManager
    */
   TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-                size_t pipelineId, size_t numPipelines, std::string address, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
+              size_t pipelineId, size_t numPipelines, std::string address, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
       : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, address, pipelineConnectorList),
         inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
     taskFunction->setTaskManager(this);
@@ -136,7 +136,7 @@ class TaskManager: public AnyTaskManager {
 
     TaskManager<T, U>
         *newTask = new TaskManager<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),
-                                           this->getPipelineId(), this->getNumPipelines(), this->getAddress(), this->getPipelineConnectors());
+                                         this->getPipelineId(), this->getNumPipelines(), this->getAddress(), this->getPipelineConnectors());
     if (deep) {
       newTask->setInputConnector(this->getInputConnector());
       newTask->setOutputConnector(this->getOutputConnector());
@@ -268,42 +268,23 @@ class TaskManager: public AnyTaskManager {
             this->getOutputConnector()->wakeupConsumer();
         }
 
-        // Notify the memory release edge memory manager task that it is no longer receiving data
-        std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> >> memReleasers = this->getTaskFunction()->getReleaseMemoryEdges();
+        auto memManagerConnectorMap = this->getTaskFunction()->getReleaseMemoryEdges();
 
-        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memReleasers->size() << " memory releasers");
-        for (std::pair<std::string, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> > pair : *memReleasers) {
+        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memManagerConnectorMap->size() << " memory releasers");
+        for (auto nameManagerPair : *memManagerConnectorMap) {
+          DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
 
-          // TODO: We should be able to remove all instances of 'odd' behavior like releasing memory that is not within this graph
-          if (this->getTaskFunction()->isReleaseMemoryOutsideGraph(pair.first))
-          {
-            DEBUG(prefix() << " " << this->getName() << " Shutting down ALL memory releasers : " <<  pair.first
-                           << " with " << pair.second->size() << " connectors");
-            for (auto connector : *pair.second)
-            {
-              connector->producerFinished();
-
-              if (connector->isInputTerminated())
-                connector->wakeupConsumer();
-            }
-          }
-          else {
-
-            DEBUG(prefix() << " " << this->getName() << " Shutting down memory releaser : " <<
-                           pair.first << " with " << pair.second->size() << " connectors");
-            // TODO: This needs to be removed so that it doesn't lookup "0", should just deal with one per name
-            std::shared_ptr<AnyConnector> connector = pair.second->at(0);
-//            std::shared_ptr<AnyConnector> connector = pair.second->at(this->getPipelineId());
-            connector->producerFinished();
+          std::shared_ptr<AnyConnector> connector = nameManagerPair.second;
+          connector->producerFinished();
 
 
-            if (connector->isInputTerminated())
-              connector->wakeupConsumer();
-          }
+          if (connector->isInputTerminated())
+            connector->wakeupConsumer();
         }
-
       }
+
     }
+
     else {
       if (this->getOutputConnector() != nullptr) {
         this->getOutputConnector()->producerFinished();

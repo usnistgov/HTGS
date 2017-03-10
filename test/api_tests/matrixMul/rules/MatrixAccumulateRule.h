@@ -18,7 +18,7 @@
 
 class MatrixAccumulateRule : public htgs::IRule<MatrixBlockData<double *>, MatrixBlockMulData<double *> > {
 public:
-    MatrixAccumulateRule(int blockWidth, int blockHeight, int blockWidthMatrixA) {
+    MatrixAccumulateRule(int blockWidth, size_t blockHeight, size_t blockWidthMatrixA) {
       matrixContainer = this->allocStateContainer(blockHeight, blockWidth);
       totalCount = blockWidth * blockHeight * blockWidthMatrixA + blockWidth * blockHeight * (blockWidthMatrixA-1);
       count = 0;
@@ -58,8 +58,8 @@ public:
 
 private:
   htgs::StateContainer<std::shared_ptr<MatrixBlockData<double *>>> *matrixContainer;
-  int count;
-  int totalCount;
+  size_t count;
+  size_t totalCount;
 };
 
 #endif //HTGS_MATRIXACCUMULATERULE_H

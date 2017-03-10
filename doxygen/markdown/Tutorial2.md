@@ -583,7 +583,7 @@ class MatrixLoadRule: public htgs::IRule<MatrixBlockData<MatrixMemoryData_t>, Ma
 ## Throttling Tasks with a Memory Manager {#memory-manager}
 The htgs::MemoryManager is an ITask that is created when connecting two ITasks together as a memory edge. A memory edge
 is similar to any other edge,  except it connects two ITasks directly rather than through a TaskScheduler. When connecting
- two ITask's, one task is declared the getMemoryEdges and the other task is the releaseMemoryEdges. The getMemoryEdges requests data from
+ two ITask's, one task is declared the memoryEdges and the other task is the releaseMemoryEdges. The memoryEdges requests data from
  the output htgs::Connector of the MemoryManager, and the releaseMemoryEdges sends data to the input htgs::Connector for the MemoryManager.
  Each memory edge contains a name associated with the edge. This way a single ITask can have multiple memory edges
  connected to it assuming each edge has a unique name.
@@ -591,7 +591,7 @@ is similar to any other edge,  except it connects two ITasks directly rather tha
 Every ITask has the capabilities to get memory data from a memory manager edge. Using the htgs::TaskGraph::addMemoryManagerEdge
 function, two ITasks will be connected by a MemoryManager. The ITask that is getting memory must be in
  the graph instance that is used to call the addMemoryManagerEdge function. The parameters for the addMemoryManagerEdge function
- specifies the name of the edge, the getMemoryEdges ITask, the releaseMemoryEdges ITask, the IMemoryAllocator, the memory pool size, and the
+ specifies the name of the edge, the memoryEdges ITask, the releaseMemoryEdges ITask, the IMemoryAllocator, the memory pool size, and the
  type of memory manager to use.
  The name that is specified by the addMemoryManagerEdge function must be used by the ITasks that will be releasing/getting memory
  to/from that MemoryManager.
@@ -636,7 +636,7 @@ The primary difference is when the dynamic
 MemoryManager allocates and frees memory. In the static MemoryManager all memory is allocated during initialization and freed
 during shutdown. The dynamic MemoryManager allocates and frees memory on-the-fly. As shown in the diagram below, when MemoryData
 is sent from the releaseMemoryEdges, if the memory can be released, then the MemoryManager will free the memory that the MemoryData
-is managing. When the getMemoryEdges acquires memory from the MemoryManager, the ITask will allocate the memory that the MemoryData
+is managing. When the memoryEdges acquires memory from the MemoryManager, the ITask will allocate the memory that the MemoryData
  is managing prior to returning the MemoryData to the ITask. Using these mechanisms the memory is allocated and freed
  on demand.
 
@@ -656,7 +656,7 @@ memory release metadata must be managed by the programmer.
 
 Within the htgs::MemoryData there are two functions that must be defined to use a MemoryManager edge:
 (1) htgs::IMemoryAllocator, and (2) htgs::IMemoryReleaseRule. The IMemoryAllocator is specified when creating the memory edge,
- while the IMemoryReleaseRule is added to MemoryData when the getMemoryEdges gets memory. For the HadamardProduct task, we
+ while the IMemoryReleaseRule is added to MemoryData when the memoryEdges gets memory. For the HadamardProduct task, we
   define the MatrixAllocator and MatrixMemoryRule as the htgs::IMemoryAllocator and htgs::IMemoryReleaseRule, respectively.
   Below is the code that defines these classes.
 
@@ -757,33 +757,33 @@ To add a dependency IRule to a graph, use the htgs::TaskGraph::addRule function.
 the htgs::ITask consumer task, and the htgs::IRule that produces data for the consumer.
 
 There are a number of ways for adding memory edges to a TaskGraph. Prior to adding any memory edges, the ITask that is
-acting as the getMemoryEdges must be added to the graph prior to adding the memory edge to that graph.
+acting as the memoryEdges must be added to the graph prior to adding the memory edge to that graph.
 
 The functions for adding a memory edge to a graph are defined below:
 
-1) htgs::TaskGraph::addUserManagedMemoryManagerEdge(std::string name, BaseITask *getMemoryEdges, BaseITask *releaseMemoryEdges, int memoryPoolSize)
+1) htgs::TaskGraph::addUserManagedMemoryManagerEdge(std::string name, BaseITask *memoryEdges, BaseITask *releaseMemoryEdges, int memoryPoolSize)
     - Creates a memory edge that is managed by the programmer/user. The MemoryManager acts to simply manage how much memory has been
     allocated. Does not use any allocators. Within an ITask use htgs::ITask::allocUserManagedMemory to get permission to
     allocate memory and htgs::ITask::memRelease(name, pipelineId).
 
-2) htgs::TaskGraph::addMemoryManagerEdge(std::string name, BaseITask *getMemoryEdges, BaseITask *releaseMemoryEdges, IMemoryAllocator<V> *allocator, int memoryPoolSize, htgs::MMType type)
+2) htgs::TaskGraph::addMemoryManagerEdge(std::string name, BaseITask *memoryEdges, BaseITask *releaseMemoryEdges, IMemoryAllocator<V> *allocator, int memoryPoolSize, htgs::MMType type)
     - Creates a memory edge that is managed based on htgs::IMemoryReleaseRule's attached to htgs::MemoryData. The htgs::IMemoryAllocator<V> defines
     how memory is allocated and freed and determines the type of the memory being allocated. The memory pool size determines the
     number of elements in the memory pool. If the MemoryManager is static, then all of the memory will be allocated during initialization.
 
-3) htgs::TaskGraph::addGraphUserManagedMemoryManagerEdge(std::string name, BaseITask *getMemoryEdges, int memoryPoolSize)
+3) htgs::TaskGraph::addGraphUserManagedMemoryManagerEdge(std::string name, BaseITask *memoryEdges, int memoryPoolSize)
     - Similar to htgs::TaskGraph::addUserManagedMemoryManagerEdge, except the memory releaser exists outside of the task graph.
     This methodology is demonstrated in the HadamardProduct main function when processing data produced by the TaskGraph.
 
-4) htgs::TaskGraph::addGraphMemoryManagerEdge(std::string name, BaseITask *getMemoryEdges, IMemoryAllocator<V> *allocator, int memoryPoolSize, htgs::MMType type)
+4) htgs::TaskGraph::addGraphMemoryManagerEdge(std::string name, BaseITask *memoryEdges, IMemoryAllocator<V> *allocator, int memoryPoolSize, htgs::MMType type)
     - Similar to htgs::addMemoryManagerEdge, except the memory releaser exists outside of the task graph.
 
-5) htgs::TaskGraph::addMemoryManagerEdge(BaseITask *getMemoryEdges, BaseITask *releaseMemoryEdges, MemoryManager<V> *memoryManager, bool ignoreMemGetterErrors)
+5) htgs::TaskGraph::addMemoryManagerEdge(BaseITask *memoryEdges, BaseITask *releaseMemoryEdges, MemoryManager<V> *memoryManager, bool ignoreMemGetterErrors)
     - Creates a memory manager edge with the provided MemoryManager. This allows for additional special types of memory managers,
     such as MemoryManager's allocating memory for other devices such as with OpenCL.
 
 As shown there are functions for designating the memory releaser to be attached to the TaskGraph. This means that any user
-with an instance of a TaskGraph can release memory for a getMemoryEdges Task within the TaskGraph. Here are the functions that
+with an instance of a TaskGraph can release memory for a memoryEdges Task within the TaskGraph. Here are the functions that
  can be used to interact with the memory releaser attached to the TaskGraph when using the htgs::TaskGraph::addGraphUserManagedMemoryManagerEdge
  and htgs::TaskGraph::addGraphMemoryManagerEdge.
 

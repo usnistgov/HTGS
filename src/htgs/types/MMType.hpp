@@ -34,21 +34,10 @@ namespace htgs {
  * To get memory use ITask::memGet<type>(std::string name, IMemoryReleaseRule *rule, size_t numElements)
  * To release memory use ITask::memRelease(std::string name, std::shared_ptr<MemoryData<V>> memory)
  *
- * MMType::UserManaged
- * Indicates the user managed memory manager is to be used.
- * This memory manager will never allocate or free memory. All memory operations are up to the programmer to
- * define within tasks. This memory manager acts as a throttling mechanism to ensure an ITask will not allocate
- * beyond the specified pool size.
- * To create this edge use the TaskGraph::addUserManagedMemoryManagerEdge() function
- * To check if memory is ready to be allocated use ITask::allocUserManagedMemory<type>(std::string name)
- * To release memory use ITask::memRelease(std::string name, int pipelineId)
- * The pipeline ID associated with a piece of memory should be attributed to the ITask that calls ITask::allocUserManagedMemory.
- * If this is not carefully managed within an ExecutionPipeline, then deadlock can be encountered.
  */
 enum class MMType {
   Static, //!< Indicates static memory management
   Dynamic, //!< Indicates dynamic memory management
-  UserManaged //!< Indicates user-managed memory management
 };
 }
 
