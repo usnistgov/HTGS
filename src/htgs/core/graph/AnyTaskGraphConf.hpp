@@ -2,18 +2,19 @@
 // Created by tjb3 on 2/24/17.
 //
 
-#ifndef HTGS_ANYTASKGRAPH_HPP
-#define HTGS_ANYTASKGRAPH_HPP
+#ifndef HTGS_ANYTASKGRAPHCONF_HPP
+#define HTGS_ANYTASKGRAPHCONF_HPP
 
 #include <list>
-#include <htgs/core/task/AnyTaskManager.hpp>
 #include <string>
-#include <htgs/core/task/TaskManager.hpp>
-#include <htgs/api/ITask.hpp>
 #include <cstddef>
-#include <htgs/core/graph/edge/EdgeDescriptor.hpp>
 #include <fstream>
 
+#include <htgs/core/task/TaskManager.hpp>
+#include <htgs/api/ITask.hpp>
+#include <htgs/core/graph/edge/EdgeDescriptor.hpp>
+#include <htgs/core/task/AnyITask.hpp>
+#include <htgs/types/Types.hpp>
 
 namespace htgs {
 
@@ -29,18 +30,25 @@ typedef std::map<AnyITask *, AnyTaskManager *> ITaskMap;
  */
 typedef std::pair<AnyITask *, AnyTaskManager *> ITaskPair;
 
+typedef std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>> TaskNameConnectorMap;
+
+typedef std::pair<std::string, std::shared_ptr<AnyConnector>>TaskNameConnectorPair;
+
 
 class AnyTaskGraphConf {
  public:
 
-  AnyTaskGraphConf (size_t pipelineId, size_t numPipelines, std::string baseAddress) : pipelineId(pipelineId), numPipelines(numPipelines) {
+  AnyTaskGraphConf (size_t pipelineId, size_t numPipelines, std::string baseAddress) :
+      pipelineId(pipelineId), numPipelines(numPipelines) {
     if (baseAddress == "")
       this->address = std::to_string(pipelineId);
     else
       this->address = baseAddress + ":" + std::to_string(this->pipelineId);
-    taskManagers = new std::list<AnyTaskManager *>();
-    taskCopyMap = new ITaskMap();
-    taskConnectorMap = new ConnectorMap();
+    this->taskManagers = new std::list<AnyTaskManager *>();
+    this->taskCopyMap = new ITaskMap();
+    this->taskConnectorNameMap = new TaskNameConnectorMap();
+    this->numberOfSubGraphs = 0;
+
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -61,8 +69,8 @@ class AnyTaskGraphConf {
     delete taskCopyMap;
     taskCopyMap = nullptr;
 
-    delete taskConnectorMap;
-    taskConnectorMap = nullptr;
+    delete taskConnectorNameMap;
+    taskConnectorNameMap = nullptr;
   }
 
   /**
@@ -79,9 +87,28 @@ class AnyTaskGraphConf {
   virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
   virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
 
+  virtual void updateCommunicator() = 0;
+
+  virtual TaskGraphCommunicator *getTaskGraphCommunicator() const = 0;
+
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Initializes the task graph just prior to spawning threads
+   */
+  void initialize()
+  {
+    this->getTaskGraphCommunicator()->setNumGraphsSpawned(this->getNumberOfSubGraphs());
+
+    this->updateTaskManagersAddressingAndPipelines();
+    this->updateCommunicator();
+  }
+
+  TaskNameConnectorMap *getTaskConnectorNameMap() const {
+    return taskConnectorNameMap;
+  }
 
   template <class T, class U>
   ITask<T, U> *getCopy(ITask<T, U> *orig)
@@ -124,6 +151,9 @@ class AnyTaskGraphConf {
     {
       taskManager = new TaskManager<T, U>(task, task->getNumThreads(), task->isStartTask(), task->isPoll(), task->getMicroTimeoutTime(), pipelineId, numPipelines, address);
       this->taskManagers->push_back(taskManager);
+
+      // Increment number of graphs spawned from the task
+      this->numberOfSubGraphs += task->getNumGraphsSpawned();
     }
 
     return taskManager;
@@ -172,6 +202,10 @@ class AnyTaskGraphConf {
   void updateTaskManagersAddressingAndPipelines() {
     for (auto t : *this->taskManagers) {
       t->updateAddressAndPipelines(address, this->pipelineId, this->numPipelines);
+
+      std::string taskAddressName = this->address + ":" + t->getName();
+      this->taskConnectorNameMap->insert(TaskNameConnectorPair(taskAddressName, t->getInputConnector()));
+
 //      t->setPipelineId(pipelineId);
 //      t->setNumPipelines(numPipelines);
 //      // TODO: May be able to get rid of this
@@ -183,6 +217,11 @@ class AnyTaskGraphConf {
   {
     return this->address;
   }
+
+  size_t getNumberOfSubGraphs() const {
+    return numberOfSubGraphs;
+  }
+
 
   /**
    * Generate the content only of the graph (excludes all graph definitions and attributes)
@@ -340,16 +379,17 @@ class AnyTaskGraphConf {
   ITaskMap *taskCopyMap;
   std::list<AnyTaskManager *> *taskManagers;
 
-  ConnectorMap *taskConnectorMap;
-
-
   size_t pipelineId; //!< The pipelineId for the task graph
   size_t numPipelines; //!< The number of pipelines from this graph
 
   std::string address; //!< The address for this task graph and its tasks
+  TaskNameConnectorMap *taskConnectorNameMap;
+
+  size_t numberOfSubGraphs; //!< The number of sub-graphs that will be spawned
+
 
 };
 
 }
 
-#endif //HTGS_ANYTASKGRAPH_HPP
+#endif //HTGS_ANYTASKGRAPHCONF_HPP

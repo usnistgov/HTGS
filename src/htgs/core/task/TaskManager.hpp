@@ -225,9 +225,6 @@ class TaskManager: public AnyTaskManager {
       this->outputConnector->produceData(result);
   }
 
-
-
-
  private:
 
   //! @cond Doxygen_Suppress
@@ -325,7 +322,6 @@ class TaskManager: public AnyTaskManager {
   std::shared_ptr<Connector<U>> outputConnector; //!< The output connector for the manager (queue to send data)
   ITask<T, U> *taskFunction; //!< The task that is managed by the manager
   TaskManagerThread *runtimeThread; //!< The thread that is executing this task's runtime
-
 };
 }
 

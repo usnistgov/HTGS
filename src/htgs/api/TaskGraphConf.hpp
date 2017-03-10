@@ -17,7 +17,7 @@
 #include <htgs/core/graph/edge/RuleEdge.hpp>
 #include <htgs/core/graph/edge/MemoryEdge.hpp>
 #include <htgs/core/memory/VoidMemoryAllocator.hpp>
-
+#include <htgs/core/comm/TaskGraphCommunicator.hpp>
 
 #ifdef USE_CUDA
 #include <cuda.h>
@@ -139,6 +139,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
     graphProducerTaskManager = nullptr;
 
     edges = new std::list<EdgeDescriptor *>();
+
+    taskConnectorCommunicator = new TaskGraphCommunicator(nullptr, this->getAddress());
   }
 
   /**
@@ -146,7 +148,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @param pipelineId the pipelineId for this graph
    * @param numPipelines the number of pipelines for the graph
    */
-  TaskGraphConf(size_t pipelineId, size_t numPipelines, std::string baseAddress) : AnyTaskGraphConf(pipelineId, numPipelines, baseAddress) {
+  TaskGraphConf(size_t pipelineId, size_t numPipelines, std::string baseAddress, TaskGraphCommunicator *parentCommunicator) : AnyTaskGraphConf(pipelineId, numPipelines, baseAddress) {
     this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
@@ -155,6 +157,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
     graphProducerTaskManager = nullptr;
 
     edges = new std::list<EdgeDescriptor *>();
+
+    taskConnectorCommunicator = new TaskGraphCommunicator(parentCommunicator, this->getAddress());
   }
 
   /**
@@ -171,13 +175,18 @@ class TaskGraphConf: public AnyTaskGraphConf {
     }
     delete edges;
     edges = nullptr;
+
+    if (taskConnectorCommunicator != nullptr)
+      taskConnectorCommunicator->terminateGracefully();
+
+    delete taskConnectorCommunicator;
+    taskConnectorCommunicator = nullptr;
   }
 
   AnyTaskGraphConf *copy() override
   {
     return copy(this->getPipelineId(), this->getNumPipelines());
   }
-
 
   /**
    * Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines
@@ -187,7 +196,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    */
   TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines)
   {
-    return copy(pipelineId, numPipelines, nullptr, nullptr, this->getAddress());
+    return copy(pipelineId, numPipelines, nullptr, nullptr, this->getAddress(), nullptr);
   }
 
 
@@ -200,9 +209,9 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @param output the output connector to be used for the graph's output
    * @return the copy of the task graph
    */
-  TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines, std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output, std::string baseAddress)
+  TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines, std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output, std::string baseAddress, TaskGraphCommunicator *parentCommunicator)
   {
-    TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress);
+    TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator);
 
     // Copy the tasks to form lookup between old ITasks and new copies
     graphCopy->copyTasks(this->getTaskManagers());
@@ -232,9 +241,6 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
       graphCopy->addEdgeDescriptor(edgeCopy);
     }
-
-    graphCopy->updateTaskManagersAddressingAndPipelines();
-
 
     return graphCopy;
   }
@@ -367,6 +373,22 @@ class TaskGraphConf: public AnyTaskGraphConf {
   std::shared_ptr<AnyConnector> getOutputConnector() override {
     return this->output;
   }
+
+  TaskGraphCommunicator *getTaskGraphCommunicator() const { return this->taskConnectorCommunicator; }
+
+
+  void updateCommunicator() override {
+    auto taskNameConnectorMap = this->getTaskConnectorNameMap();
+
+    // Send the map to the connectorCommunicator
+    this->taskConnectorCommunicator->addTaskNameConnectorMap(taskNameConnectorMap);
+
+    for (auto t : *this->getTaskManagers())
+    {
+      t->setConnectorCommunicator(this->taskConnectorCommunicator);
+    }
+  }
+
 
   void setInputConnector(std::shared_ptr<Connector<T>> input) {
     this->input = input;
@@ -853,6 +875,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
   std::shared_ptr<Connector<T>> input; //!< The input connector for the TaskGraph
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph
 
+  TaskGraphCommunicator *taskConnectorCommunicator;
 };
 }
 

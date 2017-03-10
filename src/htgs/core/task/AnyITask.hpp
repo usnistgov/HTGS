@@ -284,6 +284,15 @@ class AnyITask {
     this->numPipelines = numPipelines;
   }
 
+  void setConnectorCommunicator(TaskGraphCommunicator *communicator)
+  {
+    this->connectorCommunicator = communicator;
+  }
+
+  TaskGraphCommunicator *getConnectorCommunicator() const {
+    return connectorCommunicator;
+  }
+
   /**
    * Gets the number of pipelines for the task's execution pipeline
    * @return the number of pipelines
@@ -724,6 +733,7 @@ class AnyITask {
   std::shared_ptr<ConnectorVectorMap> releaseMemoryEdges; //!< A mapping from memory edge name to memory manager connector for releasing memory
   std::shared_ptr<std::unordered_map<std::string, MMType>> mmTypeMap; //!< A mapping from memory edge name to memory manager type
 
+  TaskGraphCommunicator *connectorCommunicator; //!< Task graph connector communicator
 
 };
 }

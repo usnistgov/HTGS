@@ -18,6 +18,7 @@
 #include <vector>
 
 #include <htgs/types/Types.hpp>
+#include <htgs/core/comm/TaskGraphCommunicator.hpp>
 #include "AnyITask.hpp"
 
 namespace htgs {
@@ -224,6 +225,12 @@ class AnyTaskManager {
    * @return the pipeline connector list
    */
   std::shared_ptr<ConnectorVector> getPipelineConnectors() { return this->pipelineConnectorList; }
+
+  void setConnectorCommunicator(TaskGraphCommunicator *communicator)
+  {
+    this->connectorCommunicator = communicator;
+    this->getTaskFunction()->setConnectorCommunicator(this->connectorCommunicator);
+  }
 
   void updateAddressAndPipelines(std::string address, size_t pipelineId, size_t numPipelines)
   {
@@ -464,6 +471,9 @@ class AnyTaskManager {
   std::string address; //!< The address of the task graph this manager belongs too
 
   std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The execution pipeline connector list (one for each pipeline that share the same ITask functionality)
+
+  TaskGraphCommunicator *connectorCommunicator; //!< Task graph communicator
+
 };
 
 

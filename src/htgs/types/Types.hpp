@@ -14,6 +14,7 @@
 
 namespace htgs {
 
+
 template <class T, class U>
 using IRuleList = std::list<std::shared_ptr<IRule<T, U>>>;
 

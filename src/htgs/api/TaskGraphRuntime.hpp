@@ -157,6 +157,9 @@ class TaskGraphRuntime {
     if (executed)
       return;
 
+    // Initialize graph and setup task graph connectorCommunicator
+    this->graph->initialize();
+
     std::list<AnyTaskManager *> *vertices = this->graph->getTaskManagers();
     std::list<AnyTaskManager *> newVertices;
     DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
@@ -173,6 +176,9 @@ class TaskGraphRuntime {
 
         for (size_t i = 1; i < numThreads; i++) {
           AnyTaskManager *taskCopy = task->copy(true);
+
+          // Add communicator to task copy to enable communication
+          taskCopy->setConnectorCommunicator(graph->getTaskGraphCommunicator());
           taskList.push_back(taskCopy);
           newVertices.push_back(taskCopy);
         }

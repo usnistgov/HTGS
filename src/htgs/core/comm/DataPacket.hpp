@@ -6,16 +6,16 @@
 #define HTGS_DATAPACKET_HPP
 #include <string>
 #include <bits/shared_ptr.h>
+
 #include <htgs/api/IData.hpp>
-#include <htgs/core/task/AnyITask.hpp>
+
 namespace htgs {
 class DataPacket {
  public:
-  DataPacket(AnyITask *originTask, const std::string &destName, std::string destAddr, const std::shared_ptr<IData> &data)
-      : destName(destName), destAddr(destAddr), data(data) {
-    originName = originTask->getName();
-    // TODO: Get addr from originTask
-//    originPipelineId = originTask->getPipelineId();
+  DataPacket(std::string originName, std::string originAddr,
+             const std::string &destName, std::string destAddr, const std::shared_ptr<IData> &data)
+      : destName(destName), originName(originName), destAddr(destAddr), originAddr(originAddr), data(data) {
+
   }
 
   const std::string &getDestName() const {

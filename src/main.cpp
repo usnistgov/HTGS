@@ -122,7 +122,7 @@ class TestAllocator : public htgs::IMemoryAllocator<double *> {
 void writeDotPng(htgs::AnyTaskGraphConf *graph, std::string baseFileName)
 {
   graph->writeDotToFile(baseFileName + ".dot");
-  std::string cmd("dot -Tpdf -o " + baseFileName + ".pdf " + baseFileName + ".dot");
+  std::string cmd("dot -Tpng -o " + baseFileName + ".png " + baseFileName + ".dot");
   int ret = system(cmd.c_str());
   if (ret != 0)
     std::cout << "Unable to execute dot command. status code: " << ret << std::endl;
@@ -203,7 +203,7 @@ int main()
 
   auto mainGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
-  auto execPipeline = new htgs::ExecutionPipeline<TestData, TestData>(8, tGraph);
+  auto execPipeline = new htgs::ExecutionPipeline<TestData, TestData>(100, tGraph);
 
   execPipeline->addInputRule(new htgs::ExecutionPipelineBroadcastRule<TestData>());
 
@@ -214,7 +214,7 @@ int main()
   mainGraph->setGraphProducerTask(execPipeline);
 
 
-  auto execPipeline2 = new htgs::ExecutionPipeline<TestData, TestData>(100, mainGraph);
+  auto execPipeline2 = new htgs::ExecutionPipeline<TestData, TestData>(10, mainGraph);
 
   execPipeline2->addInputRule(new htgs::ExecutionPipelineBroadcastRule<TestData>());
 
@@ -225,9 +225,12 @@ int main()
 
   auto execGraph = finalGraph;
 
-//  writeDotPng(execGraph, "testorig");
+  writeDotPng(execGraph, "testorig");
 
 
+  std::cout << "Number of graphs spawned finalGraph: " << finalGraph->getNumberOfSubGraphs() << std::endl;
+  std::cout << "Number of graphs spawned mainGraph: " << mainGraph->getNumberOfSubGraphs() << std::endl;
+  std::cout << "Number of graphs spawned tGraph: " << tGraph->getNumberOfSubGraphs() << std::endl;
 
 
 //  execGraph->incrementGraphProducer();

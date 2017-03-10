@@ -147,6 +147,11 @@ class ExecutionPipeline: public ITask<T, U> {
 //    inputRules = nullptr;
   }
 
+  size_t getNumGraphsSpawned() override {
+    return this->numPipelinesExec * graph->getNumberOfSubGraphs() + this->numPipelinesExec;
+//        (graph->getNumberOfSubGraphs() == 0 ? 1 : graph->getNumberOfSubGraphs());
+  }
+
   /**
    * Adds an input rule, which can be used for domain decomposition.
    * This rule should use the pipelineId parameter in the IRule::applyRule function to aid in
@@ -168,7 +173,7 @@ class ExecutionPipeline: public ITask<T, U> {
     // Add a default broadcast rule if the pipeline has no rules
     if (this->inputRules->size() == 0)
     {
-      std::cerr << "ERROR: Your execution pipeline does not have any decomposition rules. You must add at least one" << std::endl;
+      std::cerr << "ERROR: Your execution pipeline does not have any decomposition rules. You must add at least one: addInputRule(IRule)" << std::endl;
       exit(-1);
 //      this->addInputRule(new ExecutionPipelineBroadcastRule<T>());
     }
@@ -178,7 +183,7 @@ class ExecutionPipeline: public ITask<T, U> {
 
     for (size_t i = 0; i < numPipelinesExec; i++) {
       DEBUG("Adding pipeline " << i);
-      TaskGraphConf<T, U> *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress());
+      TaskGraphConf<T, U> *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(), this->getConnectorCommunicator());
 
       DEBUG("Setting up input and output of pipeline " << i);
 
