@@ -22,15 +22,15 @@ class SimpleRule : public htgs::IRule<SimpleData, SimpleData>
 
   }
 
-  virtual bool isRuleTerminated(int pipelineId)
+  virtual bool canTerminateRule(size_t pipelineId) override
   {
     return false;
   }
 
-  virtual void shutdownRule(int pipelineId)
+  virtual void shutdownRule(size_t pipelineId) override
   {}
 
-  virtual void applyRule(std::shared_ptr<SimpleData> data, int pipelineId)
+  virtual void applyRule(std::shared_ptr<SimpleData> data, size_t pipelineId) override
   {
     addResult(data);
   }

@@ -486,7 +486,7 @@ To use the bookkeeper, an htgs::IRule must be defined. The IRule represents a ru
 
  There are three pure virtual functions that define the behavior for each IRule:
 
- 1. htgs::IRule::isRuleTerminated
+ 1. htgs::IRule::canTerminateRule
    + Determines if the rule is terminated or not. If the RuleManager's input connector is finished producing data, then
    the IRule will also be terminated. This function is not required to terminate an IRule. When all IRule's for a RuleManager
    have terminated, the Connector to the consumer ITask is notified.
@@ -526,7 +526,7 @@ class MatrixLoadRule: public htgs::IRule<MatrixBlockData<MatrixMemoryData_t>, Ma
     delete arrayBState;
   }
 
-  bool isRuleTerminated(int pipelineId) {
+  bool canTerminateRule(int pipelineId) {
     return false;
   }
 
@@ -573,7 +573,7 @@ class MatrixLoadRule: public htgs::IRule<MatrixBlockData<MatrixMemoryData_t>, Ma
   + There can be multiple IRules for each Bookkeeper to consumer connection, these connections are managed by the htgs::RuleManager
 - The htgs::IRule input type must match the htgs::Bookkeeper type, and the htgs::IRule output type must match the consumer ITask's input type
 - htgs::IRule's are accessed synchronously
-- Every htgs::IRule implements three functions: isRuleTerminated, shutdownRule, and applyRule
+- Every htgs::IRule implements three functions: canTerminateRule, shutdownRule, and applyRule
   + shutdownRule should NOT deallocate memory. Memory deallocation should be done in the IRule's destructor
 - htgs::IRule::addResult should be used within htgs::IRule::applyRule to pass data to the IRule's consumer task
 - The htgs::StateContainer can be used to help manage the state of computation for input data or other types of state data

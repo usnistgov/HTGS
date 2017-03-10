@@ -37,7 +37,7 @@ class AnyIRule {
    * @retval FALSE if the rule should not be terminated
    * @note The rule will automatically be terminated if the input ITask has terminated.
    */
-  virtual bool isRuleTerminated(size_t pipelineId) = 0;
+  virtual bool canTerminateRule(size_t pipelineId) = 0;
 
   /**
    * Virtual function that handles when a rule is being shutdown for a particular pipelineId

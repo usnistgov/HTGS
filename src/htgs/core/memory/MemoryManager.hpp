@@ -94,7 +94,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
       allocate = true;
 
     this->pool->fillPool(memory, this->getPipelineId(), allocate);
-    this->pipelineConnectorList = this->getPipelineConnectorList();
     delete memory;
   }
 
@@ -134,9 +133,9 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
       }
       else {
         std::cerr << "Memory manager received data from another pipeline!" << std::endl;
-        std::shared_ptr<Connector<MemoryData<T>>> connector = std::static_pointer_cast<Connector<MemoryData<T>>>(this->pipelineConnectorList->at(
-            (unsigned long) data->getPipelineId()));
-        connector->produceData(data);
+//        std::shared_ptr<Connector<MemoryData<T>>> connector = std::static_pointer_cast<Connector<MemoryData<T>>>(this->pipelineConnectorList->at(
+//            (unsigned long) data->getPipelineId()));
+//        connector->produceData(data);
       }
     }
 
@@ -259,7 +258,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 #endif
 
  private:
-  std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The list of execution pipeline connectors one for each MemoryManager of the same type
   std::shared_ptr<IMemoryAllocator<T>> allocator; //!< The allocator used for allocating and freeing memory
   size_t memoryPoolSize; //!< The size of the memory pool
   MemoryPool<T> *pool; //!< The memory pool

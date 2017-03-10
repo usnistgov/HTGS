@@ -14,6 +14,7 @@
 #ifndef HTGS_ITASK_HPP
 #define HTGS_ITASK_HPP
 
+
 #include <functional>
 #include <iostream>
 #include <vector>
@@ -26,6 +27,9 @@
 #include <htgs/core/task/TaskManager.hpp>
 
 namespace htgs {
+
+template <class T, class U>
+class TaskManager;
 
 /**
  * @class ITask ITask.hpp <htgs/api/ITask.hpp>
@@ -237,13 +241,6 @@ class ITask: public AnyITask {
   }
 
   /**
-   * Gets the pipeline connector list
-   * @return the pipeline connector list
-   */
-   // TODO: This may be candidate for removal with new system
-  std::shared_ptr<ConnectorVector> getPipelineConnectorList() { return this->pipelineConnectorList; }
-
-  /**
    * Adds results to the output list to be sent to the next connected ITask in a TaskGraph
    * @param result the result data to be passed
    */
@@ -262,21 +259,14 @@ class ITask: public AnyITask {
 
   /**
    * Function that is called when an ITask is being initialized by it's owner thread.
-   * This initialize function contains some advanced parameters such as the TaskManager associated
-   * with the ITask and the list of pipeline connectors. These parameters can be used for features such
-   * as work stealing. If they are not needed, then override the initialize(int pipelineId, int numPipeline) function
-   * instead.
+   * This initialize function contains the TaskManager associated with the ITask.
    * @param pipelineId the pipelineId, only used if the ITask is inside of an ExecutionPipeline
    * @param numPipeline the number of pipelines, only used if the ITask is inside of an ExecutionPipeline
    * @param ownerTask the owner Task for this ITask
-   * @param pipelineConnectorList the list of connectors that connect to other duplicate
    * ICudaTask's in an execution pipeline
    */
-   // TODO: Can remove ownerTask and pipelineConnectorList
-  void initialize(size_t pipelineId, size_t numPipeline, TaskManager<T, U> *ownerTask,
-                          std::shared_ptr<ConnectorVector> pipelineConnectorList) {
+  void initialize(size_t pipelineId, size_t numPipeline, TaskManager<T, U> *ownerTask) {
     this->ownerTask = ownerTask;
-    this->pipelineConnectorList = pipelineConnectorList;
     super::initialize(pipelineId, numPipeline);
   }
 
@@ -333,8 +323,6 @@ class ITask: public AnyITask {
 
   TaskManager<T, U> *ownerTask; //!< The owner task for this ITask
 
-  // TODO: This may be candidate for removal with new system
-  std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The connector list to communicate with other pipelines of the same task
 
 };
 

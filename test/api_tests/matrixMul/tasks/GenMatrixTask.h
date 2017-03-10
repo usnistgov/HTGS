@@ -20,13 +20,13 @@ class GenMatrixTask : public htgs::ITask<MatrixRequestData, MatrixBlockData<Matr
 
  public:
 
-  GenMatrixTask(int numThreads, int blockSize, int fullMatrixWidth, int fullMatrixHeight,
+  GenMatrixTask(size_t numThreads, size_t blockSize, size_t fullMatrixWidth, size_t fullMatrixHeight,
                  std::string matrixName, double initValue) :
       ITask(numThreads), blockSize(blockSize), fullMatrixHeight(fullMatrixHeight), fullMatrixWidth(fullMatrixWidth),
       matrixName(matrixName), initValue(initValue)
   {
-    numBlocksRows = (int)ceil((double)fullMatrixHeight / (double)blockSize);
-    numBlocksCols = (int)ceil((double)fullMatrixWidth / (double)blockSize);
+    numBlocksRows = (size_t)ceil((double)fullMatrixHeight / (double)blockSize);
+    numBlocksCols = (size_t)ceil((double)fullMatrixWidth / (double)blockSize);
   }
 
   virtual ~GenMatrixTask() { }
@@ -40,7 +40,7 @@ class GenMatrixTask : public htgs::ITask<MatrixRequestData, MatrixBlockData<Matr
   virtual void executeTask(std::shared_ptr<MatrixRequestData> data) {
     std::string matrixName;
 
-    int numBlocksC;
+    size_t numBlocksC;
     switch (data->getType())
     {
       case MatrixType::MatrixA:
@@ -54,7 +54,7 @@ class GenMatrixTask : public htgs::ITask<MatrixRequestData, MatrixBlockData<Matr
       case MatrixType::MatrixC: return;
     }
 
-    MatrixMemoryData_t matrixData = this->memGet<double *>(matrixName, new MatrixMemoryRule(numBlocksC));
+    MatrixMemoryData_t matrixData = this->getMemory<double *>(matrixName, new MatrixMemoryRule(numBlocksC));
 
     int row = data->getRow();
     int col = data->getCol();
@@ -87,22 +87,19 @@ class GenMatrixTask : public htgs::ITask<MatrixRequestData, MatrixBlockData<Matr
   virtual htgs::ITask<MatrixRequestData, MatrixBlockData<MatrixMemoryData_t>> *copy() {
     return new GenMatrixTask(this->getNumThreads(), blockSize, fullMatrixWidth, fullMatrixHeight, matrixName, initValue);
   }
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
 
-  int getNumBlocksRows() const {
+  size_t getNumBlocksRows() const {
     return numBlocksRows;
   }
-  int getNumBlocksCols() const {
+  size_t getNumBlocksCols() const {
     return numBlocksCols;
   }
  private:
-  int blockSize;
-  int fullMatrixWidth;
-  int fullMatrixHeight;
-  int numBlocksRows;
-  int numBlocksCols;
+  size_t blockSize;
+  size_t fullMatrixWidth;
+  size_t fullMatrixHeight;
+  size_t numBlocksRows;
+  size_t numBlocksCols;
   std::string matrixName;
   double initValue;
 

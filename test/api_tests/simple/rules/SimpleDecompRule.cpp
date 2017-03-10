@@ -11,13 +11,13 @@
 SimpleDecompRule::~SimpleDecompRule() {
 
 }
-bool SimpleDecompRule::isRuleTerminated(int pipelineId) {
+bool SimpleDecompRule::canTerminateRule(size_t pipelineId) {
   return false;
 }
-void SimpleDecompRule::shutdownRule(int pipelineId) {
+void SimpleDecompRule::shutdownRule(size_t pipelineId) {
 
 }
-void SimpleDecompRule::applyRule(std::shared_ptr<SimpleData> data, int pipelineId) {
+void SimpleDecompRule::applyRule(std::shared_ptr<SimpleData> data, size_t pipelineId) {
   if (data->getPipelineId() == pipelineId)
   {
     addResult(data);

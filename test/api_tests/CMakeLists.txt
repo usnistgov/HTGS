@@ -23,8 +23,7 @@ set(SIMPLE_SRC
         simple/tasks/SimpleTask.h
         simpleGraphTests.cpp
         simpleGraphTests.h
-        simple/customEdges/BookkeeperCustomEdge.h
-        simple/customEdges/MemoryManagerCustomEdge.h)
+		)
 
 
 set(MATRIXMUL_SRC
@@ -46,22 +45,28 @@ set(MATRIXMUL_SRC
         )
 
 set(MEMMULTIRELEASE_SRC
-        memMultiRelease/data/InputData.h
-        memMultiRelease/data/ProcessedData.h
-        memMultiRelease/tasks/InputTask.h
-        memMultiRelease/tasks/OutputMemReleaseTask.h
-        memMultiRelease/rules/SimpleDecompRule.h
-        memMultiRelease/rules/MemDistributeRule.h
-        memMultiReleaseGraphTests.cpp
-        memMultiReleaseGraphTests.h
-        memMultiRelease/memory/SimpleReleaseRule.h memMultiRelease/memory/SimpleMemoryAllocator.h)
+#        memMultiRelease/data/InputData.h
+#        memMultiRelease/data/ProcessedData.h
+#        memMultiRelease/tasks/InputTask.h
+#        memMultiRelease/tasks/OutputMemReleaseTask.h
+#        memMultiRelease/rules/SimpleDecompRule.h
+#        memMultiRelease/rules/MemDistributeRule.h
+#        memMultiReleaseGraphTests.cpp
+#        memMultiReleaseGraphTests.h
+#        memMultiRelease/memory/SimpleReleaseRule.h memMultiRelease/memory/SimpleMemoryAllocator.h
+		)
 
 
 
 set(MEMRELEASEOUTSIDE_SRC
-        memReleaseOutsideGraphTests.cpp
-        memReleaseOutsideGraphTests.h
-        memTaskOutsideRelease/data/MultiMemData.h memTaskOutsideRelease/tasks/MemAllocTask.h memTaskOutsideRelease/tasks/MemReleaseTask.h memTaskOutsideRelease/rules/MemAllocDistributeRule.h ../../src/htgs/types/TaskGraphDotGenFlags.hpp)
+#        memReleaseOutsideGraphTests.cpp
+#        memReleaseOutsideGraphTests.h
+#        memTaskOutsideRelease/data/MultiMemData.h
+#		memTaskOutsideRelease/tasks/MemAllocTask.h
+#		memTaskOutsideRelease/tasks/MemReleaseTask.h
+#		memTaskOutsideRelease/rules/MemAllocDistributeRule.h
+#		../../src/htgs/types/TaskGraphDotGenFlags.hpp
+		)
 
 
 add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC}

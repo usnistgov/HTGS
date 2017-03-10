@@ -23,8 +23,8 @@ class MatrixBlockData : public htgs::IData
 
   MatrixBlockData(const std::shared_ptr<MatrixRequestData> &request,
                   const T &matrixData,
-                  int matrixWidth,
-                  int matrixHeight) :
+                  size_t matrixWidth,
+                  size_t matrixHeight) :
   request(request), matrixData(matrixData), matrixWidth(matrixWidth), matrixHeight(matrixHeight) { }
 
   const std::shared_ptr<MatrixRequestData> &getRequest() const {
@@ -33,17 +33,17 @@ class MatrixBlockData : public htgs::IData
   const T &getMatrixData() const {
     return matrixData;
   }
-  int getMatrixWidth() const {
+  size_t getMatrixWidth() const {
     return matrixWidth;
   }
-  int getMatrixHeight() const {
+  size_t getMatrixHeight() const {
     return matrixHeight;
   }
 
  private:
   std::shared_ptr<MatrixRequestData> request;
   T matrixData;
-  int matrixWidth;
-  int matrixHeight;
+  size_t matrixWidth;
+  size_t matrixHeight;
 };
 #endif //HTGS_MATRIXBLOCKDATA_H

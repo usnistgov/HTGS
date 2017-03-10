@@ -19,16 +19,27 @@ class SimpleTask: public htgs::ITask<SimpleData, SimpleData> {
 
 
  public:
-  SimpleTask(int numThreads, int chainNum, bool useMemoryManager) : ITask(numThreads, true, 0L, false) {
+  SimpleTask(size_t numThreads, int chainNum, bool useMemoryManager) : ITask(numThreads, true, 0L, false) {
     totalTime.start();
     initializeTime.start();
     firstData = false;
     this->useMemoryManager = useMemoryManager;
     this->chainNum = chainNum;
+    this->releaseMem = false;
   }
+
+  SimpleTask(size_t numThreads, int chainNum, bool useMemoryManager, bool releaseMem) : ITask(numThreads, true, 0L, false) {
+      totalTime.start();
+      initializeTime.start();
+      firstData = false;
+      this->useMemoryManager = useMemoryManager;
+      this->chainNum = chainNum;
+      this->releaseMem = releaseMem;
+  }
+
   virtual ~SimpleTask();
 
-  virtual void initialize(int pipelineId, int numPipeline) override;
+  virtual void initialize() override;
 
   virtual void shutdown() override;
 
@@ -38,9 +49,11 @@ class SimpleTask: public htgs::ITask<SimpleData, SimpleData> {
 
   virtual htgs::ITask<SimpleData, SimpleData> *copy() override;
 
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) override;
+  virtual bool canTerminate(std::shared_ptr<htgs::AnyConnector> inputConnector) override;
 
   virtual void profile() override;
+
+  void setReleaseMem(bool releaseMem);
 
  private:
   SimpleClock totalTime;
@@ -50,9 +63,10 @@ class SimpleTask: public htgs::ITask<SimpleData, SimpleData> {
 
   bool useMemoryManager;
   int chainNum;
-  int pipelineId;
+  size_t pipelineId;
 
   bool firstData;
+  bool releaseMem;
 
 };
 

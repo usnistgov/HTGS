@@ -14,10 +14,10 @@ SimpleTask::~SimpleTask() {
 
 }
 
-void SimpleTask::initialize(int pipelineId, int numPipeline) {
+void SimpleTask::initialize() {
   initializeTime.stopAndIncrement();
   firstDataTime.start();
-  this->pipelineId = pipelineId;
+  this->pipelineId = this->getPipelineId();
 }
 
 void SimpleTask::shutdown() {
@@ -38,14 +38,13 @@ void SimpleTask::executeTask(std::shared_ptr<SimpleData> data) {
 
   if (data != nullptr) {
     if (useMemoryManager) {
-      if (this->hasMemGetter("test")) {
-        std::shared_ptr<htgs::MemoryData<int *>> mem = this->memGet<int *>("test", new SimpleReleaseRule());
+      if (this->hasMemoryEdge("test")) {
+        std::shared_ptr<htgs::MemoryData<int *>> mem = this->getMemory<int *>("test", new SimpleReleaseRule());
         data->setMem(mem);
       }
 
-      if (this->hasMemReleaser("test")) {
-        std::shared_ptr<htgs::MemoryData<int *>> mem = data->getMem();
-        this->memRelease("test", mem);
+      if (this->releaseMem) {
+        this->releaseMemory(data->getMem());
       }
     }
     addResult(data);
@@ -59,10 +58,10 @@ std::string SimpleTask::getName() {
 }
 
 htgs::ITask<SimpleData, SimpleData> *SimpleTask::copy() {
-  return new SimpleTask(this->getNumThreads(), this->chainNum, this->useMemoryManager);
+  return new SimpleTask(this->getNumThreads(), this->chainNum, this->useMemoryManager, this->releaseMem);
 }
 
-bool SimpleTask::isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
+bool SimpleTask::canTerminate(std::shared_ptr<htgs::AnyConnector> inputConnector) {
   if (inputConnector->isInputTerminated()) {
     totalTime.stopAndIncrement();
   }
@@ -80,4 +79,7 @@ void SimpleTask::profile() {
 
   std::cout << "Time for execute: " << executeTime.getDuration() << " for " << executeTime.getCount()
       << " items . . . items per second: " << (((double) execCount / (double) execTime) * 1000000000.0) << std::endl;
+}
+void SimpleTask::setReleaseMem(bool releaseMem) {
+  this->releaseMem = releaseMem;
 }

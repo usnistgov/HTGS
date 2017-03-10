@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <htgs/core/graph/AnyConnector.hpp>
 #include <htgs/core/queue/BlockingQueue.hpp>
+#include <thread>
 #include "DataPacket.hpp"
 
 namespace htgs {
@@ -233,7 +234,6 @@ class TaskGraphCommunicator {
 
   void run()
   {
-    std::cout << "Thread running for " << this->getAddress() << std::endl;
     while(!terminated)
     {
       this->processDataPacket();

@@ -13,6 +13,9 @@
 #define HTGS_ANYCONNECTOR_HPP
 
 #include <atomic>
+#include <sstream>
+
+#include <htgs/api/IData.hpp>
 
 namespace htgs {
 

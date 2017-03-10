@@ -18,7 +18,7 @@
 
 class MatrixOutputRule : public htgs::IRule<MatrixBlockData<double *>, MatrixBlockData<double *> > {
 public:
-    MatrixOutputRule(int blockWidth, int blockHeight, int blockWidthMatrixA) {
+    MatrixOutputRule(size_t blockWidth, size_t blockHeight, size_t blockWidthMatrixA) {
       matrixCountContainer = this->allocStateContainer<int>(blockHeight, blockWidth, 0);
       numBlocks = 2 * blockWidthMatrixA - 1;
     }
@@ -27,17 +27,11 @@ public:
       free(matrixCountContainer);
     }
 
-    bool isRuleTerminated(int pipelineId) {
-        return false;
-    }
-
-    void shutdownRule(int pipelineId) { }
-
-    void applyRule(std::shared_ptr<MatrixBlockData<double *>> data, int pipelineId) {
+    void applyRule(std::shared_ptr<MatrixBlockData<double *>> data, size_t pipelineId) {
       auto request = data->getRequest();
 
-      int row = request->getRow();
-      int col = request->getCol();
+      size_t row = request->getRow();
+      size_t col = request->getCol();
 
       int count = matrixCountContainer->get(row, col);
       count++;
@@ -54,7 +48,7 @@ public:
 
 private:
   htgs::StateContainer<int> *matrixCountContainer;
-  int numBlocks;
+  size_t numBlocks;
 };
 
 #endif //HTGS_MATRIXACCUMULATERULE_H

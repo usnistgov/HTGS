@@ -10,12 +10,14 @@
 #ifndef HTGS_SIMPLEGRAPHTESTS_H
 #define HTGS_SIMPLEGRAPHTESTS_H
 
+#include <htgs/api/TaskGraphConf.hpp>
+#include <htgs/api/ExecutionPipeline.hpp>
+
 void createData();
 void memoryAllocAndFreeCheck();
 void createTask();
 void simpleGraphCreation();
-void simpleGraphExecution(int numPipelines);
-void simpleGraphCreationWithCustomEdges();
-void simpleGraphExecutionWithCustomEdges(int numPipelines);
+void simpleGraphExecution(size_t numPipelines);
+
 
 #endif //HTGS_SIMPLEGRAPHTESTS_H

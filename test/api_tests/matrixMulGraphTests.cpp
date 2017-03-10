@@ -24,19 +24,19 @@
 #include "matrixMul/memory/MatrixAllocator.h"
 
 
-void validateResults(double *resultMatrix, int dim, double initValue)
+void validateResults(double *resultMatrix, size_t dim, double initValue)
 {
   double *vals = new double[dim *dim];
   double *seqResult = new double[dim *dim];
 
-  for (int i = 0; i < dim*dim; i++)
+  for (size_t i = 0; i < dim*dim; i++)
   {
     vals[i] = initValue;
   }
 
-  for (int aRow = 0; aRow < dim; aRow++)
+  for (size_t aRow = 0; aRow < dim; aRow++)
   {
-    for (int bCol = 0; bCol < dim; bCol++)
+    for (size_t bCol = 0; bCol < dim; bCol++)
     {
       double sum = 0.0;
       for (int k =0; k < dim; k++)
@@ -79,9 +79,9 @@ void createMatMulTasks()
 }
 
 
-htgs::TaskGraph<MatrixRequestData, MatrixBlockData<double *>> *createMatMulGraph(int numThreads, int dim, int blockSize, double initValue)
+htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulGraph(size_t numThreads, size_t dim, size_t blockSize, double initValue)
 {
-  auto taskGraph = new htgs::TaskGraph<MatrixRequestData, MatrixBlockData<double *>>();
+  auto taskGraph = new htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>>();
 
   GenMatrixTask *genAMatTask = new GenMatrixTask(1, blockSize, dim, dim, "A", initValue);
   GenMatrixTask *genBMatTask = new GenMatrixTask(1, blockSize, dim, dim, "B", initValue);
@@ -90,67 +90,68 @@ htgs::TaskGraph<MatrixRequestData, MatrixBlockData<double *>> *createMatMulGraph
 
   OutputTask *outputTask = new OutputTask();
 
-  int blkHeightMatB = genBMatTask->getNumBlocksRows();
-  int blkWidthMatB = genBMatTask->getNumBlocksCols();
+  size_t blkHeightMatB = genBMatTask->getNumBlocksRows();
+  size_t blkWidthMatB = genBMatTask->getNumBlocksCols();
 
-  int blkHeightMatA = genAMatTask->getNumBlocksRows();
-  int blkWidthMatA = genAMatTask->getNumBlocksCols();
+  size_t blkHeightMatA = genAMatTask->getNumBlocksRows();
+  size_t blkWidthMatA = genAMatTask->getNumBlocksCols();
 
-  MatrixDistributeRule *distributeRuleMatA = new MatrixDistributeRule(MatrixType::MatrixA);
-  MatrixDistributeRule *distributeRuleMatB = new MatrixDistributeRule(MatrixType::MatrixB);
+  std::shared_ptr<MatrixDistributeRule> distributeRuleMatA = std::make_shared<MatrixDistributeRule>(MatrixType::MatrixA);
+  std::shared_ptr<MatrixDistributeRule> distributeRuleMatB = std::make_shared<MatrixDistributeRule>(MatrixType::MatrixB);
 
-  MatrixLoadRule *loadRule = new MatrixLoadRule(blkWidthMatA, blkHeightMatA, blkWidthMatB, blkHeightMatB);
-  MatrixAccumulateRule *accumulateRule = new MatrixAccumulateRule(blkWidthMatB, blkHeightMatA, blkWidthMatA);
+  std::shared_ptr<MatrixLoadRule> loadRule = std::make_shared<MatrixLoadRule>(blkWidthMatA, blkHeightMatA, blkWidthMatB, blkHeightMatB);
+  std::shared_ptr<MatrixAccumulateRule> accumulateRule = std::make_shared<MatrixAccumulateRule>(blkWidthMatB, blkHeightMatA, blkWidthMatA);
 
-  MatrixOutputRule *outputRule = new MatrixOutputRule(blkWidthMatB, blkHeightMatA, blkWidthMatA);
+  std::shared_ptr<MatrixOutputRule> outputRule = std::make_shared<MatrixOutputRule>(blkWidthMatB, blkHeightMatA, blkWidthMatA);
 
   auto distributeBk = new htgs::Bookkeeper<MatrixRequestData>();
   auto matMulBk = new htgs::Bookkeeper<MatrixBlockData<MatrixMemoryData_t>>();
   auto matAccumBk = new htgs::Bookkeeper<MatrixBlockData<double *>>();
 
 
-  taskGraph->addGraphInputConsumer(distributeBk);
-  taskGraph->addRule(distributeBk, genAMatTask, distributeRuleMatA);
-  taskGraph->addRule(distributeBk, genBMatTask, distributeRuleMatB);
+  taskGraph->setGraphConsumerTask(distributeBk);
+  taskGraph->addRuleEdge(distributeBk, distributeRuleMatA, genAMatTask);
+  taskGraph->addRuleEdge(distributeBk, distributeRuleMatB, genBMatTask);
 
   taskGraph->addEdge(genAMatTask, matMulBk);
   taskGraph->addEdge(genBMatTask, matMulBk);
 
-  taskGraph->addRule(matMulBk, mmulTask, loadRule);
+  taskGraph->addRuleEdge(matMulBk, loadRule, mmulTask);
 
   taskGraph->addEdge(mmulTask, matAccumBk);
-  taskGraph->addRule(matAccumBk, accumTask, accumulateRule);
+  taskGraph->addRuleEdge(matAccumBk, accumulateRule, accumTask);
   taskGraph->addEdge(accumTask, matAccumBk);
 
-  taskGraph->addRule(matAccumBk, outputTask, outputRule);
-  taskGraph->addGraphOutputProducer(outputTask);
+  taskGraph->addRuleEdge(matAccumBk, outputRule, outputTask);
+  taskGraph->setGraphProducerTask(outputTask);
 
-  taskGraph->addMemoryManagerEdge("matrixA", genAMatTask, mmulTask, new MatrixAllocator(blockSize, blockSize), 100, htgs::MMType::Static);
-  taskGraph->addMemoryManagerEdge("matrixB", genBMatTask, mmulTask, new MatrixAllocator(blockSize, blockSize), 100, htgs::MMType::Static);
+  std::shared_ptr<MatrixAllocator> matrixAllocator = std::make_shared<MatrixAllocator>(blockSize, blockSize);
 
-  taskGraph->incrementGraphInputProducer();
+  taskGraph->addMemoryManagerEdge<double *>("matrixA", genAMatTask, matrixAllocator, 100, htgs::MMType::Static);
+  taskGraph->addMemoryManagerEdge<double *>("matrixB", genBMatTask, matrixAllocator, 100, htgs::MMType::Static);
 
-  EXPECT_EQ(10, taskGraph->getVertices()->size());
+
+  EXPECT_EQ(10, taskGraph->getTaskManagers()->size());
   EXPECT_EQ(1, taskGraph->getInputConnector()->getProducerCount());
   EXPECT_FALSE(taskGraph->isOutputTerminated());
 
   return taskGraph;
 }
 
-double * launchGraph(htgs::TaskGraph<MatrixRequestData, MatrixBlockData<double *>> *graph, int dim, int blockSize)
+double * launchGraph(htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *graph, size_t dim, size_t blockSize)
 {
-  int numBlksHeight = (int)ceil((double)dim / (double)blockSize);
-  int numBlksWidth = (int)ceil((double)dim / (double)blockSize);
+  size_t numBlksHeight = (size_t)ceil((double)dim / (double)blockSize);
+  size_t numBlksWidth = (size_t)ceil((double)dim / (double)blockSize);
 
   double *result = new double[dim*dim];
 
-  htgs::Runtime *runtime = new htgs::Runtime(graph);
+  htgs::TaskGraphRuntime *runtime = new htgs::TaskGraphRuntime(graph);
 
   runtime->executeRuntime();
 
-  for (int row = 0; row < numBlksHeight; row++)
+  for (size_t row = 0; row < numBlksHeight; row++)
   {
-    for (int col = 0; col < numBlksWidth; col++)
+    for (size_t col = 0; col < numBlksWidth; col++)
     {
       MatrixRequestData *matrixA = new MatrixRequestData(row, col, MatrixType::MatrixA);
       graph->produceData(matrixA);
@@ -161,18 +162,18 @@ double * launchGraph(htgs::TaskGraph<MatrixRequestData, MatrixBlockData<double *
     }
   }
 
-  graph->finishedProducingData();
+  graph->decrementGraphProducer();
 
   while (!graph->isOutputTerminated())
   {
     auto data = graph->consumeData();
     if (data != nullptr) {
-      int row = data->getRequest()->getRow();
-      int col = data->getRequest()->getCol();
-      int width = data->getMatrixWidth();
-      int height = data->getMatrixHeight();
+      size_t row = data->getRequest()->getRow();
+      size_t col = data->getRequest()->getCol();
+      size_t width = data->getMatrixWidth();
+      size_t height = data->getMatrixHeight();
 
-      int startIndex = blockSize*col+blockSize*row*dim;
+      size_t startIndex = blockSize*col+blockSize*row*dim;
 
       double *resLoc = result + (blockSize*col+blockSize*row*dim);
 
@@ -206,7 +207,7 @@ void matMulGraphCreation()
   EXPECT_NO_FATAL_FAILURE(delete graph4);
 }
 
-void matMulGraphExecution(int dim, int blockSize, int numThreads, double initValue) {
+void matMulGraphExecution(size_t dim, size_t blockSize, size_t numThreads, double initValue) {
   auto graph = createMatMulGraph(numThreads, dim, blockSize, initValue);
   double *result = launchGraph(graph, dim, blockSize);
   validateResults(result, dim, initValue);

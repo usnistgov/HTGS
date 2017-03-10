@@ -19,18 +19,12 @@ class MatrixAccumTask : public htgs::ITask<MatrixBlockMulData<double *>, MatrixB
 {
 
  public:
-  MatrixAccumTask(int numThreads) : ITask(numThreads) {}
+  MatrixAccumTask(size_t numThreads) : ITask(numThreads) {}
 
   virtual ~MatrixAccumTask() {
 
   }
-  virtual void initialize(int pipelineId,
-                          int numPipeline) {
 
-  }
-  virtual void shutdown() {
-
-  }
   virtual void executeTask(std::shared_ptr<MatrixBlockMulData<double *>> data) {
 
     auto matAData = data->getMatrixA();
@@ -39,14 +33,14 @@ class MatrixAccumTask : public htgs::ITask<MatrixBlockMulData<double *>, MatrixB
     double *matrixA = matAData->getMatrixData();
     double *matrixB = matBData->getMatrixData();
 
-    int width = matAData->getMatrixWidth();
-    int height = matAData->getMatrixHeight();
+    size_t width = matAData->getMatrixWidth();
+    size_t height = matAData->getMatrixHeight();
 
     double *result = new double[width*height];
 
-    for (int i = 0; i < height; i++)
+    for (size_t i = 0; i < height; i++)
     {
-      for (int j = 0; j < width; j++)
+      for (size_t j = 0; j < width; j++)
       {
         result[i*width+j] = matrixA[i*width+j] + matrixB[i*width+j];
       }
@@ -65,9 +59,7 @@ class MatrixAccumTask : public htgs::ITask<MatrixBlockMulData<double *>, MatrixB
   virtual MatrixAccumTask *copy() {
     return new MatrixAccumTask(this->getNumThreads());
   }
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
+
 };
 
 #endif //HTGS_MATRIXACCUMTASK_H

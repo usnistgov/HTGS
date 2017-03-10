@@ -327,6 +327,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
                             std::shared_ptr<IMemoryAllocatorType> allocator, size_t memoryPoolSize, MMType type) {
     static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
+    // TODO: Is there an elegant way to remove the need to specify <V> type?
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
     MemoryManager<V> *memoryManager = new MemoryManager<V>(name, memoryPoolSize, memAllocator, type);

@@ -57,7 +57,6 @@ class AnyTaskManager {
     this->numPipelines = numPipelines;
     this->alive = true;
     this->address = address;
-    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
   }
 
   /**
@@ -82,37 +81,7 @@ class AnyTaskManager {
     this->numPipelines = numPipelines;
     this->alive = true;
     this->address = address;
-    // TODO: Can get rid of this . . .
-    this->pipelineConnectorList = std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>>(new std::vector<std::shared_ptr<AnyConnector>>());
   }
-
-  /**
-   * Constructs an AnyTaskManager with an ITask as the task function and specific runtime parameters
-   * @param numThreads the number of threads to operate with the TaskManager
-   * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
-   * @param poll whether the TaskManager should poll for data
-   * @param microTimeoutTime the timeout time in microseconds
-   * @param pipelineId the pipeline Id associated with the TaskManager
-   * @param numPipelines the number of pipelines
-   * @param address the address of the task graph that owns this task
-   * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskManager and copies of this TaskManager
-   */
-  AnyTaskManager(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-  size_t pipelineId, size_t numPipelines, std::string address, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList) {
-    this->taskComputeTime = 0L;
-    this->taskWaitTime = 0L;
-    this->poll = poll;
-    this->timeout = microTimeoutTime;
-    this->numThreads = numThreads;
-    this->threadId = 0;
-    this->startTask = isStartTask;
-    this->pipelineId = pipelineId;
-    this->numPipelines = numPipelines;
-    this->alive = true;
-    this->address = address;
-    this->pipelineConnectorList = pipelineConnectorList;
-  }
-
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
@@ -196,35 +165,6 @@ class AnyTaskManager {
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  // TODO: This may not be necessary with new changes .. .
-  /**
-   * Adds the input Connector for this TaskManager to the pipeline connector list.
-   * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this TaskManager that is within the same ExecutionPipeline.
-   * @param pipelineId the pipeline Id
-   */
-  void addPipelineConnector(size_t pipelineId) {
-    (*pipelineConnectorList)[pipelineId] = this->getInputConnector();
-  }
-
-  // TODO: This may not be necessary with new changes . . .
-  /**
-   * Adds a Connector for a TaskManager that is in an ExecutionPipeline
-   * Each Connector added represents one of the other Connectors that is attached
-   * to a copy of this TaskManager that is within the same ExecutionPipeline.
-   * @param pipelineId the pipeline Id
-   * @param connector the connector to add
-   */
-  void addPipelineConnector(size_t pipelineId, std::shared_ptr<AnyConnector> connector) {
-    (*pipelineConnectorList)[pipelineId] = connector;
-  }
-
-  // TODO: The pipeline connector list may not be necessary anymore . . .
-  /**
-   * Gets the pipeline connector list for this task
-   * @return the pipeline connector list
-   */
-  std::shared_ptr<ConnectorVector> getPipelineConnectors() { return this->pipelineConnectorList; }
 
   void setConnectorCommunicator(TaskGraphCommunicator *communicator)
   {
@@ -244,7 +184,6 @@ class AnyTaskManager {
     return this->address;
   }
 
-  // TODO: No need to resize with new changes . . .
   /**
    * Sets the number of pipelines associated with the TaskManager
    * @param numPipelines the number of pipelines
@@ -252,10 +191,6 @@ class AnyTaskManager {
   void setNumPipelines(size_t numPipelines) {
     this->numPipelines = numPipelines;
     this->getTaskFunction()->setNumPipelines(numPipelines);
-    // TODO: May be able to remove pipelineConnectorList
-    if (this->pipelineConnectorList->capacity() < this->numPipelines) {
-      this->pipelineConnectorList->resize((unsigned long) this->numPipelines);
-    }
   }
 
   /**
@@ -469,8 +404,6 @@ class AnyTaskManager {
   size_t pipelineId; //!< The execution pipeline id
   size_t numPipelines; //!< The number of execution pipelines
   std::string address; //!< The address of the task graph this manager belongs too
-
-  std::shared_ptr<ConnectorVector> pipelineConnectorList; //!< The execution pipeline connector list (one for each pipeline that share the same ITask functionality)
 
   TaskGraphCommunicator *connectorCommunicator; //!< Task graph communicator
 

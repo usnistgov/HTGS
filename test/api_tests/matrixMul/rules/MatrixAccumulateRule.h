@@ -11,14 +11,16 @@
 #define HTGS_MATRIXACCUMULATERULE_H
 
 #include <vector>
+#include <htgs/types/StateContainer.hpp>
 #include <htgs/api/IRule.hpp>
+
 #include "../data/MatrixRequestData.h"
 #include "../data/MatrixBlockMulData.h"
 #include "../data/MatrixBlockData.h"
 
 class MatrixAccumulateRule : public htgs::IRule<MatrixBlockData<double *>, MatrixBlockMulData<double *> > {
 public:
-    MatrixAccumulateRule(int blockWidth, size_t blockHeight, size_t blockWidthMatrixA) {
+    MatrixAccumulateRule(size_t blockWidth, size_t blockHeight, size_t blockWidthMatrixA) {
       matrixContainer = this->allocStateContainer(blockHeight, blockWidth);
       totalCount = blockWidth * blockHeight * blockWidthMatrixA + blockWidth * blockHeight * (blockWidthMatrixA-1);
       count = 0;
@@ -28,17 +30,14 @@ public:
       free(matrixContainer);
     }
 
-    bool isRuleTerminated(int pipelineId) {
+    bool canTerminateRule(size_t pipelineId) override {
         return count == totalCount;
     }
-
-    void shutdownRule(int pipelineId) { }
-
-    void applyRule(std::shared_ptr<MatrixBlockData<double *>> data, int pipelineId) {
+    void applyRule(std::shared_ptr<MatrixBlockData<double *>> data, size_t pipelineId) override {
       auto request = data->getRequest();
 
-      int row = request->getRow();
-      int col = request->getCol();
+      size_t row = request->getRow();
+      size_t col = request->getCol();
 
       if (matrixContainer->has(row, col))
       {

@@ -14,7 +14,7 @@
 class MatrixMemoryRule: public htgs::IMemoryReleaseRule {
  public:
 
-  MatrixMemoryRule(int releaseCount) : releaseCount(releaseCount) { }
+  MatrixMemoryRule(size_t releaseCount) : releaseCount(releaseCount) { }
 
   void memoryUsed() {
     releaseCount--;
@@ -25,6 +25,6 @@ class MatrixMemoryRule: public htgs::IMemoryReleaseRule {
   }
 
  private:
-  int releaseCount;
+  size_t releaseCount;
 };
 #endif //HTGS_MATRIXMEMORYRULE_H

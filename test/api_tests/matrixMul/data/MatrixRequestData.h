@@ -19,12 +19,12 @@ enum class MatrixType {
 
 class MatrixRequestData : public htgs::IData {
  public:
-  MatrixRequestData(int row, int col, MatrixType type) : row(row), col(col), type(type) { }
+  MatrixRequestData(size_t row, size_t col, MatrixType type) : row(row), col(col), type(type) { }
 
-  int getRow() const {
+  size_t getRow() const {
     return row;
   }
-  int getCol() const {
+  size_t getCol() const {
     return col;
   }
   MatrixType getType() const {
@@ -32,8 +32,8 @@ class MatrixRequestData : public htgs::IData {
   }
 
  private:
-  int row;
-  int col;
+  size_t row;
+  size_t col;
   MatrixType type;
 };
 

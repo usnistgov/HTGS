@@ -12,6 +12,6 @@
 
 void matMulGraphCreation();
 void createMatMulTasks();
-void matMulGraphExecution(int dim, int blockSize, int numThreads, double initValue);
+void matMulGraphExecution(size_t dim, size_t blockSize, size_t numThreads, double initValue);
 
 #endif //HTGS_MATRIXMULGRAPHTESTS_H

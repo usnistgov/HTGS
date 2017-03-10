@@ -16,17 +16,17 @@
 class SimpleDecompRule : public htgs::IRule<SimpleData, SimpleData> {
 
  public:
-  SimpleDecompRule(int numPipelines)
+  SimpleDecompRule(size_t numPipelines)
   {
     this->numPipelines = numPipelines;
   }
   virtual ~SimpleDecompRule();
-  virtual bool isRuleTerminated(int pipelineId) override;
-  virtual void shutdownRule(int pipelineId) override;
-  virtual void applyRule(std::shared_ptr<SimpleData> data, int pipelineId) override;
+  virtual bool canTerminateRule(size_t pipelineId) override;
+  virtual void shutdownRule(size_t pipelineId) override;
+  virtual void applyRule(std::shared_ptr<SimpleData> data, size_t pipelineId) override;
   virtual std::string getName() override;
  private:
-  int numPipelines;
+  size_t numPipelines;
 };
 
 

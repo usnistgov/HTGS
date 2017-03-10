@@ -157,7 +157,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   {
     if (!terminated) {
       // Check if the rule is ready to be terminated before and after processing data
-      if (rule->isRuleTerminated(pipelineId)) {
+      if (rule->canTerminateRule(pipelineId)) {
         terminated = true;
         this->connector->producerFinished();
         if (this->connector->isInputTerminated()) {

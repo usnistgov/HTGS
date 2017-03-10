@@ -11,7 +11,7 @@ class ExecutionPipelineBroadcastRule : public IRule<T, T>
 {
  public:
   ~ExecutionPipelineBroadcastRule() override {}
-  bool isRuleTerminated(size_t pipelineId) override { return false; }
+  bool canTerminateRule(size_t pipelineId) override { return false; }
   void shutdownRule(size_t pipelineId) override { }
   std::string getName() override {
     return "DefaultBroadcastRule";

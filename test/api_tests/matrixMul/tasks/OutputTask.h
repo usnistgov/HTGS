@@ -17,12 +17,8 @@ class OutputTask : public htgs::ITask<MatrixBlockData<double *>, MatrixBlockData
 
   OutputTask() { }
   virtual ~OutputTask() {
+  }
 
-  }
-  virtual void initialize(int pipelineId, int numPipeline) {
-  }
-  virtual void shutdown() {
-  }
   virtual void executeTask(std::shared_ptr<MatrixBlockData<double *>> data) {
     addResult(data);
   }
@@ -31,9 +27,6 @@ class OutputTask : public htgs::ITask<MatrixBlockData<double *>, MatrixBlockData
   }
   virtual htgs::ITask<MatrixBlockData<double *>, MatrixBlockData<double *>> *copy() {
     return new OutputTask();
-  }
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
   }
 
 

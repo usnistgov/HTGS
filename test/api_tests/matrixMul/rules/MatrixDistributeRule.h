@@ -23,14 +23,8 @@ public:
     ~MatrixDistributeRule() {
     }
 
-    bool isRuleTerminated(int pipelineId) {
-        return false;
-    }
 
-    void shutdownRule(int pipelineId) {
-    }
-
-    void applyRule(std::shared_ptr<MatrixRequestData> data, int pipelineId) {
+    void applyRule(std::shared_ptr<MatrixRequestData> data, size_t pipelineId) {
         if (data->getType() == this->type) {
             addResult(data);
         }

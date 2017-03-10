@@ -23,7 +23,7 @@ class TestRule : public htgs::IRule<TestData, TestData> {
   virtual ~TestRule() {
 
   }
-  virtual bool isRuleTerminated(size_t pipelineId) {
+  virtual bool canTerminateRule(size_t pipelineId) {
     return name != "Rule1";
   }
   virtual void shutdownRule(size_t pipelineId) {  }
@@ -50,7 +50,7 @@ class TestRuleBad : public htgs::IRule<TestData, htgs::VoidData> {
   virtual ~TestRuleBad() {
 
   }
-  virtual bool isRuleTerminated(size_t pipelineId) {
+  virtual bool canTerminateRule(size_t pipelineId) {
     return name != "Rule1";
   }
   virtual void shutdownRule(size_t pipelineId) {  }

@@ -84,27 +84,6 @@ class TaskManager: public AnyTaskManager {
   }
 
 
-  /**
-   * Constructs a TaskManager with an ITask as the task function and specific runtime parameters
-   * @param taskFunction the functionality for the TaskManager
-   * @param numThreads the number of threads to operate with the TaskManager
-   * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
-   * @param poll whether the TaskManager should poll for data
-   * @param microTimeoutTime the timeout time in microseconds
-   * @param pipelineId the pipeline Id associated with the TaskManager
-   * @param numPipelines the number of pipelines
-   * @param address the address of the task graph that owns this task
-   * @param pipelineConnectorList the list of Connectors from a pipeline that feed to this TaskManager and copies of this TaskManager
-   */
-  TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-              size_t pipelineId, size_t numPipelines, std::string address, std::shared_ptr<std::vector<std::shared_ptr<AnyConnector>>> pipelineConnectorList)
-      : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, address, pipelineConnectorList),
-        inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
-    taskFunction->setTaskManager(this);
-  }
-
-
-
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////// INHERITED FUNCTIONS /////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +101,7 @@ class TaskManager: public AnyTaskManager {
 
   void initialize() override {
     DEBUG("initializing: " << this->prefix() << " " << this->getName() << std::endl);
-    this->taskFunction->initialize(this->getPipelineId(), this->getNumPipelines(), this, this->getPipelineConnectors());
+    this->taskFunction->initialize(this->getPipelineId(), this->getNumPipelines(), this);
   }
 
   void setRuntimeThread(TaskManagerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }
@@ -136,7 +115,7 @@ class TaskManager: public AnyTaskManager {
 
     TaskManager<T, U>
         *newTask = new TaskManager<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),
-                                         this->getPipelineId(), this->getNumPipelines(), this->getAddress(), this->getPipelineConnectors());
+                                         this->getPipelineId(), this->getNumPipelines(), this->getAddress());
     if (deep) {
       newTask->setInputConnector(this->getInputConnector());
       newTask->setOutputConnector(this->getOutputConnector());

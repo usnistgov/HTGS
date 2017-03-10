@@ -19,17 +19,12 @@ class MatrixMulBlkTask : public htgs::ITask<MatrixBlockMulData<MatrixMemoryData_
 {
 
  public:
-  MatrixMulBlkTask(int numThreads) : ITask(numThreads) {}
+  MatrixMulBlkTask(size_t numThreads) : ITask(numThreads) {}
 
   virtual ~MatrixMulBlkTask() {
 
   }
-  virtual void initialize(int pipelineId,
-                          int numPipeline) {
 
-  }
-  virtual void shutdown() {
-  }
 
     virtual void executeTask(std::shared_ptr<MatrixBlockMulData<MatrixMemoryData_t>> data) {
 
@@ -39,8 +34,8 @@ class MatrixMulBlkTask : public htgs::ITask<MatrixBlockMulData<MatrixMemoryData_
     MatrixMemoryData_t matrixA = matAData->getMatrixData();
     MatrixMemoryData_t matrixB = matBData->getMatrixData();
 
-    int width = matBData->getMatrixWidth();
-    int height = matAData->getMatrixHeight();
+    size_t width = matBData->getMatrixWidth();
+    size_t height = matAData->getMatrixHeight();
 
     double *result = new double[width*height];
 
@@ -61,9 +56,8 @@ class MatrixMulBlkTask : public htgs::ITask<MatrixBlockMulData<MatrixMemoryData_
 
     addResult(new MatrixBlockData<double *>(matReq, result, width, height));
 
-      this->memRelease("matrixA", matrixA);
-      this->memRelease("matrixB", matrixB);
-
+    this->releaseMemory(matrixA);
+    this->releaseMemory(matrixB);
   }
   virtual std::string getName() {
     return "MatrixMulBlkTask";
@@ -71,9 +65,7 @@ class MatrixMulBlkTask : public htgs::ITask<MatrixBlockMulData<MatrixMemoryData_
   virtual MatrixMulBlkTask *copy() {
     return new MatrixMulBlkTask(this->getNumThreads());
   }
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
+
 };
 
 #endif //HTGS_MATRIXMULBLKTASK_H
