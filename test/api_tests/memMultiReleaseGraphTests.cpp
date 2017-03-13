@@ -19,104 +19,72 @@
 #include "memMultiRelease/rules/SimpleDecompRule.h"
 #include "memMultiRelease/memory/SimpleMemoryAllocator.h"
 
-std::pair<htgs::TaskGraph<InputData, ProcessedData> *, htgs::TaskGraph<InputData, ProcessedData> *>
-createMultiReleaseGraph(int numPipelines, int numReleasers, bool useSeparateGraphEdge, bool useGraphReleaser, htgs::MMType type)
+htgs::TaskGraphConf<InputData, ProcessedData> *
+createMultiReleaseGraph(size_t numPipelines, size_t numReleasers, bool useSeparateGraphEdge, bool useGraphReleaser, htgs::MMType type)
 {
-  auto taskGraph = new htgs::TaskGraph<InputData, ProcessedData>();
+  auto taskGraph = new htgs::TaskGraphConf<InputData, ProcessedData>();
 
   InputTask *inputTask = new InputTask(numReleasers, useGraphReleaser, type);
   htgs::Bookkeeper<ProcessedData> *bk = new htgs::Bookkeeper<ProcessedData>();
 
-  taskGraph->addGraphInputConsumer(inputTask);
+  taskGraph->setGraphConsumerTask(inputTask);
   taskGraph->addEdge(inputTask, bk);
 
-  SimpleMemoryAllocator *allocator = new SimpleMemoryAllocator(1);
+  std::shared_ptr<SimpleMemoryAllocator> allocator = std::make_shared<SimpleMemoryAllocator>(1);
 
-  int memoryPoolSizeMemEdge = numReleasers + (useGraphReleaser && !useSeparateGraphEdge ? numReleasers : 0);
-  int memoryPoolSizeMem2Edge = numReleasers;
+  size_t memoryPoolSizeMemEdge = numReleasers + (useGraphReleaser && !useSeparateGraphEdge ? numReleasers : 0);
+  size_t memoryPoolSizeMem2Edge = numReleasers;
+  taskGraph->addMemoryManagerEdge<int *>("mem", inputTask, allocator, memoryPoolSizeMemEdge, type);
 
   for (int i = 0; i < numReleasers; i++) {
-    MemDistributeRule *mRule = new MemDistributeRule(i);
+    std::shared_ptr<MemDistributeRule> mRule = std::make_shared<MemDistributeRule>(i);
     OutputMemReleaseTask *outputTask = new OutputMemReleaseTask(i, type);
 
-    taskGraph->addRule(bk, outputTask, mRule);
-    taskGraph->addGraphOutputProducer(outputTask);
-
-    switch (type) {
-      case htgs::MMType::Static:
-        taskGraph->addMemoryManagerEdge("mem", inputTask, outputTask, allocator, memoryPoolSizeMemEdge, type);
-        break;
-      case htgs::MMType::Dynamic:
-        taskGraph->addMemoryManagerEdge("mem", inputTask, outputTask, allocator, memoryPoolSizeMemEdge, type);
-        break;
-      case htgs::MMType::UserManaged:
-        taskGraph->addUserManagedMemoryManagerEdge("mem", inputTask, outputTask, memoryPoolSizeMemEdge);
-        break;
-    }
+    taskGraph->addRuleEdge(bk, mRule, outputTask);
+    taskGraph->addGraphProducerTask(outputTask);
   }
 
-  if (useGraphReleaser)
+  if (useGraphReleaser && useSeparateGraphEdge)
   {
-    if (useSeparateGraphEdge)
-    {
-      taskGraph->addGraphMemoryManagerEdge("mem2", inputTask, allocator, memoryPoolSizeMem2Edge, htgs::MMType::Static);
-    }
-    else{
-      switch(type)
-      {
-        case htgs::MMType::Static:
-          taskGraph->addGraphMemoryManagerEdge("mem", inputTask, allocator, memoryPoolSizeMemEdge, type);
-          break;
-        case htgs::MMType::Dynamic:
-          taskGraph->addGraphMemoryManagerEdge("mem", inputTask, allocator, memoryPoolSizeMemEdge, type);
-          break;
-        case htgs::MMType::UserManaged:
-          taskGraph->addGraphUserManagedMemoryManagerEdge("mem", inputTask, memoryPoolSizeMemEdge);
-          break;
-      }
-    }
+      taskGraph->addMemoryManagerEdge<int *>("mem2", inputTask, allocator, memoryPoolSizeMem2Edge, htgs::MMType::Static);
   }
 
   auto execPipeline = new htgs::ExecutionPipeline<InputData, ProcessedData>(numPipelines, taskGraph);
-  auto decompRule = new SimpleDecompRule(numPipelines);
+  auto decompRule = new SimpleDecompRule();
 
   execPipeline->addInputRule(decompRule);
 
-  auto mainGraph = new htgs::TaskGraph<InputData, ProcessedData>();
+  auto mainGraph = new htgs::TaskGraphConf<InputData, ProcessedData>();
 
-  mainGraph->addGraphInputConsumer(execPipeline);
-  mainGraph->addGraphOutputProducer(execPipeline);
-  mainGraph->incrementGraphInputProducer();
+  mainGraph->setGraphConsumerTask(execPipeline);
+  mainGraph->addGraphProducerTask(execPipeline);
 
 
   int add = 0;
   if (useSeparateGraphEdge&&useGraphReleaser)
     add = 1;
 
-  EXPECT_EQ(numReleasers+3+add, taskGraph->getVertices()->size());
+  EXPECT_EQ(numReleasers+3+add, taskGraph->getTaskManagers()->size());
 
-  EXPECT_EQ(1, mainGraph->getOutputProducers()->size());
   EXPECT_EQ(1, mainGraph->getInputConnector()->getProducerCount());
 
-  EXPECT_EQ(1, mainGraph->getVertices()->size());
-  std::pair<htgs::TaskGraph<InputData, ProcessedData> *, htgs::TaskGraph<InputData, ProcessedData> *>
-      retPair (mainGraph, taskGraph);
-  return retPair;
+  EXPECT_EQ(1, mainGraph->getTaskManagers()->size());
+
+  return mainGraph;
 }
 
-void launchGraph(htgs::TaskGraph<InputData, ProcessedData> *mainGraph,
-                 htgs::TaskGraph<InputData, ProcessedData> *subGraph,
-                 int numDataGenerated, int numPipelines, int numReleasers, bool useSeparateEdge, bool useGraphMemReleaser, htgs::MMType type)
+void launchGraph(htgs::TaskGraphConf<InputData, ProcessedData> *mainGraph,
+                 size_t numDataGenerated, size_t numPipelines, size_t numReleasers, bool useSeparateEdge, bool useGraphMemReleaser, htgs::MMType type)
 {
-  htgs::Runtime *rt = new htgs::Runtime(mainGraph);
+  htgs::TaskGraphRuntime *rt = new htgs::TaskGraphRuntime(mainGraph);
 
-  for (int i = 0; i < numDataGenerated; i++) {
-    for (int pid = 0; pid < numPipelines; pid++) {
+  for (size_t i = 0; i < numDataGenerated; i++) {
+    for (size_t pid = 0; pid < numPipelines; pid++) {
       mainGraph->produceData(new InputData(i, pid));
     }
   }
 
-  mainGraph->finishedProducingData();
+  mainGraph->decrementGraphProducer();
 
   rt->executeRuntime();
 
@@ -128,31 +96,11 @@ void launchGraph(htgs::TaskGraph<InputData, ProcessedData> *mainGraph,
     {
       if (useGraphMemReleaser)
       {
-        if (useSeparateEdge)
-        {
-          subGraph->memRelease("mem2", data->getMem2());
-        }
-        else{
-          switch(type)
-          {
-            case htgs::MMType::Static:
-              subGraph->memRelease("mem", data->getMem2());
-              break;
-            case htgs::MMType::Dynamic:
-              subGraph->memRelease("mem", data->getMem2());
-              break;
-            case htgs::MMType::UserManaged:
-              subGraph->memRelease("mem", data->getData()->getPipelineId());
-              break;
-          }
-        }
+        mainGraph->releaseMemory(data->getMem2());
       }
-
-
       count++;
     }
   }
-  subGraph->finishReleasingMemory();
 
   rt->waitForRuntime();
 
@@ -170,17 +118,18 @@ void multiReleaseGraphCreation(bool useSeparateEdge, bool useGraphReleaser, htgs
   auto graph7 = createMultiReleaseGraph(2, 4, useSeparateEdge, useGraphReleaser, type);
   auto graph8 = createMultiReleaseGraph(2, 8, useSeparateEdge, useGraphReleaser, type);
 
-  EXPECT_NO_FATAL_FAILURE(delete graph1.first);
-  EXPECT_NO_FATAL_FAILURE(delete graph2.first);
-  EXPECT_NO_FATAL_FAILURE(delete graph3.first);
-  EXPECT_NO_FATAL_FAILURE(delete graph4.first);
-  EXPECT_NO_FATAL_FAILURE(delete graph5.first);
-  EXPECT_NO_FATAL_FAILURE(delete graph6.first);
-  EXPECT_NO_FATAL_FAILURE(delete graph7.first);
-  EXPECT_NO_FATAL_FAILURE(delete graph8.first);
+  EXPECT_NO_FATAL_FAILURE(delete graph1);
+  EXPECT_NO_FATAL_FAILURE(delete graph2);
+  EXPECT_NO_FATAL_FAILURE(delete graph3);
+  EXPECT_NO_FATAL_FAILURE(delete graph4);
+  EXPECT_NO_FATAL_FAILURE(delete graph5);
+  EXPECT_NO_FATAL_FAILURE(delete graph6);
+  EXPECT_NO_FATAL_FAILURE(delete graph7);
+  EXPECT_NO_FATAL_FAILURE(delete graph8);
 }
 
-void multiReleaseGraphExecution(int numDataGen, int numReleasers, int numPipelines, bool useSeparateEdge, bool useGraphReleaser, htgs::MMType type) {
-  auto graphPair = createMultiReleaseGraph(numPipelines, numReleasers, useSeparateEdge, useGraphReleaser, type);
-  EXPECT_NO_FATAL_FAILURE(launchGraph(graphPair.first, graphPair.second, numDataGen, numPipelines, numReleasers, useSeparateEdge, useGraphReleaser, type));
+void multiReleaseGraphExecution(size_t numDataGen, size_t numReleasers, size_t numPipelines, bool useSeparateEdge, bool useGraphReleaser, htgs::MMType type) {
+  auto graph = createMultiReleaseGraph(numPipelines, numReleasers, useSeparateEdge, useGraphReleaser, type);
+//  graph->writeDotToFile("test.dot");
+  EXPECT_NO_FATAL_FAILURE(launchGraph(graph, numDataGen, numPipelines, numReleasers, useSeparateEdge, useGraphReleaser, type));
 }

@@ -46,6 +46,9 @@ class MatrixAccumTask : public htgs::ITask<MatrixBlockMulData<double *>, MatrixB
       }
     }
 
+    delete []matrixA;
+    delete [] matrixB;
+
     auto matRequest = matAData->getRequest();
 
     std::shared_ptr<MatrixRequestData> matReq(new MatrixRequestData(matRequest->getRow(), matRequest->getCol(), MatrixType::MatrixC));

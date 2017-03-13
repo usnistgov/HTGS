@@ -14,15 +14,15 @@
 class InputData : public htgs::IData
 {
  public:
-  InputData(int value, int pipelineId) : value(value), pipelineId(pipelineId) {}
+  InputData(size_t value, size_t pipelineId) : value(value), pipelineId(pipelineId) {}
 
-  int getValue() const { return value; }
+  size_t getValue() const { return value; }
 
-  int getPipelineId() const { return pipelineId; }
+  size_t getPipelineId() const { return pipelineId; }
 
  private:
-  int value;
-  int pipelineId;
+  size_t value;
+  size_t pipelineId;
 };
 
 #endif //HTGS_INPUTDATA_H

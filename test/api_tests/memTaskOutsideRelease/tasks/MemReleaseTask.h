@@ -22,7 +22,7 @@ class MemReleaseTask : public htgs::ITask<MultiMemData, htgs::VoidData> {
     int count = 0;
     for (auto mem : memVector)
     {
-      this->memRelease("memEdge" + std::to_string(count), mem);
+      this->releaseMemory(mem);
       count++;
     }
   }
@@ -35,9 +35,6 @@ class MemReleaseTask : public htgs::ITask<MultiMemData, htgs::VoidData> {
     return new MemReleaseTask();
   }
 
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
-  }
 };
 
 #endif //HTGS_MEMRELEASETASK_H

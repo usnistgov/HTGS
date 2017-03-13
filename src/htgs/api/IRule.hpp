@@ -121,6 +121,7 @@ class IRule : public AnyIRule {
   virtual ~IRule() override {
     if (output != nullptr)
     {
+      output->clear();
       delete output;
       output = nullptr;
     }

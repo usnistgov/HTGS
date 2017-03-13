@@ -27,7 +27,7 @@ public:
     }
 
     ~MatrixAccumulateRule() {
-      free(matrixContainer);
+      delete matrixContainer;
     }
 
     bool canTerminateRule(size_t pipelineId) override {

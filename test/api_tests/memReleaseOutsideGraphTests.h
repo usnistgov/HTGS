@@ -11,7 +11,7 @@
 #define HTGS_MEMRELEASEOUTSIDEGRAPHTESTS_H
 
 void memReleaseOutsideGraphCreation();
-void memReleaseOutsideGraphExecution(int numData, int numAllocators, int numPipelines);
+void memReleaseOutsideGraphExecution(size_t numData, size_t numAllocators, size_t numPipelines);
 
 
 #endif //HTGS_MEMRELEASEOUTSIDEGRAPHTESTS_H

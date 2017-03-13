@@ -82,7 +82,7 @@ class AnyTaskGraphConf {
   }
 
   virtual AnyTaskManager *getGraphConsumerTaskManager() = 0;
-  virtual AnyTaskManager *getGraphProducerTaskManager() = 0;
+  virtual std::list<AnyTaskManager *> *getGraphProducerTaskManagers() = 0;
 
   virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
   virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
@@ -273,7 +273,7 @@ class AnyTaskGraphConf {
     if (getGraphConsumerTaskManager() != nullptr)
       oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n" << this->getInputConnector()->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getInputConnector()->typeName()) : "") << "\"];" << std::endl;
 
-    if (getGraphProducerTaskManager() != nullptr)
+    if (getGraphProducerTaskManagers()->size() > 0)
       oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\n" << this->getOutputConnector()->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getOutputConnector()->typeName()) : "") << "\"]; }" << std::endl;
 
 

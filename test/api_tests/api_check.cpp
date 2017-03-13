@@ -52,231 +52,163 @@ TEST(MatMulGraph, GraphExecution) {
   EXPECT_NO_FATAL_FAILURE(matMulGraphExecution(64, 8, 1, 16.0));
   EXPECT_NO_FATAL_FAILURE(matMulGraphExecution(64, 8, 5, 100.0));
 }
-//
-//TEST(MemMultiRelease, GraphCreationUserManaged) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, false, htgs::MMType::UserManaged));
-//}
-//
-//TEST(MemMultiRelease, GraphExecutionUserManaged) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, false, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, false, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 3, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, false, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 5, false, false, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, false, htgs::MMType::UserManaged));
-//}
-//
-//TEST(MemMultiRelease, GraphCreationStatic) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, false, htgs::MMType::Static));
-//}
-//
-//TEST(MemMultiRelease, GraphExecutionStatic) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, false, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, false, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 3, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, false, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 5, false, false, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, false, htgs::MMType::Static));
-//}
-//
-//TEST(MemMultiRelease, GraphCreationDynamic) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, false, htgs::MMType::Dynamic));
-//}
-//
-//TEST(MemMultiRelease, GraphExecutionDynamic) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, false, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, false, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 3, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, false, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 5, false, false, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, false, htgs::MMType::Dynamic));
-//}
-//
-//TEST(MemMultiRelease, GraphCreationUserManagedWithGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, true, htgs::MMType::UserManaged));
-//}
-//
-//TEST(MemMultiRelease, GraphExecutionUserManagedWithGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, true, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, true, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, false, true, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, false, true, htgs::MMType::UserManaged));
-//}
-//
-//TEST(MemMultiRelease, GraphCreationStaticWithGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, true, htgs::MMType::Static));
-//}
-//
-//
-//TEST(MemMultiRelease, GraphExecutionStaticWithGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, true, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, true, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, false, true, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, false, true, htgs::MMType::Static));
-//}
-//
-//TEST(MemMultiRelease, GraphCreationDynamicWithGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, true, htgs::MMType::Dynamic));
-//}
-//
-//TEST(MemMultiRelease, GraphExecutionDynamicWithGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, true, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, true, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, false, true, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, false, true, htgs::MMType::Dynamic));
-//}
-//
-//
-//TEST(MemMultiRelease, GraphCreationUserManagedWithAdditionalGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(true, true, htgs::MMType::UserManaged));
-//}
-//
-//TEST(MemMultiRelease, GraphExecutionUserManagedWithAdditionalGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, true, true, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, true, true, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, true, true, htgs::MMType::UserManaged));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, true, true, htgs::MMType::UserManaged));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, true, true, htgs::MMType::UserManaged));
-//}
-//
-//TEST(MemMultiRelease, GraphCreationStaticWithAdditionalGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(true, true, htgs::MMType::Static));
-//}
-//
-//
-//TEST(MemMultiRelease, GraphExecutionStaticWithAdditionalGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, true, true, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, true, true, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, true, true, htgs::MMType::Static));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, true, true, htgs::MMType::Static));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, true, true, htgs::MMType::Static));
-//}
-//
-//
-//TEST(MemMultiRelease, GraphCreationDynamicWithAdditionalGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(true, true, htgs::MMType::Dynamic));
-//}
-//
-//TEST(MemMultiRelease, GraphExecutionDynamicWithAdditionalGraphMemoryEdge) {
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, true, true, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, true, true, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, true, true, htgs::MMType::Dynamic));
-//
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, true, true, htgs::MMType::Dynamic));
-//  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, true, true, htgs::MMType::Dynamic));
-//}
-//
-//// TODO: Create test case to test task interacting with memory inside of another graph (task releasing for task in execPipeline)
-//TEST(MemReleaseOutsideGraph, GraphCreation) {
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphCreation());
-//}
-//
-//TEST(MemReleaseOutsideGraph, GraphExecution) {
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 1));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 1));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 1));
-//
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 2));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 2));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 2));
-//
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 3));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 3));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 3));
-//
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 5));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 5));
-//  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 5));
-//}
+
+TEST(MemMultiRelease, GraphCreationStatic) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, false, htgs::MMType::Static));
+}
+
+TEST(MemMultiRelease, GraphExecutionStatic) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, false, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, false, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 3, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, false, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 5, false, false, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, false, htgs::MMType::Static));
+}
+
+TEST(MemMultiRelease, GraphCreationDynamic) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, false, htgs::MMType::Dynamic));
+}
+
+TEST(MemMultiRelease, GraphExecutionDynamic) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, false, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, false, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 3, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, false, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 1, 5, false, false, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, false, htgs::MMType::Dynamic));
+}
+
+TEST(MemMultiRelease, GraphCreationStaticWithGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, true, htgs::MMType::Static));
+}
+
+
+TEST(MemMultiRelease, GraphExecutionStaticWithGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, true, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, true, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, false, true, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, false, true, htgs::MMType::Static));
+}
+
+TEST(MemMultiRelease, GraphCreationDynamicWithGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(false, true, htgs::MMType::Dynamic));
+}
+
+TEST(MemMultiRelease, GraphExecutionDynamicWithGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, false, true, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, false, true, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, false, true, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, false, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, false, true, htgs::MMType::Dynamic));
+}
+
+TEST(MemMultiRelease, GraphCreationStaticWithAdditionalGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(true, true, htgs::MMType::Static));
+}
+
+
+TEST(MemMultiRelease, GraphExecutionStaticWithAdditionalGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, true, true, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, true, true, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, true, true, htgs::MMType::Static));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, true, true, htgs::MMType::Static));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, true, true, htgs::MMType::Static));
+}
+
+
+TEST(MemMultiRelease, GraphCreationDynamicWithAdditionalGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphCreation(true, true, htgs::MMType::Dynamic));
+}
+
+TEST(MemMultiRelease, GraphExecutionDynamicWithAdditionalGraphMemoryEdge) {
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 1, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 1, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 1, true, true, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 2, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 2, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 2, true, true, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 3, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 3, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 3, true, true, htgs::MMType::Dynamic));
+
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(1, 1, 5, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 2, 5, true, true, htgs::MMType::Dynamic));
+  EXPECT_NO_FATAL_FAILURE(multiReleaseGraphExecution(100, 10, 5, true, true, htgs::MMType::Dynamic));
+}
+
+TEST(MemReleaseOutsideGraph, GraphCreation) {
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphCreation());
+}
+
+TEST(MemReleaseOutsideGraph, GraphExecution) {
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 1));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 1));
+
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 2));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 2));
+
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 3));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 3));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 3));
+
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 5));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 5));
+  EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 5));
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

@@ -162,6 +162,11 @@ class ExecutionPipeline: public ITask<T, U> {
     this->inputRules->push_back(std::shared_ptr<IRule<T, T>>(rule));
   }
 
+  void addInputRule(std::shared_ptr<IRule<T, T>> rule)
+  {
+    this->inputRules->push_back(rule);
+  }
+
   /**
    * Initializes the execution pipeline and duplicates the task graph based on the number of pipelines.
    *

@@ -13,21 +13,18 @@
 class MemAllocDistributeRule : public htgs::IRule<MultiMemData, MultiMemData> {
 
  public:
-  MemAllocDistributeRule(int numPipelines) {
-    this->numPipelines = numPipelines;
-  }
+  MemAllocDistributeRule() {  }
 
-  virtual void applyRule(std::shared_ptr<MultiMemData> data, int pipelineId) {
+  virtual void applyRule(std::shared_ptr<MultiMemData> data, size_t pipelineId) override {
     if (data->getPipelineId() == pipelineId)
     {
       addResult(data);
     }
   }
 
-  virtual std::string getName() { return "MemAllocDistributeRule"; }
+  virtual std::string getName() override { return "MemAllocDistributeRule"; }
 
  private:
-  int numPipelines;
 };
 
 #endif //HTGS_MEMALLOCDISTRIBUTERULE_H

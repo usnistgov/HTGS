@@ -24,7 +24,7 @@ public:
     }
 
     ~MatrixOutputRule() {
-      free(matrixCountContainer);
+      delete matrixCountContainer;
     }
 
     void applyRule(std::shared_ptr<MatrixBlockData<double *>> data, size_t pipelineId) {

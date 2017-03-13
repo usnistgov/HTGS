@@ -77,7 +77,7 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t nu
       endTask = t;
       endTask->setReleaseMem(true);
 
-      tg->setGraphProducerTask(t);
+      tg->addGraphProducerTask(t);
     }
     prevTask = t;
 
@@ -96,7 +96,7 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t nu
   execPipeline->addInputRule(decompRule);
 
   mainGraph->setGraphConsumerTask(execPipeline);
-  mainGraph->setGraphProducerTask(execPipeline);
+  mainGraph->addGraphProducerTask(execPipeline);
 
   if (numChain == 1)
     EXPECT_EQ(numChain+1, tg->getTaskManagers()->size());

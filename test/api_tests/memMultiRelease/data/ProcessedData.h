@@ -10,6 +10,7 @@
 #ifndef HTGS_PROCESSEDDATA_H
 #define HTGS_PROCESSEDDATA_H
 
+#include <htgs/types/Types.hpp>
 #include <htgs/api/IData.hpp>
 #include <htgs/api/MemoryData.hpp>
 #include "InputData.h"
@@ -17,29 +18,31 @@
 class ProcessedData : public htgs::IData {
  public:
 
-  ProcessedData(const std::shared_ptr<InputData> &data, int sendToId, std::shared_ptr<htgs::MemoryData<int *>> mem, std::shared_ptr<htgs::MemoryData<int *>> mem2) :
+  ProcessedData(const std::shared_ptr<InputData> &data, size_t sendToId, htgs::m_data_t<int *> mem, htgs::m_data_t<int *> mem2) :
   data(data), sendToId(sendToId), mem(mem), mem2(mem2) { }
 
-  const std::shared_ptr<htgs::MemoryData<int *>> &getMem() const {
+  ~ProcessedData() {}
+
+  const htgs::m_data_t<int *> &getMem() const {
     return mem;
   }
 
-  const std::shared_ptr<htgs::MemoryData<int *>> &getMem2() const {
+  const htgs::m_data_t<int *> &getMem2() const {
     return mem2;
   }
   const std::shared_ptr<InputData> getData() const {
     return data;
   }
 
-  int getSendToId() const {
+  size_t getSendToId() const {
     return sendToId;
   }
 
  private:
-  std::shared_ptr<htgs::MemoryData<int *>> mem;
-  std::shared_ptr<htgs::MemoryData<int *>> mem2;
+  htgs::m_data_t<int *> mem;
+  htgs::m_data_t<int *> mem2;
   std::shared_ptr<InputData> data;
-  int sendToId;
+  size_t sendToId;
 };
 
 #endif //HTGS_PROCESSEDDATA_H

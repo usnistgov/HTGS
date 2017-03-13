@@ -136,7 +136,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
     this->input->incrementInputTaskCount();
     graphConsumerTaskManager = nullptr;
-    graphProducerTaskManager = nullptr;
+    graphProducerTaskManagers = new std::list<AnyTaskManager *>();
 
     edges = new std::list<EdgeDescriptor *>();
 
@@ -154,7 +154,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
     this->input->incrementInputTaskCount();
     graphConsumerTaskManager = nullptr;
-    graphProducerTaskManager = nullptr;
+    graphProducerTaskManagers = new std::list<AnyTaskManager *>();
 
     edges = new std::list<EdgeDescriptor *>();
 
@@ -181,6 +181,9 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
     delete taskConnectorCommunicator;
     taskConnectorCommunicator = nullptr;
+
+    delete graphProducerTaskManagers;
+    graphProducerTaskManagers = nullptr;
   }
 
   AnyTaskGraphConf *copy() override
@@ -228,7 +231,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
     // Copy the graph producer and consumer tasks
     graphCopy->copyAndUpdateGraphConsumerTask(this->graphConsumerTaskManager);
-    graphCopy->copyAndUpdateGraphProducerTask(this->graphProducerTaskManager);
+    graphCopy->copyAndUpdateGraphProducerTasks(this->graphProducerTaskManagers);
 
 
     for (EdgeDescriptor *edgeDescriptor : *edges)
@@ -342,8 +345,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
     return this->graphConsumerTaskManager;
   }
 
-  AnyTaskManager *getGraphProducerTaskManager() override {
-    return this->graphProducerTaskManager;
+  std::list<AnyTaskManager *> *getGraphProducerTaskManagers() override {
+    return this->graphProducerTaskManagers;
   }
 
   std::shared_ptr<AnyConnector> getInputConnector() override {
@@ -391,33 +394,19 @@ class TaskGraphConf: public AnyTaskGraphConf {
   template<class W>
   void setGraphConsumerTask(ITask<T, W> *task)
   {
-    // TODO: Number of active connections for Connector
-    // TODO: Check about setting connector to nullptr for previous task
-//    if (this->graphConsumerTaskManager != nullptr)
-//      this->graphConsumerTaskManager->setInputConnector(nullptr);
-
     this->graphConsumerTaskManager = this->getTaskManager(task);
-
     this->graphConsumerTaskManager->setInputConnector(this->input);
-
   }
 
   template<class W>
-  void setGraphProducerTask(ITask<W, U> * task)
+  void addGraphProducerTask(ITask<W, U> * task)
   {
-    // TODO: Number of active connections for Connector
-    // TODO: Check about setting connector to nullptr for previous task
-//    if (this->graphProducerTaskManager != nullptr)
-//      this->graphProducerTaskManager->setOutputConnector(nullptr);
+    this->output->incrementInputTaskCount();
 
-    if (this->graphProducerTaskManager == nullptr)
-    {
-      this->output->incrementInputTaskCount();
-    }
+    AnyTaskManager *taskManager = this->getTaskManager(task);
+    taskManager->setOutputConnector(this->output);
 
-    this->graphProducerTaskManager = this->getTaskManager(task);
-
-    this->graphProducerTaskManager->setOutputConnector(this->output);
+    this->graphProducerTaskManagers->push_back(taskManager);
   }
 
   /**
@@ -492,11 +481,20 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
   void setOutputConnector(std::shared_ptr<AnyConnector> connector)
   {
-    if (graphProducerTaskManager != nullptr)
-      graphProducerTaskManager->setOutputConnector(connector);
+    if (graphProducerTaskManagers != nullptr) {
+      for (auto task : *graphProducerTaskManagers)
+        task->setOutputConnector(connector);
+    }
 
     this->output = std::dynamic_pointer_cast<Connector<U>>(connector);
 
+  }
+
+  template<class V>
+  void releaseMemory(m_data_t<V> memory)
+  {
+    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket("TaskGraph", this->getAddress(), memory->getMemoryManagerName(), memory->getAddress(), memory));
+    this->taskConnectorCommunicator->produceDataPacket(dataPacket);
   }
 
 //  /**
@@ -828,16 +826,19 @@ class TaskGraphConf: public AnyTaskGraphConf {
     }
   }
 
-  void copyAndUpdateGraphProducerTask(AnyTaskManager *taskManager)
+  void copyAndUpdateGraphProducerTasks(std::list<AnyTaskManager *> *taskManagers)
   {
-    if (taskManager != nullptr) {
-      AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
+    for (auto taskManager : *taskManagers) {
+      if (taskManager != nullptr) {
+        AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
 
-      // TODO: Number of active connections for Connector
-      this->graphProducerTaskManager = copy;
-      this->graphProducerTaskManager->setOutputConnector(this->output);
-      this->output->incrementInputTaskCount();
-      this->addTaskManager(this->graphProducerTaskManager);
+        // TODO: Number of active connections for Connector
+        copy->setOutputConnector(this->output);
+        this->graphProducerTaskManagers->push_back(copy);
+
+        this->output->incrementInputTaskCount();
+        this->addTaskManager(copy);
+      }
     }
   }
 
@@ -849,8 +850,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
   //! @endcond
   std::list<EdgeDescriptor *> *edges;
 
-  AnyTaskManager *graphConsumerTaskManager; //!< The list of consumers accessing the TaskGraph's input connector
-  AnyTaskManager *graphProducerTaskManager; //!< The list of producers that are outputting data to the TaskGraph's output connector
+  AnyTaskManager *graphConsumerTaskManager; //!< The consumer accessing the TaskGraph's input connector
+  std::list<AnyTaskManager *> *graphProducerTaskManagers; //!< The list of producers that are outputting data to the TaskGraph's output connector
 
   std::shared_ptr<Connector<T>> input; //!< The input connector for the TaskGraph
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph

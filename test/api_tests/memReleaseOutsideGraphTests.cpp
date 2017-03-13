@@ -18,25 +18,25 @@
 #include "memTaskOutsideRelease/rules/MemAllocDistributeRule.h"
 #include "memMultiRelease/memory/SimpleMemoryAllocator.h"
 
-htgs::TaskGraph<MultiMemData, htgs::VoidData> *createMemReleaseOutideGraph(int numPipelines, int numAllocators)
+htgs::TaskGraphConf<MultiMemData, htgs::VoidData> *createMemReleaseOutideGraph(size_t numPipelines, size_t numAllocators)
 {
-  auto taskGraph = new htgs::TaskGraph<MultiMemData, MultiMemData>();
+  auto taskGraph = new htgs::TaskGraphConf<MultiMemData, MultiMemData>();
 
   MemAllocTask *prevTask = nullptr;
 
   MemReleaseTask *releaseTask = new MemReleaseTask();
 
-  for (int i = 0; i < numAllocators; i++)
+  for (size_t i = 0; i < numAllocators; i++)
   {
     MemAllocTask *allocTask = new MemAllocTask(i);
 
     if (i == 0)
     {
-      taskGraph->addGraphInputConsumer(allocTask);
+      taskGraph->setGraphConsumerTask(allocTask);
     }
     else if (i == numAllocators-1)
     {
-      taskGraph->addGraphOutputProducer(allocTask);
+      taskGraph->addGraphProducerTask(allocTask);
     }
 
     if (prevTask != nullptr)
@@ -44,42 +44,42 @@ htgs::TaskGraph<MultiMemData, htgs::VoidData> *createMemReleaseOutideGraph(int n
       taskGraph->addEdge(prevTask, allocTask);
     }
 
-    taskGraph->addMemoryManagerEdge("memEdge" + std::to_string(i), allocTask, releaseTask, new SimpleMemoryAllocator(1), 1, htgs::MMType::Static);
+    std::shared_ptr<SimpleMemoryAllocator> memAlloc = std::make_shared<SimpleMemoryAllocator>(1);
+    taskGraph->addMemoryManagerEdge<int *>("memEdge" + std::to_string(i), allocTask, memAlloc, 1, htgs::MMType::Static);
 
     prevTask = allocTask;
   }
 
   auto execPipeline = new htgs::ExecutionPipeline<MultiMemData, MultiMemData>(numPipelines, taskGraph);
-  auto decompRule = new MemAllocDistributeRule(numPipelines);
+  auto decompRule = std::make_shared<MemAllocDistributeRule>();
 
   execPipeline->addInputRule(decompRule);
 
-  auto mainGraph = new htgs::TaskGraph<MultiMemData, htgs::VoidData>();
+  auto mainGraph = new htgs::TaskGraphConf<MultiMemData, htgs::VoidData>();
 
-  mainGraph->addGraphInputConsumer(execPipeline);
+  mainGraph->setGraphConsumerTask(execPipeline);
   mainGraph->addEdge(execPipeline, releaseTask);
-  mainGraph->incrementGraphInputProducer();
 
-  EXPECT_EQ(numAllocators*2, taskGraph->getVertices()->size());
-  EXPECT_EQ(2, mainGraph->getVertices()->size());
+  EXPECT_EQ(numAllocators*2, taskGraph->getTaskManagers()->size());
+  EXPECT_EQ(2, mainGraph->getTaskManagers()->size());
 
   return mainGraph;
 }
 
 
-void launchGraph(htgs::TaskGraph<MultiMemData, htgs::VoidData> *taskGraph, int numData, int numPipelines, int numAllocators)
+void launchGraph(htgs::TaskGraphConf<MultiMemData, htgs::VoidData> *taskGraph, size_t numData, size_t numPipelines, size_t numAllocators)
 {
-  htgs::Runtime *rt = new htgs::Runtime(taskGraph);
+  htgs::TaskGraphRuntime *rt = new htgs::TaskGraphRuntime(taskGraph);
 
-  for (int i = 0; i < numData; i++)
+  for (size_t i = 0; i < numData; i++)
   {
-    for (int id = 0; id < numPipelines; id++)
+    for (size_t id = 0; id < numPipelines; id++)
     {
       taskGraph->produceData(new MultiMemData(id, numAllocators));
     }
   }
 
-  taskGraph->finishedProducingData();
+  taskGraph->decrementGraphProducer();
 
   rt->executeAndWaitForRuntime();
 
@@ -106,7 +106,7 @@ void memReleaseOutsideGraphCreation() {
   EXPECT_NO_FATAL_FAILURE(delete graph8);
 }
 
-void memReleaseOutsideGraphExecution(int numData, int numAllocators, int numPipelines) {
+void memReleaseOutsideGraphExecution(size_t numData, size_t numAllocators, size_t numPipelines) {
   auto graph = createMemReleaseOutideGraph(numPipelines, numAllocators);
   EXPECT_NO_FATAL_FAILURE(launchGraph(graph, numData, numPipelines, numAllocators));
 }

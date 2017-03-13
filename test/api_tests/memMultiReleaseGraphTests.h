@@ -11,8 +11,9 @@
 #define HTGS_MEMMULTIRELEASEGRAPHTESTS_H
 
 #include <htgs/types/MMType.hpp>
+#include <cstddef>
 
 void multiReleaseGraphCreation(bool useSeparateEdge, bool useGraphReleaser, htgs::MMType type);
-void multiReleaseGraphExecution(int numDataGen, int numReleasers, int numPipelines, bool useSeparateEdge, bool useGraphReleaser, htgs::MMType type);
+void multiReleaseGraphExecution(size_t numDataGen, size_t numReleasers, size_t numPipelines, bool useSeparateEdge, bool useGraphReleaser, htgs::MMType type);
 
 #endif //HTGS_MEMMULTIRELEASEGRAPHTESTS_H

@@ -169,7 +169,7 @@ int main()
 
     if (i == nVertices-1)
     {
-      tGraph->setGraphProducerTask(tasks[i]);
+      tGraph->addGraphProducerTask(tasks[i]);
     }
 
     if (i > 0 && i < nVertices)
@@ -211,7 +211,7 @@ int main()
 
   mainGraph->setGraphConsumerTask(testInput);
   mainGraph->addEdge(testInput, execPipeline);
-  mainGraph->setGraphProducerTask(execPipeline);
+  mainGraph->addGraphProducerTask(execPipeline);
 
 
   auto execPipeline2 = new htgs::ExecutionPipeline<TestData, TestData>(2, mainGraph);
@@ -220,7 +220,7 @@ int main()
 
   auto finalGraph = new htgs::TaskGraphConf<TestData, TestData>();
   finalGraph->setGraphConsumerTask(execPipeline2);
-  finalGraph->setGraphProducerTask(execPipeline2);
+  finalGraph->addGraphProducerTask(execPipeline2);
 
 
   auto execGraph = finalGraph;

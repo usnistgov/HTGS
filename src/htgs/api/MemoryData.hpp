@@ -181,8 +181,10 @@ class MemoryData: public IData {
    * @note This function should only be called by the HTGS API
    */
   void memFree() {
-    if (this->memory)
+    if (this->memory) {
       this->allocator->memFree(this->memory);
+      this->memory = nullptr;
+    }
   }
 
   /**

@@ -104,21 +104,26 @@ class TaskGraphCommunicator {
 
   }
 
-  void printTree(TaskGraphCommunicator *comm, std::string prefix)
+  void printTree(std::string prefix)
   {
-    std::cout << "Num graphs spawned = " << numGraphsSpawned << " Graphs received: " << numGraphsReceived << std::endl;
-    if (comm->getParentComm() == nullptr)
+//    std::cout << "Num graphs spawned = " << numGraphsSpawned << " Graphs received: " << numGraphsReceived << std::endl;
+    if (this->getParentComm() == nullptr)
     {
-      std::cout << "PARENT addr: " << comm->getAddress() << std::endl;
+      std::cout << "PARENT addr: " << this->getAddress() << std::endl;
     } else{
-      std::cout << "Parent address = " << comm->getParentComm()->getAddress() << std::endl;
+      std::cout << "Parent address = " << this->getParentComm()->getAddress() << std::endl;
     }
 
-    std::cout << prefix << "Num children: " << comm->getChildren()->size() << std::endl;
-    for (auto child : *comm->getChildren())
+    std::cout << prefix << "Num children: " << this->getChildren()->size() << " Num connectors = " << taskNameConnectorMap->size() << std::endl;
+    for (auto conn : *taskNameConnectorMap)
+    {
+      std::cout << prefix << "\t\t" << conn.first << std::endl;
+    }
+
+    for (auto child : *this->getChildren())
     {
       std::cout << prefix << " CHILD addr: " << child.first << std::endl;
-      printTree(child.second, prefix+"\t");
+      child.second->printTree(prefix+"\t");
     }
 
   }
@@ -259,11 +264,11 @@ class TaskGraphCommunicator {
     std::string endPoint = packet->getDestAddr() + ":" + packet->getDestName();
 
     // Get connector
-    size_t numItems = taskNameConnectorMap->count(endPoint);
+    size_t numItems = flattenedTaskNameConnectorMap->count(endPoint);
 
     if (numItems == 1)
     {
-      auto connIterator = taskNameConnectorMap->find(endPoint);
+      auto connIterator = flattenedTaskNameConnectorMap->find(endPoint);
 
       // Gets the connector for the end point
       auto endPointConnector = connIterator->second;
@@ -272,7 +277,11 @@ class TaskGraphCommunicator {
       endPointConnector->produceAnyData(packet->getData());
 
     } else{
-      std::cerr << "Graph has tasks with duplicate name: " << packet->getDestName() << " to send data between tasks, each task should have a unique name!" << std::endl;
+      if (numItems == 0)
+        std::cerr << "Graph is unable to find destination task name: '" << endPoint << "'. Make sure the task's name exists within the graph. Origin: " << packet->getOriginAddr() << ":" << packet->getOriginName() << std::endl;
+      else
+        std::cerr << "Graph has tasks with duplicate name: '" << endPoint << "' to send data between tasks, each task should have a unique name! Origin: " << packet->getOriginAddr() << ":" << packet->getOriginName() << std::endl;
+
     }
   }
 

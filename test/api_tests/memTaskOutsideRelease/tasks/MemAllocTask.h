@@ -21,7 +21,7 @@ class MemAllocTask : public htgs::ITask<MultiMemData, MultiMemData>
   }
 
   virtual void executeTask(std::shared_ptr<MultiMemData> data) {
-    auto mem = this->memGet<int *>("memEdge" + std::to_string(taskNum), new SimpleReleaseRule());
+    auto mem = this->getMemory<int *>("memEdge" + std::to_string(taskNum), new SimpleReleaseRule());
     data->setMem(taskNum, mem);
     addResult(data);
   }
@@ -31,9 +31,6 @@ class MemAllocTask : public htgs::ITask<MultiMemData, MultiMemData>
   }
   virtual htgs::ITask<MultiMemData, MultiMemData> *copy() {
     return new MemAllocTask(taskNum);
-  }
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
-    return inputConnector->isInputTerminated();
   }
 
  private:

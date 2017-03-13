@@ -59,6 +59,7 @@ void validateResults(double *resultMatrix, size_t dim, double initValue)
   EXPECT_TRUE(valid);
 
   delete []vals;
+  delete []seqResult;
 }
 
 
@@ -123,7 +124,7 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
   taskGraph->addEdge(accumTask, matAccumBk);
 
   taskGraph->addRuleEdge(matAccumBk, outputRule, outputTask);
-  taskGraph->setGraphProducerTask(outputTask);
+  taskGraph->addGraphProducerTask(outputTask);
 
   std::shared_ptr<MatrixAllocator> matrixAllocator = std::make_shared<MatrixAllocator>(blockSize, blockSize);
 
@@ -184,6 +185,8 @@ double * launchGraph(htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<doub
           resLoc[i*dim+j] = data->getMatrixData()[i*width+j];
         }
       }
+
+      delete [] data->getMatrixData();
     }
   }
 
@@ -211,6 +214,7 @@ void matMulGraphExecution(size_t dim, size_t blockSize, size_t numThreads, doubl
   auto graph = createMatMulGraph(numThreads, dim, blockSize, initValue);
   double *result = launchGraph(graph, dim, blockSize);
   validateResults(result, dim, initValue);
+  delete []result;
 }
 
 

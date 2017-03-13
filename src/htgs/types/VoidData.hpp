@@ -16,6 +16,7 @@
 #define HTGS_VOIDDATA_HPP
 
 #include <limits.h>
+#include <htgs/api/IData.hpp>
 
 namespace htgs {
 

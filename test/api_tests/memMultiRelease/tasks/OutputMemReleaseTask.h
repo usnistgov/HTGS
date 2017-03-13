@@ -18,22 +18,9 @@ class OutputMemReleaseTask : public htgs::ITask<ProcessedData, ProcessedData> {
   OutputMemReleaseTask(int id, htgs::MMType memoryManagerType) : id(id), memoryManagerType(memoryManagerType) {
   }
 
-  virtual void initialize(int pipelineId, int numPipeline) override {
-    this->pipelineId = pipelineId;
-  }
   virtual void executeTask(std::shared_ptr<ProcessedData> data) override {
-    switch(memoryManagerType)
-    {
-      case htgs::MMType::Static:
-        this->memRelease("mem", data->getMem());
-        break;
-      case htgs::MMType::Dynamic:
-        this->memRelease("mem", data->getMem());
-        break;
-      case htgs::MMType::UserManaged:
-        this->memRelease("mem", pipelineId);
-        break;
-    }
+
+    this->releaseMemory(data->getMem());
     addResult(data);
   }
 
@@ -45,13 +32,9 @@ class OutputMemReleaseTask : public htgs::ITask<ProcessedData, ProcessedData> {
     return new OutputMemReleaseTask(id, memoryManagerType);
   }
 
-  virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) override {
-    return inputConnector->isInputTerminated();
-  }
 
  private:
   int id;
-  int pipelineId;
   htgs::MMType  memoryManagerType;
 };
 

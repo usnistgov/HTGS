@@ -17,19 +17,17 @@
 class SimpleDecompRule : public htgs::IRule<InputData, InputData> {
 
  public:
-  SimpleDecompRule(int numPipelines) {
-    this->numPipelines = numPipelines;
+  SimpleDecompRule() {
   }
 
-  virtual void applyRule(std::shared_ptr<InputData> data, int pipelineId) {
+  virtual void applyRule(std::shared_ptr<InputData> data, size_t pipelineId) override {
     if (data->getPipelineId() == pipelineId)
     {
       addResult(data);
     }
   }
-  virtual std::string getName() { return "SimpleDecompRule"; }
+  virtual std::string getName() override { return "SimpleDecompRule"; }
  private:
-  int numPipelines;
 };
 
 

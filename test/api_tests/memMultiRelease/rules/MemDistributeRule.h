@@ -15,19 +15,21 @@
 class MemDistributeRule : public htgs::IRule<ProcessedData, ProcessedData> {
 
  public:
-  MemDistributeRule(int id) : id(id) {}
+  MemDistributeRule(size_t id) : id(id) { }
 
-  virtual void applyRule(std::shared_ptr<ProcessedData> data, int pipelineId) {
+  ~MemDistributeRule() {}
+
+  virtual void applyRule(std::shared_ptr<ProcessedData> data, size_t pipelineId) override {
     if (data->getSendToId() == id)
       addResult(data);
   }
 
-  virtual std::string getName() {
+  virtual std::string getName() override {
     return "MemDistributeRule" + std::to_string(id);
   }
 
  private:
-  int id;
+  size_t id;
 };
 
 #endif //HTGS_MEMDISTRIBUTERULE_H
