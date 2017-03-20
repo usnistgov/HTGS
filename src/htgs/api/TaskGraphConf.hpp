@@ -16,7 +16,6 @@
 #include <htgs/core/graph/edge/ProducerConsumerEdge.hpp>
 #include <htgs/core/graph/edge/RuleEdge.hpp>
 #include <htgs/core/graph/edge/MemoryEdge.hpp>
-#include <htgs/core/memory/VoidMemoryAllocator.hpp>
 #include <htgs/core/comm/TaskGraphCommunicator.hpp>
 
 #ifdef USE_CUDA
@@ -386,7 +385,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
     this->input->incrementInputTaskCount();
   }
 
-  void decrementGraphProducer()
+  void finishedProducingData()
   {
     this->input->producerFinished();
   }

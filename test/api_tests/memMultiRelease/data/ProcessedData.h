@@ -18,16 +18,16 @@
 class ProcessedData : public htgs::IData {
  public:
 
-  ProcessedData(const std::shared_ptr<InputData> &data, size_t sendToId, htgs::m_data_t<int *> mem, htgs::m_data_t<int *> mem2) :
+  ProcessedData(const std::shared_ptr<InputData> &data, size_t sendToId, htgs::m_data_t<int> mem, htgs::m_data_t<int> mem2) :
   data(data), sendToId(sendToId), mem(mem), mem2(mem2) { }
 
   ~ProcessedData() {}
 
-  const htgs::m_data_t<int *> &getMem() const {
+  const htgs::m_data_t<int> &getMem() const {
     return mem;
   }
 
-  const htgs::m_data_t<int *> &getMem2() const {
+  const htgs::m_data_t<int> &getMem2() const {
     return mem2;
   }
   const std::shared_ptr<InputData> getData() const {
@@ -39,8 +39,8 @@ class ProcessedData : public htgs::IData {
   }
 
  private:
-  htgs::m_data_t<int *> mem;
-  htgs::m_data_t<int *> mem2;
+  htgs::m_data_t<int> mem;
+  htgs::m_data_t<int> mem2;
   std::shared_ptr<InputData> data;
   size_t sendToId;
 };

@@ -84,7 +84,7 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t nu
   }
 
   std::shared_ptr<SimpleAllocator> alloc = std::make_shared<SimpleAllocator>(1);
-  tg->addMemoryManagerEdge<int *>("test", startTask, alloc, 1, htgs::MMType::Static);
+  tg->addMemoryManagerEdge<int>("test", startTask, alloc, 1, htgs::MMType::Static);
 
   htgs::TaskGraphConf<SimpleData, SimpleData> *mainGraph = new htgs::TaskGraphConf<SimpleData, SimpleData>();
 
@@ -120,7 +120,7 @@ void launchGraph(htgs::TaskGraphConf<SimpleData, SimpleData> *graph, int numData
     }
   }
 
-  graph->decrementGraphProducer();
+  graph->finishedProducingData();
 
   rt->executeRuntime();
 

@@ -24,22 +24,22 @@ class InputTask : public htgs::ITask<InputData, ProcessedData> {
   virtual void executeTask(std::shared_ptr<InputData> data) override {
     for (size_t i = 0; i < numReleasers; i++) {
 
-      htgs::m_data_t<int *> mem = nullptr;
-      htgs::m_data_t<int *> mem2 = nullptr;
+      htgs::m_data_t<int> mem = nullptr;
+      htgs::m_data_t<int> mem2 = nullptr;
       if (graphReleaser)
       {
         if (this->hasMemoryEdge("mem2"))
         {
-          mem2 = this->getMemory<int *>("mem2", new SimpleReleaseRule());
+          mem2 = this->getMemory<int>("mem2", new SimpleReleaseRule());
         }
         else {
           switch(memoryManagerType)
           {
             case htgs::MMType::Static:
-              mem2 = this->getMemory<int *>("mem", new SimpleReleaseRule());
+              mem2 = this->getMemory<int>("mem", new SimpleReleaseRule());
               break;
             case htgs::MMType::Dynamic:
-              mem2 = this->getDynamicMemory<int *>("mem", new SimpleReleaseRule(), 1);
+              mem2 = this->getDynamicMemory<int>("mem", new SimpleReleaseRule(), 1);
               break;
           }
 
@@ -49,10 +49,10 @@ class InputTask : public htgs::ITask<InputData, ProcessedData> {
       switch(memoryManagerType)
       {
         case htgs::MMType::Static:
-          mem = this->getMemory<int *>("mem", new SimpleReleaseRule());
+          mem = this->getMemory<int>("mem", new SimpleReleaseRule());
           break;
         case htgs::MMType::Dynamic:
-          mem = this->getDynamicMemory<int *>("mem", new SimpleReleaseRule(), 1);
+          mem = this->getDynamicMemory<int>("mem", new SimpleReleaseRule(), 1);
           break;
       }
       count++;

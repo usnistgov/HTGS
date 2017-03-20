@@ -9,7 +9,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 #add_definitions(-DDEBUG_FLAG)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wl,--no-as-needed ${CMAKE_THREAD_LIBS_INIT}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${CMAKE_THREAD_LIBS_INIT}")
 
 set(SIMPLE_SRC
         simple/SimpleClock.h

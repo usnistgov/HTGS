@@ -45,7 +45,7 @@ htgs::TaskGraphConf<MultiMemData, htgs::VoidData> *createMemReleaseOutideGraph(s
     }
 
     std::shared_ptr<SimpleMemoryAllocator> memAlloc = std::make_shared<SimpleMemoryAllocator>(1);
-    taskGraph->addMemoryManagerEdge<int *>("memEdge" + std::to_string(i), allocTask, memAlloc, 1, htgs::MMType::Static);
+    taskGraph->addMemoryManagerEdge<int>("memEdge" + std::to_string(i), allocTask, memAlloc, 1, htgs::MMType::Static);
 
     prevTask = allocTask;
   }
@@ -79,7 +79,7 @@ void launchGraph(htgs::TaskGraphConf<MultiMemData, htgs::VoidData> *taskGraph, s
     }
   }
 
-  taskGraph->decrementGraphProducer();
+  taskGraph->finishedProducingData();
 
   rt->executeAndWaitForRuntime();
 

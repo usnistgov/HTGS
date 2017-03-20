@@ -11,7 +11,7 @@
 #define HTGS_MATRIXALLOCATOR_H
 #include <htgs/api/IMemoryAllocator.hpp>
 
-class MatrixAllocator : public htgs::IMemoryAllocator<double *> {
+class MatrixAllocator : public htgs::IMemoryAllocator<double> {
  public:
   MatrixAllocator(size_t width, size_t height) : IMemoryAllocator((size_t) width * height) { }
 

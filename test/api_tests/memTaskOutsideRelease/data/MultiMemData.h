@@ -19,11 +19,11 @@ class MultiMemData : public htgs::IData {
     memVector.resize(numAllocators);
   }
 
-  void setMem(int index, std::shared_ptr<htgs::MemoryData<int *>> mem) {
+  void setMem(int index, std::shared_ptr<htgs::MemoryData<int>> mem) {
     memVector[index] = mem;
   }
 
-  const std::vector<std::shared_ptr<htgs::MemoryData<int *>>> &getMemVector() const {
+  const std::vector<std::shared_ptr<htgs::MemoryData<int>>> &getMemVector() const {
     return memVector;
   }
 
@@ -32,7 +32,7 @@ class MultiMemData : public htgs::IData {
   }
 
  private:
-  std::vector<std::shared_ptr<htgs::MemoryData<int *>>> memVector;
+  std::vector<std::shared_ptr<htgs::MemoryData<int>>> memVector;
   int pipelineId;
 
 };

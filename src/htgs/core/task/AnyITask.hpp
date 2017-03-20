@@ -553,6 +553,8 @@ class AnyITask {
   template<class V>
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem)
   {
+    assert(("Unable to find memory edge name for task", this->memoryEdges->find(name) != this->memoryEdges->end()));
+
     auto conn = memoryEdges->find(name)->second;
     auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
 

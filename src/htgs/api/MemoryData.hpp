@@ -59,7 +59,7 @@ namespace htgs {
  * @code
  * taskGraph->addMemoryManagerEdge("readMemory", readTask, mulTask, new ReadMemoryAllocator(), readMemoryPoolSize);
  * @endcode
- * @tparam T the type of memory to be held by the MemoryData
+ * @tparam T the type of memory to be held by the MemoryData, this will automatically be converted to a pointer type
  */
 template<class T>
 class MemoryData: public IData {
@@ -172,7 +172,35 @@ class MemoryData: public IData {
    * Gets the memory that this MemoryData is managing
    * @return the memory attached to the MemoryData
    */
-  T get() { return this->memory; }
+  T *get() { return this->memory; }
+
+  const T &get(size_t idx) const {
+    return *(this->memory + idx);
+  }
+
+  T &get(size_t idx) {
+    return *(this->memory + idx);
+  }
+
+  /**
+   * Gets the value for memory at index.
+   * @param index the index
+   * @return the value at index
+   * @note T must be a pointer to memory to use this functionality.
+   */
+  const T &operator[] (size_t idx) const {
+    return *(this->memory + idx);
+  }
+
+  /**
+   * Gets the value for memory at index.
+   * @param index the index
+   * @return the value at index
+   * @note T must be a pointer to memory to use this functionality.
+   */
+   T &operator[] (size_t idx) {
+    return *(this->memory + idx);
+  }
 
   /**
    * @internal
@@ -226,7 +254,7 @@ class MemoryData: public IData {
   std::string memoryManagerName; //!< The name of the memory manager that allocated the memory
   std::string address; //!< The address of the memory manager, used to release back
   size_t pipelineId; //!< The pipelineId associated with where this memory was managed
-  T memory; //!< The memory
+  T *memory; //!< The memory
   size_t size; //!< The size of the memory (in elements)
   IMemoryReleaseRule *memoryReleaseRule; //!< The memory release rule associated with the memory
   std::shared_ptr<IMemoryAllocator<T>> allocator; //!< The allocator associated with the memory

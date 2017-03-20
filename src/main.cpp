@@ -101,7 +101,7 @@ class TestTask : public htgs::ITask<TestData, TestData> {
   int n;
 };
 
-class TestAllocator : public htgs::IMemoryAllocator<double *> {
+class TestAllocator : public htgs::IMemoryAllocator<double> {
  public:
   TestAllocator(size_t size) : IMemoryAllocator(size) {}
 
@@ -149,7 +149,6 @@ int main()
   auto testRule4 = std::make_shared<TestRule>("Rule4");
 
   auto testAllocator = std::make_shared<TestAllocator>(10);
-  auto voidAllocator = std::make_shared<htgs::VoidMemoryAllocator>();
 
   auto tGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
@@ -192,8 +191,7 @@ int main()
   }
 
   if (nVertices > 4) {
-    tGraph->addMemoryManagerEdge<void *>("TestMemory", tasks[1], voidAllocator, 100, htgs::MMType::Static);
-    tGraph->addMemoryManagerEdge<double *>("TestMemory2",
+    tGraph->addMemoryManagerEdge<double>("TestMemory",
                                            tasks[1],
                                            testAllocator,
                                            100,
@@ -249,7 +247,7 @@ int main()
     execGraph->produceData(new TestData(i));
   }
 
-  execGraph->decrementGraphProducer();
+  execGraph->finishedProducingData();
 
   int count = 0;
   while(!execGraph->isOutputTerminated())

@@ -11,7 +11,7 @@
 
 #include <htgs/api/IMemoryAllocator.hpp>
 
-class SimpleAllocator : public htgs::IMemoryAllocator<int *>
+class SimpleAllocator : public htgs::IMemoryAllocator<int>
 {
 
  public:

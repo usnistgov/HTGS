@@ -21,7 +21,7 @@ class MemAllocTask : public htgs::ITask<MultiMemData, MultiMemData>
   }
 
   virtual void executeTask(std::shared_ptr<MultiMemData> data) {
-    auto mem = this->getMemory<int *>("memEdge" + std::to_string(taskNum), new SimpleReleaseRule());
+    auto mem = this->getMemory<int>("memEdge" + std::to_string(taskNum), new SimpleReleaseRule());
     data->setMem(taskNum, mem);
     addResult(data);
   }

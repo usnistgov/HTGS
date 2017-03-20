@@ -39,7 +39,7 @@ void SimpleTask::executeTask(std::shared_ptr<SimpleData> data) {
   if (data != nullptr) {
     if (useMemoryManager) {
       if (this->hasMemoryEdge("test")) {
-        std::shared_ptr<htgs::MemoryData<int *>> mem = this->getMemory<int *>("test", new SimpleReleaseRule());
+        std::shared_ptr<htgs::MemoryData<int>> mem = this->getMemory<int>("test", new SimpleReleaseRule());
         data->setMem(mem);
       }
 

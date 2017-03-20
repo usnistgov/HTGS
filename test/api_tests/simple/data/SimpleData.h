@@ -29,15 +29,15 @@ class SimpleData: public htgs::IData {
     return value;
   }
 
-  std::shared_ptr<htgs::MemoryData<int *>> getMem() { return mem; }
+  std::shared_ptr<htgs::MemoryData<int>> getMem() { return mem; }
 
-  void setMem(std::shared_ptr<htgs::MemoryData<int *>> mem) { this->mem = mem;}
+  void setMem(std::shared_ptr<htgs::MemoryData<int>> mem) { this->mem = mem;}
 
 
  private:
   int value;
   int pipelineId;
-  std::shared_ptr<htgs::MemoryData<int *>> mem;
+  std::shared_ptr<htgs::MemoryData<int>> mem;
 };
 
 

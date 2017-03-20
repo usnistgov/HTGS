@@ -34,7 +34,7 @@ createMultiReleaseGraph(size_t numPipelines, size_t numReleasers, bool useSepara
 
   size_t memoryPoolSizeMemEdge = numReleasers + (useGraphReleaser && !useSeparateGraphEdge ? numReleasers : 0);
   size_t memoryPoolSizeMem2Edge = numReleasers;
-  taskGraph->addMemoryManagerEdge<int *>("mem", inputTask, allocator, memoryPoolSizeMemEdge, type);
+  taskGraph->addMemoryManagerEdge<int>("mem", inputTask, allocator, memoryPoolSizeMemEdge, type);
 
   for (int i = 0; i < numReleasers; i++) {
     std::shared_ptr<MemDistributeRule> mRule = std::make_shared<MemDistributeRule>(i);
@@ -46,7 +46,7 @@ createMultiReleaseGraph(size_t numPipelines, size_t numReleasers, bool useSepara
 
   if (useGraphReleaser && useSeparateGraphEdge)
   {
-      taskGraph->addMemoryManagerEdge<int *>("mem2", inputTask, allocator, memoryPoolSizeMem2Edge, htgs::MMType::Static);
+      taskGraph->addMemoryManagerEdge<int>("mem2", inputTask, allocator, memoryPoolSizeMem2Edge, htgs::MMType::Static);
   }
 
   auto execPipeline = new htgs::ExecutionPipeline<InputData, ProcessedData>(numPipelines, taskGraph);
@@ -84,7 +84,7 @@ void launchGraph(htgs::TaskGraphConf<InputData, ProcessedData> *mainGraph,
     }
   }
 
-  mainGraph->decrementGraphProducer();
+  mainGraph->finishedProducingData();
 
   rt->executeRuntime();
 

@@ -42,8 +42,8 @@ class MemoryPool {
    * @param queueSize the number of elements in the memory pool.
    */
   MemoryPool(size_t queueSize) {
-    this->memoryQueue = new BlockingQueue<std::shared_ptr<MemoryData<T>>>(queueSize);
-    this->allMemory = new std::list<std::shared_ptr<MemoryData<T>>>();
+    this->memoryQueue = new BlockingQueue<m_data_t<T>>(queueSize);
+    this->allMemory = new std::list<m_data_t<T>>();
     this->queueSize = queueSize;
   }
 
@@ -64,7 +64,7 @@ class MemoryPool {
    */
   void releaseAllMemory()
   {
-    for (std::shared_ptr<MemoryData<T>> mem : *allMemory) {
+    for (m_data_t<T> mem : *allMemory) {
       if (mem) {
         mem->memFree();
       }
@@ -78,11 +78,11 @@ class MemoryPool {
    * @param allocate whether to allocate the memory before adding
    */
   void fillPool(MemoryData<T> *memory, size_t pipelineId, bool allocate) const {
-    long remainingSize = this->memoryQueue->remainingCapacity();
+    size_t remainingSize = this->memoryQueue->remainingCapacity();
 
     DEBUG("Inserting " << remainingSize << " elements to memory pool");
 
-    for (long i = 0; i < remainingSize; i++) {
+    for (size_t i = 0; i < remainingSize; i++) {
 
       MemoryData<T> *newMemory = memory->copy();
       DEBUG_VERBOSE("Adding memory " << newMemory);
@@ -119,7 +119,7 @@ class MemoryPool {
   void emptyPool(bool free) const {
     size_t poolSize = this->memoryQueue->size();
     for (size_t i = 0; i < poolSize; i++) {
-      std::shared_ptr<MemoryData<T>> memory = this->memoryQueue->remove();
+      m_data_t<T> memory = this->memoryQueue->remove();
       if (free)
         memory->memFree();
 
@@ -130,7 +130,7 @@ class MemoryPool {
    * Gets the next piece of memory from the MemoryPool
    * @return the next memory in the MemoryPool
    */
-  std::shared_ptr<MemoryData<T>> getMemory() const {
+  m_data_t<T> getMemory() const {
     return this->memoryQueue->Dequeue();
   }
 
@@ -138,13 +138,13 @@ class MemoryPool {
    * Adds memory back into the MemoryPool
    * @param o the memory to be added in.
    */
-  void addMemory(std::shared_ptr<MemoryData<T>> o) const {
+  void addMemory(m_data_t<T> o) const {
     this->memoryQueue->Enqueue(o);
   }
 
  private:
-  std::list<std::shared_ptr<MemoryData<T>>> *allMemory; //!< The list of all memory that has been allocated by the memory pool
-  BlockingQueue<std::shared_ptr<MemoryData<T>>> *memoryQueue; //!< A blocking queue for getting/recycling memory
+  std::list<m_data_t<T>> *allMemory; //!< The list of all memory that has been allocated by the memory pool
+  BlockingQueue<m_data_t<T>> *memoryQueue; //!< A blocking queue for getting/recycling memory
   size_t queueSize; //!< The size of the memory queue
 
 };

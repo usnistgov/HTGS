@@ -54,7 +54,7 @@ class GenMatrixTask : public htgs::ITask<MatrixRequestData, MatrixBlockData<Matr
       case MatrixType::MatrixC: return;
     }
 
-    MatrixMemoryData_t matrixData = this->getMemory<double *>(matrixName, new MatrixMemoryRule(numBlocksC));
+    MatrixMemoryData_t matrixData = this->getMemory<double>(matrixName, new MatrixMemoryRule(numBlocksC));
 
     int row = data->getRow();
     int col = data->getCol();

@@ -128,8 +128,8 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
 
   std::shared_ptr<MatrixAllocator> matrixAllocator = std::make_shared<MatrixAllocator>(blockSize, blockSize);
 
-  taskGraph->addMemoryManagerEdge<double *>("matrixA", genAMatTask, matrixAllocator, 100, htgs::MMType::Static);
-  taskGraph->addMemoryManagerEdge<double *>("matrixB", genBMatTask, matrixAllocator, 100, htgs::MMType::Static);
+  taskGraph->addMemoryManagerEdge<double>("matrixA", genAMatTask, matrixAllocator, 100, htgs::MMType::Static);
+  taskGraph->addMemoryManagerEdge<double>("matrixB", genBMatTask, matrixAllocator, 100, htgs::MMType::Static);
 
 
   EXPECT_EQ(10, taskGraph->getTaskManagers()->size());
@@ -163,7 +163,7 @@ double * launchGraph(htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<doub
     }
   }
 
-  graph->decrementGraphProducer();
+  graph->finishedProducingData();
 
   while (!graph->isOutputTerminated())
   {

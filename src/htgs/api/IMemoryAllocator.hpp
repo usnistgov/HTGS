@@ -75,7 +75,7 @@ class IMemoryAllocator {
    */
   virtual ~IMemoryAllocator() { }
 
-  /**
+  virtual /**
    * Gets the size
    * @return the size
    */
@@ -86,19 +86,19 @@ class IMemoryAllocator {
    * Pure virtual function that allocates a piece of memory with a specific size.
    * @return an allocated piece of memory with type T
    */
-  virtual T memAlloc(size_t size) = 0;
+  virtual T *memAlloc(size_t size) = 0;
 
   /**
    * Pure virtual function that allocates a piece of memory.
    * @return an allocated piece of memory with type T
    */
-  virtual T memAlloc() = 0;
+  virtual T *memAlloc() = 0;
 
   /**
    * Pure virtual function the frees memory
    * @param memory the memory to be freed
    */
-  virtual void memFree(T &memory) = 0;
+  virtual void memFree(T *&memory) = 0;
 
  private:
   size_t _size; //!< The size of the memory (in elements)
