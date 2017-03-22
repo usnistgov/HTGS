@@ -12,6 +12,7 @@
 
 #include <htgs/core/task/TaskManager.hpp>
 #include <htgs/api/ITask.hpp>
+#include <htgs/api/IRule.hpp>
 #include <htgs/core/graph/edge/EdgeDescriptor.hpp>
 #include <htgs/core/task/AnyITask.hpp>
 #include <htgs/types/Types.hpp>
@@ -48,7 +49,8 @@ class AnyTaskGraphConf {
     this->taskCopyMap = new ITaskMap();
     this->taskConnectorNameMap = new TaskNameConnectorMap();
     this->numberOfSubGraphs = 0;
-
+    this->iRuleMap = new IRuleMap();
+    this->memAllocMap = new MemAllocMap();
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +96,39 @@ class AnyTaskGraphConf {
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+  template <class V, class W>
+  std::shared_ptr<IRule<V, W>> getIRule(IRule<V, W> *iRule)
+  {
+    std::shared_ptr<IRule<V, W>> iRuleShr;
+    if (this->iRuleMap->find(iRule) != this->iRuleMap->end()) {
+      std::shared_ptr<AnyIRule> baseRulePtr = this->iRuleMap->find(iRule)->second;
+      iRuleShr = std::static_pointer_cast<IRule<V, W>>(baseRulePtr);
+    }
+    else{
+      iRuleShr = std::shared_ptr<IRule<V, W>>(iRule);
+      this->iRuleMap->insert(IRulePair(iRule, iRuleShr));
+    }
+    return iRuleShr;
+  };
+
+  template <class V>
+  std::shared_ptr<IMemoryAllocator<V>> getMemoryAllocator(IMemoryAllocator<V> *allocator)
+  {
+    std::shared_ptr<IMemoryAllocator<V>> allocP;
+
+    if (this->memAllocMap->find(allocator) == this->memAllocMap->end())
+    {
+      allocP = std::shared_ptr<IMemoryAllocator<V>>(allocator);
+      memAllocMap->insert(MemAllocPair(allocator, allocP));
+    }
+    else
+    {
+      allocP = std::static_pointer_cast<IMemoryAllocator<V>>(this->memAllocMap->at(allocator));
+    }
+
+    return allocP;
+  }
 
   /**
    * Initializes the task graph just prior to spawning threads
@@ -387,7 +422,8 @@ class AnyTaskGraphConf {
 
   size_t numberOfSubGraphs; //!< The number of sub-graphs that will be spawned
 
-
+  IRuleMap *iRuleMap; //!< A mapping for each IRule pointer to the shared pointer for that IRule
+  MemAllocMap *memAllocMap; //!< A mapping for each IMemoryAllocator to its associated shared_ptr
 };
 
 }

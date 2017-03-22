@@ -51,8 +51,36 @@ typedef std::unordered_map<std::string, std::shared_ptr<ConnectorVector>> Connec
  */
 typedef std::pair<std::string, std::shared_ptr<ConnectorVector>> ConnectorVectorPair;
 
+/**
+ * @typedef IRuleMap
+ * Defines a mapping between an IRule pointer and the shared pointer of that IRule
+ */
+typedef std::map<AnyIRule *, std::shared_ptr<AnyIRule>> IRuleMap;
+
+/**
+ * @typedef IRulePair
+ * Defines a pair to be added to the IRuleMap
+ */
+typedef std::pair<AnyIRule *, std::shared_ptr<AnyIRule>> IRulePair;
+
+/**
+ * @typedef MemAllocMap
+ * Defines a mapping between a BaseMemoryAllocator and its shared_ptr
+ */
+typedef std::map<AnyMemoryAllocator *, std::shared_ptr<AnyMemoryAllocator>> MemAllocMap;
+
+/**
+ * @typedef MemAllocPair;
+ * Defines a pair to be added to the MemAllocMap
+ */
+typedef std::pair<AnyMemoryAllocator *, std::shared_ptr<AnyMemoryAllocator>> MemAllocPair;
+
+
 template <class V>
 using m_data_t = std::shared_ptr<MemoryData<V>>;
+
+
+
 
 }
 #endif //HTGS_TYPES_HPP

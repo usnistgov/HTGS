@@ -143,12 +143,12 @@ int main()
   if (useBK)
     bk = new htgs::Bookkeeper<TestData>();
 
-  auto testRule1 = std::make_shared<TestRule>("Rule1");
-  auto testRule2 = std::make_shared<TestRule>("Rule2");
-  auto testRule3 = std::make_shared<TestRule>("Rule3");
-  auto testRule4 = std::make_shared<TestRule>("Rule4");
+  auto testRule1 = new TestRule("Rule1");
+  auto testRule2 = new TestRule("Rule2");
+  auto testRule3 = new TestRule("Rule3");
+  auto testRule4 = new TestRule("Rule4");
 
-  auto testAllocator = std::make_shared<TestAllocator>(10);
+  auto testAllocator = new TestAllocator(10);
 
   auto tGraph = new htgs::TaskGraphConf<TestData, TestData>();
 
@@ -191,7 +191,7 @@ int main()
   }
 
   if (nVertices > 4) {
-    tGraph->addMemoryManagerEdge<double>("TestMemory",
+    tGraph->addMemoryManagerEdge("TestMemory",
                                            tasks[1],
                                            testAllocator,
                                            100,

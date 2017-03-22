@@ -11,7 +11,6 @@
 #define HTGS_MATRIXACCUMULATERULE_H
 
 #include <vector>
-#include <htgs/types/StateContainer.hpp>
 #include <htgs/api/IRule.hpp>
 
 #include "../data/MatrixRequestData.h"

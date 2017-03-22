@@ -30,14 +30,14 @@ createMultiReleaseGraph(size_t numPipelines, size_t numReleasers, bool useSepara
   taskGraph->setGraphConsumerTask(inputTask);
   taskGraph->addEdge(inputTask, bk);
 
-  std::shared_ptr<SimpleMemoryAllocator> allocator = std::make_shared<SimpleMemoryAllocator>(1);
+  SimpleMemoryAllocator *allocator = new SimpleMemoryAllocator(1);
 
   size_t memoryPoolSizeMemEdge = numReleasers + (useGraphReleaser && !useSeparateGraphEdge ? numReleasers : 0);
   size_t memoryPoolSizeMem2Edge = numReleasers;
-  taskGraph->addMemoryManagerEdge<int>("mem", inputTask, allocator, memoryPoolSizeMemEdge, type);
+  taskGraph->addMemoryManagerEdge("mem", inputTask, allocator, memoryPoolSizeMemEdge, type);
 
   for (int i = 0; i < numReleasers; i++) {
-    std::shared_ptr<MemDistributeRule> mRule = std::make_shared<MemDistributeRule>(i);
+    MemDistributeRule *mRule = new MemDistributeRule(i);
     OutputMemReleaseTask *outputTask = new OutputMemReleaseTask(i, type);
 
     taskGraph->addRuleEdge(bk, mRule, outputTask);

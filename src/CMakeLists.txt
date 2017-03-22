@@ -11,7 +11,7 @@ install(DIRECTORY htgs
 
 if (BUILD_MAIN)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ${CMAKE_THREAD_LIBS_INIT} -Wall -Wextra -Wno-unused-parameter")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -Wall -Wextra -Wno-unused-parameter")
 
 file(GLOB_RECURSE INC_ALL "*.hpp" "*.h")
 find_package(Threads REQUIRED)

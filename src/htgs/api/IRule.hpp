@@ -18,16 +18,11 @@
 #include <functional>
 #include <list>
 #include <mutex>
-#include <htgs/core/rules/RuleManager.hpp>
 #include <htgs/core/rules/AnyIRule.hpp>
-#include <htgs/types/StateContainer.hpp>
 
 #include "IData.hpp"
 
 namespace htgs {
-
-template <class T, class U>
-class RuleManager;
 
 template <class T>
 class StateContainer;

@@ -44,8 +44,8 @@ htgs::TaskGraphConf<MultiMemData, htgs::VoidData> *createMemReleaseOutideGraph(s
       taskGraph->addEdge(prevTask, allocTask);
     }
 
-    std::shared_ptr<SimpleMemoryAllocator> memAlloc = std::make_shared<SimpleMemoryAllocator>(1);
-    taskGraph->addMemoryManagerEdge<int>("memEdge" + std::to_string(i), allocTask, memAlloc, 1, htgs::MMType::Static);
+    SimpleMemoryAllocator *memAlloc = new SimpleMemoryAllocator(1);
+    taskGraph->addMemoryManagerEdge("memEdge" + std::to_string(i), allocTask, memAlloc, 1, htgs::MMType::Static);
 
     prevTask = allocTask;
   }

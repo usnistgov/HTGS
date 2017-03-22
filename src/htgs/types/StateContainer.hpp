@@ -1,8 +1,0 @@
-//
-// Created by tjb3 on 2/28/17.
-//
-
-#ifndef HTGS_STATECONTAINER_HPP
-#define HTGS_STATECONTAINER_HPP
-
-#endif //HTGS_STATECONTAINER_HPP

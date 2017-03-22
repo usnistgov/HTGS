@@ -64,7 +64,7 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t nu
       if (chain == numChain-1)
       {
         htgs::Bookkeeper<SimpleData> *bk = new htgs::Bookkeeper<SimpleData>();
-        std::shared_ptr<SimpleRule> rule = std::make_shared<SimpleRule>();
+        SimpleRule *rule = new SimpleRule();
         tg->addEdge(prevTask, bk);
         tg->addRuleEdge(bk, rule, t);
       }
@@ -83,8 +83,8 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t nu
 
   }
 
-  std::shared_ptr<SimpleAllocator> alloc = std::make_shared<SimpleAllocator>(1);
-  tg->addMemoryManagerEdge<int>("test", startTask, alloc, 1, htgs::MMType::Static);
+  SimpleAllocator *alloc = new SimpleAllocator(1);
+  tg->addMemoryManagerEdge("test", startTask, alloc, 1, htgs::MMType::Static);
 
   htgs::TaskGraphConf<SimpleData, SimpleData> *mainGraph = new htgs::TaskGraphConf<SimpleData, SimpleData>();
 

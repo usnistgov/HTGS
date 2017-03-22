@@ -97,13 +97,13 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
   size_t blkHeightMatA = genAMatTask->getNumBlocksRows();
   size_t blkWidthMatA = genAMatTask->getNumBlocksCols();
 
-  std::shared_ptr<MatrixDistributeRule> distributeRuleMatA = std::make_shared<MatrixDistributeRule>(MatrixType::MatrixA);
-  std::shared_ptr<MatrixDistributeRule> distributeRuleMatB = std::make_shared<MatrixDistributeRule>(MatrixType::MatrixB);
+  MatrixDistributeRule *distributeRuleMatA = new MatrixDistributeRule(MatrixType::MatrixA);
+  MatrixDistributeRule *distributeRuleMatB = new MatrixDistributeRule(MatrixType::MatrixB);
 
-  std::shared_ptr<MatrixLoadRule> loadRule = std::make_shared<MatrixLoadRule>(blkWidthMatA, blkHeightMatA, blkWidthMatB, blkHeightMatB);
-  std::shared_ptr<MatrixAccumulateRule> accumulateRule = std::make_shared<MatrixAccumulateRule>(blkWidthMatB, blkHeightMatA, blkWidthMatA);
+  MatrixLoadRule *loadRule = new MatrixLoadRule(blkWidthMatA, blkHeightMatA, blkWidthMatB, blkHeightMatB);
+  MatrixAccumulateRule *accumulateRule = new MatrixAccumulateRule(blkWidthMatB, blkHeightMatA, blkWidthMatA);
 
-  std::shared_ptr<MatrixOutputRule> outputRule = std::make_shared<MatrixOutputRule>(blkWidthMatB, blkHeightMatA, blkWidthMatA);
+  MatrixOutputRule *outputRule = new MatrixOutputRule(blkWidthMatB, blkHeightMatA, blkWidthMatA);
 
   auto distributeBk = new htgs::Bookkeeper<MatrixRequestData>();
   auto matMulBk = new htgs::Bookkeeper<MatrixBlockData<MatrixMemoryData_t>>();
@@ -126,10 +126,10 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
   taskGraph->addRuleEdge(matAccumBk, outputRule, outputTask);
   taskGraph->addGraphProducerTask(outputTask);
 
-  std::shared_ptr<MatrixAllocator> matrixAllocator = std::make_shared<MatrixAllocator>(blockSize, blockSize);
+  MatrixAllocator *matrixAllocator = new MatrixAllocator(blockSize, blockSize);
 
-  taskGraph->addMemoryManagerEdge<double>("matrixA", genAMatTask, matrixAllocator, 100, htgs::MMType::Static);
-  taskGraph->addMemoryManagerEdge<double>("matrixB", genBMatTask, matrixAllocator, 100, htgs::MMType::Static);
+  taskGraph->addMemoryManagerEdge("matrixA", genAMatTask, matrixAllocator, 100, htgs::MMType::Static);
+  taskGraph->addMemoryManagerEdge("matrixB", genBMatTask, matrixAllocator, 100, htgs::MMType::Static);
 
 
   EXPECT_EQ(10, taskGraph->getTaskManagers()->size());

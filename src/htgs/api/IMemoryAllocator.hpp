@@ -14,6 +14,7 @@
 #ifndef HTGS_MEMORYALLOCATOR_HPP
 #define HTGS_MEMORYALLOCATOR_HPP
 #include <functional>
+#include <htgs/core/memory/AnyMemoryAllocator.hpp>
 
 namespace htgs {
 /**
@@ -60,27 +61,18 @@ namespace htgs {
  * @tparam T the memory type
  */
 template<class T>
-class IMemoryAllocator {
+class IMemoryAllocator : public AnyMemoryAllocator {
  public:
   /**
    * Creates a memory allocator
    * @param size the number of elements to allocate
    */
-  IMemoryAllocator(size_t size) {
-    this->_size = size;
-  }
+  IMemoryAllocator(size_t size) : AnyMemoryAllocator(size) { }
 
   /**
    * Destructor
    */
   virtual ~IMemoryAllocator() { }
-
-  virtual /**
-   * Gets the size
-   * @return the size
-   */
-   size_t size() { return this->_size; }
-
 
   /**
    * Pure virtual function that allocates a piece of memory with a specific size.
@@ -99,9 +91,6 @@ class IMemoryAllocator {
    * @param memory the memory to be freed
    */
   virtual void memFree(T *&memory) = 0;
-
- private:
-  size_t _size; //!< The size of the memory (in elements)
 };
 }
 
