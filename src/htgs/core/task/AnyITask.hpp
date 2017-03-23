@@ -109,10 +109,28 @@ class AnyITask {
   virtual AnyITask *copy() = 0;
 
   /**
-   * Pure virtual function to get the name of an ITask
+   * Virtual function to get the name of an ITask
    * @return the name of the ITask
    */
   virtual std::string getName() = 0;
+
+  /**
+   * Virtual function to get the label name used for dot graph viz.
+   * @return the label name used for graphviz
+   */
+  virtual std::string getDotLabelName() = 0;
+
+  /**
+   * Gets the color of the shape for graphviz dot
+   * @return the shape
+   */
+  virtual std::string getDotShapeColor() = 0;
+
+  /**
+   * Gets the shape for graphviz dot
+   * @return the shape
+   */
+  virtual std::string getDotShape() = 0;
 
   /**
  * Virtual function that is called when an ITask is being shutdown by it's owner thread.
@@ -210,27 +228,13 @@ class AnyITask {
  * @return the additiona dota attributes for the dot graph representation
  */
   virtual std::string genDot(int flags, std::string dotId) {
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
-    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-    return dotId + "[label=\"" + this->getName() +
-        (this->debugDotNode() != "" ? ("\n"+this->debugDotNode()+"\n") : "") +
-        threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
+    return dotId + ";\n" ;
+//    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
+//    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+//    return dotId + "[label=\"" + this->getName() +
+//        (this->debugDotNode() != "" ? ("\n"+this->debugDotNode()+"\n") : "") +
+//        threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
   }
-
-#ifdef PROFILE
-  virtual std::string getDotProfile(int flags,
-                                    std::unordered_map<std::string, double> *mmap, double val,
-                                    std::string desc, std::unordered_map<std::string, std::string> *colorMap)
-  {
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
-    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-    return this->getDotId() + "[label=\"" + this->getName() + threadLabel + inOutLabel + "\n" + desc + "\n" + std::to_string(val) + "\",shape=box,style=filled,penwidth=5,fillcolor=white,color=\""+colorMap->at(this->getNameWithPipID()) + "\",width=.2,height=.2];\n";
-  }
-  virtual void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
-  virtual void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)  {}
-  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)  {}
-#endif
-
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
@@ -444,27 +448,8 @@ class AnyITask {
     oss << genDot(flags, dotId, input, output);
 
     if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) == 0) {
-      // TODO: Rework release memory to keep track of the name of the edges released to draw things
-//      if (releaseMemoryEdges->size() > 0) {
-//        for (const auto &kv : *this->releaseMemoryEdges) {
-//          // TODO: Should be able to rework this . . . ?
-//          if (this->isReleaseMemoryOutsideGraph(kv.first)) {
-//            for (auto connector : *kv.second) {
-//              oss << dotId << " -> " << connector->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
-//            }
-//          } else {
-//            // TODO: Should no longer have to get pipelineId
-//            oss << dotId << " -> " << kv.second->at(0)->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
-////            oss << dotId << " -> " << kv.second->at((unsigned long) this->pipelineId)->getDotId() << "[label=\"release\", color=sienna];" << std::endl;
-//          }
-//        }
-//
-//      }
-
       if (memoryEdges->size() > 0) {
         for (const auto &kv : *this->memoryEdges) {
-          // TODO: Should no longer have to get pipelineId
-//          oss << kv.second->at((unsigned long) this->pipelineId)->getDotId() << " -> " << dotId << "[label=\"get\", color=sienna];" << std::endl;
           oss << kv.second->getDotId() << " -> " << dotId << "[label=\"get\", color=sienna];" << std::endl;
         }
       }

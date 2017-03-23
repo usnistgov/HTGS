@@ -150,7 +150,11 @@ class AnyConnector {
    */
   virtual void profileConsume(size_t numThreads, bool showQueueSize) = 0;
 
-
+  /**
+   * Gets the maximum queue size that this connector has in its data queue.
+   * @return the maximum queue size for the connector
+   */
+  virtual size_t getMaxQueueSize() = 0;
 
  private:
   std::atomic_size_t producerTaskCount; //!< The number of producers adding data to the connector

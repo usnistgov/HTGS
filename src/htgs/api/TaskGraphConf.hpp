@@ -17,6 +17,7 @@
 #include <htgs/core/graph/edge/RuleEdge.hpp>
 #include <htgs/core/graph/edge/MemoryEdge.hpp>
 #include <htgs/core/comm/TaskGraphCommunicator.hpp>
+#include <htgs/core/graph/profile/TaskGraphProfiler.hpp>
 
 #ifdef USE_CUDA
 #include <cuda.h>
@@ -568,151 +569,53 @@ class TaskGraphConf: public AnyTaskGraphConf {
     this->taskConnectorCommunicator->produceDataPacket(dataPacket);
   }
 
-//  /**
-//   * Writes the dot representation of the task graph to disk
-//   * @param file the file path (will not create directories)
-//   */
-//  void writeDotToFile(std::string file) {
-//    writeDotToFile(file, 0);
-//  }
-//
-//  void writeDotToFile(std::string file, int flags) {
-//    std::ofstream f(file);
-//    f << genDotGraph(flags);
-//    f.flush();
-//
-//    std::cout << "Writing dot file for task graph to " << file << std::endl;
-//  }
-//
-//
-//  /**
-//   * Generate the content only of the graph (excludes all graph definitions and attributes)
-//   */
-//  std::string genDotGraphContent(int flags) {
-//    std::ostringstream oss;
-//
-//    for (AnyTaskManager *bTask : *vertices) {
-//      oss << bTask->getDot(flags);
-//    }
-//
-//    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) != 0) {
-//
-//      if (memReleaser->size() > 0) {
-//        for (const auto &kv : *this->memReleaser) {
-//          auto connector = kv.second->at(this->pipelineId);
-//          oss << std::string("mainThread") << " -> " << connector->getDotId() << ";" << std::endl;
-//        }
-//
-//        oss << "mainThread[label=\"Main Thread\"];\n";
-//      }
-//    }
-//
-//    return oss.str();
-//  }
-//
-//  /**
-//   * Generates the dot graph as a string
-//   */
-//  std::string genDotGraph(int flags) {
-//    std::ostringstream oss;
-//
-//    oss << "digraph { rankdir=\"TB\"" << std::endl;
-//    oss << "forcelabels=true;" << std::endl;
-//    oss << "node[shape=record, fontsize=10, fontname=\"Verdana\"];" << std::endl;
-//    oss << "edge[fontsize=10, fontname=\"Verdana\"];" << std::endl;
-//    oss << "graph [compound=true];" << std::endl;
-//
-//    for (AnyTaskManager *bTask : *vertices) {
-//      oss << bTask->getDot(flags);
-//    }
-//
-//    if (this->graphInputConsumers->size() > 0)
-//      oss << this->input->getDotId() << "[label=\"Graph Input\n" << this->input->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->input->typeName()) : "") << "\"];" << std::endl;
-//
-//    if (this->graphOutputProducers->size() > 0)
-//      oss << "{ rank = sink; " << this->output->getDotId() << "[label=\"Graph Output\n" << this->output->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->output->typeName()) : "") << "\"]; }" << std::endl;
-//
-//
-//    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) == 0) {
-//      if (memReleaser->size() > 0) {
-//        for (const auto &kv : *this->memReleaser) {
-//          for (const auto &memConnector : *kv.second)
-//            oss << std::string("mainThread") << " -> " << memConnector->getDotId() << ";" << std::endl;
-//        }
-//      }
-//    }
-//
-//    if (oss.str().find("mainThread") != std::string::npos)
-//    {
-//      oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = aquamarine4]; }\n";
-//    }
-//
-//
-//#ifdef PROFILE
-//    std::string desc = "";
-//    std::unordered_map<std::string, double> *timeMap;
-//    std::unordered_map<std::string, std::string> *colorMap;
-//
-//    if ((flags & DOTGEN_FLAG_SHOW_PROFILE_COMP_TIME) != 0)
-//    {
-//      desc = "Compute Time (sec): ";
-//      timeMap = this->getComputeTimeAverages();
-//
-//    }
-//    else if ((flags & DOTGEN_FLAG_SHOW_PROFILE_WAIT_TIME) != 0)
-//    {
-//      desc = "Wait Time (sec): ";
-//      timeMap = this->getWaitTimeAverages();
-//    }
-//    else if ((flags & DOTGEN_FLAG_SHOW_PROFILE_MAX_Q_SZ) != 0)
-//    {
-//      desc = "Max Q Size";
-//      timeMap = this->getMaxQSizeAverages();
-//    }
-//
-//    if (desc != "") {
-//      colorMap = this->genColorMap(timeMap);
-//      oss << this->genProfileGraph(flags, timeMap, desc, colorMap);
-//
-//      delete timeMap;
-//      delete colorMap;
-//    }
-//#endif
-//
-//    oss << "}" << std::endl;
-//
-//    return oss.str();
-//  }
-//
-//
-//#ifdef PROFILE
-//  std::unordered_map<std::string, double> *getComputeTimeAverages()
-//  {
-//    std::unordered_multimap<std::string, long long int> mmap;
-//
-//    this->gatherComputeTime(&mmap);
-//
-//    return computeAverages<long long int>(&mmap, 1000000.0);
-//  }
-//
-//  std::unordered_map<std::string, double> *getWaitTimeAverages()
-//  {
-//    std::unordered_multimap<std::string, long long int> mmap;
-//
-//    this->gatherWaitTime(&mmap);
-//
-//    return computeAverages<long long int>(&mmap, 1000000.0);
-//  }
-//
-//  std::unordered_map<std::string, double> *getMaxQSizeAverages()
-//  {
-//    std::unordered_multimap<std::string, int> mmap;
-//
-//    this->gatherMaxQSize(&mmap);
-//
-//    return computeAverages<int>(&mmap, 1.0);
-//  }
-//
+  /**
+   * Generates the dot graph as a string
+   */
+  std::string genDotGraph(int flags) override {
+    std::ostringstream oss;
+
+    // Create header info for graphViz dot file
+    oss << "digraph { rankdir=\"TB\"" << std::endl;
+    oss << "forcelabels=true;" << std::endl;
+    oss << "node[shape=record, fontsize=10, fontname=\"Verdana\"];" << std::endl;
+    oss << "edge[fontsize=10, fontname=\"Verdana\"];" << std::endl;
+    oss << "graph [compound=true];" << std::endl;
+
+    // Gather profile data
+    TaskGraphProfiler profiler(flags);
+    profiler.buildProfile(this);
+
+    for (AnyTaskManager *bTask : *this->getTaskManagers()) {
+      oss << bTask->getDot(flags);
+    }
+    oss << profiler.genDotProfile(oss.str());
+
+    if (getGraphConsumerTaskManager() != nullptr)
+      oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n"
+          << this->getInputConnector()->getProducerCount()
+          <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getInputConnector()->typeName()) : "")
+          << "\"];" << std::endl;
+
+    if (getGraphProducerTaskManagers()->size() > 0)
+      oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\n"
+          << this->getOutputConnector()->getProducerCount()
+          <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getOutputConnector()->typeName()) : "")
+          << "\"]; }" << std::endl;
+
+
+
+    if (oss.str().find("mainThread") != std::string::npos)
+    {
+      oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = aquamarine4]; }\n";
+    }
+
+    oss << "}" << std::endl;
+
+    return oss.str();
+  }
+
+
 //  template <typename Type>
 //  std::unordered_map<std::string, double> *computeAverages(std::unordered_multimap<std::string, Type> *mmap, double divisor)
 //  {

@@ -209,13 +209,22 @@ class ITask: public AnyITask {
 
   virtual void shutdown() override {}
 
-  /**
-   * Virtual function that gets the name of the ITask
-   * @return the name of the ITask
-   */
   virtual std::string getName() override {
     return "UnnamedITask";
   }
+
+  virtual std::string getDotLabelName() override {
+    return this->getName();
+  }
+
+  virtual std::string getDotShapeColor() override {
+    return "black";
+  }
+
+  virtual std::string getDotShape() override {
+    return "box";
+  }
+
 
   virtual ITask<T, U> *copy() = 0;
 
@@ -316,6 +325,8 @@ class ITask: public AnyITask {
   {
     return this->ownerTask;
   }
+
+  virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) { }
 
  private:
 

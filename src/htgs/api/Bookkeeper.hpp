@@ -131,6 +131,14 @@ class Bookkeeper: public ITask<T, VoidData> {
   }
 
   /**
+   * Gets just the name "Bookkeeper" for the dot label
+   * @return the name of the bookkeeper
+   */
+  virtual std::string getDotLabelName() override {
+    return "Bookkeeper";
+  }
+
+  /**
    * Provides debug output for the rule manager.
    * @note \#define DEBUG_FLAG to enable debugging
    */

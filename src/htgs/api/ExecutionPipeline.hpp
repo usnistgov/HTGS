@@ -265,32 +265,15 @@ class ExecutionPipeline: public ITask<T, U> {
     inputBk->debug();
   }
 
+  virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) override {
+    // Gather profile data for each graph
+    for (auto g : *graphs)
+    {
+      g->gatherProfilingData(taskManagerProfiles);
+    }
+  }
+
 #ifdef PROFILE
-  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)
-  {
-    for (auto g : *graphs)
-    {
-      g->gatherComputeTime(mmap);
-    }
-  }
-
-
-  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)
-  {
-    for (auto g : *graphs)
-    {
-      g->gatherWaitTime(mmap);
-    }
-  }
-
-  void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)
-  {
-    for (auto g : *graphs)
-    {
-      g->gatherMaxQSize(mmap);
-    }
-  }
-
   std::string getDotProfile(int flags,
                             std::unordered_map<std::string, double> *mmap, double val,
                             std::string desc, std::unordered_map<std::string, std::string> *colorMap)

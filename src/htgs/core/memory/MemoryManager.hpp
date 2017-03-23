@@ -234,28 +234,19 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 
     std::ostringstream oss;
 
-    oss << input->getDotId() << " -> " << dotId << "[color=sienna];" << std::endl;
-    oss << input->getDotId() + "[label=\"" + this->typeName() + "\",shape=box,style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
+//    oss << input->getDotId() << " -> " << dotId << "[color=sienna];" << std::endl;
+//    oss << input->getDotId() + "[label=\"" + this->typeName() + "\",shape=box,style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
 
     if (output != nullptr) {
       oss << dotId << " -> " << output->getDotId() << "[color=sienna];" << std::endl;
-      oss << output->getDotId() + "[label=\""+ this->typeName() +"\",shape=box,style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
+      oss << output->getDotId() + "[label=\""+ this->typeName() +"\",style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
     }
 
-    oss << dotId + "[label=\"" + this->getName() + "\",color=sienna];\n";
+    oss << dotId + ";\n";
 
     return oss.str();
 
   }
-
-#ifdef PROFILE
-  std::string getDotProfile(int flags,
-                            std::unordered_map<std::string, double> *mmap, double val,
-                            std::string desc, std::unordered_map<std::string, std::string> *colorMap) override
-  {
-    return "";
-  }
-#endif
 
  private:
   std::shared_ptr<IMemoryAllocator<T>> allocator; //!< The allocator used for allocating and freeing memory

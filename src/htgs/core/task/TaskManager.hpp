@@ -167,9 +167,22 @@ class TaskManager: public AnyTaskManager {
 
   }
 
+
+
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+  void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)  override {
+    // Create profile data for this task
+    TaskManagerProfile *profileData = new TaskManagerProfile(this->getComputeTime(), this->getWaitTime(), this->getMaxQueueSize());
+    taskManagerProfiles->insert(std::pair<AnyTaskManager *, TaskManagerProfile *>(this, profileData));
+
+    // Pass gatherProfileData to ITask for further processing
+    this->taskFunction->gatherProfileData(taskManagerProfiles);
+
+
+  }
 
   /**
    * Sets the input BaseConnector
@@ -213,18 +226,18 @@ class TaskManager: public AnyTaskManager {
       // TODO: Handle mutex
 //          std::unique_lock<std::mutex> lock(ioMutex);
           std::cout << "===================== " << this->getName() << " "<< prefix() << " ===================" << std::endl;
-          std::cout << "COMPUTE TIME: " << taskComputeTime << " us   WAIT TIME: " << taskWaitTime << " us" << std::endl;
+          std::cout << "COMPUTE TIME: " << getComputeTime() << " us   WAIT TIME: " << getWaitTime() << " us" << std::endl;
 
           if (this->getInputConnector() != nullptr) {
               std::cout << "Input connector: ";
-              this->getInputConnector()->profileConsume(this->numThreads, true);
+              this->getInputConnector()->profileConsume(this->getNumThreads(), true);
           }
           if (this->getOutputConnector() != nullptr) {
               std::cout << "Output connector: ";
-              this->getOutputConnector()->profileProduce(this->numThreads);
+              this->getOutputConnector()->profileProduce(this->getNumThreads());
           }
           this->getTaskFunction()->profileITask();
-          std::cout << "-------------------------- " << this->getName() << " (thread: " << this->threadId << ") -------------------------- " << std::endl << std::endl;
+          std::cout << "-------------------------- " << this->getName() << " (thread: " << this->getThreadId() << ") -------------------------- " << std::endl << std::endl;
       }
 #endif
 
@@ -256,15 +269,11 @@ class TaskManager: public AnyTaskManager {
           std::shared_ptr<AnyConnector> connector = nameManagerPair.second;
           connector->producerFinished();
 
-
           if (connector->isInputTerminated())
             connector->wakeupConsumer();
         }
       }
-
-    }
-
-    else {
+    } else {
       if (this->getOutputConnector() != nullptr) {
         this->getOutputConnector()->producerFinished();
 

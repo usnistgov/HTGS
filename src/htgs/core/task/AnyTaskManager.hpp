@@ -19,6 +19,7 @@
 
 #include <htgs/types/Types.hpp>
 #include <htgs/core/comm/TaskGraphCommunicator.hpp>
+#include <htgs/core/graph/profile/TaskManagerProfile.hpp>
 #include "AnyITask.hpp"
 
 namespace htgs {
@@ -160,6 +161,9 @@ class AnyTaskManager {
    * @param connector the output connector
    */
   virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) = 0;
+
+
+  virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)  = 0;
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
@@ -331,51 +335,38 @@ class AnyTaskManager {
     this->threadId = id;
   }
 
+  /**
+   * Gets the thread id associated with the TaskManager
+   * @return the thread id
+   */
+  size_t getThreadId() {
+    return this->threadId;
+  }
+
+  unsigned long long int getComputeTime() {
 #ifdef PROFILE
-  std::string genDotProfile(int flags, std::unordered_map<std::string, double> *mmap, std::string desc,
-                            std::unordered_map<std::string, std::string> *colorMap) {
-    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
-      double val = 0.0;
-      if (desc == "Compute Time (sec): ")
-        val = this->taskComputeTime / 1000000;
-      else if (desc == "Wait Time (sec): ")
-        val = this->taskWaitTime / 1000000;
-      else if (desc == "Max Q Size: ")
-        val = this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;
-      return this->taskFunction->getDotProfile(flags, mmap, val, desc, colorMap);
-    } else if (this->threadId == 0){
-      return this->taskFunction->getDotProfile(flags, mmap, mmap->at(this->getNameWithPipID()), desc, colorMap);
-    }
-    else
-    {
-      return "";
-    }
-  }
-
-  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap)
-  {
-    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskComputeTime));
-    this->taskFunction->gatherComputeTime(mmap);
-  }
-
-  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap)
-  {
-    mmap->insert(std::pair<std::string, long long int>(this->getNameWithPipID(), this->taskWaitTime));
-    this->taskFunction->gatherWaitTime(mmap);
-  }
-
-  void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap)
-  {
-    if (inputConnector != nullptr)
-      mmap->insert(std::pair<std::string, int>(this->getNameWithPipID(), this->inputConnector->getMaxQueueSize()));
-    this->taskFunction->gatherMaxQSize(mmap);
-  }
-
-  long long int getComputeTime() { return taskComputeTime; }
-  long long int getWaitTime() { return taskWaitTime; }
-  int getMaxQueueSize() { return this->inputConnector != nullptr ? this->inputConnector->getMaxQueueSize() : 0;}
+    return taskComputeTime;
+#else
+    return 0;
 #endif
+  }
 
+
+  unsigned long long int getWaitTime() {
+#ifdef PROFILE
+    return taskWaitTime;
+#else
+    return 0;
+#endif
+  }
+
+  size_t getMaxQueueSize() {
+#ifdef PROFILE
+    return this->getInputConnector() != nullptr ? this->getInputConnector()->getMaxQueueSize() : 0;
+#else
+    return 0;
+#endif
+  }
 
   //! @cond Doxygen_Suppress
   std::string prefix() {

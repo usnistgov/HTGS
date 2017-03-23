@@ -16,6 +16,7 @@
 #include <htgs/core/graph/edge/EdgeDescriptor.hpp>
 #include <htgs/core/task/AnyITask.hpp>
 #include <htgs/types/Types.hpp>
+#include <htgs/core/graph/profile/TaskManagerProfile.hpp>
 
 namespace htgs {
 
@@ -96,6 +97,14 @@ class AnyTaskGraphConf {
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+  void gatherProfilingData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)
+  {
+      for (auto tMan : *taskManagers)
+      {
+        tMan->gatherProfileData(taskManagerProfiles);
+      }
+  }
 
   template <class V, class W>
   std::shared_ptr<IRule<V, W>> getIRule(IRule<V, W> *iRule)
@@ -292,76 +301,7 @@ class AnyTaskGraphConf {
   /**
    * Generates the dot graph as a string
    */
-  std::string genDotGraph(int flags) {
-    std::ostringstream oss;
-
-    oss << "digraph { rankdir=\"TB\"" << std::endl;
-    oss << "forcelabels=true;" << std::endl;
-    oss << "node[shape=record, fontsize=10, fontname=\"Verdana\"];" << std::endl;
-    oss << "edge[fontsize=10, fontname=\"Verdana\"];" << std::endl;
-    oss << "graph [compound=true];" << std::endl;
-
-    for (AnyTaskManager *bTask : *taskManagers) {
-      oss << bTask->getDot(flags);
-    }
-
-    if (getGraphConsumerTaskManager() != nullptr)
-      oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n" << this->getInputConnector()->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getInputConnector()->typeName()) : "") << "\"];" << std::endl;
-
-    if (getGraphProducerTaskManagers()->size() > 0)
-      oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\n" << this->getOutputConnector()->getProducerCount() <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getOutputConnector()->typeName()) : "") << "\"]; }" << std::endl;
-
-
-    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) == 0) {
-//      if (memReleaser->size() > 0) {
-//        for (const auto &kv : *this->memReleaser) {
-//          for (const auto &memConnector : *kv.second)
-//            oss << std::string("mainThread") << " -> " << memConnector->getDotId() << ";" << std::endl;
-//        }
-//      }
-    }
-
-    if (oss.str().find("mainThread") != std::string::npos)
-    {
-      oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = aquamarine4]; }\n";
-    }
-
-
-#ifdef PROFILE
-    std::string desc = "";
-    std::unordered_map<std::string, double> *timeMap;
-    std::unordered_map<std::string, std::string> *colorMap;
-
-    if ((flags & DOTGEN_FLAG_SHOW_PROFILE_COMP_TIME) != 0)
-    {
-      desc = "Compute Time (sec): ";
-      timeMap = this->getComputeTimeAverages();
-
-    }
-    else if ((flags & DOTGEN_FLAG_SHOW_PROFILE_WAIT_TIME) != 0)
-    {
-      desc = "Wait Time (sec): ";
-      timeMap = this->getWaitTimeAverages();
-    }
-    else if ((flags & DOTGEN_FLAG_SHOW_PROFILE_MAX_Q_SZ) != 0)
-    {
-      desc = "Max Q Size";
-      timeMap = this->getMaxQSizeAverages();
-    }
-
-    if (desc != "") {
-      colorMap = this->genColorMap(timeMap);
-      oss << this->genProfileGraph(flags, timeMap, desc, colorMap);
-
-      delete timeMap;
-      delete colorMap;
-    }
-#endif
-
-    oss << "}" << std::endl;
-
-    return oss.str();
-  }
+  virtual std::string genDotGraph(int flags) = 0;
 
 
   void copyTasks(std::list<AnyTaskManager *> *tasks)
