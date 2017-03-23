@@ -126,7 +126,7 @@ class Bookkeeper: public ITask<T, VoidData> {
    * @return the name of this bookkeeper
    */
   std::string getName() override {
-    return "Bookkeeper -- " + std::to_string(this->ruleManagers->size()) + " rule manager(s): " +
+    return "Bookkeeper -- " + std::to_string(this->ruleManagers->size()) + " rule(s): " +
         this->ruleManagerInfo;
   }
 

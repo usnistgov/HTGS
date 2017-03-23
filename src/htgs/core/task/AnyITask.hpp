@@ -221,6 +221,8 @@ class AnyITask {
   */
   virtual AnyITask *copyITask(bool deep) = 0;
 
+  virtual void printProfile() = 0;
+
   /**
  * Virtual function that adds additional dot attributes to this node.
  * @param flags the dot gen flags

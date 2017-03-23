@@ -170,6 +170,26 @@ class AnyTaskManager {
   ////////////////////////////////////////////////////////////////////////////////
 
 
+  void printProfile() {
+    std::cout << "===================== " << this->getName() << " "<< prefix() << " ===================" << std::endl;
+    std::cout << "COMPUTE TIME: " << getComputeTime() << " us   WAIT TIME: " << getWaitTime() << " us" << std::endl;
+
+    if (this->getInputConnector() != nullptr) {
+      std::cout << "Input connector: ";
+      this->getInputConnector()->profileConsume(this->getNumThreads(), true);
+    }
+//    if (this->getOutputConnector() != nullptr) {
+//      std::cout << "Output connector: ";
+//      this->getOutputConnector()->profileProduce(this->getNumThreads());
+//    }
+    this->getTaskFunction()->profileITask();
+    std::cout << "-------------------------- " << this->getName() << " (thread: " << this->getThreadId() << ") -------------------------- " << std::endl << std::endl;
+
+    this->getTaskFunction()->printProfile();
+
+  }
+
+
   void setConnectorCommunicator(TaskGraphCommunicator *communicator)
   {
     this->connectorCommunicator = communicator;
@@ -373,7 +393,7 @@ class AnyTaskManager {
     return std::string(
         "Thread id: " + std::to_string(this->threadId) + " (out of " + std::to_string(this->numThreads)
             + "); Pipeline id " + std::to_string(this->pipelineId) + " (out of " + std::to_string(this->numPipelines) +
-            ") ");
+            ") Address: " + this->getAddress());
   }
   //! @endcond
 

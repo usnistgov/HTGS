@@ -272,6 +272,8 @@ int main()
 
   execGraph->writeDotToFile("test.dot");
 
+  execGraph->printProfile();
+
 //  writeDotPng(execGraph, "testExec");
 
   delete runtime;

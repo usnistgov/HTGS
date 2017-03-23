@@ -225,6 +225,8 @@ class ITask: public AnyITask {
     return "box";
   }
 
+  virtual void printProfile() override {}
+
 
   virtual ITask<T, U> *copy() = 0;
 

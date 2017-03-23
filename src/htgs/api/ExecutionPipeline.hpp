@@ -273,6 +273,13 @@ class ExecutionPipeline: public ITask<T, U> {
     }
   }
 
+  void printProfile() override {
+    for (auto g : *graphs)
+    {
+      g->printProfile();
+    }
+  }
+
 #ifdef PROFILE
   std::string getDotProfile(int flags,
                             std::unordered_map<std::string, double> *mmap, double val,

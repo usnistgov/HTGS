@@ -216,6 +216,14 @@ class AnyTaskGraphConf {
   }
 
 
+  void printProfile()
+  {
+    for (auto tMan : *taskManagers)
+    {
+      tMan->printProfile();
+    }
+  }
+
   size_t getPipelineId() { return this->pipelineId; }
 
   size_t getNumPipelines() { return this->numPipelines; }

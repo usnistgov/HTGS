@@ -221,26 +221,6 @@ class TaskManager: public AnyTaskManager {
 
   //! @cond Doxygen_Suppress
   void processTaskFunctionTerminated() {
-#ifdef PROFILE
-    {
-      // TODO: Handle mutex
-//          std::unique_lock<std::mutex> lock(ioMutex);
-          std::cout << "===================== " << this->getName() << " "<< prefix() << " ===================" << std::endl;
-          std::cout << "COMPUTE TIME: " << getComputeTime() << " us   WAIT TIME: " << getWaitTime() << " us" << std::endl;
-
-          if (this->getInputConnector() != nullptr) {
-              std::cout << "Input connector: ";
-              this->getInputConnector()->profileConsume(this->getNumThreads(), true);
-          }
-          if (this->getOutputConnector() != nullptr) {
-              std::cout << "Output connector: ";
-              this->getOutputConnector()->profileProduce(this->getNumThreads());
-          }
-          this->getTaskFunction()->profileITask();
-          std::cout << "-------------------------- " << this->getName() << " (thread: " << this->getThreadId() << ") -------------------------- " << std::endl << std::endl;
-      }
-#endif
-
     // Task is now terminated, so it is no longer alive
     this->setAlive(false);
 
