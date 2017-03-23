@@ -137,7 +137,6 @@ class BlockingQueue {
 #endif
 
     this->condition.notify_one();
-
   }
 
   /**

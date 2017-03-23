@@ -190,6 +190,8 @@ class TaskGraphRuntime {
           threadId++;
         }
 
+      } else{
+        std::cerr << task->getName() << "Has no threads specified." << std::endl;
       }
     }
 

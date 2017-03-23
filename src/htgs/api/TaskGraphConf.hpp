@@ -461,6 +461,11 @@ class TaskGraphConf: public AnyTaskGraphConf {
   void finishedProducingData()
   {
     this->input->producerFinished();
+    if (this->input->getProducerCount() == 0)
+    {
+      this->input->wakeupConsumer();
+    }
+
   }
 
   template<class W>
