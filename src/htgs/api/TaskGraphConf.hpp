@@ -652,7 +652,6 @@ class TaskGraphConf: public AnyTaskGraphConf {
       if (taskManager != nullptr) {
         AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
 
-        // TODO: Number of active connections for Connector
         copy->setOutputConnector(this->output);
         this->graphProducerTaskManagers->push_back(copy);
 

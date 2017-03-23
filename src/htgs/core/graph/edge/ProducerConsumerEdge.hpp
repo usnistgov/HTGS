@@ -21,7 +21,6 @@ class ProducerConsumerEdge : public EdgeDescriptor
   ~ProducerConsumerEdge() override {}
 
   void applyEdge(AnyTaskGraphConf *graph) override {
-    // TODO: What if the connector is either the input or output of a graph . . .
     TaskManager<T, U> *producerTaskManager = graph->getTaskManager(producer);
     TaskManager<U, W> *consumerTaskManager = graph->getTaskManager(consumer);
 

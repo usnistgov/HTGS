@@ -74,20 +74,11 @@ class Connector: public AnyConnector {
 
   void wakeupConsumer() override { this->queue.Enqueue(nullptr); }
 
-  void profileProduce(size_t numThreads) override {
-#ifdef PROFILE
-//    std::cout << "produce (per thread) wait time: " << (queue.getEnqueueWaitTime()/numThreads) << " us, lock time: " << (queue.getEnqueueLockTime()/numThreads) << " us" << std::endl;
-#endif
-  }
+  void profileProduce(size_t numThreads) override { }
 
   void profileConsume(size_t numThreads, bool showQueueSize) override {
 #ifdef PROFILE
-    // TODO: May be able to get rid of params . . . (if we remove dequeue WaitTime . . .)
     std::cout << "consume largest queue size: " << queue.getQueueActiveMaxSize() << std::endl;
-//    if(showQueueSize)
-//        std::cout << "consume (per thread) wait time: " << (queue.getDequeueWaitTime()/numThreads) << " us, lock time: " << (queue.getDequeueLockTime()/numThreads) << " us, largest queue size: " << queue.getQueueActiveMaxSize() << std::endl;
-//    else
-//        std::cout << "consume (per thread) wait time: " << (queue.getDequeueWaitTime()/numThreads) << " us, lock time: " << (queue.getDequeueLockTime()/numThreads) << " us" << std::endl;
 #endif
   }
 

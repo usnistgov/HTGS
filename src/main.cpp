@@ -176,7 +176,6 @@ int main()
       if (i == 2 && useBK)
       {
         tGraph->addEdge(tasks[i-1], bk);
-        // TODO: Fix segfault when not connecting the graph correctly (provide more useful error report ... )
         tGraph->addRuleEdge(bk, testRule1, tasks[i]);
         tGraph->addRuleEdge(bk, testRule2, tasks[0]);
         tGraph->addRuleEdge(bk, testRule3, tasks[1]);

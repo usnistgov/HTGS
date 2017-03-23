@@ -72,7 +72,6 @@ class TaskManager;
  * By doing so, the overall compute time of a TaskGraph can be evenly distributed. The number of threads in use for computation
  * should not exceed the number of logical cores on a system.
  *
- * TODO: Rework comments
  * There are two types of initialize functions. The basic ITask::initialize(int pipelineId, int numPipelines) is
  * the most commonly used variant. The ITask::initialize(int pipelineId, int numPipeline, TaskManager<T, U> *ownerTask,
  * std::shared_ptr<ConnectorVector> pipelineConnectorList) can be used for more advanced operations such as processing data from

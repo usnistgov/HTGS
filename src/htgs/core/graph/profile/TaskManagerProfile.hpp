@@ -26,8 +26,6 @@ class TaskManagerProfile {
   {
     std::string ret = "";
 #ifdef PROFILE
-    // TODO: Hide versus show
-
     if ((flags & DOTGEN_FLAG_HIDE_PROFILE_COMP_TIME) == 0)
       ret += "computeTime: " + std::to_string((double)computeTime/1000000.0) + " sec\n";
 
@@ -36,7 +34,6 @@ class TaskManagerProfile {
 
     if ((flags & DOTGEN_FLAG_HIDE_PROFILE_MAX_Q_SZ) == 0)
       ret += "maxQueueSize: " + std::to_string(maxQueueSize) + "\n";
-
 #endif
     return ret;
   }

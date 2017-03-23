@@ -467,23 +467,10 @@ class AnyITask {
    * @note this function should only be called by the HTGS API
    */
   void profileITask() {
-    // TODO: Rework release memory to keep track of the name of the edges released to draw things
-//    if (releaseMemoryEdges->size() > 0) {
-//      for (const auto &kv : *this->releaseMemoryEdges) {
-//        std::cout << "Mem releaser: " << kv.first << " profile; ";
-//        // produce
-//        // TODO: Should no longer have to get pipelineId
-//        kv.second->at((unsigned long) this->pipelineId)->profileProduce(this->numThreads);
-//
-//      }
-//
-//    }
-
     if (memoryEdges->size() > 0) {
       for (const auto &kv : *this->memoryEdges) {
         std::cout << "Mem getter: " << kv.first << " profile; ";
         // consume
-        // TODO: Should no longer have to get pipelineId
         kv.second->profileConsume(this->numThreads, false);
       }
     }
@@ -536,7 +523,6 @@ class AnyITask {
 
  private:
 
-  // TODO: This may be reworked to no longer need the pipeline Id for getting memory
   template<class V>
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem)
   {

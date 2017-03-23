@@ -153,7 +153,6 @@ class TaskGraphRuntime {
    * Executes the Runtime
    */
   void executeRuntime() {
-    // TODO: Spawn ioMutex and share ? ?
     if (executed)
       return;
 
