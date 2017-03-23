@@ -87,7 +87,7 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
   GenMatrixTask *genAMatTask = new GenMatrixTask(1, blockSize, dim, dim, "A", initValue);
   GenMatrixTask *genBMatTask = new GenMatrixTask(1, blockSize, dim, dim, "B", initValue);
   MatrixMulBlkTask *mmulTask = new MatrixMulBlkTask(numThreads);
-  MatrixAccumTask * accumTask = new MatrixAccumTask((int)ceil((double)numThreads/2.0));
+  MatrixAccumTask * accumTask = new MatrixAccumTask((size_t)ceil((double)numThreads/2.0));
 
   OutputTask *outputTask = new OutputTask();
 

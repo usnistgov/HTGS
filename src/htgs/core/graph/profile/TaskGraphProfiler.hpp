@@ -140,6 +140,9 @@ class TaskGraphProfiler {
         if (profilePair.first->getThreadId() == 0)
         {
           mainManager = profilePair.first;
+        } else{
+          delete profilePair.second;
+          profilePair.second = nullptr;
         }
         count++;
       }

@@ -74,6 +74,12 @@ class AnyTaskGraphConf {
 
     delete taskConnectorNameMap;
     taskConnectorNameMap = nullptr;
+
+    delete iRuleMap;
+    iRuleMap = nullptr;
+
+    delete memAllocMap;
+    memAllocMap = nullptr;
   }
 
   /**
