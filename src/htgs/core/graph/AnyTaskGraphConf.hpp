@@ -238,11 +238,51 @@ class AnyTaskGraphConf {
   }
 
   void writeDotToFile(std::string file, int flags) {
-    std::ofstream f(file);
-    f << genDotGraph(flags);
-    f.flush();
+    bool graphColored = false;
+#ifdef PROFILE
+    if ((flags & DOTGEN_COLOR_COMP_TIME) != 0) {
+      std::string name = "color-compute-time-" + file;
+      std::ofstream f(name);
+      f << genDotGraph(flags, DOTGEN_COLOR_COMP_TIME);
+      f.flush();
 
-    std::cout << "Writing dot file for task graph to " << file << std::endl;
+      std::cout << "Writing dot file for task graph with compute time coloring to " << name << std::endl;
+
+      graphColored = true;
+    }
+
+    if ((flags & DOTGEN_COLOR_WAIT_TIME) != 0) {
+      std::string name = "color-wait-time-" + file;
+
+      std::ofstream f(name);
+      f << genDotGraph(flags, DOTGEN_COLOR_WAIT_TIME);
+      f.flush();
+
+      std::cout << "Writing dot file for task graph with wait time coloring to " << name << std::endl;
+
+      graphColored = true;
+    }
+
+    if ((flags & DOTGEN_COLOR_MAX_Q_SZ) != 0) {
+      std::string name = "color-max-q-sz-" + file;
+
+      std::ofstream f(name);
+      f << genDotGraph(flags, DOTGEN_COLOR_MAX_Q_SZ);
+      f.flush();
+
+      std::cout << "Writing dot file for task graph with max Q size coloring to " << name << std::endl;
+
+      graphColored = true;
+    }
+#endif
+
+    if (!graphColored) {
+      std::ofstream f(file);
+      f << genDotGraph(flags, 0);
+      f.flush();
+
+      std::cout << "Writing dot file for task graph to " << file << std::endl;
+    }
   }
 
   /**
@@ -257,11 +297,6 @@ class AnyTaskGraphConf {
 
       std::string taskAddressName = this->address + ":" + t->getName();
       this->taskConnectorNameMap->insert(TaskNameConnectorPair(taskAddressName, t->getInputConnector()));
-
-//      t->setPipelineId(pipelineId);
-//      t->setNumPipelines(numPipelines);
-//      // TODO: May be able to get rid of this
-//      t->addPipelineConnector(pipelineId);
     }
   }
 
@@ -285,18 +320,6 @@ class AnyTaskGraphConf {
       oss << bTask->getDot(flags);
     }
 
-    if ((flags & DOTGEN_FLAG_HIDE_MEM_EDGES) != 0) {
-
-//      if (memReleaser->size() > 0) {
-//        for (const auto &kv : *this->memReleaser) {
-//          auto connector = kv.second->at(this->pipelineId);
-//          oss << std::string("mainThread") << " -> " << connector->getDotId() << ";" << std::endl;
-//        }
-//
-//        oss << "mainThread[label=\"Main Thread\"];\n";
-//      }
-    }
-
     return oss.str();
   }
 
@@ -309,7 +332,7 @@ class AnyTaskGraphConf {
   /**
    * Generates the dot graph as a string
    */
-  virtual std::string genDotGraph(int flags) = 0;
+  virtual std::string genDotGraph(int flags, int colorFlag) = 0;
 
 
   void copyTasks(std::list<AnyTaskManager *> *tasks)

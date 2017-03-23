@@ -572,7 +572,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
   /**
    * Generates the dot graph as a string
    */
-  std::string genDotGraph(int flags) override {
+  std::string genDotGraph(int flags, int colorFlag) override {
     std::ostringstream oss;
 
     // Create header info for graphViz dot file
@@ -589,7 +589,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
     for (AnyTaskManager *bTask : *this->getTaskManagers()) {
       oss << bTask->getDot(flags);
     }
-    oss << profiler.genDotProfile(oss.str());
+    oss << profiler.genDotProfile(oss.str(), colorFlag);
 
     if (getGraphConsumerTaskManager() != nullptr)
       oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n"
@@ -616,173 +616,19 @@ class TaskGraphConf: public AnyTaskGraphConf {
   }
 
 
-//  template <typename Type>
-//  std::unordered_map<std::string, double> *computeAverages(std::unordered_multimap<std::string, Type> *mmap, double divisor)
-//  {
-//    std::unordered_map<std::string, double> *ret = new std::unordered_map<std::string, double>();
-//    std::string current("");
-//    Type total = 0;
-//    int count = 0;
-//    // Loop over each
-//    for (auto v : *mmap)
-//    {
-//      if (current != v.first) {
-//        if (count != 0)
-//        {
-//          double avg = (double)total / (double) count;
-//          ret->insert(std::pair<std::string, double>(current, (avg/divisor)));
-//        }
-//        else if (current != "")
-//        {
-//          ret->insert(std::pair<std::string, double>(current, 0.0));
-//        }
-//
-//        current = v.first;
-//        total = 0;
-//        count = 0;
-//      }
-//
-//      if (v.second > 0) {
-//        total += v.second;
-//        count++;
-//      }
-//    }
-//    return ret;
-//  }
-//
-//  void gatherComputeTime(std::unordered_multimap<std::string, long long int> *mmap) {
-//    for (AnyTaskManager *bTask : *vertices) {
-//      bTask->gatherComputeTime(mmap);
-//    }
-//  }
-//
-//
-//  void gatherWaitTime(std::unordered_multimap<std::string, long long int> *mmap) {
-//    for (AnyTaskManager *bTask : *vertices) {
-//      bTask->gatherWaitTime(mmap);
-//    }
-//  }
-//
-//  virtual void gatherMaxQSize(std::unordered_multimap<std::string, int> *mmap) {
-//    for (AnyTaskManager *bTask : *vertices) {
-//      bTask->gatherMaxQSize(mmap);
-//    }
-//  }
-//
-//  std::unordered_map<std::string, std::string> *genColorMap(std::unordered_map<std::string, double> *mmap)
-//  {
-//    std::unordered_map<std::string, std::string> *colorMap = new std::unordered_map<std::string, std::string>();
-//
-//    int rColor[10] = {0,0,0,0,85,170,255,255,255,255};
-//    int gColor[10] = {0,85,170,255,255,255,255,170,85,0};
-//    int bColor[10] = {255,255,255,255,170,85,0,0,0,0};
-//
-//    std::deque<double> vals;
-//    double maxTime = 0.0;
-//    double totalTime = 0.0;
-//    for (auto v : *mmap)
-//    {
-//      if (v.second > 0) {
-//        totalTime += v.second;
-//      }
-//
-//      if (maxTime < v.second)
-//        maxTime = v.second;
-//    }
-//
-//    for (auto v : *mmap)
-//    {
-//      if (v.second == 0.0) {
-//        colorMap->insert(std::pair<std::string, std::string>(v.first, "black"));
-//        continue;
-//      }
-//
-//      int red = 0;
-//      int green = 0;
-//      int blue = 0;
-//
-//      // compute percentage of totalTime
-//      int perc = (int) (v.second / maxTime * 100.0);
-//
-//      if (perc % 10 != 0)
-//        perc = perc + 10 - (perc % 10);
-//
-//      int index = (perc / 10);
-//
-//      if (index < 0)
-//        index = 0;
-//
-//      if (index >= 10)
-//        index = 9;
-//
-//      red = rColor[index];
-//      green = gColor[index];
-//      blue = bColor[index];
-//
-//      char hexcol[16];
-//
-//      snprintf(hexcol, sizeof(hexcol), "%02x%02x%02x", red & 0xff, green & 0xff ,blue & 0xff);
-//      std::string color(hexcol);
-//      color = "#" + color;
-//
-//      colorMap->insert(std::pair<std::string, std::string>(v.first, color));
-//
-//    }
-//
-//    return colorMap;
-//  }
-//
-//  std::string genProfileGraph(int flags, std::unordered_map<std::string, double> *mmap, std::string desc, std::unordered_map<std::string, std::string> *colorMap) {
-//    std::ostringstream oss;
-//
-//    for (AnyTaskManager *bTask : *vertices) {
-//      if (mmap->find(bTask->getNameWithPipID()) == mmap->end()) {
-//        continue;
-//      }
-//
-//      oss << bTask->genDotProfile(flags, mmap, desc, colorMap);
-//    }
-//
-//    return oss.str();
-//  }
-//#endif
-//
+  /**
+   * Provides debug output for the TaskGraphConf
+   * @note \#define DEBUG_FLAG to enable debugging
+   */
+  void debug() {
+    DEBUG("-----------------------------------------------");
+    DEBUG("TaskGraphConf -- num vertices: " << this->getTaskManagers()->size() << " -- DETAILS:");
 
-//
-//  /**
-//   * Provides debug output for the TaskGraphConf
-//   * @note \#define DEBUG_FLAG to enable debugging
-//   */
-//  void debug() const {
-//
-//    DEBUG("-----------------------------------------------");
-//    DEBUG("TaskGraphConf -- num vertices: " << vertices->size() << " num edges: " << edges->size() <<
-//        " -- DETAILS:");
-//
-//    for (AnyTaskManager *t : *vertices) {
-//      t->debug();
-//    }
-//
-//    for (std::shared_ptr<AnyConnector> c : *edges) {
-//      DEBUG("Connector: " << c << " total producers: " << c->getProducerCount());
-//    }
-//
-//    DEBUG("Graph input: " << this->input << " total producers: " <<
-//        (input ? this->input->getProducerCount() : 0));
-//    DEBUG("Graph output: " << this->output << " total producers: " <<
-//        (output ? this->output->getProducerCount() : 0));
-//    DEBUG("-----------------------------------------------");
-//  }
-//
-//  /**
-//   * Processes all of the input for the TaskGraphConf until no more input is available
-//   * @note \#define DEBUG_FLAG to enable debugging
-//   */
-//  void debugInput() {
-//    while (!this->input->isInputTerminated())
-//      DEBUG("data = " << this->input->consumeData() << std::endl);
-//  }
-
+    for (AnyTaskManager *t : *this->getTaskManagers()) {
+      t->debug();
+    }
+    DEBUG("-----------------------------------------------");
+  }
 
  private:
 

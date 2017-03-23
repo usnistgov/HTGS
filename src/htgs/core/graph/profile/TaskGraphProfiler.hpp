@@ -7,6 +7,7 @@
 
 #include "TaskManagerProfile.hpp"
 #include <htgs/core/graph/AnyTaskGraphConf.hpp>
+#include <set>
 namespace htgs {
 class TaskGraphProfiler {
  public:
@@ -17,6 +18,17 @@ class TaskGraphProfiler {
   TaskGraphProfiler(int flags) : flags(flags)
   {
     taskManagerProfiles = new std::map<AnyTaskManager *, TaskManagerProfile *>();
+  }
+
+  ~TaskGraphProfiler() {
+    for (auto v : *taskManagerProfiles)
+    {
+      delete v.second;
+      v.second = nullptr;
+    }
+
+    delete taskManagerProfiles;
+    taskManagerProfiles = nullptr;
   }
 
   /**
@@ -35,14 +47,26 @@ class TaskGraphProfiler {
     }
   }
 
-  std::string genDotProfile(std::string curGraph)
+  std::string genDotProfile(std::string curGraph, int colorFlag)
   {
-    // TODO: Generate color map ...
-
     std::string ret = "";
+
+    // If all threading is disabled, then compute the averages only, based on first thread
+    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) == 0)
+    {
+      computeAverages();
+    }
+
+    bool useColorMap = false;
+    std::unordered_map<std::string, std::string> *colorMap = nullptr;
+    if (colorFlag != 0)
+    {
+      useColorMap = true;
+      colorMap = genColorMap(colorFlag);
+    }
+
     for (auto t : *taskManagerProfiles)
     {
-
       auto tMan = t.first;
       auto tProfile = t.second;
 
@@ -58,54 +82,153 @@ class TaskGraphProfiler {
             (tFun->debugDotNode() != "" ? ("\n"+tFun->debugDotNode()+"\n") : "") +
             threadLabel + inOutLabel + "\n" +
             tProfile->genDot(flags) +
-            "\",shape=" + tFun->getDotShape()
-            +",color=" + tFun->getDotShapeColor()
+            "\",shape=" + tFun->getDotShape()//
+            + (useColorMap ? ",style=filled,penwidth=5,fillcolor=white,color=\"" + colorMap->at(dotId) + "\"" : ", color=" + tFun->getDotShapeColor())
             +",width=.2,height=.2];\n";
-
-//        ret += dotId + "[xlabel=\"" + tProfile->genDot(flags) + "\"]" + "\n";
       }
-
     }
+
+    delete colorMap;
+    colorMap = nullptr;
 
     return ret;
   }
 
+ private:
+  void computeAverages()
+  {
+    std::map<AnyTaskManager *, TaskManagerProfile *> finalProfiles;
+    // Address + name + thread ID = unique
 
-  ~TaskGraphProfiler() {
-    for (auto v : *taskManagerProfiles)
+    // Group using Address + name ... thread ID = 0 is final version
+
+    std::multimap<std::string, std::pair<AnyTaskManager *, TaskManagerProfile *>> averageMap;
+
+    std::set<std::string> keys;
+
+    // Gather multimap
+    for (auto t : *taskManagerProfiles)
     {
-      delete v.second;
-      v.second = nullptr;
+      auto tMan = t.first;
+      std::string key = tMan->getAddress() + tMan->getName();
+      keys.insert(key);
+      averageMap.insert(std::pair<std::string, std::pair<AnyTaskManager *, TaskManagerProfile *>>(key, t));
     }
 
-    delete taskManagerProfiles;
-    taskManagerProfiles = nullptr;
+    // Loop through each key
+    for (auto key : keys)
+    {
+      auto valRange = averageMap.equal_range(key);
+
+      AnyTaskManager *mainManager = nullptr;
+      TaskManagerProfile *finalProfile = nullptr;
+
+      int count = 0;
+      for (auto i = valRange.first; i != valRange.second; ++i)
+      {
+        auto profilePair = (*i).second;
+
+        if (finalProfile == nullptr)
+        {
+          finalProfile = profilePair.second;
+        }
+        else
+        {
+          finalProfile->sum(profilePair.second);
+        }
+
+        if (profilePair.first->getThreadId() == 0)
+        {
+          mainManager = profilePair.first;
+        }
+        count++;
+      }
+
+      if (finalProfile != nullptr && mainManager != nullptr) {
+        finalProfile->average(count);
+        finalProfiles.insert(std::pair<AnyTaskManager *, TaskManagerProfile *>(mainManager, finalProfile));
+      }
+      else
+      {
+        std::cout << "Something screwy happened . . ." << std::endl;
+      }
+    }
+
+    taskManagerProfiles->clear();
+
+    for (auto t : finalProfiles)
+    {
+      taskManagerProfiles->insert(t);
+    }
+
+  }
+
+  std::unordered_map<std::string, std::string> *genColorMap(int colorFlag)
+  {
+    std::unordered_map<std::string, std::string> *colorMap = new std::unordered_map<std::string, std::string>();
+
+    int rColor[10] = {0,0,0,0,85,170,255,255,255,255};
+    int gColor[10] = {0,85,170,255,255,255,255,170,85,0};
+    int bColor[10] = {255,255,255,255,170,85,0,0,0,0};
+
+    std::deque<double> vals;
+    double maxTime = 0.0;
+    double totalTime = 0.0;
+    for (auto v : *taskManagerProfiles)
+    {
+      double val = v.second->getValue(colorFlag);
+      if (val > 0) {
+        totalTime += val;
+      }
+
+      if (maxTime < val)
+        maxTime = val;
+    }
+
+    for (auto v : *taskManagerProfiles)
+    {
+      if (v.second->getValue(colorFlag) == 0.0) {
+        colorMap->insert(std::pair<std::string, std::string>(v.first->getTaskFunction()->getDotId(), "black"));
+        continue;
+      }
+
+      int red = 0;
+      int green = 0;
+      int blue = 0;
+
+      // compute percentage of totalTime
+      int perc = (int) (v.second->getValue(colorFlag) / maxTime * 100.0);
+
+      if (perc % 10 != 0)
+        perc = perc + 10 - (perc % 10);
+
+      int index = (perc / 10);
+
+      if (index < 0)
+        index = 0;
+
+      if (index >= 10)
+        index = 9;
+
+      red = rColor[index];
+      green = gColor[index];
+      blue = bColor[index];
+
+      char hexcol[16];
+
+      snprintf(hexcol, sizeof(hexcol), "%02x%02x%02x", red & 0xff, green & 0xff ,blue & 0xff);
+      std::string color(hexcol);
+      color = "#" + color;
+
+      colorMap->insert(std::pair<std::string, std::string>(v.first->getTaskFunction()->getDotId(), color));
+    }
+
+    return colorMap;
   }
 
 
- private:
-  // Store stats for a given task . . . aka have the info needed to build the profile from a graph
-
-  // Map AnyTaskManager * -> Profile stats
   std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles;
-
   int flags;
-
-  // Basic stats
-  // task compute time
-  // task wait time
-  // Max Queue Size for task's connector
-
-
-
-
-
-
-
-
-
-
-
 };
 }
 

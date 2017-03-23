@@ -60,7 +60,7 @@ class TestRuleBad : public htgs::IRule<TestData, htgs::VoidData> {
 
   virtual std::string getName() {
     std::stringstream ss;
-    ss << name << " " << this;
+    ss << name;
     return ss.str();
   }
  private:
@@ -90,7 +90,7 @@ class TestTask : public htgs::ITask<TestData, TestData> {
 
   std::string debugDotNode() override {
     std::stringstream ss;
-    ss << "Addr: " << this->getAddress() << " (totPip: " << this->getNumPipelines() << ")\n" << this;
+    ss << "Addr: " << this->getAddress();
     return ss.str();
   }
 
@@ -270,9 +270,9 @@ int main()
 
   runtime->waitForRuntime();
 
-  execGraph->writeDotToFile("test.dot");
+  execGraph->writeDotToFile("test.dot", DOTGEN_COLOR_MAX_Q_SZ | DOTGEN_COLOR_WAIT_TIME | DOTGEN_COLOR_COMP_TIME);
 
-  execGraph->printProfile();
+//  execGraph->printProfile();
 
 //  writeDotPng(execGraph, "testExec");
 

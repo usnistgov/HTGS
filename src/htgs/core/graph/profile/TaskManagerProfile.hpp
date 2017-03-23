@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <ostream>
+#include <htgs/types/TaskGraphDotGenFlags.hpp>
 namespace htgs {
 class TaskManagerProfile {
  public:
@@ -24,10 +25,19 @@ class TaskManagerProfile {
   std::string genDot(int flags)
   {
     std::string ret = "";
-    ret += "computeTime: " + std::to_string((double)computeTime/1000000.0) + " sec\n";
-    ret += "waitTime: " + std::to_string((double)waitTime/1000000.0) + " sec\n";
-    ret += "maxQueueSize: " + std::to_string(maxQueueSize) + "\n";
+#ifdef PROFILE
+    // TODO: Hide versus show
 
+    if ((flags & DOTGEN_FLAG_HIDE_PROFILE_COMP_TIME) == 0)
+      ret += "computeTime: " + std::to_string((double)computeTime/1000000.0) + " sec\n";
+
+    if ((flags & DOTGEN_FLAG_HIDE_PROFILE_WAIT_TIME) == 0)
+      ret += "waitTime: " + std::to_string((double)waitTime/1000000.0) + " sec\n";
+
+    if ((flags & DOTGEN_FLAG_HIDE_PROFILE_MAX_Q_SZ) == 0)
+      ret += "maxQueueSize: " + std::to_string(maxQueueSize) + "\n";
+
+#endif
     return ret;
   }
 
@@ -36,6 +46,43 @@ class TaskManagerProfile {
     os << "computeTime: " << profile.computeTime << " waitTime: " << profile.waitTime << " maxQueueSize: "
        << profile.maxQueueSize;
     return os;
+  }
+
+  double getValue(int colorFlag)
+  {
+    if (colorFlag == DOTGEN_COLOR_COMP_TIME)
+      return computeTime;
+    else if (colorFlag == DOTGEN_COLOR_WAIT_TIME)
+      return waitTime;
+    else if (colorFlag == DOTGEN_COLOR_MAX_Q_SZ)
+      return maxQueueSize;
+    else
+      return 0.0;
+
+  }
+
+  unsigned long long int getComputeTime() const {
+    return computeTime;
+  }
+
+  unsigned long long int getWaitTime() const {
+    return waitTime;
+  }
+
+  size_t getMaxQueueSize() const {
+    return maxQueueSize;
+  }
+
+  void sum(TaskManagerProfile *other)
+  {
+    this->computeTime += other->getComputeTime();
+    this->waitTime += other->getWaitTime();
+  }
+
+  void average(int sum)
+  {
+    this->computeTime = (unsigned long long int)(this->computeTime / (double)sum);
+    this->computeTime = (unsigned long long int)(this->waitTime / (double)sum);
   }
 
  private:
