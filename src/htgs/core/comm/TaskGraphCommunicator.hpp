@@ -136,6 +136,19 @@ class TaskGraphCommunicator {
     return children;
   }
 
+  void checkRootSpawnThreads()
+  {
+    if (this->parentComm == nullptr)
+    {
+      if (numGraphsReceived == numGraphsSpawned)
+      {
+        this->rootSpawnThreads();
+      }
+    } else{
+      this->parentComm->checkRootSpawnThreads();
+    }
+  }
+
   void incrementRootGraph()
   {
     // Check if this is the root
@@ -210,6 +223,8 @@ class TaskGraphCommunicator {
     // Ignore the root, as we only care about sub graphs.
     if (this->parentComm != nullptr) {
       incrementRootGraph();
+    } else{
+      checkRootSpawnThreads();
     }
 
 //    std::cout << "Adding graph connectors for graph " << this->address << " Total count = "
@@ -255,6 +270,7 @@ class TaskGraphCommunicator {
   {
     auto packet = dataQueue.Dequeue();
 
+//    std::cout << "Received data packet: "<< packet << std::endl;
     if (packet == nullptr)
     {
       terminated = true;

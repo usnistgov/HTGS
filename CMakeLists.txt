@@ -9,13 +9,12 @@ project(htgs)
 set(CMAKE_VERBOSE_MAKEFILE  on)
 
 find_package (Threads REQUIRED)
-# TODO: Add unit tests for CUDA
-# find_package (CUDA QUIET)
+find_package (CUDA QUIET)
 
-if(CUDA_FOUND)
-    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-    set(CUDA_NVCC_FLAGS_RELEASE -O3; -DNDEBUG)
-endif(CUDA_FOUND)
+#if(CUDA_FOUND)
+#    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+#    set(CUDA_NVCC_FLAGS_RELEASE -O3; -DNDEBUG)
+#endif(CUDA_FOUND)
 
 option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
 option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test HTGS core and api" OFF)

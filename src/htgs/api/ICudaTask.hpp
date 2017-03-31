@@ -130,7 +130,7 @@ class ICudaTask: public ITask<T, U> {
    * @param cudaIds the array of cudaIds
    * @param numGpus the number of GPUs
    */
-  ICudaTask(CUcontext *contexts, size_t *cudaIds, size_t numGpus) {
+  ICudaTask(CUcontext *contexts, int *cudaIds, size_t numGpus) {
     this->contexts = contexts;
     this->cudaIds = cudaIds;
     this->numGpus = numGpus;
@@ -151,7 +151,7 @@ class ICudaTask: public ITask<T, U> {
    * Executes the ICudaTask on some data. Use this->getStream() to acquire CUDA stream if needed.
    * @param data the data executed on
    */
-  void executeTask(std::shared_ptr<T> data) = 0;
+  virtual void executeTask(std::shared_ptr<T> data) = 0;
 
 
   /**
@@ -167,11 +167,15 @@ class ICudaTask: public ITask<T, U> {
     return "Unnamed GPU ITask";
   }
 
-  virtual std::string genDot(int flags, std::string dotId) override {
-    std::string inOutLabel = (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\nin: "+this->inTypeName()+"\nout: "+this->outTypeName()) : "");
-    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-    return dotId + "[label=\"" + this->getName()  + threadLabel + inOutLabel + "\",style=filled,fillcolor=forestgreen,shape=box,color=black,width=.2,height=.2];\n";
+  std::string getDotFillColor() override {
+    return "forestgreen";
   }
+
+//  virtual std::string genDot(int flags, std::string dotId) override {
+//    std::string inOutLabel = (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\nin: "+this->inTypeName()+"\nout: "+this->outTypeName()) : "");
+//    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+//    return dotId + "[label=\"" + this->getName()  + threadLabel + inOutLabel + "\",style=filled,fillcolor=forestgreen,shape=box,color=black,width=.2,height=.2];\n";
+//  }
 
   /**
    * Pure virtual function that copies this ICudaTask
@@ -193,7 +197,7 @@ class ICudaTask: public ITask<T, U> {
    * Set only after this task has been bound to a thread during initialization.
    * @return the cudaId associated with this cudaTask
    */
-  size_t getCudaId() {
+  int getCudaId() {
     return this->cudaId;
   }
 
@@ -309,7 +313,7 @@ class ICudaTask: public ITask<T, U> {
         CUdevice peerDev;
         cuDeviceGet(&peerDev, this->cudaIds[i]);
 
-        size_t canAccessPeer;
+        int canAccessPeer;
         cuDeviceCanAccessPeer(&canAccessPeer, dev, peerDev);
 
         if (canAccessPeer == 0) {
@@ -354,7 +358,7 @@ class ICudaTask: public ITask<T, U> {
    * Gets the cudaIds specified during ICudaTask construction
    * @return the cudaIds
    */
-  size_t *getCudaIds() {
+  int *getCudaIds() {
     return this->cudaIds;
   }
 
@@ -379,12 +383,12 @@ class ICudaTask: public ITask<T, U> {
   CUcontext context; //!< The CUDA GPU context for the ICudaTask (set after initialize)
   CUstream stream; //!< The CUDA stream for the ICudaTask (set after initialize)
   CUcontext *contexts; //!< The array of CUDA contexts (one per GPU)
-  size_t *cudaIds; //!< The array of cuda Ids (one per GPU)
+  int *cudaIds; //!< The array of cuda Ids (one per GPU)
 
   size_t numGpus; //!< The number of GPUs
-  size_t cudaId; //!< The CudaID for the ICudaTask (set after initialize)
-  std::vector<size_t> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
-  std::unordered_map<size_t, CUcontext> peerContexts; //!< The mapping of CudaId to CUDA Context that has peer-to-peer
+  int cudaId; //!< The CudaID for the ICudaTask (set after initialize)
+  std::vector<int> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
+  std::unordered_map<int, CUcontext> peerContexts; //!< The mapping of CudaId to CUDA Context that has peer-to-peer
 };
 
 

@@ -3,8 +3,6 @@
 # NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 # You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
-cmake_minimum_required(VERSION 2.8)
-
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
@@ -68,11 +66,30 @@ set(MEMRELEASEOUTSIDE_SRC
 		)
 
 
-add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC}
-        api_check.cpp
-        )
+if (CUDA_FOUND)
+
+set(SIMPLECUDA_SRC
+		simpleCudaGraphTests.cpp
+		simpleCudaGraphTests.h
+		simpleCuda/data/SimpleCudaData.h
+		simpleCuda/tasks/SimpleCudaTask.cpp
+		simpleCuda/tasks/SimpleCudaTask.h
+		simpleCuda/util-cuda.cpp
+		simpleCuda/util-cuda.h
+		simpleCuda/memory/SimpleCudaReleaseRule.h
+		simpleCuda/memory/SimpleCudaAllocator.h
+		)
+
+	cuda_add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} ${SIMPLECUDA_SRC} api_check.cpp)
+	target_link_libraries(runAPITests ${CUDA_LIBRARIES})
+	target_link_libraries(runAPITests cuda)
+	target_compile_definitions(runAPITests PUBLIC -DUSE_CUDA)
+else()
+	add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} api_check.cpp)
+endif(CUDA_FOUND)
 
 target_link_libraries(runAPITests gtest gtest_main)
 
 add_custom_target(run-test ALL DEPENDS runAPITests
 	COMMAND ${CMAKE_BINARY_DIR}/test/api_tests/runAPITests)
+

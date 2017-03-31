@@ -122,14 +122,21 @@ class AnyITask {
 
   /**
    * Gets the color of the shape for graphviz dot
-   * @return the shape
+   * @return the shape color
    */
   virtual std::string getDotShapeColor() = 0;
 
   /**
-   * Gets the shape for graphviz dot
-   * @return the shape
+   * Gets the color for filling the shape for graphviz dot
+   * @return the fill color
    */
+  virtual std::string getDotFillColor() = 0;
+
+
+    /**
+     * Gets the shape for graphviz dot
+     * @return the shape
+     */
   virtual std::string getDotShape() = 0;
 
   /**

@@ -220,6 +220,10 @@ class ITask: public AnyITask {
     return "black";
   }
 
+  virtual std::string getDotFillColor() override {
+    return "white";
+  }
+
   virtual std::string getDotShape() override {
     return "box";
   }

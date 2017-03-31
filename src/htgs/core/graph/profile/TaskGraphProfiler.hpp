@@ -82,8 +82,10 @@ class TaskGraphProfiler {
             (tFun->debugDotNode() != "" ? ("\n"+tFun->debugDotNode()+"\n") : "") +
             threadLabel + inOutLabel + "\n" +
             tProfile->genDot(flags) +
-            "\",shape=" + tFun->getDotShape()//
-            + (useColorMap ? ",style=filled,penwidth=5,fillcolor=white,color=\"" + colorMap->at(dotId) + "\"" : ", color=" + tFun->getDotShapeColor())
+            "\",shape=" + tFun->getDotShape() +
+            ",style=filled" +
+            ",fillcolor=" + tFun->getDotFillColor()
+            + (useColorMap ? ",penwidth=5,color=\"" + colorMap->at(dotId) + "\"" : ", color=" + tFun->getDotShapeColor())
             +",width=.2,height=.2];\n";
       }
     }

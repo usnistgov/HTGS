@@ -87,6 +87,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * All the memory is allocated once a thread has been bound to ITask.
    */
   void initialize() override {
+
     MemoryData<T> *memory = new MemoryData<T>(this->allocator, this->getAddress(), this->getName(), this->type);
 
     bool allocate = false;
@@ -118,7 +119,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   void executeTask(std::shared_ptr<MemoryData<T>> data) override {
     if (data != nullptr) {
       if (data->getPipelineId() == this->getPipelineId()) {
-
         data->memoryUsed();
 
         if (data->canReleaseMemory()) {
@@ -133,9 +133,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
       }
       else {
         std::cerr << "Memory manager received data from another pipeline!" << std::endl;
-//        std::shared_ptr<Connector<MemoryData<T>>> connector = std::static_pointer_cast<Connector<MemoryData<T>>>(this->pipelineConnectorList->at(
-//            (unsigned long) data->getPipelineId()));
-//        connector->produceData(data);
       }
     }
 
@@ -234,9 +231,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 
     std::ostringstream oss;
 
-//    oss << input->getDotId() << " -> " << dotId << "[color=sienna];" << std::endl;
-//    oss << input->getDotId() + "[label=\"" + this->typeName() + "\",shape=box,style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
-
     if (output != nullptr) {
       oss << dotId << " -> " << output->getDotId() << "[color=sienna];" << std::endl;
       oss << output->getDotId() + "[label=\""+ this->typeName() +"\",style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
@@ -246,6 +240,10 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 
     return oss.str();
 
+  }
+
+  std::string getDotFillColor() override {
+    return "sienna";
   }
 
  private:

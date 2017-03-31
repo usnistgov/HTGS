@@ -46,7 +46,7 @@ class CudaMemoryManager: public MemoryManager<T> {
    */
   CudaMemoryManager(std::string name,
                     CUcontext *contexts,
-                    int memoryPoolSize,
+                    size_t memoryPoolSize,
                     std::shared_ptr<IMemoryAllocator <T>> memoryAllocator,
                     MMType type) : MemoryManager<T>(name, memoryPoolSize, memoryAllocator, type) {
     this->contexts = contexts;

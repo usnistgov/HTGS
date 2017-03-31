@@ -14,6 +14,24 @@
 #include "memMultiReleaseGraphTests.h"
 #include "memReleaseOutsideGraphTests.h"
 
+
+#ifdef USE_CUDA
+#include "simpleCudaGraphTests.h"
+
+TEST(SimpleCudaGraph, CudaTaskCreation) {
+  EXPECT_NO_FATAL_FAILURE(createCudaTask());
+}
+
+TEST(SimpleCudaGraph, CudaGraphCreation) {
+  EXPECT_NO_FATAL_FAILURE(simpleCudaGraphCreation());
+}
+
+TEST(SimpleCudaGraph, CudaGraphExecution) {
+  EXPECT_NO_FATAL_FAILURE(simpleCudaGraphExecution());
+}
+
+#endif
+
 TEST(SimpleGraph, DataCreation) {
   EXPECT_NO_FATAL_FAILURE(createData());
 }
