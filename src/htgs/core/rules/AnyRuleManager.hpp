@@ -59,7 +59,6 @@ class AnyRuleManager {
   virtual ~AnyRuleManager() {}
 
   /**
-   * @internal
    * Initializes the RuleManager.
    *
    * @param pipelineId the pipelineID
@@ -67,59 +66,59 @@ class AnyRuleManager {
    * @param address the address for the bookkeeper task
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   virtual void initialize(size_t pipelineId, size_t numPipelines, std::string address) = 0;
 
   /**
-   * @internal
    * Shuts down the RuleManager.
    * Will also shutdown the rule associated with the RuleManager
    * Only called if the bookkeeper associated with the RuleManager is shutting down (all rules managers are
    * closed and input is no longer producing data)
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   virtual void shutdown() = 0;
 
   /**
-   * @internal
    * Checks whether the RuleManager is terminated or not
-   * @param inputConnector the input connector for the RuleManager
    * @return Whether the RuleManager is terminated or not
    * @retval TRUE if the RuleManager is terminated
    * @retval FALSE if the RuleManager is not terminated
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   virtual bool isTerminated() = 0;
 
 
   /**
-  * @internal
   * Sets the output connector that the RuleManager is attached to
   * @param connector the output connector
   *
   * @note This function should only be called by the HTGS API
+   * @internal
   */
   virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) = 0;
 
 
   /**
-   * @internal
    * Creates a copy of the RuleManager.
    * The original and all copies share the same rule and access them synchronously.
    * @return the RuleManager copy
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   virtual AnyRuleManager *copy() = 0;
 
  /**
-  * @internal
   * Gets the output connector associated with the RuleManager
   * @return the output connector
   *
   * @note This function should only be called by the HTGS API
+  * @internal
   */
   virtual std::shared_ptr<AnyConnector> getConnector() = 0;
 

@@ -4,15 +4,15 @@
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 /**
- * @file Runtime.hpp
+ * @file TaskGraphRuntime.hpp
  * @author Timothy Blattner
  * @date Nov 25, 2015
  *
  * @brief Spawns threads and binds them to the appropriate ITask within a TaskGraph
  * @details
  */
-#ifndef HTGS_RUNTIME_HPP
-#define HTGS_RUNTIME_HPP
+#ifndef HTGS_TASKGRAPHRUNTIME_HPP
+#define HTGS_TASKGRAPHRUNTIME_HPP
 
 
 #include <thread>
@@ -21,42 +21,40 @@
 
 namespace htgs {
 /**
- * @class Runtime Runtime.hpp <htgs/api/Runtime.hpp>
+ * @class TaskGraphRuntime TaskGraphRuntime.hpp <htgs/api/TaskGraphRuntime.hpp>
  * @brief Spawns threads and binds them to the appropriate ITask within a TaskGraph.
  * @details
  *
  * Each thread is bound to a separate ITask instance. If an ITask has more than one thread associated
- * with it, then the Runtime will create a deep copy instance of the ITask, which is bound to the thread.
+ * with it, then the Runtime will create a deep copy of the ITask, which is bound to the thread.
  * This means that each thread has a different ITask instance.
  *
  * This process is done for every ITask in the TaskGraph that the Runtime is responsible for.
  *
  * If an ITask is an ExecutionPipeline, then the thread responsible for the ExecutionPipeline will create
- * additional Runtimes, one for each TaskGraph within the ExecutionPipeline.
+ * additional TaskGraphRuntimes, one for each TaskGraph within the ExecutionPipeline.
  *
- * A Runtime can be executed asynchronously, allowing for interaction with the main TaskGraph to
- * submit/receive data to/from the TaskGraph using executeRuntime().
+ * A Runtime can be executed asynchronously with executeRuntime(), allowing for interaction with the main TaskGraph to
+ * submit/receive data to/from the TaskGraph.
  *
  * To wait for the Runtime to finish processing all of the data for a TaskGraph, use waitForRuntime().
  *
  * To execute and wait for the Runtime, use executeAndWaitForRuntime(). If data is being produced for the task graph,
  * then the TaskGraph::finishedProducingData function must be called prior to waiting for the runtime
- * in order for the task graph to know that the
- * input to the graph has finished and the tasks processing that input can be notified.
+ * in order for the task graph to know that the input to the graph has finished and the tasks processing that input can be notified.
  *
  * Example Usage:
  * @code
- * htgs::TaskGraph<Data1, Data2> *taskGraph = new htgs::TaskGraph<Data1, Data2>();
+ * htgs::TaskGraphConf<Data1, Data2> *taskGraph = new htgs::TaskGraphConf<Data1, Data2>();
  * ...
  *
- * // If adding data to the TaskGraph, must use TaskGraph::addGraphInputConsumer and increment the input producers
- * taskGraph->addGraphInputConsumer(someTask);
- * taskGraph->incrementGraphInputProducer();
+ * // If adding data to the TaskGraph, must use TaskGraph::setGraphConsumerTask
+ * taskGraph->setGraphConsumerTask(someTask);
  *
  * // To receive data from the TaskGraph use  TaskGraph::addGraphOutputProducer
- * taskGraph->addGraphOutputProducer(someOutputTask);
+ * taskGraph->addGraphProducerTask(someOutputTask);
  *
- * htgs::Runtime *runtime = new htgs::Runtime(taskGraph);
+ * htgs::TaskGraphRuntime *runtime = new htgs::TaskGraphRuntime(taskGraph);
  *
  * // Launch the runtime, will return after all threads have been configured for the taskGraph
  * runTime->executeRuntime();
@@ -156,7 +154,7 @@ class TaskGraphRuntime {
     if (executed)
       return;
 
-    // Initialize graph and setup task graph connectorCommunicator
+    // Initialize graph and setup task graph taskGraphCommunicator
     this->graph->initialize();
 
     std::list<AnyTaskManager *> *vertices = this->graph->getTaskManagers();
@@ -177,7 +175,7 @@ class TaskGraphRuntime {
           AnyTaskManager *taskCopy = task->copy(true);
 
           // Add communicator to task copy to enable communication
-          taskCopy->setConnectorCommunicator(graph->getTaskGraphCommunicator());
+          taskCopy->setTaskGraphCommunicator(graph->getTaskGraphCommunicator());
           taskList.push_back(taskCopy);
           newVertices.push_back(taskCopy);
         }
@@ -214,4 +212,4 @@ class TaskGraphRuntime {
 }
 
 
-#endif //HTGS_RUNTIME_HPP
+#endif //HTGS_TASKGRAPHRUNTIME_HPP

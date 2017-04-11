@@ -91,11 +91,12 @@ class BlockingQueue {
   }
 
   /**
-   * @internal
+   *
    * Removes an element from the queue
    * @return an element from the queue
    *
    * @note This function is not thread safe.
+   * @internal
    */
   T remove() {
     T res = this->queue.front();

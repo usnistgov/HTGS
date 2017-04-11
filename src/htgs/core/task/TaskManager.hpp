@@ -263,9 +263,9 @@ class TaskManager: public AnyTaskManager {
       }
     }
   }
-  //! @endcond
 
   typedef AnyTaskManager super;
+  //! @endcond
 
   std::shared_ptr<Connector<T>> inputConnector; //!< The input connector for the manager (queue to get data from)
   std::shared_ptr<Connector<U>> outputConnector; //!< The output connector for the manager (queue to send data)

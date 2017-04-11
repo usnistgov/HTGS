@@ -220,6 +220,12 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    */
   MMType getType() const { return type; }
 
+  /**
+   * @copydoc ITask::genDot
+   *
+   * @note This function will generate no dot notation if DOTGEN_FLAG_HIDE_MEM_EDGES is added to flags.
+   *
+   */
   virtual std::string genDot(int flags,
                              std::string dotId,
                              std::shared_ptr<AnyConnector> input,

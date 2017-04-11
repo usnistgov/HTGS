@@ -32,18 +32,16 @@ class StateContainer;
  * @brief Provides an interface to send data along RuleManager edges for processing state and dependencies
  * @details
  *
- * The IRule is attached to a RuleManager, which can have one or more IRules.
- * Each IRule within a RuleManager, must match the input and output types of the RuleManager.
- * The RuleManager is attached to a Bookkeeper.
+ * The IRule is added to a Bookkeeper and is responsible for producing data for the Bookkeeper.
  *
  * IRule behavior is defined based on the needs of an algorithm. In many cases, the IRule is used
  * to manage the global state of the computation and issue new work when dependencies are satisfied.
  *
- * RuleManagers access each IRule synchronously, so every IRule should not require a significant amount of
+ * The Bookkeeper accesses each IRule synchronously, so every IRule should not require a significant amount of
  * computation to finish processing an IRule.
  *
- * When a RuleManager is duplicated for an ExecutionPipeline, the IRule's within that RuleManager are shared,
- * thus ensuring that no race conditions occur when updating the state when multiple RuleManagers are attempting
+ * When a Bookkeeper is duplicated for an ExecutionPipeline, the IRule's within that Bookkeeper are shared,
+ * thus ensuring that no race conditions occur when updating the state when multiple Bookkeepers are attempting
  * to process the same IRule.
  *
  * Example Implementation
@@ -85,8 +83,8 @@ class StateContainer;
  *
  * htgs::TaskGraph<VoidData, VoidData> *taskGraph = new htgs::TaskGraph<VoidData, VoidData>();
  *
- * // Add the rule that connects the bkTask to the resultTask (can have multiple rules between a bkTask and a resultTask)
- * taskGraph->addRule(bkTask, resultTask, simpleRule);
+ * // Adds simpleRule that connects the bkTask to the resultTask
+ * taskGraph->addRuleEdge(bkTask, simpleRule, resultTask);
  * @endcode
  *
  * @tparam T the input data type for the IRule, T must derive from IData.
@@ -122,10 +120,20 @@ class IRule : public AnyIRule {
     }
   }
 
+  /**
+   * @copydoc AnyIRule::canTerminateRule
+   * @note By default, this function returns false
+   */
   virtual bool canTerminateRule(size_t pipelineId) override { return false; }
 
+  /**
+   * @copydoc AnyIRule::shutdownRule
+   */
   virtual void shutdownRule(size_t pipelineId) override { }
 
+  /**
+   * @copydoc AnyIRule::getName
+   */
   virtual std::string getName() override {
     return "Unnamed IRule";
   }
@@ -146,12 +154,12 @@ class IRule : public AnyIRule {
   ////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * @internal
    * Applies the virtual rule function and processes output
    * @param data the input data
    * @param pipelineId the pipelineId
    * @return the list of output
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   std::list<std::shared_ptr<U>> *applyRuleFunction(std::shared_ptr<T> data, size_t pipelineId) {
     this->output->clear();
@@ -225,11 +233,11 @@ class IRule : public AnyIRule {
   }
 
  private:
-  std::list<std::shared_ptr<U>> * output;
+  std::list<std::shared_ptr<U>> * output; //!< The output data that is sent as soon as the applyRule has finished processing
 };
 
 /**
- * @class StateContainer StateContainer.hpp <htgs/api/StateContainer.hpp>
+ * @class StateContainer IRule.hpp <htgs/api/IRule.hpp>
  * @brief Class to hold one/two dimensional state information.
  * @details
  * This class provides a quick method for identifiying state information for data that is passed to an IRule.

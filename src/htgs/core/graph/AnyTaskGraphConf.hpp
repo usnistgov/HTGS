@@ -1,7 +1,15 @@
-//
-// Created by tjb3 on 2/24/17.
-//
+// NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software.
+// NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
+// You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
+/**
+ * @file AnyTaskGraphConf.hpp
+ * @author Timothy Blattner
+ * @date February 24, 2017
+ *
+ * @brief Implements the base class used by the TaskGraphConf, which removes the template arguments
+ * and implements functions specific to any task graph configuration.
+ */
 #ifndef HTGS_ANYTASKGRAPHCONF_HPP
 #define HTGS_ANYTASKGRAPHCONF_HPP
 
@@ -32,14 +40,36 @@ typedef std::map<AnyITask *, AnyTaskManager *> ITaskMap;
  */
 typedef std::pair<AnyITask *, AnyTaskManager *> ITaskPair;
 
+/**
+ * @typedef TaskNameConnectorMap
+ * Defines multiple mappings between the task name and its connector.
+ */
 typedef std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>> TaskNameConnectorMap;
 
+/**
+ * @typedef TaskNameConnectorPair
+ * Defines a pair to be added into a TaskNameConnectorMap
+ */
 typedef std::pair<std::string, std::shared_ptr<AnyConnector>>TaskNameConnectorPair;
 
-
+/**
+ * @class AnyTaskGraphConf AnyTaskGraphConf.hpp <htgs/core/graph/AnyTaskGraphConf.hpp>
+ * @brief Implements the base class for the TaskGraphConf class, removing the template arguments
+ * and providing functionality that is applicable to any task graph configuration.
+ *
+ * For example, storing the base address, pipeline ID, etc.
+ *
+ */
 class AnyTaskGraphConf {
  public:
 
+  /**
+   * Constructs the AnyTaskGraphConf
+   * @param pipelineId the pipeline ID associated with this task graph
+   * @param numPipelines the number of pipelines that exist for the task graph
+   * @param baseAddress the base address for the graph, if it is an empty string then this
+   * graph is the first/root graph.
+   */
   AnyTaskGraphConf (size_t pipelineId, size_t numPipelines, std::string baseAddress) :
       pipelineId(pipelineId), numPipelines(numPipelines) {
     if (baseAddress == "")
@@ -58,6 +88,9 @@ class AnyTaskGraphConf {
   ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * Destructor
+   */
   virtual ~AnyTaskGraphConf() {
     for (auto task : *taskManagers)
     {
@@ -83,27 +116,57 @@ class AnyTaskGraphConf {
   }
 
   /**
-  * Pure virtual function to get the vertices of the TaskGraph
-  * @return the vertices of the TaskGraph
-  */
-  virtual std::list<AnyTaskManager *> *getTaskManagers() {
-    return this->taskManagers;
-  }
-
+   * Pure virtual function that gets the task manager that is consuming data from the graph's input
+   * @return the task manager that is consuming data from the graph's input.
+   */
   virtual AnyTaskManager *getGraphConsumerTaskManager() = 0;
+
+  /**
+   * Gets the list of task managers that are producing data for the graph's output
+   * @return the list of task managers that are producing data for the graph's output.
+   */
   virtual std::list<AnyTaskManager *> *getGraphProducerTaskManagers() = 0;
 
+  /**
+   * Virtual function that gets the connector used for graph input
+   * @return the connector used for graph input
+   */
   virtual std::shared_ptr<AnyConnector> getInputConnector() = 0;
+
+  /**
+   * Virtual function that gets the connector used for graph output
+   * @return the connector used for graph output
+   */
   virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
 
+  /**
+   * Virtual function that initiates updating the task graph communicator.
+   */
   virtual void updateCommunicator() = 0;
 
+  /**
+   * Virtual function that gets the task graph communicator.
+   * @return
+   */
   virtual TaskGraphCommunicator *getTaskGraphCommunicator() const = 0;
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  /**
+  * Get the vertices of the TaskGraph
+  * @return the vertices of the TaskGraph
+  */
+  std::list<AnyTaskManager *> *getTaskManagers() {
+    return this->taskManagers;
+  }
+
+  /**
+   * Gathers profiling data for this task graph's task managers, which is added into the
+   * task manager profiles map.
+   * @param taskManagerProfiles the map that stores all the profile data for each task manager.
+   */
   void gatherProfilingData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)
   {
       for (auto tMan : *taskManagers)
@@ -112,6 +175,13 @@ class AnyTaskGraphConf {
       }
   }
 
+  /**
+   * Gets the shared_ptr reference for a particular IRule
+   * @tparam V the input type of the IRule
+   * @tparam W the output type of the IRule
+   * @param iRule the IRule
+   * @return the shared_ptr reference to the IRule
+   */
   template <class V, class W>
   std::shared_ptr<IRule<V, W>> getIRule(IRule<V, W> *iRule)
   {
@@ -127,6 +197,12 @@ class AnyTaskGraphConf {
     return iRuleShr;
   };
 
+  /**
+   * Gets the shared_ptr reference for a particular IMemoryAllocator.
+   * @tparam V the data type that is allocated
+   * @param allocator the IMemoryAllocator
+   * @return the shared_ptr reference to the IMemoryAllocator
+   */
   template <class V>
   std::shared_ptr<IMemoryAllocator<V>> getMemoryAllocator(IMemoryAllocator<V> *allocator)
   {
@@ -156,10 +232,23 @@ class AnyTaskGraphConf {
     this->updateCommunicator();
   }
 
+  /**
+   * Gets the task name connector map that maps the task name to its input connector.
+   * @return the task name connector map that namps the task name to its input connector.
+   */
   TaskNameConnectorMap *getTaskConnectorNameMap() const {
     return taskConnectorNameMap;
   }
 
+  /**
+   * Gets the copy for an ITask based on some original ITask reference.
+   * This function is used to find the associated ITask reference to ensure connections are
+   * maintained when copying the TaskGraphConf.
+   * @tparam T the input type of the ITask
+   * @tparam U the output type of the ITask
+   * @param orig the pointer to the original ITask that may have been copied before
+   * @return the ITask's copy or nullptr if the copy is not found.
+   */
   template <class T, class U>
   ITask<T, U> *getCopy(ITask<T, U> *orig)
   {
@@ -172,6 +261,13 @@ class AnyTaskGraphConf {
     return nullptr;
   }
 
+  /**
+   * Gets the copy for an AnyITask based on some original AnyITask reference.
+   * This function is used to find the associated ITask reference to ensure connections are
+   * maintained when copying the TaskGraphConf. This version does not use the template arguments.
+   * @param orig the pointer to the original AnyITask that may have been copied before
+   * @return the AnyITask's copy or nullptr if the copy is not found.
+   */
   AnyITask *getCopy(AnyITask *orig)
   {
     for (auto tCopy : *taskCopyMap) {
@@ -183,6 +279,13 @@ class AnyTaskGraphConf {
     return nullptr;
   }
 
+  /**
+   * Gets the task manager that is responsible for a particular ITask
+   * @tparam T the input type of the TaskManager/ITask
+   * @tparam U the output type of the TaskManager/ITask
+   * @param task the ITask
+   * @return the task manager responsible for the ITask
+   */
   template <class T, class U>
   TaskManager<T, U> *getTaskManager(ITask <T, U> *task) {
 
@@ -210,6 +313,10 @@ class AnyTaskGraphConf {
 
   }
 
+  /**
+   * Adds a task manager to the task graph
+   * @param taskManager the task manager
+   */
   void addTaskManager(AnyTaskManager *taskManager)
   {
     for (auto tMan : *taskManagers)
@@ -221,7 +328,9 @@ class AnyTaskGraphConf {
     this->taskManagers->push_back(taskManager);
   }
 
-
+  /**
+   * Prints profile data to console for all task managers
+   */
   void printProfile()
   {
     for (auto tMan : *taskManagers)
@@ -230,19 +339,39 @@ class AnyTaskGraphConf {
     }
   }
 
+  /**
+   * Gets the pipeline ID for the task graph configuration.
+   * @return the pipeline ID
+   */
   size_t getPipelineId() { return this->pipelineId; }
 
+  /**
+   * Gets the number of pipelines that exist for this task graph
+   * @return the number of pipelines
+   */
   size_t getNumPipelines() { return this->numPipelines; }
 
 
   /**
-   * Writes the dot representation of the task graph to disk
-   * @param file the file path (will not create directories)
+   * Writes the basic dot representation of the task graph to disk.
+   *
+   * @param file the filename (will not create directories)
    */
   void writeDotToFile(std::string file) {
     writeDotToFile(file, 0);
   }
 
+  /**
+   * Writes the dot representation of the task graph to disk with additional options such as
+   * profiling.
+   *
+   * Example:
+   * taskGraph->writeDotToFile("example.dot", DOTGEN_FLAG_HIDE_MEM_EDGES | DOTGEN_FLAG_SHOW_IN_OUT_TYPES);
+   *
+   * @param file the filename (will not create directories)
+   * @param flags the flags for DOTGEN
+   * @note Use the directive PROFILE to enable profiling output.
+   */
   void writeDotToFile(std::string file, int flags) {
     bool graphColored = false;
 #ifdef PROFILE
@@ -292,10 +421,10 @@ class AnyTaskGraphConf {
   }
 
   /**
-   * @internal
    * Updates the task managers addresses, pipelineIds and the number of pipelines for all tasks in the TaskGraph
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   void updateTaskManagersAddressingAndPipelines() {
     for (auto t : *this->taskManagers) {
@@ -306,11 +435,24 @@ class AnyTaskGraphConf {
     }
   }
 
+  /**
+   * Gets the address for the task graph.
+   * All tasks within this graph share the same address as the graph.
+   * @return the address
+   */
   std::string getAddress()
   {
     return this->address;
   }
 
+  /**
+   * Gets the number of sub graphs within this task graph.
+   *
+   * This number represents the number of subgraphs spawned by all execution pipelines in the
+   * graph.
+   *
+   * @return the number of sub graphs.
+   */
   size_t getNumberOfSubGraphs() const {
     return numberOfSubGraphs;
   }
@@ -340,7 +482,11 @@ class AnyTaskGraphConf {
    */
   virtual std::string genDotGraph(int flags, int colorFlag) = 0;
 
-
+  /**
+   * Creates a copy of each task from the list of AnyTaskManagers passed as a parameter.
+   * Each copy is added into this graph and a mapping between the original and the copy is made.
+   * @param tasks the tasks to make copies of.
+   */
   void copyTasks(std::list<AnyTaskManager *> *tasks)
   {
     for (auto task : *tasks)
@@ -349,6 +495,11 @@ class AnyTaskGraphConf {
     }
   }
 
+  /**
+   * Gets the task manager copy for a given ITask.
+   * @param iTask the ITask to lookup.
+   * @return the task manager used to manage the ITask
+   */
   AnyTaskManager *getTaskManagerCopy(AnyITask *iTask)
   {
     for (auto tCopy : *taskCopyMap) {
@@ -360,6 +511,13 @@ class AnyTaskGraphConf {
     return nullptr;
   }
 
+  /**
+   * Checks whether an ITask is in the graph or not
+   * @param task the ITask to check
+   * @return true if the task is in this graph, otherwise false
+   * @retval TRUE if the task is in the graph
+   * @retval FALSE if the task is not in the graph
+   */
   bool hasTask(AnyITask *task)
   {
     for (auto taskSched : *taskManagers)
@@ -374,6 +532,11 @@ class AnyTaskGraphConf {
  private:
 
 
+  /**
+   * Creates a copy of a task manager and adds the copy and a mapping between the task manager
+   * copy and the original ITask that the manager is responsible for.
+   * @param taskManager the task manager to create a copy for.
+   */
   void createCopy(AnyTaskManager *taskManager)
   {
     AnyITask *origITask = taskManager->getTaskFunction();
@@ -388,14 +551,14 @@ class AnyTaskGraphConf {
   }
 
 
-  ITaskMap *taskCopyMap;
-  std::list<AnyTaskManager *> *taskManagers;
+  ITaskMap *taskCopyMap; //!< The ITask copy map that maps an original ITask to a task manager copy
+  std::list<AnyTaskManager *> *taskManagers; //!< The list of task managers for the task graph
 
   size_t pipelineId; //!< The pipelineId for the task graph
   size_t numPipelines; //!< The number of pipelines from this graph
 
   std::string address; //!< The address for this task graph and its tasks
-  TaskNameConnectorMap *taskConnectorNameMap;
+  TaskNameConnectorMap *taskConnectorNameMap; //!< Maps the tsak name to the task's connector
 
   size_t numberOfSubGraphs; //!< The number of sub-graphs that will be spawned
 

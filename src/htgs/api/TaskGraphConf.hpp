@@ -3,15 +3,15 @@
 // NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 /**
- * @file TaskGraph.hpp
+ * @file TaskGraphConf.hpp
  * @author Timothy Blattner
  * @date Nov 18, 2015
  *
- * @brief Implements the TaskGraph class responsible for managing ITask connections.
+ * @brief Implements the task graph configuration class responsible for managing ITask connections.
  * @details
  */
-#ifndef HTGS_TASKGRAPH_HPP
-#define HTGS_TASKGRAPH_HPP
+#ifndef HTGS_TASKGRAPHCONF_HPP
+#define HTGS_TASKGRAPHCONF_HPP
 
 #include <htgs/core/graph/edge/ProducerConsumerEdge.hpp>
 #include <htgs/core/graph/edge/RuleEdge.hpp>
@@ -27,16 +27,17 @@
 namespace htgs {
 
 /**
- * @class TaskGraph TaskGraph.hpp <htgs/api/TaskGraph.hpp>
+ * @class TaskGraphConf TaskGraphConf.hpp <htgs/api/TaskGraphConf.hpp>
  * @brief Manages a group of connected ITasks and their connections.
  * @details
  * Each ITask that is added into the TaskGraph is stored in the TaskGraph's metadata
  * to allow for quick copying using copy().
  *
  * The main methods for adding each ITask into the graph are
- * addEdge(), addGraphInputConsumer(), addGraphOutputProducer(), and addRule()
+ * addEdge(), addRuleEdge(), addMemoryManagerEdge(),
+ * addCudaMemoryManagerEdge(), setGraphConsumerTask(), and addGraphProducerTask()
  *
- * When using these methods, the TaskGraph builds a Task, which is used to process an ITask's functionality.
+ * When using these methods, the TaskGraph builds a TaskManager, which is used to process an ITask's functionality.
  * Parameters for customizing the thread pool, polling abilities, etc., are specified in the ITask constructors:
  * ITask::ITask()
  *
@@ -47,11 +48,12 @@ namespace htgs {
  * addCudaMemoryManagerEdge()
  *
  * Every TaskGraph has an input and output type (T and U). If a TaskGraph does not have an input or output type, then
- * the type can be specified as VoidData.
+ * the data type can be specified as VoidData.
  *
  * To add data into the input of a TaskGraph use the produceData() functions. These must be used in conjunction
- * with the incrementGraphInputProducer() and finishedProducingData() functions to indicate a data input stream is
- * active and when that input stream is closing, respectively.
+ * with the finishedProducingData() function to indicate a data input stream is
+ * is closing. If additional data streams are added as input for the graph, then use
+ * the incrementGraphProducer() function.
  *
  * To process the output of a TaskGraph use the consumeData() function. To determine if data is no longer being
  * produced by a TaskGraph use the isOutputTerminated() function.
@@ -76,18 +78,15 @@ namespace htgs {
  * // Add memory edges
  * MatrixAllocator *matrixAlloc = new MatrixAllocator(blockSize, blockSize);
  * int poolSize = 50;
- * taskGraph->addMemoryManagerEdge("MatrixA", loadMatrixTask, scalMulTask, matrixAlloc, 50);
- * taskGraph->addMemoryManagerEdge("MatrixB", loadMatrixTask, scalMulTask, matrixAlloc, 50);
+ * taskGraph->addMemoryManagerEdge("MatrixA", loadMatrixTask, matrixAlloc, 50);
+ * taskGraph->addMemoryManagerEdge("MatrixB", loadMatrixTask, matrixAlloc, 50);
  *
  * // Setup graph input/output
- * taskGraph->addGraphInputConsumer(loadMatrixTask);
- * taskGraph->addGraphOutputProducer(scalMulTask);
- *
- * // Indicate input data stream
- * taskGraph->incrementGraphInputProducer();
+ * taskGraph->setGraphConsumerTask(loadMatrixTask);
+ * taskGraph->addGraphProducerTask(scalMulTask);
  *
  * // Setup runtime and execute
- * htgs::Runtime *runtime = new htgs::Runtime(taskGraph);
+ * htgs::TaskGraphRuntime *runtime = new htgs::TaskGraphRuntime(taskGraph);
  * runtime->executeRuntime();
  *
  * // Add input to graph
@@ -107,7 +106,7 @@ namespace htgs {
  * // Process taskGraph output
  * while (!taskGraph->isOutputTerminated())
  * {
- *   std::shared_ptr<MatrixBlockRquest> mbr = taskGraph->consumeData();
+ *   std::shared_ptr<MatrixBlockRequest> mbr = taskGraph->consumeData();
  *   if (mbr != nullptr)
  *   {
  *     // ... apply post-processing
@@ -147,6 +146,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * Constructs a TaskGraph
    * @param pipelineId the pipelineId for this graph
    * @param numPipelines the number of pipelines for the graph
+   * @param baseAddress the base address for the task graph to build upon for multiple levels of execution pipelines
+   * @param parentCommunicator the parent task graph communicator
    */
   TaskGraphConf(size_t pipelineId, size_t numPipelines, std::string baseAddress, TaskGraphCommunicator *parentCommunicator) : AnyTaskGraphConf(pipelineId, numPipelines, baseAddress) {
     this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
@@ -210,6 +211,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @param numPipelines the number of pipelines
    * @param input the input connector to be used for the graph's input
    * @param output the output connector to be used for the graph's output
+   * @param baseAddress the base address for the task graph to build upon for multiple levels of execution pipelines
+   * @param parentCommunicator the parent task graph communicator
    * @return the copy of the task graph
    */
   TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines, std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output, std::string baseAddress, TaskGraphCommunicator *parentCommunicator)
@@ -289,11 +292,10 @@ class TaskGraphConf: public AnyTaskGraphConf {
   /**
  * Creates a rule edge that is managed by a bookkeeper
  * @tparam V the input type for the bookkeeper and rule
- * @tparam IRuleType the IRule that determines when to produce data for the edge (must match the input types of both the bookkeeper and the consumer task)
  * @tparam W the output/input type for the rule/consumer task
  * @tparam X the output type for the consumer task
  * @param bookkeeper the bookkeeper task that manages this edge
- * @param rule the rule that determines when to produce data for the edge
+ * @param iRule the rule that determines when to produce data for the edge
  * @param consumer the consumer of the rule
  */
   template<class V, class W, class X>
@@ -433,29 +435,48 @@ class TaskGraphConf: public AnyTaskGraphConf {
   void updateCommunicator() override {
     auto taskNameConnectorMap = this->getTaskConnectorNameMap();
 
-    // Send the map to the connectorCommunicator
+    // Send the map to the taskGraphCommunicator
     this->taskConnectorCommunicator->addTaskNameConnectorMap(taskNameConnectorMap);
 
     for (auto t : *this->getTaskManagers())
     {
-      t->setConnectorCommunicator(this->taskConnectorCommunicator);
+      t->setTaskGraphCommunicator(this->taskConnectorCommunicator);
     }
   }
 
-
+  /**
+   * Sets the input connector for the task graph
+   * @param input the input connector
+   */
   void setInputConnector(std::shared_ptr<Connector<T>> input) {
     this->input = input;
   }
 
+  /**
+   * Sets the output connector for the task graph
+   * @param output the output connector
+   */
   void setOutputConnector(std::shared_ptr<Connector<T>> output) {
     this->output = output;
   }
 
+  /**
+   * Increments the number of producers for the task graph.
+   * @note The input connector is automatically incremented when creating a
+   * graph, so this should only be called if additional sources will be
+   * producing data other than the main function.
+   */
   void incrementGraphProducer()
   {
     this->input->incrementInputTaskCount();
   }
 
+  /**
+   * Decrements the input connector and wakes up any consumer of the graph's
+   * input if the input connector is finished producing data.
+   * @note This should be called by the main thread when all data is
+   * finished being produced for this task graph.
+   */
   void finishedProducingData()
   {
     this->input->producerFinished();
@@ -466,6 +487,14 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
   }
 
+  /**
+   * Sets the task that is consuming data from the input of the graph.
+   * @tparam W the output type of the task
+   * @param task the task that consumes data that is added into the graph.
+   * @note Only one task consumes data from the graph. If multiple tasks need
+   * data from the graph, then a bookkeeper should be added to distribute
+   * data among the multiple tasks.
+   */
   template<class W>
   void setGraphConsumerTask(ITask<T, W> *task)
   {
@@ -473,6 +502,12 @@ class TaskGraphConf: public AnyTaskGraphConf {
     this->graphConsumerTaskManager->setInputConnector(this->input);
   }
 
+  /**
+   * Sets the task that is producing data for the output of the graph.
+   * @tparam W the input type of the task
+   * @param task the task that produces data that is added as output for the graph.
+   * @note There can be multiple tasks that produces for the graph.
+   */
   template<class W>
   void addGraphProducerTask(ITask<W, U> * task)
   {
@@ -554,6 +589,10 @@ class TaskGraphConf: public AnyTaskGraphConf {
     return this->output->isInputTerminated();
   }
 
+  /**
+   * Sets the output connector for the task graph configuration
+   * @param connector the output connector
+   */
   void setOutputConnector(std::shared_ptr<AnyConnector> connector)
   {
     if (graphProducerTaskManagers != nullptr) {
@@ -565,6 +604,12 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
   }
 
+  /**
+   * Releases memory back to its memory manager.
+   * @tparam V the type of memory data
+   * @param memory the memory
+   * @note The m_data_t must have originated within this task graph.
+   */
   template<class V>
   void releaseMemory(m_data_t<V> memory)
   {
@@ -669,11 +714,10 @@ class TaskGraphConf: public AnyTaskGraphConf {
     this->edges->push_back(edge);
   }
 
-  //! @endcond
   typedef AnyTaskGraphConf super;
+  //! @endcond
 
-
-  std::list<EdgeDescriptor *> *edges;
+  std::list<EdgeDescriptor *> *edges; //!< The list of edges for the graph, represented by edge descriptors to define how the edges are copied/added.
 
   AnyTaskManager *graphConsumerTaskManager; //!< The consumer accessing the TaskGraph's input connector
   std::list<AnyTaskManager *> *graphProducerTaskManagers; //!< The list of producers that are outputting data to the TaskGraph's output connector
@@ -681,8 +725,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
   std::shared_ptr<Connector<T>> input; //!< The input connector for the TaskGraph
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph
 
-  TaskGraphCommunicator *taskConnectorCommunicator;
+  TaskGraphCommunicator *taskConnectorCommunicator; //!< The task graph communicator for the task graph.
 };
 }
 
-#endif //HTGS_TASKGRAPH_HPP
+#endif //HTGS_TASKGRAPHCONF_HPP

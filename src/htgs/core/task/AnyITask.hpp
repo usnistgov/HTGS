@@ -161,6 +161,7 @@ class AnyITask {
 
   /**
    * Virtual function that generates the input/output and per-task dot notation
+   * @param flags the DOTGEN flags
    * @param dotId the id for this task
    * @param input the input connector for this task
    * @param output the output connector for this task
@@ -220,14 +221,18 @@ class AnyITask {
   virtual std::string getAddress() = 0;
 
   /**
-  * @internal
+  *
   * Copies the ITask including its list of memGetters and memReleasers
   * @return a deep copy of the ITask
   *
   * @note This function should only be called by the HTGS API
+   * @internal
   */
   virtual AnyITask *copyITask(bool deep) = 0;
 
+  /**
+   * Prints the profile data to std::out.
+   */
   virtual void printProfile() = 0;
 
   /**
@@ -261,11 +266,11 @@ class AnyITask {
   }
 
   /**
-   * @internal
    * Sets the pipeline Id for this ITask.
    * @param pipelineId the pipelineId
    *
    * @note This function should only be used by the HTGS API
+   * @internal
    */
   void setPipelineId(size_t pipelineId) {
     this->pipelineId = pipelineId;
@@ -281,31 +286,38 @@ class AnyITask {
   }
 
   /**
-   * @internal
    * Sets the number of pipelines that this ITask belongs too.
    * @param numPipelines the number of pipelines
    *
    * @note This function should only be used by the HTGS API
+   * @internal
    */
   void setNumPipelines(size_t numPipelines) {
     this->numPipelines = numPipelines;
   }
 
-  void setConnectorCommunicator(TaskGraphCommunicator *communicator)
+  /**
+   * Sets the task graph communicator.
+   * @param communicator
+   */
+  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator)
   {
-    this->connectorCommunicator = communicator;
+    this->taskGraphCommunicator = communicator;
   }
 
-  TaskGraphCommunicator *getConnectorCommunicator() const {
-    return connectorCommunicator;
+  /**
+   * Gets the task graph communicator
+   * @return the task graph communicator
+   */
+  TaskGraphCommunicator *getTaskGraphCommunicator() const {
+    return taskGraphCommunicator;
   }
 
   /**
    * Gets the number of pipelines for the task's execution pipeline
    * @return the number of pipelines
    */
-  size_t getNumPipelines()
-  {
+  size_t getNumPipelines() const {
     return this->numPipelines;
   }
 
@@ -356,7 +368,6 @@ class AnyITask {
   }
 
   /**
-   * @internal
    * Retrieves memory from a memory edge
    * @param name the name of the memory edge
    * @param releaseRule the release rule to be associated with the newly acquired memory
@@ -368,6 +379,7 @@ class AnyITask {
    * @note This function will block if no memory is available, ensure the
    * memory pool size is sufficient based on memory release rules and data flow.
    * @note Memory edge must be defined as MMType::Static
+   * @internal
    */
   template<class V>
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule) {
@@ -375,7 +387,6 @@ class AnyITask {
   }
 
   /**
-   * @internal
    * Retrieves memory from a memory edge
    * @param name the name of the memory edge
    * @param releaseRule the release rule to be associated with the newly acquired memory
@@ -388,6 +399,7 @@ class AnyITask {
    * @note This function will block if no memory is available, ensure the
    * memory pool size is sufficient based on memory release rules and data flow.
    * @note Memory edge must be defined as MMType::Dynamic
+   * @internal
    */
   template<class V>
   m_data_t<V> getDynamicMemory(std::string name, IMemoryReleaseRule *releaseRule, size_t numElems) {
@@ -396,17 +408,14 @@ class AnyITask {
 
   /**
    * Releases memory onto a memory edge, which is transferred by the graph communicator
-   * @param name the name of the memory edge
    * @param memory the memory to be released
    * @tparam V the MemoryData type
-   * @note The name specified must have been attached to this ITask as a memReleaser using
-   * the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemReleaser()
-   * @note Memory edge must be defined as MMType::Static OR MMType::Dynamic
+   * @note the m_data_t should be acquired from a task using the getMemory function. A reference to this data can be passed along within IData.
    */
   template<class V>
   void releaseMemory(m_data_t<V> memory) {
     std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket(this->getName(), this->getAddress(), memory->getMemoryManagerName(), memory->getAddress(), memory));
-    this->connectorCommunicator->produceDataPacket(dataPacket);
+    this->taskGraphCommunicator->produceDataPacket(dataPacket);
   }
 
   /**
@@ -422,7 +431,6 @@ class AnyITask {
   }
 
   /**
-   * @internal
    * Attaches a memory edge to this ITask to get memory
    * @param name the name of the memory edge
    * @param getMemoryConnector the connector for getting memory for the MemoryManager
@@ -430,6 +438,7 @@ class AnyITask {
    * @param type the memory manager type
    *
    * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
+   * @internal
    */
   void attachMemoryEdge(std::string name, std::shared_ptr<AnyConnector> getMemoryConnector,
                         std::shared_ptr<AnyConnector> releaseMemoryConnector, MMType type) {
@@ -447,6 +456,7 @@ class AnyITask {
 
   /**
    * Creates a dot notation representation for this task
+   * @param flags the DOTGEN flags
    * @param input the input connector for this task
    * @param output the output connector for this task
    * @return the dot notation for the task.
@@ -468,10 +478,10 @@ class AnyITask {
   }
 
   /**
-   * @internal
    * Provides profile output for the ITask,
    *
    * @note this function should only be called by the HTGS API
+   * @internal
    */
   void profileITask() {
     if (memoryEdges->size() > 0) {
@@ -561,11 +571,11 @@ class AnyITask {
   bool poll; //!< Whether the ITask should poll for data used when creating a TaskManager
   size_t microTimeoutTime; //!< The timeout time for polling in microseconds used when creating a TaskManager
   size_t pipelineId; //!< The execution pipeline id for the ITask
-  size_t numPipelines;
+  size_t numPipelines; //!< The number of pipelines that exist for this task
 
   std::shared_ptr<ConnectorMap> memoryEdges; //!< A mapping from memory edge name to memory manager connector for getting memory
   std::shared_ptr<ConnectorMap> releaseMemoryEdges; //!< A mapping from the memory edge name to the memory manager's input connector to shutdown the memory manager
-  TaskGraphCommunicator *connectorCommunicator; //!< Task graph connector communicator
+  TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph connector communicator
 
 };
 }

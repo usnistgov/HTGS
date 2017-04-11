@@ -162,6 +162,13 @@ class ExecutionPipeline: public ITask<T, U> {
     this->inputRules->push_back(std::shared_ptr<IRule<T, T>>(rule));
   }
 
+  /**
+   * Adds an input rule, which can be used for domain decomposition.
+   * This rule should use the pipelineId parameter in the IRule::applyRule function to aid in
+   * distributing data to the appropriate execution pipeline TaskGraph
+   * This variant should be used if the rule is intended to be shared with multiple bookkeepers or other execution pipelines.
+   * @param rule the rule as a shared_ptr to handle distributing data between pipelines
+   */
   void addInputRule(std::shared_ptr<IRule<T, T>> rule)
   {
     this->inputRules->push_back(rule);
@@ -188,7 +195,8 @@ class ExecutionPipeline: public ITask<T, U> {
 
     for (size_t i = 0; i < numPipelinesExec; i++) {
       DEBUG("Adding pipeline " << i);
-      TaskGraphConf<T, U> *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(), this->getConnectorCommunicator());
+      TaskGraphConf<T, U> *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(),
+                                                         this->getTaskGraphCommunicator());
 
       DEBUG("Setting up input and output of pipeline " << i);
 
@@ -305,16 +313,15 @@ class ExecutionPipeline: public ITask<T, U> {
 #endif
 
   /**
-   * Virtual function that adds additional dot attributes to this node.
-   * @param idStr the id string for this task
-   * @param inputConn the input connector for this task
-   * @param outputConn the output connector for this task
-   * @return the additional dot attributes for the dot graph representation
+   * @copydoc ITask::genDot
+   * @note This function will generate the dot notation for all sub-graphs within the execution pipeline.
+   * @note If the dot notation is generated prior to execution, then a virtual pipeline is created. Generating the dot notation
+   * after execution will show the actual sub-graphs.
    */
-  std::string genDot(int flags, std::string idStr, std::shared_ptr<AnyConnector> inputConn, std::shared_ptr<AnyConnector> outputConn) override {
+  std::string genDot(int flags, std::string dotId, std::shared_ptr<AnyConnector> input, std::shared_ptr<AnyConnector> output) override {
     std::ostringstream oss;
 
-    oss << inputConn->genDot(flags);
+    oss << input->genDot(flags);
 
     // Get inputRule edge name
     std::string inputRuleNames;
@@ -332,12 +339,12 @@ class ExecutionPipeline: public ITask<T, U> {
     {
       for (auto g : *graphs)
       {
-        oss << inputConn->getDotId() << " -> " << g->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
+        oss << input->getDotId() << " -> " << g->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
             << "\"];" << std::endl;
       }
     }
     else {
-      oss << inputConn->getDotId() << " -> " << graph->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
+      oss << input->getDotId() << " -> " << graph->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
           << "\"];" << std::endl;
     }
 
@@ -347,7 +354,7 @@ class ExecutionPipeline: public ITask<T, U> {
       int pipeline = 0;
       for (auto g : *graphs)
       {
-        oss << "subgraph cluster_" << idStr << std::to_string(pipeline) <<" {" << std::endl;
+        oss << "subgraph cluster_" << dotId << std::to_string(pipeline) <<" {" << std::endl;
         oss << "label=\"" << getName() << std::to_string(pipeline) << "\";" << std::endl;
         oss << "style=\"dashed\";" << std::endl;
         oss << "style =\"filled\";" << std::endl;
@@ -359,14 +366,14 @@ class ExecutionPipeline: public ITask<T, U> {
       }
     }
     else {
-      oss << "subgraph cluster_" << idStr << " {" << std::endl;
+      oss << "subgraph cluster_" << dotId << " {" << std::endl;
       oss << "label=\"" << getName() << " x" << this->numPipelinesExec << "\";" << std::endl;
       oss << "style=\"dashed\";" << std::endl;
       oss << "style =\"filled\";" << std::endl;
       oss << "fillcolor=lightgrey;" << std::endl;
       oss << "color=orange;" << std::endl;
 
-      graph->setOutputConnector(outputConn);
+      graph->setOutputConnector(output);
       oss << graph->genDotGraphContent(flags);
       oss << "}" << std::endl;
     }

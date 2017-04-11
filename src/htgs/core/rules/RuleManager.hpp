@@ -60,11 +60,11 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
  public:
 
   /**
-   * @internal
    * Creates a rule manager with a rule
    * @param rule the rule
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   RuleManager(std::shared_ptr<htgs::IRule<T, U>> rule) : rule(rule), pipelineId(0), numPipelines(1), terminated(false) { }
 

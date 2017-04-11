@@ -1,6 +1,18 @@
+// NIST-developed software is provided by NIST as a public service. You may use, copy and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software.
+// NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
+// You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
+
 //
 // Created by tjb3 on 3/22/17.
 //
+
+/**
+ * @file TaskGraphProfiler.hpp
+ * @author Timothy Blattner
+ * @date March 22, 2017
+ *
+ * @brief Implements the task graph profiler for gathering and communicating the results via graphviz.
+ */
 
 #ifndef HTGS_TASKGRAPHPROFILER_HPP
 #define HTGS_TASKGRAPHPROFILER_HPP
@@ -9,17 +21,34 @@
 #include <htgs/core/graph/AnyTaskGraphConf.hpp>
 #include <set>
 namespace htgs {
+
+/**
+ * @class TaskGraphProfiler TaskGraphProfiler.hpp <htgs/core/graph/profile/TaskGraphProfiler.hpp>
+ * @brief The task graph profiler that gathers profile data and communicates via graphviz.
+ *
+ * A TaskGraphConf uses this class to gather all profile data for visually outputting the task graph
+ * as a dot file. DOTGEN flags are used to specify options to enable/disable features for the graph.
+ *
+ *
+ * @note to enable profiling you must add the directive PROFILE prior to compilation. If PROFILE is
+ * not defined, then a basic visualization is done showing just the graph structure.
+ *
+ */
 class TaskGraphProfiler {
  public:
 
   /**
    * Constructs the task graph profiler.
+   * @param flags the DOTGEN flags to enable/disable features
    */
   TaskGraphProfiler(int flags) : flags(flags)
   {
     taskManagerProfiles = new std::map<AnyTaskManager *, TaskManagerProfile *>();
   }
 
+  /**
+   * Destructor
+   */
   ~TaskGraphProfiler() {
     for (auto v : *taskManagerProfiles)
     {
@@ -40,6 +69,9 @@ class TaskGraphProfiler {
     graphConf->gatherProfilingData(taskManagerProfiles);
   }
 
+  /**
+   * Prints the profile data to console.
+   */
   void printProfiles() {
     for (auto t : *taskManagerProfiles)
     {
@@ -47,7 +79,19 @@ class TaskGraphProfiler {
     }
   }
 
-  std::string genDotProfile(std::string curGraph, int colorFlag)
+  /**
+   * Generates the dot profile for the graph.
+   *
+   * Only the tasks that have been defined within the current dot graph will have their
+   * profiles included. The color flag is used to identify which profiling to use when coloring
+   * the nodes.
+   *
+   * @param curDotGraph the current dot graph that includes all tasks and edges used for the graph.
+   * @param colorFlag specifies which profile data to use when generating the color map, 0 = no color map
+   * @return the dot graph with labeling for profiling if profiling is enabled.
+   * @note The directive PROFILE must be defined to enable outputting profile data.
+   */
+  std::string genDotProfile(std::string curDotGraph, int colorFlag)
   {
     std::string ret = "";
 
@@ -74,7 +118,7 @@ class TaskGraphProfiler {
 
       std::string dotId = tMan->getTaskFunction()->getDotId();
 
-      if (curGraph.find(dotId + ";") != std::string::npos) {
+      if (curDotGraph.find(dotId + ";") != std::string::npos) {
 
         std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ tFun->inTypeName() + "\nout: " + tFun->outTypeName()) : "");
         std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(tFun->getNumThreads())));
@@ -97,6 +141,10 @@ class TaskGraphProfiler {
   }
 
  private:
+
+  /**
+   * Computes the averages for all profile data.
+   */
   void computeAverages()
   {
     std::map<AnyTaskManager *, TaskManagerProfile *> finalProfiles;
@@ -168,6 +216,14 @@ class TaskGraphProfiler {
 
   }
 
+  /**
+   * Generates the color map.
+   *
+   * The map is structured as TaskDotID string -> Color string.
+   *
+   * @param colorFlag selects which profile data to use when generating colors.
+   * @return the color map
+   */
   std::unordered_map<std::string, std::string> *genColorMap(int colorFlag)
   {
     std::unordered_map<std::string, std::string> *colorMap = new std::unordered_map<std::string, std::string>();
@@ -232,8 +288,8 @@ class TaskGraphProfiler {
   }
 
 
-  std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles;
-  int flags;
+  std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles; //!< The profile data for all task managers
+  int flags; //!< The DOTGEN bit flags
 };
 }
 

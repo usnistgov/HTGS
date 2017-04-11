@@ -100,7 +100,6 @@ class Connector: public AnyConnector {
   }
 
   /**
-   * @internal
    * Polls for data for a consumer given a timeout.
    * @param timeout the timeout time in microseconds
    * @return the data or nullptr
@@ -108,6 +107,7 @@ class Connector: public AnyConnector {
    * @retval nullptr if the timeout time expires
    *
    * @note This function will block until data is available or the timeout time has expired.
+   * @internal
    */
   std::shared_ptr<T> pollConsumeData(size_t timeout) {
     std::shared_ptr<T> data = this->queue.poll(timeout);
@@ -115,11 +115,11 @@ class Connector: public AnyConnector {
   }
 
   /**
-   * @internal
    * Consumes data from the queue.
    * @return the data
    *
    * @note This function will block until data is available.
+   * @internal
    */
   std::shared_ptr<T> consumeData() {
     std::shared_ptr<T> data = this->queue.Dequeue();
@@ -166,7 +166,9 @@ class Connector: public AnyConnector {
   }
 
  private:
+  //! @cond Doxygen_Suppress
   typedef AnyConnector super;
+  //! @endcond
 
 #ifdef USE_PRIORITY_QUEUE
   PriorityBlockingQueue<std::shared_ptr<T>>

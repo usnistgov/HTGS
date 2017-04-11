@@ -67,7 +67,9 @@ class MemoryData: public IData {
   /**
    * Creates MemoryData with the specified IMemoryAllocator
    * @param allocator the memory allocator
+   * @param address the address of the memory manager that allocates the memory data
    * @param memoryManagerName the name of the memory manager that allocated this memory
+   * @param type the type of the memory manager that allocated this memory
    */
   MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator, std::string address, std::string memoryManagerName, MMType type) {
     this->type = type;
@@ -93,16 +95,20 @@ class MemoryData: public IData {
     }
   }
 
+  /**
+   * Gets the address of the memory manager that allocated this memory data
+   * @return the address of the memory manager that allocated the memory data
+   */
   const std::string &getAddress() const {
     return address;
   }
 
   /**
-   * @internal
    * Sets the pipelineId associated with the MemoryManager that allocated the memory
    * @param id the pipielineId
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   void setPipelineId(size_t id) { this->pipelineId = id; }
 
@@ -140,31 +146,31 @@ class MemoryData: public IData {
   }
 
   /**
-   * @internal
    * Checks whether the memory can be recycled/released by the MemoryManager
    * @return whether the memory is ready to be recycled/released by the MemoryManager
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   bool canReleaseMemory() {
     return this->memoryReleaseRule->canReleaseMemory();
   }
 
   /**
-   * @internal
    * Updates the state of the memory when it is received by the MemoryManager
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   void memoryUsed() {
     this->memoryReleaseRule->memoryUsed();
   }
 
   /**
-   * @internal
    * Allocates the memory that this MemoryData is using
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   void memAlloc() { this->memory = this->allocator->memAlloc(); }
 
@@ -174,17 +180,27 @@ class MemoryData: public IData {
    */
   T *get() { return this->memory; }
 
+  /**
+   * Gets the data that is held by this memory data at the specified index
+   * @param idx the index
+   * @return the data
+   */
   const T &get(size_t idx) const {
     return *(this->memory + idx);
   }
 
+  /**
+   * Gets the data that is held by this memory data at the specified index
+   * @param idx the index
+   * @return the data
+   */
   T &get(size_t idx) {
     return *(this->memory + idx);
   }
 
   /**
    * Gets the value for memory at index.
-   * @param index the index
+   * @param idx the index
    * @return the value at index
    * @note T must be a pointer to memory to use this functionality.
    */
@@ -194,7 +210,7 @@ class MemoryData: public IData {
 
   /**
    * Gets the value for memory at index.
-   * @param index the index
+   * @param idx the index
    * @return the value at index
    * @note T must be a pointer to memory to use this functionality.
    */
@@ -203,10 +219,10 @@ class MemoryData: public IData {
   }
 
   /**
-   * @internal
    * Frees the memory that this MemoryData is managing
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   void memFree() {
     if (this->memory) {
@@ -224,11 +240,11 @@ class MemoryData: public IData {
   }
 
   /**
-   * @internal
    * Creates a copy of this MemoryData
    * @return the copy
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   MemoryData<T> *copy() { return new MemoryData<T>(this->allocator, this->address, this->memoryManagerName, this->type); }
 

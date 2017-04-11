@@ -20,7 +20,7 @@
 namespace htgs {
 
 /**
- * @class BaseConnector BaseConnector.hpp <htgs/core/graph/BaseConnector.hpp>
+ * @class AnyConnector AnyConnector.hpp <htgs/core/graph/AnyConnector.hpp>
  * @brief Parent class for Connector, which removes the template type of the Connector.
  * @details Used within data structures to hold various types of Connectors. Each
  * Connector is built using TaskGraph routines to add ITasks to a TaskGraph.
@@ -36,6 +36,9 @@ namespace htgs {
 class AnyConnector {
  public:
 
+  /**
+   * Constructor initializing the producer task count to 0.
+   */
   AnyConnector() : producerTaskCount(0) {}
 
   /**
@@ -44,10 +47,10 @@ class AnyConnector {
   virtual ~AnyConnector() { }
 
   /**
-  * @internal
   * Indicates to the Connector that the producer has finished producing data for the Connector.
   *
   * @note This function should only be called by the HTGS API
+   * @internal
   */
   void producerFinished() {
     this->producerTaskCount--;
@@ -55,16 +58,17 @@ class AnyConnector {
 
   /**
    * Gets the number of producers producing data for the connector.
+   * @return the number of producers adding data for this connector.
    */
   size_t getProducerCount() {
     return this->producerTaskCount;
   }
 
   /**
-   * @internal
    * Increments the number of tasks producing data for the Connector
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   void incrementInputTaskCount() { this->producerTaskCount++; }
 
@@ -99,38 +103,38 @@ class AnyConnector {
   virtual std::string typeName() = 0;
 
   /**
-   * Checks whether the producer for this Connector has finished pushing data onto its priority queue.
+   * Checks whether the producer for this Connector has finished pushing data onto its queue.
    * @return whether the input has terminated or not
-   * @retval TRUE if the input has terminated and no more data is in the priority queue.
+   * @retval TRUE if the input has terminated and no more data is in the queue.
    * @retval FALSE if there is still data to be processed.
    */
   virtual bool isInputTerminated() = 0;
 
 
   /**
-   * @internal
    * Awakens all Tasks that are consuming data from this connector.
    * This function passes nullptr to each consumer to check whether that consumer is ready to be
    * terminated.
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   virtual void wakeupConsumer() = 0;
 
 
   /**
-   * @internal
    * Creates a copy of the BaseConnector
    * @return a copy of the BaseConnector
    *
    * @note This function should only be called by the HTGS API
+   * @internal
    */
   virtual AnyConnector *copy() = 0;
 
 
   /**
    * Produces any data into the queue. This function should be used with care as the
-   * data will be dynamically cast the type of Connector.
+   * data will be dynamically cast to the type of Connector.
    * @param data the data that will be added to the Connector's queue.
    */
   virtual void produceAnyData(std::shared_ptr<IData> data) = 0;

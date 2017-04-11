@@ -39,7 +39,6 @@ class AnyTaskManager {
 
   /**
  * Constructs an AnyTaskManager with an ITask as the task function and specific runtime parameters.
- * @param taskFunction the functionality for the TaskManager
  * @param numThreads the number of threads to operate with the TaskManager
  * @param isStartTask whether the TaskManager is a start task or not (immediately launches the ITask::execute when bound to a thread)
  * @param pipelineId the pipeline Id associated with the TaskManager
@@ -162,14 +161,19 @@ class AnyTaskManager {
    */
   virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) = 0;
 
-
+  /**
+   * Gathers profiling data for the TaskProfiler
+   * @param taskManagerProfiles the mapping of the task manager to its TaskManagerProfile
+   */
   virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)  = 0;
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-
+  /**
+   * Prints the profiling data to std::cout
+   */
   void printProfile() {
     std::cout << "===================== " << this->getName() << " "<< prefix() << " ===================" << std::endl;
     std::cout << "COMPUTE TIME: " << getComputeTime() << " us   WAIT TIME: " << getWaitTime() << " us" << std::endl;
@@ -189,13 +193,22 @@ class AnyTaskManager {
 
   }
 
-
-  void setConnectorCommunicator(TaskGraphCommunicator *communicator)
+  /**
+   * Sets the task graph communicator
+   * @param communicator the task graph communicator
+   */
+  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator)
   {
-    this->connectorCommunicator = communicator;
-    this->getTaskFunction()->setConnectorCommunicator(this->connectorCommunicator);
+    this->taskGraphCommunicator = communicator;
+    this->getTaskFunction()->setTaskGraphCommunicator(this->taskGraphCommunicator);
   }
 
+  /**
+   * Updates the address, pipelineID, and number of pipelines for the task manager.
+   * @param address the address (or task graph address) of this task manager
+   * @param pipelineId the ID for which execution pipeline this task belongs
+   * @param numPipelines the number of pipelines that exist for the execution pipeline
+   */
   void updateAddressAndPipelines(std::string address, size_t pipelineId, size_t numPipelines)
   {
     this->numPipelines = numPipelines;
@@ -203,6 +216,11 @@ class AnyTaskManager {
     this->pipelineId = pipelineId;
   }
 
+  /**
+   * Gets the address of the task manager.
+   * Can also be thought of as the address for the task graph that this task belongs too.
+   * @return the address
+   */
   std::string getAddress()
   {
     return this->address;
@@ -362,7 +380,11 @@ class AnyTaskManager {
   size_t getThreadId() {
     return this->threadId;
   }
-
+  /**
+   * Gets the compute time for the task manager
+   * @return the compute time
+   * @note Must define the directive PROFILE to enable profiling
+   */
   unsigned long long int getComputeTime() {
 #ifdef PROFILE
     return taskComputeTime;
@@ -371,7 +393,11 @@ class AnyTaskManager {
 #endif
   }
 
-
+  /**
+   * Gets the wait time for the task manager
+   * @return the wait time
+   * @note Must define the directive PROFILE to enable profiling
+   */
   unsigned long long int getWaitTime() {
 #ifdef PROFILE
     return taskWaitTime;
@@ -380,6 +406,11 @@ class AnyTaskManager {
 #endif
   }
 
+  /**
+   * Gets the maximum size the input queue became during execution.
+   * @return the maximum input queue size
+   * @note Must define the directive PROFILE to enable profiling
+   */
   size_t getMaxQueueSize() {
 #ifdef PROFILE
     return this->getInputConnector() != nullptr ? this->getInputConnector()->getMaxQueueSize() : 0;
@@ -416,7 +447,7 @@ class AnyTaskManager {
   size_t numPipelines; //!< The number of execution pipelines
   std::string address; //!< The address of the task graph this manager belongs too
 
-  TaskGraphCommunicator *connectorCommunicator; //!< Task graph communicator
+  TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph communicator
 
 };
 

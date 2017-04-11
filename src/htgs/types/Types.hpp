@@ -12,6 +12,9 @@
 #include <htgs/api/MemoryData.hpp>
 #include <map>
 
+/**
+ * @namespace the Hybrid Task Graph Scheduler Namespace
+ */
 namespace htgs {
 
 

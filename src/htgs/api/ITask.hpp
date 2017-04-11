@@ -202,37 +202,67 @@ class ITask: public AnyITask {
  */
   virtual void executeTask(std::shared_ptr<T> data) = 0;
 
+  /**
+   * @copydoc AnyITask::canTerminate
+   */
   virtual bool canTerminate(std::shared_ptr<AnyConnector> inputConnector)  override {
     return inputConnector->isInputTerminated();
   }
 
+  /**
+   * @copydoc AnyITask::shutdown
+   */
   virtual void shutdown() override {}
 
+  /**
+   * @copydoc AnyITask::getName
+   */
   virtual std::string getName() override {
     return "UnnamedITask";
   }
 
+  /**
+   * @copydoc AnyITask::getDotLabelName
+   */
   virtual std::string getDotLabelName() override {
     return this->getName();
   }
 
+  /**
+   * @copydoc AnyITask::getDotShapeColor
+   */
   virtual std::string getDotShapeColor() override {
     return "black";
   }
 
+  /**
+   * @copydoc AnyITask::getDotFillColor
+   */
   virtual std::string getDotFillColor() override {
     return "white";
   }
 
+  /**
+   * @copydoc AnyITask::getDotShape
+   */
   virtual std::string getDotShape() override {
     return "box";
   }
 
+  /**
+   * @copydoc AnyITask::printProfile
+   */
   virtual void printProfile() override {}
 
-
+  /**
+   * @copydoc AnyITask::copy
+   */
   virtual ITask<T, U> *copy() = 0;
 
+  /**
+   * Gets the number of graphs spawned by this ITask
+   * @return the number of graphs spawned
+   */
   virtual size_t getNumGraphsSpawned() { return 0; }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +314,9 @@ class ITask: public AnyITask {
     super::initialize(pipelineId, numPipeline);
   }
 
+  /**
+   * @copydoc AnyITask::inTypeName
+   */
   std::string inTypeName() override final
   {
     int status;
@@ -296,6 +329,9 @@ class ITask: public AnyITask {
 
   }
 
+  /**
+   * @copydoc AnyITask::outTypeName
+   */
   std::string outTypeName() override final
   {
     int status;
@@ -308,6 +344,9 @@ class ITask: public AnyITask {
 
   }
 
+  /**
+   * @copydoc AnyITask::getAddress
+   */
   std::string getAddress() override final
   {
     return ownerTask->getAddress();
@@ -331,11 +370,16 @@ class ITask: public AnyITask {
     return this->ownerTask;
   }
 
+  /**
+   * Gathers profile data.
+   * @param taskManagerProfiles the mapping between the task manager and the profile data for the task manager.
+   */
   virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) { }
 
  private:
-
+  //! @cond Doxygen_Suppress
   typedef AnyITask super;
+  //! @endcond
 
   TaskManager<T, U> *ownerTask; //!< The owner task for this ITask
 
