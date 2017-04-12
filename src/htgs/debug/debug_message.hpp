@@ -83,7 +83,7 @@ struct dbglog {
   //! @cond Doxygen_Suppress
   std::ostream &os_;
   mutable bool has_endl_;
-  dbglog(std::ostream &os = std::cerr) : os_(os), has_endl_(false) { }
+  dbglog(std::ostream &os = std::cerr) : os_(os), has_endl_(false) {}
   ~dbglog() { if (!has_endl_) os_ << std::endl; }
   template<typename T>
   static bool has_endl(const T &) { return false; }

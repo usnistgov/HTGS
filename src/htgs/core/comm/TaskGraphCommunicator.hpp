@@ -22,6 +22,8 @@
 
 namespace htgs {
 
+class TaskGraphCommunicator;
+
 /**
  * @typedef TaskCommMap
  * A mapping between the name of a task and its task graph communicator
@@ -53,7 +55,10 @@ typedef std::pair<std::string, TaskGraphCommunicator *> TaskCommPair;
  * Each task can submit a data packet into the task graph communicator, which will then send the
  * data directly into the input connector for that data packet's destination.
  *
+ * A DataPacket is inserted into the task graph communicator, which provides meta data for looking up the end point
+ * location for the data packet. The data packet holds IData, which is then inserted into the end point's input connector.
  *
+ * @note The IData type must match the end point input connector's data type.
  *
  *
  */
@@ -67,8 +72,7 @@ class TaskGraphCommunicator {
    * @param address the address that this task graph communicator represents
    */
   TaskGraphCommunicator(TaskGraphCommunicator *parent, std::string address)
-      : parentComm(parent), address(address)
-  {
+      : parentComm(parent), address(address) {
 
     taskNameConnectorMap = new std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>>();
     flattenedTaskNameConnectorMap = nullptr;
@@ -100,13 +104,14 @@ class TaskGraphCommunicator {
    * Spawns threads only if the task graph communicator calling this function is the root communicator.
    * @note If the parent communicator is nullptr, then that instance is the root.
    */
-  void rootSpawnThreads()
-  {
+  void rootSpawnThreads() {
     // Validate this is root
-    if (this->parentComm == nullptr)
-    {
+    if (this->parentComm == nullptr) {
       // Flatten lookup table for parent and children
-      this->flattenedTaskNameConnectorMap = std::shared_ptr<std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>>>(new std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>>());
+      this->flattenedTaskNameConnectorMap = std::shared_ptr<std::unordered_multimap<std::string,
+                                                                                    std::shared_ptr<AnyConnector>>>(new std::unordered_multimap<
+          std::string,
+          std::shared_ptr<AnyConnector>>());
 
       this->processFlattenTaskNameConnectorMap(this->flattenedTaskNameConnectorMap);
 
@@ -118,8 +123,7 @@ class TaskGraphCommunicator {
    * Spawns the threads for all children communicator
    * @note this function is only called by the parent communicator.
    */
-  void spawnChildrenThreads()
-  {
+  void spawnChildrenThreads() {
     this->spawnThread();
 
     if (this->children->size() > 0) {
@@ -132,8 +136,7 @@ class TaskGraphCommunicator {
   /**
    * Spawns the thread for this communicator
    */
-  void spawnThread()
-  {
+  void spawnThread() {
     this->thread = new std::thread(&TaskGraphCommunicator::run, this);
   }
 
@@ -147,17 +150,15 @@ class TaskGraphCommunicator {
    * Prints the address of the parent communicator recursively to std::cout.
    * @param prefix the prefix for printing
    */
-  void printParents(std::string prefix)
-  {
+  void printParents(std::string prefix) {
     std::cout << prefix << "Address = " << this->address << std::endl;
 
-    if (this->getParentComm() == nullptr)
-    {
+    if (this->getParentComm() == nullptr) {
       std::cout << std::endl << "=====DONE=====" << std::endl;
       return;
     }
 
-    this->getParentComm()->printParents(prefix +"\t\t");
+    this->getParentComm()->printParents(prefix + "\t\t");
 
   }
 
@@ -165,26 +166,23 @@ class TaskGraphCommunicator {
    * Prints the task graph communicator tree recursively to std::cout.
    * @param prefix the prefix for printing
    */
-  void printTree(std::string prefix)
-  {
+  void printTree(std::string prefix) {
 //    std::cout << "Num graphs spawned = " << numGraphsSpawned << " Graphs received: " << numGraphsReceived << std::endl;
-    if (this->getParentComm() == nullptr)
-    {
+    if (this->getParentComm() == nullptr) {
       std::cout << "PARENT addr: " << this->getAddress() << std::endl;
-    } else{
+    } else {
       std::cout << "Parent address = " << this->getParentComm()->getAddress() << std::endl;
     }
 
-    std::cout << prefix << "Num children: " << this->getChildren()->size() << " Num connectors = " << taskNameConnectorMap->size() << std::endl;
-    for (auto conn : *taskNameConnectorMap)
-    {
+    std::cout << prefix << "Num children: " << this->getChildren()->size() << " Num connectors = "
+              << taskNameConnectorMap->size() << std::endl;
+    for (auto conn : *taskNameConnectorMap) {
       std::cout << prefix << "\t\t" << conn.first << std::endl;
     }
 
-    for (auto child : *this->getChildren())
-    {
+    for (auto child : *this->getChildren()) {
       std::cout << prefix << " CHILD addr: " << child.first << std::endl;
-      child.second->printTree(prefix+"\t");
+      child.second->printTree(prefix + "\t");
     }
 
   }
@@ -213,15 +211,12 @@ class TaskGraphCommunicator {
    * If they are equal, then all of the threads will be initiated. Doing so ensures all tasks and sub-graphs have
    * completed spawning and the mapping between all tasks in the graph has been completed.
    */
-  void checkRootSpawnThreads()
-  {
-    if (this->parentComm == nullptr)
-    {
-      if (numGraphsReceived == numGraphsSpawned)
-      {
+  void checkRootSpawnThreads() {
+    if (this->parentComm == nullptr) {
+      if (numGraphsReceived == numGraphsSpawned) {
         this->rootSpawnThreads();
       }
-    } else{
+    } else {
       this->parentComm->checkRootSpawnThreads();
     }
   }
@@ -231,22 +226,17 @@ class TaskGraphCommunicator {
    *
    * This function is called recursively, and only the root communicator is incremented.
    */
-  void incrementRootCommunicatorGraphs()
-  {
+  void incrementRootCommunicatorGraphs() {
     // Check if this is the root
-    if (this->parentComm == nullptr)
-    {
+    if (this->parentComm == nullptr) {
       numGraphsReceived++;
 
       // If all the graphs have produced their updates, then begin the communication threads
-      if (numGraphsReceived == numGraphsSpawned)
-      {
+      if (numGraphsReceived == numGraphsSpawned) {
         this->rootSpawnThreads();
       }
 
-    }
-    else
-    {
+    } else {
       this->parentComm->incrementRootCommunicatorGraphs();
     }
   }
@@ -257,14 +247,10 @@ class TaskGraphCommunicator {
    *
    * @return the number of graphs received by the root communicator
    */
-  size_t getRootNumGraphsReceived()
-  {
-    if (this->parentComm == nullptr)
-    {
+  size_t getRootNumGraphsReceived() {
+    if (this->parentComm == nullptr) {
       return numGraphsReceived;
-    }
-    else
-    {
+    } else {
       return this->parentComm->getRootNumGraphsReceived();
     }
   }
@@ -275,14 +261,10 @@ class TaskGraphCommunicator {
    *
    * @return the number of graphs spawned by the root communicator
    */
-  size_t getRootTotalSubGraphsSpawned()
-  {
-    if (this->parentComm == nullptr)
-    {
+  size_t getRootTotalSubGraphsSpawned() {
+    if (this->parentComm == nullptr) {
       return numGraphsSpawned;
-    }
-    else
-    {
+    } else {
       return this->parentComm->getRootTotalSubGraphsSpawned();
     }
   }
@@ -293,20 +275,17 @@ class TaskGraphCommunicator {
    * @param flattenedTaskNameConnectorMap the mapping between the address and manager names to their connects, which is shared among all communicators.
    * @note this function is called prior to spawning threads for the task graph communicators
    */
-  void processFlattenTaskNameConnectorMap(std::shared_ptr<std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>>> flattenedTaskNameConnectorMap)
-  {
+  void processFlattenTaskNameConnectorMap(std::shared_ptr<std::unordered_multimap<std::string,
+                                                                                  std::shared_ptr<AnyConnector>>> flattenedTaskNameConnectorMap) {
     this->flattenedTaskNameConnectorMap = flattenedTaskNameConnectorMap;
 
-    for (auto nameConnectorPair : *this->taskNameConnectorMap)
-    {
+    for (auto nameConnectorPair : *this->taskNameConnectorMap) {
       this->flattenedTaskNameConnectorMap->insert(nameConnectorPair);
     }
 
     // Send to children
-    if (this->children->size() > 0)
-    {
-      for (auto child : *this->children)
-      {
+    if (this->children->size() > 0) {
+      for (auto child : *this->children) {
         child.second->processFlattenTaskNameConnectorMap(this->flattenedTaskNameConnectorMap);
       }
     }
@@ -322,17 +301,15 @@ class TaskGraphCommunicator {
    *
    * @param o
    */
-  void addTaskNameConnectorMap(std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>> *o)
-  {
-    for (auto nameConnectorPair : *o)
-    {
+  void addTaskNameConnectorMap(std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>> *o) {
+    for (auto nameConnectorPair : *o) {
       taskNameConnectorMap->insert(nameConnectorPair);
     }
 
     // Ignore the root, as we only care about sub graphs.
     if (this->parentComm != nullptr) {
       incrementRootCommunicatorGraphs();
-    } else{
+    } else {
       checkRootSpawnThreads();
     }
 
@@ -345,8 +322,7 @@ class TaskGraphCommunicator {
    * Adds a child communicator for this task graph communicator
    * @param comm the child communicator
    */
-  void addChild(TaskGraphCommunicator *comm)
-  {
+  void addChild(TaskGraphCommunicator *comm) {
 //    std::cout << "Adding child: " << comm->getAddress() << " to " << this->address << std::endl;
     this->mutex.lock();
     children->insert(TaskCommPair(comm->getAddress(), comm));
@@ -366,8 +342,7 @@ class TaskGraphCommunicator {
   /**
    * Gracefully terminates the task graph communicator thread.
    */
-  void terminateGracefully()
-  {
+  void terminateGracefully() {
     if (this->thread != nullptr) {
       this->dataQueue.Enqueue(nullptr);
       this->thread->join();
@@ -377,10 +352,8 @@ class TaskGraphCommunicator {
   /**
    * Main run function for the thread, which processes data packets until it is terminated.
    */
-  void run()
-  {
-    while(!terminated)
-    {
+  void run() {
+    while (!terminated) {
       this->processDataPacket();
     }
   }
@@ -390,8 +363,7 @@ class TaskGraphCommunicator {
    * @param data the data
    * @note this function is thread safe.
    */
-  void produceDataPacket(std::shared_ptr<DataPacket> data)
-  {
+  void produceDataPacket(std::shared_ptr<DataPacket> data) {
     this->dataQueue.Enqueue(data);
   }
 
@@ -402,13 +374,11 @@ class TaskGraphCommunicator {
    * If there are multiple entries that share the same address and task name, then an error is produced.
    * Every task must have a unique name if the communicator is to be used.
    */
-  void processDataPacket()
-  {
+  void processDataPacket() {
     auto packet = dataQueue.Dequeue();
 
 //    std::cout << "Received data packet: "<< packet << std::endl;
-    if (packet == nullptr)
-    {
+    if (packet == nullptr) {
       terminated = true;
       return;
     }
@@ -418,8 +388,7 @@ class TaskGraphCommunicator {
     // Get connector
     size_t numItems = flattenedTaskNameConnectorMap->count(endPoint);
 
-    if (numItems == 1)
-    {
+    if (numItems == 1) {
       auto connIterator = flattenedTaskNameConnectorMap->find(endPoint);
 
       // Gets the connector for the end point
@@ -428,11 +397,15 @@ class TaskGraphCommunicator {
       // Add data
       endPointConnector->produceAnyData(packet->getData());
 
-    } else{
+    } else {
       if (numItems == 0)
-        std::cerr << "Graph is unable to find destination task name: '" << endPoint << "'. Make sure the task's name exists within the graph. Origin: " << packet->getOriginAddr() << ":" << packet->getOriginName() << std::endl;
+        std::cerr << "Graph is unable to find destination task name: '" << endPoint
+                  << "'. Make sure the task's name exists within the graph. Origin: " << packet->getOriginAddr() << ":"
+                  << packet->getOriginName() << std::endl;
       else
-        std::cerr << "Graph has tasks with duplicate name: '" << endPoint << "' to send data between tasks, each task should have a unique name! Origin: " << packet->getOriginAddr() << ":" << packet->getOriginName() << std::endl;
+        std::cerr << "Graph has tasks with duplicate name: '" << endPoint
+                  << "' to send data between tasks, each task should have a unique name! Origin: "
+                  << packet->getOriginAddr() << ":" << packet->getOriginName() << std::endl;
 
     }
   }
@@ -446,9 +419,11 @@ class TaskGraphCommunicator {
   bool isTerminated() { return this->terminated; }
 
  private:
-  std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>> *taskNameConnectorMap; //!< The local mapping between the task graph communicator and its task graph.
+  std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>>
+      *taskNameConnectorMap; //!< The local mapping between the task graph communicator and its task graph.
 
-  std::shared_ptr<std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>>> flattenedTaskNameConnectorMap; //!< The flattened mapping shared between all task graph communicators.
+  std::shared_ptr<std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>>>
+      flattenedTaskNameConnectorMap; //!< The flattened mapping shared between all task graph communicators.
 
   TaskGraphCommunicator *parentComm; //!< The parent communicator (or nullptr if this is the root communicator).
   std::string address; //!< The address of the communicator.
@@ -459,7 +434,7 @@ class TaskGraphCommunicator {
   TaskCommMap *children; //!< The children communicator.
 
   std::mutex mutex; //!< A mutex used to ensure thread safety.
-  BlockingQueue <std::shared_ptr<DataPacket>> dataQueue; //!< The data queue to hold data packets.
+  BlockingQueue<std::shared_ptr<DataPacket>> dataQueue; //!< The data queue to hold data packets.
 
   volatile bool terminated; //!< Flag used to indicate if the communicator is terminated or not.
   std::thread *thread; //!< The communicator thread.

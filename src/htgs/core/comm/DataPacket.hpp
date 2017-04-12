@@ -31,6 +31,11 @@ namespace htgs {
  * A data packet stores any type of IData that is to be sent to some destination HTGS address
  * with an endpoint name. The data packet is used to store this meta data for the TaskGraphCommunicator.
  *
+ * The TaskGraphCommunicator passes the IData held in the data packet to an end point identified by the HTGS address
+ * and task name. This retrieves the input connector, which is used to transmit the IData.
+ *
+ * @note When using DataPacket, the IData is dynamically cast to the input connector's end point type. It is important to
+ * have the IData type to match the input connector's type.
  *
  */
 class DataPacket {

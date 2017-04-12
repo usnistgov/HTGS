@@ -62,8 +62,7 @@ class MemoryPool {
   /**
    * Releases all memory associated with this memory pool.
    */
-  void releaseAllMemory()
-  {
+  void releaseAllMemory() {
     for (m_data_t<T> mem : *allMemory) {
       if (mem) {
         mem->memFree();
@@ -130,7 +129,7 @@ class MemoryPool {
    * Gets the next piece of memory from the MemoryPool
    * @return the next memory in the MemoryPool
    */
-  m_data_t<T> getMemory() const {
+  m_data_t <T> getMemory() const {
     return this->memoryQueue->Dequeue();
   }
 
@@ -138,17 +137,17 @@ class MemoryPool {
    * Adds memory back into the MemoryPool
    * @param o the memory to be added in.
    */
-  void addMemory(m_data_t<T> o) const {
+  void addMemory(m_data_t <T> o) const {
     this->memoryQueue->Enqueue(o);
   }
 
  private:
-  std::list<m_data_t<T>> *allMemory; //!< The list of all memory that has been allocated by the memory pool
-  BlockingQueue<m_data_t<T>> *memoryQueue; //!< A blocking queue for getting/recycling memory
+  std::list<m_data_t < T>> *
+  allMemory; //!< The list of all memory that has been allocated by the memory pool
+  BlockingQueue <m_data_t<T>> *memoryQueue; //!< A blocking queue for getting/recycling memory
   size_t queueSize; //!< The size of the memory queue
 
 };
 }
-
 
 #endif //HTGS_MEMORYPOOL_HPP

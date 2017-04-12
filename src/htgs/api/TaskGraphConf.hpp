@@ -30,14 +30,14 @@ namespace htgs {
  * @class TaskGraphConf TaskGraphConf.hpp <htgs/api/TaskGraphConf.hpp>
  * @brief Manages a group of connected ITasks and their connections.
  * @details
- * Each ITask that is added into the TaskGraph is stored in the TaskGraph's metadata
+ * Each ITask that is added into the TaskGraphConf is stored in the TaskGraphConf's metadata
  * to allow for quick copying using copy().
  *
  * The main methods for adding each ITask into the graph are
  * addEdge(), addRuleEdge(), addMemoryManagerEdge(),
  * addCudaMemoryManagerEdge(), setGraphConsumerTask(), and addGraphProducerTask()
  *
- * When using these methods, the TaskGraph builds a TaskManager, which is used to process an ITask's functionality.
+ * When using these methods, the TaskGraphConf builds a TaskManager, which manages an ITask.
  * Parameters for customizing the thread pool, polling abilities, etc., are specified in the ITask constructors:
  * ITask::ITask()
  *
@@ -47,20 +47,24 @@ namespace htgs {
  * For Cuda memory use:
  * addCudaMemoryManagerEdge()
  *
- * Every TaskGraph has an input and output type (T and U). If a TaskGraph does not have an input or output type, then
- * the data type can be specified as VoidData.
+ * Every TaskGraphConf has an input and output type (T and U). If a TaskGraph does not have an input or output type, then
+ * the data type can be specified as VoidData. There can be only one task consuming data from the graph. If multiple tasks
+ * need to process data from the input, then add a bookkeeper as the first task and rules to distribute data. There can be
+ * any number of tasks producing output data for the graph.
  *
- * To add data into the input of a TaskGraph use the produceData() functions. These must be used in conjunction
- * with the finishedProducingData() function to indicate a data input stream is
+ * To add data into the input of a TaskGraph use the produceData() function. Once finished producing data for the graph, use
+ * the finishedProducingData() function to indicate a data input stream is
  * is closing. If additional data streams are added as input for the graph, then use
- * the incrementGraphProducer() function.
+ * the incrementGraphProducer() function. By default a task graph starts with one producer for the graph for the main thread,
+ * if there are no producers (such as the first task in the graph begins processing immediately), then call finishedProducingData().
  *
  * To process the output of a TaskGraph use the consumeData() function. To determine if data is no longer being
- * produced by a TaskGraph use the isOutputTerminated() function.
+ * produced by a TaskGraph use the isOutputTerminated() function. The output of the consumeData function could produce
+ * nullptr data when the graph is closing.
  *
  * Example Usage:
  * @code
- * htgs::TaskGraph<MatrixBlockRequest, MatrixBlockRequest> *taskGraph = new htgs::TaskGraph<MatrixBlockRequest, MatrixBlockRequest>();
+ * htgs::TaskGraphConf<MatrixBlockRequest, MatrixBlockRequest> *taskGraph = new htgs::TaskGraphConf<MatrixBlockRequest, MatrixBlockRequest>();
  *
  * int numLoadThreads = 2;
  * int numMulThreads = 20;
@@ -73,7 +77,7 @@ namespace htgs {
  *
  * // Add tasks to graph
  * taskGraph->addEdge(loadMatrixTask, bkTask);
- * taskGraph->addRule(bkTask, scalMulTask, loadRule);
+ * taskGraph->addRuleEdge(bkTask, loadRule, scalMulTask);
  *
  * // Add memory edges
  * MatrixAllocator *matrixAlloc = new MatrixAllocator(blockSize, blockSize);
@@ -120,7 +124,7 @@ namespace htgs {
  * @tparam U the output data type for the TaskGraph, U must derive from IData.
  */
 template<class T, class U>
-class TaskGraphConf: public AnyTaskGraphConf {
+class TaskGraphConf : public AnyTaskGraphConf {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -149,7 +153,10 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @param baseAddress the base address for the task graph to build upon for multiple levels of execution pipelines
    * @param parentCommunicator the parent task graph communicator
    */
-  TaskGraphConf(size_t pipelineId, size_t numPipelines, std::string baseAddress, TaskGraphCommunicator *parentCommunicator) : AnyTaskGraphConf(pipelineId, numPipelines, baseAddress) {
+  TaskGraphConf(size_t pipelineId,
+                size_t numPipelines,
+                std::string baseAddress,
+                TaskGraphCommunicator *parentCommunicator) : AnyTaskGraphConf(pipelineId, numPipelines, baseAddress) {
     this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
@@ -166,10 +173,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * Destructor, handles releasing all ITask memory that is managed by the TaskGraph.
    */
   ~TaskGraphConf() override {
-    for (auto edge : *edges)
-    {
-      if (edge != nullptr)
-      {
+    for (auto edge : *edges) {
+      if (edge != nullptr) {
         delete edge;
         edge = nullptr;
       }
@@ -187,8 +192,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
     graphProducerTaskManagers = nullptr;
   }
 
-  AnyTaskGraphConf *copy() override
-  {
+  AnyTaskGraphConf *copy() override {
     return copy(this->getPipelineId(), this->getNumPipelines());
   }
 
@@ -198,11 +202,9 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @param numPipelines the number of pipelines
    * @return the copy of the task graph
    */
-  TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines)
-  {
+  TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines) {
     return copy(pipelineId, numPipelines, nullptr, nullptr, this->getAddress(), nullptr);
   }
-
 
   /**
    * Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines, and updates the input
@@ -215,20 +217,22 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @param parentCommunicator the parent task graph communicator
    * @return the copy of the task graph
    */
-  TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines, std::shared_ptr<Connector<T>> input, std::shared_ptr<Connector<U>> output, std::string baseAddress, TaskGraphCommunicator *parentCommunicator)
-  {
+  TaskGraphConf<T, U> *copy(size_t pipelineId,
+                            size_t numPipelines,
+                            std::shared_ptr<Connector<T>> input,
+                            std::shared_ptr<Connector<U>> output,
+                            std::string baseAddress,
+                            TaskGraphCommunicator *parentCommunicator) {
     TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator);
 
     // Copy the tasks to form lookup between old ITasks and new copies
     graphCopy->copyTasks(this->getTaskManagers());
 
-    if (input != nullptr)
-    {
+    if (input != nullptr) {
       graphCopy->setInputConnector(input);
     }
 
-    if (output != nullptr)
-    {
+    if (output != nullptr) {
       graphCopy->setOutputConnector(output);
     }
 
@@ -236,9 +240,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
     graphCopy->copyAndUpdateGraphConsumerTask(this->graphConsumerTaskManager);
     graphCopy->copyAndUpdateGraphProducerTasks(this->graphProducerTaskManagers);
 
-
-    for (EdgeDescriptor *edgeDescriptor : *edges)
-    {
+    for (EdgeDescriptor *edgeDescriptor : *edges) {
       // Copy the edge, using the graph copy as a reference for where to get task copies
       EdgeDescriptor *edgeCopy = edgeDescriptor->copy(graphCopy);
 
@@ -260,8 +262,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @param consumer the task that consumes the data from the producer task
    */
   template<class V, class W, class X>
-  void addEdge(ITask<V, W> *producer, ITask<W, X> *consumer)
-  {
+  void addEdge(ITask<V, W> *producer, ITask<W, X> *consumer) {
     auto pce = new ProducerConsumerEdge<V, W, X>(producer, consumer);
     pce->applyEdge(this);
     this->addEdgeDescriptor(pce);
@@ -279,15 +280,14 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @note Use this function if the rule connecting the  bookkeeper and consumer are shared among multiple graphs that you create.
    */
   template<class V, class IRuleType, class W, class X>
-  void addRuleEdge(Bookkeeper<V> *bookkeeper, std::shared_ptr<IRuleType> rule, ITask<W, X> *consumer)
-  {
-    static_assert(std::is_base_of<IRule<V, W>, IRuleType>::value, "Type mismatch for IRule<V, W>, V must match the input type of the bookkeeper and W must match the input type of the consumer!");
+  void addRuleEdge(Bookkeeper<V> *bookkeeper, std::shared_ptr<IRuleType> rule, ITask<W, X> *consumer) {
+    static_assert(std::is_base_of<IRule<V, W>, IRuleType>::value,
+                  "Type mismatch for IRule<V, W>, V must match the input type of the bookkeeper and W must match the input type of the consumer!");
     std::shared_ptr<IRule<V, W>> ruleCast = std::static_pointer_cast<IRule<V, W>>(rule);
     auto re = new RuleEdge<V, W, X>(bookkeeper, ruleCast, consumer);
     re->applyEdge(this);
     this->addEdgeDescriptor(re);
   }
-
 
   /**
  * Creates a rule edge that is managed by a bookkeeper
@@ -299,15 +299,13 @@ class TaskGraphConf: public AnyTaskGraphConf {
  * @param consumer the consumer of the rule
  */
   template<class V, class W, class X>
-  void addRuleEdge(Bookkeeper<V> *bookkeeper, IRule<V, W> *iRule, ITask<W, X> *consumer)
-  {
+  void addRuleEdge(Bookkeeper<V> *bookkeeper, IRule<V, W> *iRule, ITask<W, X> *consumer) {
     std::shared_ptr<IRule<V, W>> rule = super::getIRule(iRule);
 
     auto re = new RuleEdge<V, W, X>(bookkeeper, rule, consumer);
     re->applyEdge(this);
     this->addEdgeDescriptor(re);
   }
-
 
 #ifdef USE_CUDA
   /**
@@ -324,40 +322,48 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
    */
   template<class V, class IMemoryAllocatorType>
-  void addCudaMemoryManagerEdge(std::string name, AnyITask *getMemoryTask, std::shared_ptr<IMemoryAllocatorType> allocator,
-      size_t memoryPoolSize, MMType type, CUcontext * contexts) {
-    static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
+  void addCudaMemoryManagerEdge(std::string name,
+                                AnyITask *getMemoryTask,
+                                std::shared_ptr<IMemoryAllocatorType> allocator,
+                                size_t memoryPoolSize,
+                                MMType type,
+                                CUcontext *contexts) {
+    static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value,
+                  "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
     MemoryManager<V> *memoryManager = new CudaMemoryManager<V>(name, contexts, memoryPoolSize, memAllocator, type);
-
 
     MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, memoryManager);
     memEdge->applyEdge(this);
     this->addEdgeDescriptor(memEdge);
   }
 
-    /**
-   * Adds a CudaMemoryManager edge with the specified name to the TaskGraphConf.
-   * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
-   * the TaskGraphConf.
-   * @param name the name of the memory edge
-   * @param getMemoryTask the ITask that is getting memory
-   * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
-   * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
-   * @param type the type of memory manager
-   * @param contexts the array of all Cuda contexts
-   * @note the memoryPoolSize can cause out of memory errors for the GPU if the allocator->size() * memoryPoolSize exceeds the total GPU memory
-   * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
-   */
-  template <class V>
-  void addCudaMemoryManagerEdge(std::string name, AnyITask *getMemoryTask, IMemoryAllocator<V> *allocator, size_t memoryPoolSize, MMType type, CUcontext * contexts) {
+  /**
+ * Adds a CudaMemoryManager edge with the specified name to the TaskGraphConf.
+ * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
+ * the TaskGraphConf.
+ * @param name the name of the memory edge
+ * @param getMemoryTask the ITask that is getting memory
+ * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
+ * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
+ * @param type the type of memory manager
+ * @param contexts the array of all Cuda contexts
+ * @note the memoryPoolSize can cause out of memory errors for the GPU if the allocator->size() * memoryPoolSize exceeds the total GPU memory
+ * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
+ */
+  template<class V>
+  void addCudaMemoryManagerEdge(std::string name,
+                                AnyITask *getMemoryTask,
+                                IMemoryAllocator<V> *allocator,
+                                size_t memoryPoolSize,
+                                MMType type,
+                                CUcontext *contexts) {
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = this->getMemoryAllocator(allocator);
 
     MemoryManager<V> *memoryManager = new CudaMemoryManager<V>(name, contexts, memoryPoolSize, memAllocator, type);
-
 
     MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, memoryManager);
     memEdge->applyEdge(this);
@@ -379,7 +385,8 @@ class TaskGraphConf: public AnyTaskGraphConf {
   template<class V, class IMemoryAllocatorType>
   void addMemoryManagerEdge(std::string name, AnyITask *getMemoryTask,
                             std::shared_ptr<IMemoryAllocatorType> allocator, size_t memoryPoolSize, MMType type) {
-    static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value, "Type mismatch for allocator, allocator must be a MemoryAllocator!");
+    static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value,
+                  "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
@@ -389,7 +396,6 @@ class TaskGraphConf: public AnyTaskGraphConf {
     memEdge->applyEdge(this);
     this->addEdgeDescriptor(memEdge);
   }
-
 
   /**
  * Adds a MemoryManager edge with the specified name to the TaskGraph.
@@ -402,7 +408,11 @@ class TaskGraphConf: public AnyTaskGraphConf {
  * @tparam V the type of memory; i.e., 'double *'
  */
   template<class V>
-  void addMemoryManagerEdge(std::string name, AnyITask *getMemoryTask, IMemoryAllocator<V> *allocator, size_t memoryPoolSize, MMType type) {
+  void addMemoryManagerEdge(std::string name,
+                            AnyITask *getMemoryTask,
+                            IMemoryAllocator<V> *allocator,
+                            size_t memoryPoolSize,
+                            MMType type) {
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = super::getMemoryAllocator(allocator);
 
@@ -431,15 +441,13 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
   TaskGraphCommunicator *getTaskGraphCommunicator() const { return this->taskConnectorCommunicator; }
 
-
   void updateCommunicator() override {
     auto taskNameConnectorMap = this->getTaskConnectorNameMap();
 
     // Send the map to the taskGraphCommunicator
     this->taskConnectorCommunicator->addTaskNameConnectorMap(taskNameConnectorMap);
 
-    for (auto t : *this->getTaskManagers())
-    {
+    for (auto t : *this->getTaskManagers()) {
       t->setTaskGraphCommunicator(this->taskConnectorCommunicator);
     }
   }
@@ -466,8 +474,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * graph, so this should only be called if additional sources will be
    * producing data other than the main function.
    */
-  void incrementGraphProducer()
-  {
+  void incrementGraphProducer() {
     this->input->incrementInputTaskCount();
   }
 
@@ -477,11 +484,9 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @note This should be called by the main thread when all data is
    * finished being produced for this task graph.
    */
-  void finishedProducingData()
-  {
+  void finishedProducingData() {
     this->input->producerFinished();
-    if (this->input->getProducerCount() == 0)
-    {
+    if (this->input->getProducerCount() == 0) {
       this->input->wakeupConsumer();
     }
 
@@ -496,8 +501,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * data among the multiple tasks.
    */
   template<class W>
-  void setGraphConsumerTask(ITask<T, W> *task)
-  {
+  void setGraphConsumerTask(ITask<T, W> *task) {
     this->graphConsumerTaskManager = this->getTaskManager(task);
     this->graphConsumerTaskManager->setInputConnector(this->input);
   }
@@ -509,8 +513,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @note There can be multiple tasks that produces for the graph.
    */
   template<class W>
-  void addGraphProducerTask(ITask<W, U> * task)
-  {
+  void addGraphProducerTask(ITask<W, U> *task) {
     this->output->incrementInputTaskCount();
 
     AnyTaskManager *taskManager = this->getTaskManager(task);
@@ -593,8 +596,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * Sets the output connector for the task graph configuration
    * @param connector the output connector
    */
-  void setOutputConnector(std::shared_ptr<AnyConnector> connector)
-  {
+  void setOutputConnector(std::shared_ptr<AnyConnector> connector) {
     if (graphProducerTaskManagers != nullptr) {
       for (auto task : *graphProducerTaskManagers)
         task->setOutputConnector(connector);
@@ -611,9 +613,12 @@ class TaskGraphConf: public AnyTaskGraphConf {
    * @note The m_data_t must have originated within this task graph.
    */
   template<class V>
-  void releaseMemory(m_data_t<V> memory)
-  {
-    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket("TaskGraph", this->getAddress(), memory->getMemoryManagerName(), memory->getAddress(), memory));
+  void releaseMemory(m_data_t<V> memory) {
+    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket("TaskGraph",
+                                                                                        this->getAddress(),
+                                                                                        memory->getMemoryManagerName(),
+                                                                                        memory->getAddress(),
+                                                                                        memory));
     this->taskConnectorCommunicator->produceDataPacket(dataPacket);
   }
 
@@ -642,19 +647,16 @@ class TaskGraphConf: public AnyTaskGraphConf {
     if (getGraphConsumerTaskManager() != nullptr)
       oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n"
           << this->getInputConnector()->getProducerCount()
-          <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getInputConnector()->typeName()) : "")
+          << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n" + this->getInputConnector()->typeName()) : "")
           << "\"];" << std::endl;
 
     if (getGraphProducerTaskManagers()->size() > 0)
       oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\n"
           << this->getOutputConnector()->getProducerCount()
-          <<  (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n"+this->getOutputConnector()->typeName()) : "")
+          << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n" + this->getOutputConnector()->typeName()) : "")
           << "\"]; }" << std::endl;
 
-
-
-    if (oss.str().find("mainThread") != std::string::npos)
-    {
+    if (oss.str().find("mainThread") != std::string::npos) {
       oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = aquamarine4]; }\n";
     }
 
@@ -662,7 +664,6 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
     return oss.str();
   }
-
 
   /**
    * Provides debug output for the TaskGraphConf
@@ -684,8 +685,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
 
 
 
-  void copyAndUpdateGraphConsumerTask(AnyTaskManager *taskManager)
-  {
+  void copyAndUpdateGraphConsumerTask(AnyTaskManager *taskManager) {
     if (taskManager != nullptr) {
       AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
       this->graphConsumerTaskManager = copy;
@@ -694,8 +694,7 @@ class TaskGraphConf: public AnyTaskGraphConf {
     }
   }
 
-  void copyAndUpdateGraphProducerTasks(std::list<AnyTaskManager *> *taskManagers)
-  {
+  void copyAndUpdateGraphProducerTasks(std::list<AnyTaskManager *> *taskManagers) {
     for (auto taskManager : *taskManagers) {
       if (taskManager != nullptr) {
         AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
@@ -709,18 +708,19 @@ class TaskGraphConf: public AnyTaskGraphConf {
     }
   }
 
-  void addEdgeDescriptor(EdgeDescriptor *edge)
-  {
+  void addEdgeDescriptor(EdgeDescriptor *edge) {
     this->edges->push_back(edge);
   }
 
   typedef AnyTaskGraphConf super;
   //! @endcond
 
-  std::list<EdgeDescriptor *> *edges; //!< The list of edges for the graph, represented by edge descriptors to define how the edges are copied/added.
+  std::list<EdgeDescriptor *> *
+      edges; //!< The list of edges for the graph, represented by edge descriptors to define how the edges are copied/added.
 
   AnyTaskManager *graphConsumerTaskManager; //!< The consumer accessing the TaskGraph's input connector
-  std::list<AnyTaskManager *> *graphProducerTaskManagers; //!< The list of producers that are outputting data to the TaskGraph's output connector
+  std::list<AnyTaskManager *> *
+      graphProducerTaskManagers; //!< The list of producers that are outputting data to the TaskGraph's output connector
 
   std::shared_ptr<Connector<T>> input; //!< The input connector for the TaskGraph
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph

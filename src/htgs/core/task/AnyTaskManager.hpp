@@ -12,7 +12,6 @@
 #ifndef HTGS_ANYTASKMANAGER_HPP
 #define HTGS_ANYTASKMANAGER_HPP
 
-
 #include <atomic>
 #include <memory>
 #include <vector>
@@ -69,7 +68,13 @@ class AnyTaskManager {
    * @param numPipelines the number of pipelines
    * @param address the address of the task graph that owns this task
    */
-  AnyTaskManager(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime, size_t pipelineId, size_t numPipelines, std::string address) {
+  AnyTaskManager(size_t numThreads,
+                 bool isStartTask,
+                 bool poll,
+                 size_t microTimeoutTime,
+                 size_t pipelineId,
+                 size_t numPipelines,
+                 std::string address) {
     this->taskComputeTime = 0L;
     this->taskWaitTime = 0L;
     this->poll = poll;
@@ -90,7 +95,7 @@ class AnyTaskManager {
   /**
    * Destructor
    */
-  virtual ~AnyTaskManager() { };
+  virtual ~AnyTaskManager() {};
 
   /**
    * Gets the ITask function associated with the TaskManager
@@ -117,12 +122,10 @@ class AnyTaskManager {
    */
   virtual AnyTaskManager *copy(bool deep)  = 0;
 
-
   /**
    * Initializes the TaskManager
    */
   virtual void initialize() = 0;
-
 
   /**
    * Executes the TaskManager.
@@ -175,7 +178,7 @@ class AnyTaskManager {
    * Prints the profiling data to std::cout
    */
   void printProfile() {
-    std::cout << "===================== " << this->getName() << " "<< prefix() << " ===================" << std::endl;
+    std::cout << "===================== " << this->getName() << " " << prefix() << " ===================" << std::endl;
     std::cout << "COMPUTE TIME: " << getComputeTime() << " us   WAIT TIME: " << getWaitTime() << " us" << std::endl;
 
     if (this->getInputConnector() != nullptr) {
@@ -187,7 +190,8 @@ class AnyTaskManager {
 //      this->getOutputConnector()->profileProduce(this->getNumThreads());
 //    }
     this->getTaskFunction()->profileITask();
-    std::cout << "-------------------------- " << this->getName() << " (thread: " << this->getThreadId() << ") -------------------------- " << std::endl << std::endl;
+    std::cout << "-------------------------- " << this->getName() << " (thread: " << this->getThreadId()
+              << ") -------------------------- " << std::endl << std::endl;
 
     this->getTaskFunction()->printProfile();
 
@@ -197,8 +201,7 @@ class AnyTaskManager {
    * Sets the task graph communicator
    * @param communicator the task graph communicator
    */
-  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator)
-  {
+  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator) {
     this->taskGraphCommunicator = communicator;
     this->getTaskFunction()->setTaskGraphCommunicator(this->taskGraphCommunicator);
   }
@@ -209,8 +212,7 @@ class AnyTaskManager {
    * @param pipelineId the ID for which execution pipeline this task belongs
    * @param numPipelines the number of pipelines that exist for the execution pipeline
    */
-  void updateAddressAndPipelines(std::string address, size_t pipelineId, size_t numPipelines)
-  {
+  void updateAddressAndPipelines(std::string address, size_t pipelineId, size_t numPipelines) {
     this->numPipelines = numPipelines;
     this->address = address;
     this->pipelineId = pipelineId;
@@ -221,8 +223,7 @@ class AnyTaskManager {
    * Can also be thought of as the address for the task graph that this task belongs too.
    * @return the address
    */
-  std::string getAddress()
-  {
+  std::string getAddress() {
     return this->address;
   }
 
@@ -310,7 +311,7 @@ class AnyTaskManager {
    * Increments the compute time profile value
    * @param val the value to increment by
    */
-  void incTaskComputeTime(long val) { this->taskComputeTime += val;}
+  void incTaskComputeTime(long val) { this->taskComputeTime += val; }
 
   /**
    * Increments the wait time profile value
@@ -332,7 +333,6 @@ class AnyTaskManager {
    */
   std::string getName() { return this->getTaskFunction()->getName(); }
 
-
   /**
    * Provides debug output
    * @note \#define DEBUG_FLAG to enable debugging.
@@ -342,7 +342,6 @@ class AnyTaskManager {
                    getOutputConnector() << " Details: " << std::endl);
     this->getTaskFunction()->debug();
   }
-
 
   /**
  * Gets the name of the ITask with it's pipeline ID
@@ -356,11 +355,9 @@ class AnyTaskManager {
   std::string getDot(int flags) {
     if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
       return this->getTaskFunction()->genDot(flags, this->getInputConnector(), this->getOutputConnector());
-    } else if (this->threadId == 0){
+    } else if (this->threadId == 0) {
       return this->getTaskFunction()->genDot(flags, this->getInputConnector(), this->getOutputConnector());
-    }
-    else
-    {
+    } else {
       return "";
     }
   }
@@ -450,7 +447,6 @@ class AnyTaskManager {
   TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph communicator
 
 };
-
 
 /**
  * @class TaskManagerThread AnyTaskManager.hpp <htgs/task/AnyTaskManager.hpp>

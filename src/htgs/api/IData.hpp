@@ -23,8 +23,7 @@ namespace htgs {
 * @brief Class to hold any type of data.
 *
 * @details Defines custom types of data that is used for data entering/leaving task graphs.
-* All task's input and output types must derive from IData. Once derived a child of IData can
-* store any type of data.
+* All task's input and output types must derive from IData. IData can store any type of data.
 *
 * One common usage is to store MemoryData within IData to be passed between tasks and released
 * later.
@@ -56,7 +55,7 @@ namespace htgs {
 *
 * };
 * @endcode
-* @note Must define the USE_PRIORITY_QUEUE directive to enable custom ordering between tasks.
+* @note Must define the USE_PRIORITY_QUEUE directive to enable custom ordering of data between tasks.
 */
 class IData {
 
@@ -81,7 +80,7 @@ class IData {
   /**
    * Destructor
    */
-  virtual ~IData() { }
+  virtual ~IData() {}
 
   /**
    * @brief Compares two IData pointers for ordering

@@ -40,9 +40,8 @@ namespace htgs {
  * @tparam U the output type of the IRule and the input type of the consumer ITask
  * @tparam W the output type of the consumer ITask
  */
-template <class T, class U, class W>
-class RuleEdge : public EdgeDescriptor
-{
+template<class T, class U, class W>
+class RuleEdge : public EdgeDescriptor {
  public:
 
   /**
@@ -62,8 +61,7 @@ class RuleEdge : public EdgeDescriptor
 
     auto connector = consumerTaskManager->getInputConnector();
 
-    if (connector == nullptr)
-    {
+    if (connector == nullptr) {
       connector = std::shared_ptr<Connector<U>>(new Connector<U>());
     }
 
@@ -77,7 +75,7 @@ class RuleEdge : public EdgeDescriptor
   }
 
   EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {
-    return new RuleEdge<T, U, W>((Bookkeeper<T> *)graph->getCopy(bookkeeper), rule, graph->getCopy(consumer));
+    return new RuleEdge<T, U, W>((Bookkeeper<T> *) graph->getCopy(bookkeeper), rule, graph->getCopy(consumer));
   }
 
  private:

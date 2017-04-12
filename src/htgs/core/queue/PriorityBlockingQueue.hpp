@@ -25,7 +25,7 @@ namespace htgs {
  * @class PriorityBlockingQueue PriorityBlockingQueue.hpp <htgs/core/queue/PriorityBlockingQueue.hpp>
  * @brief Creates a thread-safe priority queue that will wait when no data is available and can block if the queue is full.
  * @details
- * If the size of the queue is specified to be less than 0, then the queue will not block if the queue is full.
+ * If the size of the queue is specified to be less than 0 (default constructor), then the queue will not block if the queue is full.
  * @note Use the directive USE_PRIORITY_QUEUE to enable the Connector to use priority blocking queues.
  */
 template<class T>
@@ -75,7 +75,7 @@ class PriorityBlockingQueue {
   size_t remainingCapacity() {
     if (queueSize == 0) {
       std::cerr << __FILE__ << ":" << __LINE__
-          << "ERROR: Requesting remaining capacity on BlockingQueue that does not have a max size" << std::endl;
+                << "ERROR: Requesting remaining capacity on BlockingQueue that does not have a max size" << std::endl;
     }
     return queueSize - queue.size();
   }
@@ -194,31 +194,31 @@ class PriorityBlockingQueue {
   }
 
 #ifdef PROFILE
-//  unsigned long long int getEnqueueLockTime() const {
-//      return enqueueLockTime;
-//  }
-//  unsigned long long int getDequeueLockTime() const {
-//      return dequeueLockTime;
-//  }
-//  unsigned long long int getEnqueueWaitTime() const {
-//      return enqueueWaitTime;
-//  }
-//  unsigned long long int getDequeueWaitTime() const {
-//      return dequeueWaitTime;
-//  }
+  //  unsigned long long int getEnqueueLockTime() const {
+  //      return enqueueLockTime;
+  //  }
+  //  unsigned long long int getDequeueLockTime() const {
+  //      return dequeueLockTime;
+  //  }
+  //  unsigned long long int getEnqueueWaitTime() const {
+  //      return enqueueWaitTime;
+  //  }
+  //  unsigned long long int getDequeueWaitTime() const {
+  //      return dequeueWaitTime;
+  //  }
 
-  size_t getQueueActiveMaxSize() const {
-      return queueActiveMaxSize;
-  }
+    size_t getQueueActiveMaxSize() const {
+        return queueActiveMaxSize;
+    }
 #endif
 
  private:
 #ifdef PROFILE
-//  unsigned long long int enqueueLockTime; //!< The time to lock before enqueue
-//  unsigned long long int dequeueLockTime; //!< The time to lock before dequeue
-//  unsigned long long int enqueueWaitTime; //!< The time waiting to enqueue
-//  unsigned long long int dequeueWaitTime; //!< The time waiting to dequeue
-  size_t queueActiveMaxSize; //!< The maximum size the queue reached in its lifetime
+  //  unsigned long long int enqueueLockTime; //!< The time to lock before enqueue
+  //  unsigned long long int dequeueLockTime; //!< The time to lock before dequeue
+  //  unsigned long long int enqueueWaitTime; //!< The time waiting to enqueue
+  //  unsigned long long int dequeueWaitTime; //!< The time waiting to dequeue
+    size_t queueActiveMaxSize; //!< The maximum size the queue reached in its lifetime
 #endif
   size_t queueSize; //!< The maximum size of the queue, set to -1 for infinite size
   std::priority_queue<T, std::vector<T>, IData> queue; //!< The priority queue
@@ -226,7 +226,6 @@ class PriorityBlockingQueue {
   std::condition_variable condition; //!< The condition variable used for waking up waiting threads
 };
 }
-
 
 #endif //HTGS_PRIORITYBLOCKINGQUEUE_HPP
 

@@ -79,7 +79,7 @@ struct lglog {
   //! @cond Doxygen_Suppress
   std::ostream &os_;
   mutable bool has_endl_;
-  lglog(std::ostream &os = std::cout) : os_(os), has_endl_(false) { }
+  lglog(std::ostream &os = std::cout) : os_(os), has_endl_(false) {}
   ~lglog() { if (!has_endl_) os_ << std::endl; }
   template<typename T>
   static bool has_endl(const T &) { return false; }

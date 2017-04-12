@@ -26,15 +26,15 @@ namespace htgs {
  * Removes the template parameters for the RuleManager
  *
  * When data is forwarded to the RuleManager from the Bookkeeper, the data is passed to an
- * IRule that is associated with the RuleManager. Each IRule is responsible for determining when/if
- * data is ready to be sent to the ITask the RuleManager is bound to.
+ * IRule that is associated with the RuleManager. Each IRule is responsible for determining if/when
+ * data is ready to be sent to the ITask that the RuleManager is bound to.
  *
  * The input and output types of each IRule added to a RuleManager
  * must match the input and output types of the RuleManager.
  *
  * Example Usage:
  * @code
- * htgs::TaskGraph<htgs::VoidData, htgs::VoidData> *taskGraph = new htgs::TaskGraph<htgs::VoidData, htgs::VoidData>();
+ * htgs::TaskGraphConf<htgs::VoidData, htgs::VoidData> *taskGraph = new htgs::TaskGraphConf<htgs::VoidData, htgs::VoidData>();
  * htgs::Bookkeeper<Data1> *bkTask = new htgs::Bookkeeper<Data1>();
  *
  * // DataRule implements IRule<Data1, Data2> to be compatible with ruleMan
@@ -44,7 +44,7 @@ namespace htgs {
  * Data2ProcessingTask *data2Task = new Data2ProcessingTask();
  *
  * // Creates edge between the Bookkeeper and the Data2ProcessingTask, where rule defines when data is sent
- * taskGraph->addRule(bkTask, data2Task, rule);
+ * taskGraph->addRuleEdge(bkTask, rule, data2Task);
  * @endcode
  *
  * @tparam T the input data type for the RuleManager, T must derive from IData.
@@ -92,7 +92,6 @@ class AnyRuleManager {
    */
   virtual bool isTerminated() = 0;
 
-
   /**
   * Sets the output connector that the RuleManager is attached to
   * @param connector the output connector
@@ -101,7 +100,6 @@ class AnyRuleManager {
    * @internal
   */
   virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) = 0;
-
 
   /**
    * Creates a copy of the RuleManager.
@@ -113,13 +111,13 @@ class AnyRuleManager {
    */
   virtual AnyRuleManager *copy() = 0;
 
- /**
-  * Gets the output connector associated with the RuleManager
-  * @return the output connector
-  *
-  * @note This function should only be called by the HTGS API
-  * @internal
-  */
+  /**
+   * Gets the output connector associated with the RuleManager
+   * @return the output connector
+   *
+   * @note This function should only be called by the HTGS API
+   * @internal
+   */
   virtual std::shared_ptr<AnyConnector> getConnector() = 0;
 
   /**

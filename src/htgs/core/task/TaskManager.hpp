@@ -13,7 +13,6 @@
 #ifndef HTGS_TASKMANAGER_HPP
 #define HTGS_TASKMANAGER_HPP
 
-
 #include <chrono>
 #include <vector>
 #include <memory>
@@ -33,12 +32,10 @@ class ITask;
  * @class TaskManager TaskManager.hpp <htgs/core/task/TaskManager.hpp>
  * @brief Encapsulates an ITask to interact with an ITask's functionality.
  * @details
- * The TaskManager interacts with the BaseTaskManagerRuntimeThread to process an ITask's input and output data.
+ * The TaskManager interacts with the TaskManagerThread to process an ITask's input and output data.
  * The core logic of a TaskManager is implemented with the ITask representing the computational and logic functionality.
  *
  * When the TaskManager is ready to be terminated the thread associated with the TaskManager and the output Connector will be notified.
- * Using this approach each ITask that is terminated if the input Connector has finished producing data will be
- * closed.
  *
  * @tparam T the input data type for the TaskManager, T must derive from IData.
  * @tparam U the output data type for the TaskManager, U must derive from IData.
@@ -46,7 +43,7 @@ class ITask;
  * @note \#define PROFILE to enable profiling.
  */
 template<class T, class U>
-class TaskManager: public AnyTaskManager {
+class TaskManager : public AnyTaskManager {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -60,7 +57,12 @@ class TaskManager: public AnyTaskManager {
    * @param numPipelines the number of pipelines
    * @param address the address of the task graph that owns this task
    */
-  TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, size_t pipelineId, size_t numPipelines, std::string address) :
+  TaskManager(ITask<T, U> *taskFunction,
+              size_t numThreads,
+              bool isStartTask,
+              size_t pipelineId,
+              size_t numPipelines,
+              std::string address) :
       super(numThreads, isStartTask, pipelineId, numPipelines, address),
       inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
     taskFunction->setTaskManager(this);
@@ -78,8 +80,17 @@ class TaskManager: public AnyTaskManager {
    * @param address the address of the task graph that owns this task
    */
   TaskManager(ITask<T, U> *taskFunction, size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime,
-              size_t pipelineId, size_t numPipelines, std::string address) : super(numThreads, isStartTask, poll, microTimeoutTime, pipelineId, numPipelines, address),
-                                                                             inputConnector(nullptr), outputConnector(nullptr), taskFunction(taskFunction), runtimeThread(nullptr) {
+              size_t pipelineId, size_t numPipelines, std::string address) : super(numThreads,
+                                                                                   isStartTask,
+                                                                                   poll,
+                                                                                   microTimeoutTime,
+                                                                                   pipelineId,
+                                                                                   numPipelines,
+                                                                                   address),
+                                                                             inputConnector(nullptr),
+                                                                             outputConnector(nullptr),
+                                                                             taskFunction(taskFunction),
+                                                                             runtimeThread(nullptr) {
     taskFunction->setTaskManager(this);
   }
 
@@ -93,9 +104,7 @@ class TaskManager: public AnyTaskManager {
     taskFunction = nullptr;
   }
 
-
   std::shared_ptr<AnyConnector> getInputConnector() override { return this->inputConnector; }
-
 
   std::shared_ptr<AnyConnector> getOutputConnector() override { return this->outputConnector; }
 
@@ -110,12 +119,13 @@ class TaskManager: public AnyTaskManager {
     return this->taskFunction;
   }
 
-  AnyTaskManager *copy(bool deep)  override {
+  AnyTaskManager *copy(bool deep) override {
     ITask<T, U> *iTask = this->taskFunction->copyITask(deep);
 
     TaskManager<T, U>
-        *newTask = new TaskManager<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),
-                                         this->getPipelineId(), this->getNumPipelines(), this->getAddress());
+        *newTask =
+        new TaskManager<T, U>(iTask, this->getNumThreads(), this->isStartTask(), this->isPoll(), this->getTimeout(),
+                              this->getPipelineId(), this->getNumPipelines(), this->getAddress());
     if (deep) {
       newTask->setInputConnector(this->getInputConnector());
       newTask->setOutputConnector(this->getOutputConnector());
@@ -173,14 +183,14 @@ class TaskManager: public AnyTaskManager {
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)  override {
+  void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) override {
     // Create profile data for this task
-    TaskManagerProfile *profileData = new TaskManagerProfile(this->getComputeTime(), this->getWaitTime(), this->getMaxQueueSize());
+    TaskManagerProfile
+        *profileData = new TaskManagerProfile(this->getComputeTime(), this->getWaitTime(), this->getMaxQueueSize());
     taskManagerProfiles->insert(std::pair<AnyTaskManager *, TaskManagerProfile *>(this, profileData));
 
     // Pass gatherProfileData to ITask for further processing
     this->taskFunction->gatherProfileData(taskManagerProfiles);
-
 
   }
 
@@ -211,8 +221,7 @@ class TaskManager: public AnyTaskManager {
    * Adds the result data to the output connector
    * @param result the result that is added to the output for this task
    */
-  void addResult(std::shared_ptr<U> result)
-  {
+  void addResult(std::shared_ptr<U> result) {
     if (this->outputConnector != nullptr)
       this->outputConnector->produceData(result);
   }
@@ -242,7 +251,8 @@ class TaskManager: public AnyTaskManager {
 
         auto memManagerConnectorMap = this->getTaskFunction()->getReleaseMemoryEdges();
 
-        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memManagerConnectorMap->size() << " memory releasers");
+        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memManagerConnectorMap->size()
+                       << " memory releasers");
         for (auto nameManagerPair : *memManagerConnectorMap) {
           DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
 
@@ -273,6 +283,5 @@ class TaskManager: public AnyTaskManager {
   TaskManagerThread *runtimeThread; //!< The thread that is executing this task's runtime
 };
 }
-
 
 #endif //HTGS_TASKMANAGER_HPP

@@ -14,7 +14,6 @@
 #ifndef HTGS_BASEIRULE_HPP
 #define HTGS_BASEIRULE_HPP
 
-
 namespace htgs {
 /**
  * @class AnyIRule AnyIRule.hpp <htgs/core/rules/AnyIRule.hpp>
@@ -64,7 +63,8 @@ class AnyIRule {
   }
 
  private:
-  std::mutex mutex; //!< The mutex associated with this IRule to ensure no more than one thread is processing the rule at a time
+  std::mutex
+      mutex; //!< The mutex associated with this IRule to ensure no more than one thread is processing the rule at a time
 };
 }
 

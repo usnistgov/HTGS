@@ -13,7 +13,6 @@
 #ifndef HTGS_CONNECTOR_HPP
 #define HTGS_CONNECTOR_HPP
 
-
 #include <atomic>
 #include <cxxabi.h>
 #include <list>
@@ -44,7 +43,7 @@ namespace htgs {
  * acts as a separate producer for the Connector. The Connector will not indicate it has
  * finished producing data until all producers have indicated that they have finished.
  *
- * If a data stream is producing data outside of a TaskGraph, then that stream must indicate it is
+ * If a data stream is producing data outside of a TaskGraphConf, then that stream must indicate it is
  * an InputTask otherwise the ITask associated with this Connector may terminate prior to processing data.
  * By incrementing the input task count, will ensure the Connector stays open for an ITask until the stream
  * producing data indicates it has finished. To increment the input Task count use incrementInputTaskCount() and
@@ -52,21 +51,22 @@ namespace htgs {
  *
  * @tparam T the input/output data type for the Connector, T  must derive from IData.
  * @note This class should only be called by the HTGS API
+ * @note Enable priority queue by adding the USE_PRIORITY_QUEUE directive.
  */
 template<class T>
-class Connector: public AnyConnector {
+class Connector : public AnyConnector {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
 
  public:
   /**
    * Initializes the Connector with no producer tasks.
    */
-  Connector() { }
+  Connector() {}
 
   /**
    * Destructor
    */
-  ~Connector() { }
+  ~Connector() {}
 
   bool isInputTerminated() override { return super::getProducerCount() == 0 && this->queue.isEmpty(); }
 
@@ -74,7 +74,7 @@ class Connector: public AnyConnector {
 
   void wakeupConsumer() override { this->queue.Enqueue(nullptr); }
 
-  void profileProduce(size_t numThreads) override { }
+  void profileProduce(size_t numThreads) override {}
 
   void profileConsume(size_t numThreads, bool showQueueSize) override {
 #ifdef PROFILE
@@ -82,8 +82,7 @@ class Connector: public AnyConnector {
 #endif
   }
 
-  size_t getMaxQueueSize() override
-  {
+  size_t getMaxQueueSize() override {
 #ifdef PROFILE
     return queue.getQueueActiveMaxSize();
 #else
@@ -91,8 +90,7 @@ class Connector: public AnyConnector {
 #endif
   }
 
-  void produceAnyData(std::shared_ptr<IData> data) override
-  {
+  void produceAnyData(std::shared_ptr<IData> data) override {
     DEBUG_VERBOSE("Connector " << this << " producing any data: " << data);
     std::shared_ptr<T> dataCast = std::dynamic_pointer_cast<T>(data);
     this->queue.Enqueue(dataCast);
@@ -147,14 +145,11 @@ class Connector: public AnyConnector {
     }
   }
 
-
-
   /**
    * Gets the demangled type name of the connector
    * @return the demangled type name
    */
-  std::string typeName() override
-  {
+  std::string typeName() override {
     int status;
     char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
     std::string ret(realName);
@@ -173,11 +168,10 @@ class Connector: public AnyConnector {
 #ifdef USE_PRIORITY_QUEUE
   PriorityBlockingQueue<std::shared_ptr<T>>
 #else
-  BlockingQueue<std::shared_ptr<T>>
+  BlockingQueue <std::shared_ptr<T>>
 #endif
       queue; //!< The blocking queue associated with the connector (thread safe) (can be switched to a priority queue using the USE_PRIORITY_QUEUE directive)
 };
 }
-
 
 #endif //HTGS_CONNECTOR_HPP

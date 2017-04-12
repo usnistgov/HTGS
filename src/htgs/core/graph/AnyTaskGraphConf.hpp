@@ -50,7 +50,7 @@ typedef std::unordered_multimap<std::string, std::shared_ptr<AnyConnector>> Task
  * @typedef TaskNameConnectorPair
  * Defines a pair to be added into a TaskNameConnectorMap
  */
-typedef std::pair<std::string, std::shared_ptr<AnyConnector>>TaskNameConnectorPair;
+typedef std::pair<std::string, std::shared_ptr<AnyConnector>> TaskNameConnectorPair;
 
 /**
  * @class AnyTaskGraphConf AnyTaskGraphConf.hpp <htgs/core/graph/AnyTaskGraphConf.hpp>
@@ -70,7 +70,7 @@ class AnyTaskGraphConf {
    * @param baseAddress the base address for the graph, if it is an empty string then this
    * graph is the first/root graph.
    */
-  AnyTaskGraphConf (size_t pipelineId, size_t numPipelines, std::string baseAddress) :
+  AnyTaskGraphConf(size_t pipelineId, size_t numPipelines, std::string baseAddress) :
       pipelineId(pipelineId), numPipelines(numPipelines) {
     if (baseAddress == "")
       this->address = std::to_string(pipelineId);
@@ -92,10 +92,8 @@ class AnyTaskGraphConf {
    * Destructor
    */
   virtual ~AnyTaskGraphConf() {
-    for (auto task : *taskManagers)
-    {
-      if (task != nullptr)
-      {
+    for (auto task : *taskManagers) {
+      if (task != nullptr) {
         delete task;
         task = nullptr;
       }
@@ -167,12 +165,10 @@ class AnyTaskGraphConf {
    * task manager profiles map.
    * @param taskManagerProfiles the map that stores all the profile data for each task manager.
    */
-  void gatherProfilingData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)
-  {
-      for (auto tMan : *taskManagers)
-      {
-        tMan->gatherProfileData(taskManagerProfiles);
-      }
+  void gatherProfilingData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) {
+    for (auto tMan : *taskManagers) {
+      tMan->gatherProfileData(taskManagerProfiles);
+    }
   }
 
   /**
@@ -182,15 +178,13 @@ class AnyTaskGraphConf {
    * @param iRule the IRule
    * @return the shared_ptr reference to the IRule
    */
-  template <class V, class W>
-  std::shared_ptr<IRule<V, W>> getIRule(IRule<V, W> *iRule)
-  {
+  template<class V, class W>
+  std::shared_ptr<IRule<V, W>> getIRule(IRule<V, W> *iRule) {
     std::shared_ptr<IRule<V, W>> iRuleShr;
     if (this->iRuleMap->find(iRule) != this->iRuleMap->end()) {
       std::shared_ptr<AnyIRule> baseRulePtr = this->iRuleMap->find(iRule)->second;
       iRuleShr = std::static_pointer_cast<IRule<V, W>>(baseRulePtr);
-    }
-    else{
+    } else {
       iRuleShr = std::shared_ptr<IRule<V, W>>(iRule);
       this->iRuleMap->insert(IRulePair(iRule, iRuleShr));
     }
@@ -203,18 +197,14 @@ class AnyTaskGraphConf {
    * @param allocator the IMemoryAllocator
    * @return the shared_ptr reference to the IMemoryAllocator
    */
-  template <class V>
-  std::shared_ptr<IMemoryAllocator<V>> getMemoryAllocator(IMemoryAllocator<V> *allocator)
-  {
+  template<class V>
+  std::shared_ptr<IMemoryAllocator<V>> getMemoryAllocator(IMemoryAllocator<V> *allocator) {
     std::shared_ptr<IMemoryAllocator<V>> allocP;
 
-    if (this->memAllocMap->find(allocator) == this->memAllocMap->end())
-    {
+    if (this->memAllocMap->find(allocator) == this->memAllocMap->end()) {
       allocP = std::shared_ptr<IMemoryAllocator<V>>(allocator);
       memAllocMap->insert(MemAllocPair(allocator, allocP));
-    }
-    else
-    {
+    } else {
       allocP = std::static_pointer_cast<IMemoryAllocator<V>>(this->memAllocMap->at(allocator));
     }
 
@@ -224,8 +214,7 @@ class AnyTaskGraphConf {
   /**
    * Initializes the task graph just prior to spawning threads
    */
-  void initialize()
-  {
+  void initialize() {
     this->getTaskGraphCommunicator()->setNumGraphsSpawned(this->getNumberOfSubGraphs());
 
     this->updateTaskManagersAddressingAndPipelines();
@@ -249,12 +238,11 @@ class AnyTaskGraphConf {
    * @param orig the pointer to the original ITask that may have been copied before
    * @return the ITask's copy or nullptr if the copy is not found.
    */
-  template <class T, class U>
-  ITask<T, U> *getCopy(ITask<T, U> *orig)
-  {
+  template<class T, class U>
+  ITask<T, U> *getCopy(ITask<T, U> *orig) {
     for (auto tCopy : *taskCopyMap) {
       if (tCopy.first == orig) {
-        return (ITask<T, U> *)tCopy.second->getTaskFunction();
+        return (ITask<T, U> *) tCopy.second->getTaskFunction();
       }
     }
 
@@ -268,8 +256,7 @@ class AnyTaskGraphConf {
    * @param orig the pointer to the original AnyITask that may have been copied before
    * @return the AnyITask's copy or nullptr if the copy is not found.
    */
-  AnyITask *getCopy(AnyITask *orig)
-  {
+  AnyITask *getCopy(AnyITask *orig) {
     for (auto tCopy : *taskCopyMap) {
       if (tCopy.first == orig) {
         return tCopy.second->getTaskFunction();
@@ -286,23 +273,27 @@ class AnyTaskGraphConf {
    * @param task the ITask
    * @return the task manager responsible for the ITask
    */
-  template <class T, class U>
-  TaskManager<T, U> *getTaskManager(ITask <T, U> *task) {
+  template<class T, class U>
+  TaskManager<T, U> *getTaskManager(ITask<T, U> *task) {
 
     TaskManager<T, U> *taskManager = nullptr;
 
-    for (auto tSched : *taskManagers)
-    {
-      if (tSched->getTaskFunction() == task)
-      {
-        taskManager = (TaskManager<T, U> *)tSched;
+    for (auto tSched : *taskManagers) {
+      if (tSched->getTaskFunction() == task) {
+        taskManager = (TaskManager<T, U> *) tSched;
         break;
       }
     }
 
-    if (taskManager == nullptr)
-    {
-      taskManager = new TaskManager<T, U>(task, task->getNumThreads(), task->isStartTask(), task->isPoll(), task->getMicroTimeoutTime(), pipelineId, numPipelines, address);
+    if (taskManager == nullptr) {
+      taskManager = new TaskManager<T, U>(task,
+                                          task->getNumThreads(),
+                                          task->isStartTask(),
+                                          task->isPoll(),
+                                          task->getMicroTimeoutTime(),
+                                          pipelineId,
+                                          numPipelines,
+                                          address);
       this->taskManagers->push_back(taskManager);
 
       // Increment number of graphs spawned from the task
@@ -317,10 +308,8 @@ class AnyTaskGraphConf {
    * Adds a task manager to the task graph
    * @param taskManager the task manager
    */
-  void addTaskManager(AnyTaskManager *taskManager)
-  {
-    for (auto tMan : *taskManagers)
-    {
+  void addTaskManager(AnyTaskManager *taskManager) {
+    for (auto tMan : *taskManagers) {
       if (tMan == taskManager)
         return;
     }
@@ -331,10 +320,8 @@ class AnyTaskGraphConf {
   /**
    * Prints profile data to console for all task managers
    */
-  void printProfile()
-  {
-    for (auto tMan : *taskManagers)
-    {
+  void printProfile() {
+    for (auto tMan : *taskManagers) {
       tMan->printProfile();
     }
   }
@@ -350,7 +337,6 @@ class AnyTaskGraphConf {
    * @return the number of pipelines
    */
   size_t getNumPipelines() { return this->numPipelines; }
-
 
   /**
    * Writes the basic dot representation of the task graph to disk.
@@ -440,8 +426,7 @@ class AnyTaskGraphConf {
    * All tasks within this graph share the same address as the graph.
    * @return the address
    */
-  std::string getAddress()
-  {
+  std::string getAddress() {
     return this->address;
   }
 
@@ -456,7 +441,6 @@ class AnyTaskGraphConf {
   size_t getNumberOfSubGraphs() const {
     return numberOfSubGraphs;
   }
-
 
   /**
    * Generate the content only of the graph (excludes all graph definitions and attributes)
@@ -487,10 +471,8 @@ class AnyTaskGraphConf {
    * Each copy is added into this graph and a mapping between the original and the copy is made.
    * @param tasks the tasks to make copies of.
    */
-  void copyTasks(std::list<AnyTaskManager *> *tasks)
-  {
-    for (auto task : *tasks)
-    {
+  void copyTasks(std::list<AnyTaskManager *> *tasks) {
+    for (auto task : *tasks) {
       this->createCopy(task);
     }
   }
@@ -500,8 +482,7 @@ class AnyTaskGraphConf {
    * @param iTask the ITask to lookup.
    * @return the task manager used to manage the ITask
    */
-  AnyTaskManager *getTaskManagerCopy(AnyITask *iTask)
-  {
+  AnyTaskManager *getTaskManagerCopy(AnyITask *iTask) {
     for (auto tCopy : *taskCopyMap) {
       if (tCopy.first == iTask) {
         return tCopy.second;
@@ -518,10 +499,8 @@ class AnyTaskGraphConf {
    * @retval TRUE if the task is in the graph
    * @retval FALSE if the task is not in the graph
    */
-  bool hasTask(AnyITask *task)
-  {
-    for (auto taskSched : *taskManagers)
-    {
+  bool hasTask(AnyITask *task) {
+    for (auto taskSched : *taskManagers) {
       if (taskSched->getTaskFunction() == task)
         return true;
     }
@@ -531,25 +510,21 @@ class AnyTaskGraphConf {
 
  private:
 
-
   /**
    * Creates a copy of a task manager and adds the copy and a mapping between the task manager
    * copy and the original ITask that the manager is responsible for.
    * @param taskManager the task manager to create a copy for.
    */
-  void createCopy(AnyTaskManager *taskManager)
-  {
+  void createCopy(AnyTaskManager *taskManager) {
     AnyITask *origITask = taskManager->getTaskFunction();
 
     // If the original ITask is not in the taskCopyMap, then add a new copy and map it to the original
-    if (this->taskCopyMap->find(origITask) == this->taskCopyMap->end())
-    {
+    if (this->taskCopyMap->find(origITask) == this->taskCopyMap->end()) {
       AnyTaskManager *taskManagerCopy = taskManager->copy(false);
       taskCopyMap->insert(ITaskPair(origITask, taskManagerCopy));
       taskManagers->push_back(taskManagerCopy);
     }
   }
-
 
   ITaskMap *taskCopyMap; //!< The ITask copy map that maps an original ITask to a task manager copy
   std::list<AnyTaskManager *> *taskManagers; //!< The list of task managers for the task graph

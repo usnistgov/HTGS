@@ -37,22 +37,25 @@ class TaskGraphConf;
  * @class ExecutionPipeline ExecutionPipeline.hpp <htgs/api/ExecutionPipeline.hpp>
  * @brief The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concurrently.
  * @details Each task within the task graph is an exact duplicate of the original's. The only
- * difference is the pipelineId passed to each task's initialize function. The pipelineId indicates which task graph
- * the task belongs to. This value can be used as a rank to distribute computation and determine if additional
+ * difference is the pipelineId passed to each task. The pipelineId indicates which task graph
+ * the task belongs too. This value can be used as a rank to distribute computation and determine if additional
  * functionality is needed to process data (such as copying data from one GPU to another).
  *
  * An ExecutionPipeline can be used to execute across multiple GPUs on a single system. Any ICudaTask will
- * be bound to a separate GPU based on the CUContext array passed to the ICudaTask. The size of the CUContext
+ * automatically be bound to a separate GPU based on the CUContext array passed to the ICudaTask. The size of the CUContext
  * array should match the number of execution pipelines specified. If data exists between two GPUs, then additional
  * copying may be required, see ICudaTask for details and example usage for copying data between GPUs.
  *
  * The execution pipeline can be used to distribute data among each task graph by adding a rule that
  * uses the pipelineId parameter in an IRule. See addInputRule(IRule <T, T> *rule)
  *
+ * If you wish to share a rule with multiple execution pipelines or bookkeepers, you must wrap the rule into a
+ * std::shared_ptr prior to calling the addInputRule function.
+ *
  *
  * Example usage:
  * @code
- * htgs::TaskGraph<MatrixData, MatrixData> *subGraph = new htgs::TaskGraph<MatrixData, MatrixData>();
+ * htgs::TaskGraphConf<MatrixData, MatrixData> *subGraph = new htgs::TaskGraphConf<MatrixData, MatrixData>();
  * ... build subGraph
  *
  * int numPipelines = 3;
@@ -63,13 +66,10 @@ class TaskGraphConf;
  * htgs::TaskGraph<MatrixData, VoidData> *mainGraph = new htgs::TaskGraph<MatrixData, VoidData>();
  *
  * // Declares that the execPipeline connects to the input of the mainGraph
- * mainGraph->addGraphInputConsumer(execPipeline);
+ * mainGraph->setGraphConsumerTask(execPipeline);
  * mainGraph->addEdge(execPipeline, taskOutsideExecPipeline);
  *
- * // Indicate that main thread is producing data for main graph
- * mainGraph->incrementGraphInputProducer();
- *
- * htgs::Runtime *runTime = new htgs::Runtime(mainGraph);
+ * htgs::TaskGraphRuntime *runTime = new htgs::TaskGraphRuntime(mainGraph);
  *
  * while(hasDataToAdd)
  * {
@@ -88,7 +88,7 @@ class TaskGraphConf;
  * @tparam U the output type for the ExecutionPipeline ITask, must derive from IData.
  */
 template<class T, class U>
-class ExecutionPipeline: public ITask<T, U> {
+class ExecutionPipeline : public ITask<T, U> {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -103,7 +103,7 @@ class ExecutionPipeline: public ITask<T, U> {
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
     this->runtimes = new std::list<TaskGraphRuntime *>();
-    this->inputRules = std::shared_ptr<IRuleList<T, T>> (new IRuleList<T, T>());
+    this->inputRules = std::shared_ptr<IRuleList<T, T>>(new IRuleList<T, T>());
     this->graphs = new std::list<TaskGraphConf<T, U> *>();
   }
 
@@ -169,8 +169,7 @@ class ExecutionPipeline: public ITask<T, U> {
    * This variant should be used if the rule is intended to be shared with multiple bookkeepers or other execution pipelines.
    * @param rule the rule as a shared_ptr to handle distributing data between pipelines
    */
-  void addInputRule(std::shared_ptr<IRule<T, T>> rule)
-  {
+  void addInputRule(std::shared_ptr<IRule<T, T>> rule) {
     this->inputRules->push_back(rule);
   }
 
@@ -183,20 +182,23 @@ class ExecutionPipeline: public ITask<T, U> {
     DEBUG("Initializing Execution pipeline with " << this->numPipelinesExec << " pipelines");
 
     // Add a default broadcast rule if the pipeline has no rules
-    if (this->inputRules->size() == 0)
-    {
-      std::cerr << "ERROR: Your execution pipeline does not have any decomposition rules. You must add at least one: addInputRule(IRule)" << std::endl;
+    if (this->inputRules->size() == 0) {
+      std::cerr
+          << "ERROR: Your execution pipeline does not have any decomposition rules. You must add at least one: addInputRule(IRule)"
+          << std::endl;
       exit(-1);
 //      this->addInputRule(new ExecutionPipelineBroadcastRule<T>());
     }
 
     // Create output connector using the execution pipelines output
-    std::shared_ptr<Connector<U>> outputConnector = std::static_pointer_cast<Connector<U>>(this->getOwnerTaskManager()->getOutputConnector());
+    std::shared_ptr<Connector<U>>
+        outputConnector = std::static_pointer_cast<Connector<U>>(this->getOwnerTaskManager()->getOutputConnector());
 
     for (size_t i = 0; i < numPipelinesExec; i++) {
       DEBUG("Adding pipeline " << i);
-      TaskGraphConf<T, U> *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(),
-                                                         this->getTaskGraphCommunicator());
+      TaskGraphConf<T, U>
+          *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(),
+                                         this->getTaskGraphCommunicator());
 
       DEBUG("Setting up input and output of pipeline " << i);
 
@@ -261,7 +263,9 @@ class ExecutionPipeline: public ITask<T, U> {
    * @note This function should only be called by the HTGS API
    */
   ITask<T, U> *copy() {
-    return new ExecutionPipeline<T, U>(this->numPipelinesExec, this->graph->copy(this->getPipelineId(), this->getNumPipelines()), this->inputRules);
+    return new ExecutionPipeline<T, U>(this->numPipelinesExec,
+                                       this->graph->copy(this->getPipelineId(), this->getNumPipelines()),
+                                       this->inputRules);
   }
 
   /**
@@ -275,15 +279,13 @@ class ExecutionPipeline: public ITask<T, U> {
 
   virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) override {
     // Gather profile data for each graph
-    for (auto g : *graphs)
-    {
+    for (auto g : *graphs) {
       g->gatherProfilingData(taskManagerProfiles);
     }
   }
 
   void printProfile() override {
-    for (auto g : *graphs)
-    {
+    for (auto g : *graphs) {
       g->printProfile();
     }
   }
@@ -318,7 +320,10 @@ class ExecutionPipeline: public ITask<T, U> {
    * @note If the dot notation is generated prior to execution, then a virtual pipeline is created. Generating the dot notation
    * after execution will show the actual sub-graphs.
    */
-  std::string genDot(int flags, std::string dotId, std::shared_ptr<AnyConnector> input, std::shared_ptr<AnyConnector> output) override {
+  std::string genDot(int flags,
+                     std::string dotId,
+                     std::shared_ptr<AnyConnector> input,
+                     std::shared_ptr<AnyConnector> output) override {
     std::ostringstream oss;
 
     oss << input->genDot(flags);
@@ -335,26 +340,21 @@ class ExecutionPipeline: public ITask<T, U> {
     }
 
     // Draw decomposition rule edge to each graph
-    if (graphs->size() > 0)
-    {
-      for (auto g : *graphs)
-      {
+    if (graphs->size() > 0) {
+      for (auto g : *graphs) {
         oss << input->getDotId() << " -> " << g->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
             << "\"];" << std::endl;
       }
-    }
-    else {
+    } else {
       oss << input->getDotId() << " -> " << graph->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
           << "\"];" << std::endl;
     }
 
     // Setup subgraph to draw execPipeline graphs
-    if (this->graphs->size() > 0)
-    {
+    if (this->graphs->size() > 0) {
       int pipeline = 0;
-      for (auto g : *graphs)
-      {
-        oss << "subgraph cluster_" << dotId << std::to_string(pipeline) <<" {" << std::endl;
+      for (auto g : *graphs) {
+        oss << "subgraph cluster_" << dotId << std::to_string(pipeline) << " {" << std::endl;
         oss << "label=\"" << getName() << std::to_string(pipeline) << "\";" << std::endl;
         oss << "style=\"dashed\";" << std::endl;
         oss << "style =\"filled\";" << std::endl;
@@ -364,8 +364,7 @@ class ExecutionPipeline: public ITask<T, U> {
         oss << "}" << std::endl;
         pipeline++;
       }
-    }
-    else {
+    } else {
       oss << "subgraph cluster_" << dotId << " {" << std::endl;
       oss << "label=\"" << getName() << " x" << this->numPipelinesExec << "\";" << std::endl;
       oss << "style=\"dashed\";" << std::endl;
@@ -381,13 +380,13 @@ class ExecutionPipeline: public ITask<T, U> {
     return oss.str();
   }
 
-
  private:
   size_t numPipelinesExec; //!< The number of pipelines that will spawn from the ExecutionPipeline
   Bookkeeper<T> *inputBk; //!< The input Bookkeeper for the ExecutionPipeline
   TaskGraphConf<T, U> *graph; //!< The graph that the ExecutionPipeline manages, duplicates, and executes
-  std::shared_ptr<IRuleList<T,T>> inputRules; //!< The rules associated with the input Bookkeeper for decomposition
-  std::list<TaskGraphRuntime *> *runtimes; //!< The list of Runtimes that will execute the TaskGraphs (one for each duplicate TaskGraph)
+  std::shared_ptr<IRuleList<T, T>> inputRules; //!< The rules associated with the input Bookkeeper for decomposition
+  std::list<TaskGraphRuntime *>
+      *runtimes; //!< The list of Runtimes that will execute the TaskGraphs (one for each duplicate TaskGraph)
   std::list<TaskGraphConf<T, U> *> *graphs; //!< The list of duplicate TaskGraphs
 };
 }

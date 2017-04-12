@@ -19,16 +19,14 @@ namespace htgs {
  * When constructing an ExecutionPipeline task, rules must be added to the task to indicate how data is distributed
  * within pipelines. If no rule is specified, then this rule is added automatically during initialization of the task.
  *
- *
  * @tparam T the input/output type for the rule, must be of type IData.
  */
-template <class T>
-class ExecutionPipelineBroadcastRule : public IRule<T, T>
-{
+template<class T>
+class ExecutionPipelineBroadcastRule : public IRule<T, T> {
  public:
   ~ExecutionPipelineBroadcastRule() override {}
   bool canTerminateRule(size_t pipelineId) override { return false; }
-  void shutdownRule(size_t pipelineId) override { }
+  void shutdownRule(size_t pipelineId) override {}
   std::string getName() override {
     return "DefaultBroadcastRule";
   }

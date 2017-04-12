@@ -30,8 +30,7 @@ class TaskManagerProfile {
   /**
    * Constructs a task manager profile with no profiling data.
    */
-  TaskManagerProfile()
-  {
+  TaskManagerProfile() {
     computeTime = 0;
     waitTime = 0;
     maxQueueSize = 0;
@@ -52,8 +51,7 @@ class TaskManagerProfile {
    * @param flags The DOTGEN flags to control profiling timings that are to be hidden.
    * @return the profiling data for dot graphviz.
    */
-  std::string genDot(int flags)
-  {
+  std::string genDot(int flags) {
     std::string ret = "";
 #ifdef PROFILE
     if ((flags & DOTGEN_FLAG_HIDE_PROFILE_COMP_TIME) == 0)
@@ -85,8 +83,7 @@ class TaskManagerProfile {
    * @param colorFlag the DOTGEN flag used to control which value to output
    * @return the profile value
    */
-  double getValue(int colorFlag)
-  {
+  double getValue(int colorFlag) {
     if (colorFlag == DOTGEN_COLOR_COMP_TIME)
       return computeTime;
     else if (colorFlag == DOTGEN_COLOR_WAIT_TIME)
@@ -127,8 +124,7 @@ class TaskManagerProfile {
    * This is used when computing the average compute/wait time among multiple task managers.
    * @param other the other task manager
    */
-  void sum(TaskManagerProfile *other)
-  {
+  void sum(TaskManagerProfile *other) {
     this->computeTime += other->getComputeTime();
     this->waitTime += other->getWaitTime();
   }
@@ -137,10 +133,9 @@ class TaskManagerProfile {
    * Computes the average compute and wait time for the profile
    * @param count the number of items to divide by
    */
-  void average(int count)
-  {
-    this->computeTime = (unsigned long long int)(this->computeTime / (double)count);
-    this->waitTime = (unsigned long long int)(this->waitTime / (double)count);
+  void average(int count) {
+    this->computeTime = (unsigned long long int) (this->computeTime / (double) count);
+    this->waitTime = (unsigned long long int) (this->waitTime / (double) count);
   }
 
  private:

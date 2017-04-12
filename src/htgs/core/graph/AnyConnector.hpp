@@ -22,13 +22,15 @@ namespace htgs {
 /**
  * @class AnyConnector AnyConnector.hpp <htgs/core/graph/AnyConnector.hpp>
  * @brief Parent class for Connector, which removes the template type of the Connector.
- * @details Used within data structures to hold various types of Connectors. Each
- * Connector is built using TaskGraph routines to add ITasks to a TaskGraph.
+ * @details Used to hold various types of Connectors. Each
+ * Connector is built using an EdgeDescriptor routines to add ITasks to a TaskGraphConf.
  *
  * Each Connector holds onto a priority queue that acquires/distributes IData from a producer/consumer ITask.
  *
  * Most common use for this class is to indicate when the producer for this
- * Connector has finished pushing data onto its priority queue.
+ * Connector has finished pushing data onto its queue.
+ *
+ * Common usage:
  * @code
  * inputConnector->isInputTerminated();
  * @endcode
@@ -44,7 +46,7 @@ class AnyConnector {
   /**
    * Virtual destructor.
    */
-  virtual ~AnyConnector() { }
+  virtual ~AnyConnector() {}
 
   /**
   * Indicates to the Connector that the producer has finished producing data for the Connector.
@@ -90,9 +92,9 @@ class AnyConnector {
    * @param flags dot gen flags
    * @return the dot representation
    */
-  std::string genDot(int flags)
-  {
-    return getDotId() + "[label=\"" + std::to_string(this->getProducerCount()) + "\",shape=box,style=rounded,color=black,width=.2,height=.2];\n";
+  std::string genDot(int flags) {
+    return getDotId() + "[label=\"" + std::to_string(this->getProducerCount())
+        + "\",shape=box,style=rounded,color=black,width=.2,height=.2];\n";
 
   }
 
@@ -110,7 +112,6 @@ class AnyConnector {
    */
   virtual bool isInputTerminated() = 0;
 
-
   /**
    * Awakens all Tasks that are consuming data from this connector.
    * This function passes nullptr to each consumer to check whether that consumer is ready to be
@@ -121,7 +122,6 @@ class AnyConnector {
    */
   virtual void wakeupConsumer() = 0;
 
-
   /**
    * Creates a copy of the BaseConnector
    * @return a copy of the BaseConnector
@@ -130,7 +130,6 @@ class AnyConnector {
    * @internal
    */
   virtual AnyConnector *copy() = 0;
-
 
   /**
    * Produces any data into the queue. This function should be used with care as the

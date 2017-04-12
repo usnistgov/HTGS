@@ -28,11 +28,11 @@ template<class T>
 class MemoryData;
 
 /**
- * \class ICudaTask ICudaTask.hpp <htgs/api/ICudaTask.hpp>
- * \brief An ICudaTask is used to attach a task to an NVIDIA Cuda GPU.
+ * @class ICudaTask ICudaTask.hpp <htgs/api/ICudaTask.hpp>
+ * @brief An ICudaTask is used to attach a task to an NVIDIA Cuda GPU.
  *
  * The task that inherits from this class will automatically be attached to
- * the GPU when launched by the RunTime from within a TaskGraphConf.
+ * the GPU when launched by the TaskGraphRunTime from within a TaskGraphConf.
  *
  * An ICudaTask may be bound to one or more GPUs if the task is added into an ExecutionPipeline.
  * The number of CUContexts must match the number of pipelines specified for the ExecutionPipeline.
@@ -40,7 +40,7 @@ class MemoryData;
  * Mechanisms to handle automatic data motion for GPU-to-GPU memories
  * is provided to simplify peer to peer device memory copies.
  * In order to use peer to peer copy, both GPUs must reside on the
- * same IOH (I/O Hub) and be the same GPU model.
+ * same I/O Hub (IOH) and be the same GPU model.
  * 
  * It may be necessary to copy data that resides on two different GPUs. This can be achieved by using the 
  * autoCopy(V destination, std::shared_ptr<MemoryData<V>> data, long numElems) function.
@@ -48,6 +48,9 @@ class MemoryData;
  * between the multiple GPUs, then the autocopy function is not needed. See below for an example of using autocopy.
  *
  * At this time it is necessary for the ICudaTask to copy data from CPU memories to GPU memories.
+ *
+ * Functions are available for getting the CUDA stream, context, pipeline ID, and number of pipelines.
+ *
  * @note It is ideal to configure a separate copy ICudaTask to copy data asynchronously from a computation ICudaTask for CPU->GPU or GPU->CPU copies.
  * 
  * Example implementation:
@@ -59,14 +62,13 @@ class MemoryData;
  * public:
  * SimpleCudaTask(CUcontext *contexts, int *cudaIds, int numGpus) : ICudaTask(contexts, cudaIds, numGpus) { }
  * ~SimpleCudaTask() {}
- * virtual void initializeCudaGPU(CUcontext context, CUstream stream, int cudaId, int numGPUs, int pipelineId,
- *                               int numPipelines)
+ * virtual void initializeCudaGPU()
  * {
  *    // Allocate local GPU memory in initialize will allocate on correct GPU
  *    cudaMalloc(&localMemory, sizeof(double) * SIZE);
  * }
  *
- * virtual void executeGPUTask(std::shared_ptr<MatrixData> data, CUstream stream) {
+ * virtual void executeTask(std::shared_ptr<MatrixData> data) {
  *   ...
  *   double * memory;
  *
@@ -105,7 +107,7 @@ class MemoryData;
  * SimpleCudaTask *cudaTask = new SimpleCudaTask(...);
  *
  * // Adds cudaTask to process input from taskGraph, input type of cudaTask matches input type of taskGraph
- * taskGraph->addGraphInputConsumer(cudaTask);
+ * taskGraph->setGraphConsumerTask(cudaTask);
  *
  *
  *
@@ -115,7 +117,7 @@ class MemoryData;
  * @tparam U the output data type for the ICudaTask ITask, U must derive from IData.
  */
 template<class T, class U>
-class ICudaTask: public ITask<T, U> {
+class ICudaTask : public ITask<T, U> {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -142,17 +144,16 @@ class ICudaTask: public ITask<T, U> {
 
   virtual ~ICudaTask() override {}
 
- /**
-  * Virtual function that is called when the ICudaTask has been initialized and is bound to a CUDA GPU.
-  */
-  virtual void initializeCudaGPU() { }
+  /**
+   * Virtual function that is called when the ICudaTask has been initialized and is bound to a CUDA GPU.
+   */
+  virtual void initializeCudaGPU() {}
 
   /**
    * Executes the ICudaTask on some data. Use this->getStream() to acquire CUDA stream if needed.
    * @param data the data executed on
    */
   virtual void executeTask(std::shared_ptr<T> data) = 0;
-
 
   /**
    * Virtual function that is called when the ICudaTask is shutting down
@@ -181,12 +182,12 @@ class ICudaTask: public ITask<T, U> {
    * Pure virtual function that copies this ICudaTask
    * @return the copy of the ICudaTask
    */
-  virtual ITask<T, U> *copy() = 0;
+  virtual ITask <T, U> *copy() = 0;
 
   /**
    * Virtual function that can be used to provide debug information.
    */
-  virtual void debug() override { }
+  virtual void debug() override {}
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
@@ -283,8 +284,7 @@ class ICudaTask: public ITask<T, U> {
                           sizeof(V) * numElems,
                           this->stream);
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -319,8 +319,7 @@ class ICudaTask: public ITask<T, U> {
         if (canAccessPeer == 0) {
           this->nonPeerDevIds.push_back(this->cudaIds[i]);
           this->peerContexts.insert(std::pair<int, CUcontext>(this->cudaIds[i], ctx));
-        }
-        else {
+        } else {
           cuCtxEnablePeerAccess(ctx, 0);
         }
       }
@@ -328,7 +327,6 @@ class ICudaTask: public ITask<T, U> {
 
     this->initializeCudaGPU();
   }
-
 
   /**
    * Shutsdown the ICudaTask
@@ -390,7 +388,6 @@ class ICudaTask: public ITask<T, U> {
   std::vector<int> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
   std::unordered_map<int, CUcontext> peerContexts; //!< The mapping of CudaId to CUDA Context that has peer-to-peer
 };
-
 
 }
 #endif //HTGS_CUDATASK_HPP

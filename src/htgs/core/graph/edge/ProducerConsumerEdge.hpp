@@ -33,9 +33,8 @@ namespace htgs {
  * @tparam U the output type of the producer task and the input type of the consumer task
  * @tparam W the output type of the consumer task
  */
-template <class T, class U, class W>
-class ProducerConsumerEdge : public EdgeDescriptor
-{
+template<class T, class U, class W>
+class ProducerConsumerEdge : public EdgeDescriptor {
  public:
 
   /**

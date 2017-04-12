@@ -14,7 +14,6 @@
 #ifndef HTGS_ITASK_HPP
 #define HTGS_ITASK_HPP
 
-
 #include <functional>
 #include <iostream>
 #include <vector>
@@ -28,7 +27,7 @@
 
 namespace htgs {
 
-template <class T, class U>
+template<class T, class U>
 class TaskManager;
 
 /**
@@ -37,18 +36,18 @@ class TaskManager;
  * @details
  *
  * To use the ITask, a new class inherits ITask and defines the pure virtual functions. The ITask is
- * then connected into a TaskGraph, which is bound to a Runtime. The ITask contains metadata that describes
- * threading and scheduling rules. Using this metadata, the Runtime spawns threads as a pool. Each thread
+ * then connected into a TaskGraphConf, which is bound to a TaskGraphRuntime. The ITask contains metadata that describes
+ * threading and scheduling rules. Using this metadata, the TaskGraphRuntime spawns threads into a pool for the ITask. Each thread
  * is bound to a separate instance of the ITask, which is generated through the copy function. 
  *
  * The purpose of this interface is to provide the functions necessary to represent computational and logical operations
- * for algorithms, which are added to a TaskGraph.
+ * for algorithms, which are added to a TaskGraphConf.
  * Custom behavior for an ITask can be implemented, as demonstrated with other classes that derive from ITask; i.e.,
  * Bookkeeper, ExecutionPipeline, and ICudaTask.
  *
  * An ITask should represent some component of an algorithm, such that multiple threads can
- * concurrently process and stream data through a TaskGraph. The main pieces that impact the performance
- * are: (1) Memory requirements, (2) Data dependencies, and (3) Computational complexity.
+ * concurrently process and stream data through a TaskGraphConf. The main pieces that impact the performance
+ * are: (1) Memory (reuse/capacity/locality), (2) Data dependencies, and (3) Computational complexity.
  *
  * There are two methods for handling memory.
  *
@@ -56,26 +55,21 @@ class TaskManager;
  * type should be allocated in the initialize() function and freed in the shutdown() function.
  * It is duplicated (one per thread) and should be local to that thread only.
  *
- * The second type of memory is shared memory, which can be used by other tasks in a TaskGraph. One ITask is responsible
- * for getting memory, while another ITask is responsible for releasing memory.
- * This memory is managed by an external MemoryManager, which allocates the memory, connects the getter
- * and the releaser, and frees the memory once the TaskGraph is finished. Use the TaskGraph::addMemoryManagerEdge
- * to attach shared memory between two ITasks. The memory that is acquired should be incorporated into the
- * output data of the ITask and forwarded until it is released.
+ * The second type of memory is shared memory, which can be used by other tasks in a TaskGraphConf. One ITask is responsible
+ * for getting memory, while any other ITask or the main thread is responsible for releasing that memory.
+ * The memory is managed by an external MemoryManager, which allocates the memory and frees the memory once the TaskGraphConf is finished.
+ * Use the TaskGraph::addMemoryManagerEdge
+ * to attach a task to get memory. The memory that is acquired should be incorporated into the
+ * output data of the ITask and forwarded until it is released by some other task. The release memory operation should exist
+ * within the same task graph.
  *
- * An ITask can get and release memory using the memGet() and memRelease() routines, respectively. If there are cases where
- * the ITask getting or releasing memory may not a memory edge, then that task can use the hasMemGetter and
- * has memReleaser routines to verify the edge exists.
+ * An ITask can get and release memory using the AnyITask::getMemory and AnyITask::releaseMemory routines, respectively. If there are cases where
+ * the ITask getting memory may not have a memory edge, then that task can use the AnyITask::hasMemoryEdge routine to verify if the edge exists.
  *
  * If there are multiple computational ITasks within a TaskGraph, the number of threads processing each ITask
  * should be determined based on the workload of each ITask with the aim of reducing the wait period for every ITask (if possible).
  * By doing so, the overall compute time of a TaskGraph can be evenly distributed. The number of threads in use for computation
  * should not exceed the number of logical cores on a system.
- *
- * There are two types of initialize functions. The basic ITask::initialize(int pipelineId, int numPipelines) is
- * the most commonly used variant. The ITask::initialize(int pipelineId, int numPipeline, TaskManager<T, U> *ownerTask,
- * std::shared_ptr<ConnectorVector> pipelineConnectorList) can be used for more advanced operations such as processing data from
- * other execution pipelines using the pipelineConnectorList.
  *
  * Example Implementation:
  * @code
@@ -95,14 +89,14 @@ class TaskManager;
  *   virtual void executeTask(std::shared_ptr<Data1> data)
  *   {
  *     ...
- *     // Shared memory getter
- *     std::shared_ptr<htgs::MemoryData<int *>> readBuffer = this->memGet<int *>("readMemory", new ReleaseCountRule(1));
+ *     // get shared memory
+ *     htgs::m_data_t<int> readBuffer = this->memGet<int>("readMemory", new ReleaseCountRule(1));
  *     readData(data->getFile(), readBuffer->get());
  *
  *     // Shared memory release example
- *     if (this->hasMemReleaser("otherMemory")
- *     	this->memRelease("otherMemory", data->getMemory());
+ *     this->releaseMemory(data->getMemory());
  *
+ *     // Add memory to output edge
  *     addResult(new Data2(readBuffer));
  *     ...
  *   }
@@ -127,28 +121,30 @@ class TaskManager;
  * int numThreadsRead = 2;
  * int numThreadsMultiply = 10;
  *
- * htgs::TaskGraph<htgs::VoidData, htgs::VoidData> *taskGraph = new htgs::TaskGraph<htgs::VoidData, htgs::VoidData>();
+ * htgs::TaskGraphConf<htgs::VoidData, htgs::VoidData> *taskGraph = new htgs::TaskGraphConf<htgs::VoidData, htgs::VoidData>();
  *
  * PreProcessTask *preProcTask = new PreProcessTask(numThreadsPreprocess);
  * ReadTask *readTask = new ReadTask(numThreadsRead);
  * MultiplyTask *mulTask = new MultiplyTask(numThreadsMultiply);
  *
  * // Add tasks to task graph (each task must be added before using addMemoryManagerEdge)
+ * taskGraph->setGraphConsumerTask(preProcTask);
  * taskGraph->addEdge(preProcTask, readTask);
  * taskGraph->addEdge(readTask, mulTask);
+ * taskGraph->addGraphProducerTask(mulTask);
  *
- * // Add memory edges. The types for the allocator must match the type specified when an ITask uses memGet
+ * // Add memory edges. The types for the allocator must match the type specified when an ITask uses getMemory
  * // Memory pool size is specified based on algorithm scheduling and memory release rules.
  * int otherMemoryPoolSize = 100;
  * int readMemoryPoolSize = 200;
  *
  * // Creates the memory edge "otherMemory" with preProcTask as the getter, and readTask as the releaser
- * taskGraph->addMemoryManagerEdge("otherMemory", preProcTask, readTask, new OtherMemoryAllocator(), otherMemoryPoolSize);
+ * taskGraph->addMemoryManagerEdge("otherMemory", preProcTask, new OtherMemoryAllocator(), otherMemoryPoolSize);
  *
  * // Creates the memory edge "readMemory" with readTask as the getter, and mulTask as the releaser
- * taskGraph->addMemoryManagerEdge("readMemory", readTask, mulTask, new ReadMemoryAllocator(), readMemoryPoolSize);
+ * taskGraph->addMemoryManagerEdge("readMemory", readTask, new ReadMemoryAllocator(), readMemoryPoolSize);
  *
- * htgs::Runtime *executeGraph = new htgs::Runtime(taskGraph);
+ * htgs::TaskGraphRuntime *executeGraph = new htgs::TaskGraphRuntime(taskGraph);
  *
  * // Launches threads and binds them to ITasks
  * executeGraph->executeAndWaitForRuntime();
@@ -158,7 +154,7 @@ class TaskManager;
  * @tparam U the output data type for the ITask, U must derive from IData.
  */
 template<class T, class U>
-class ITask: public AnyITask {
+class ITask : public AnyITask {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
 
@@ -167,13 +163,13 @@ class ITask: public AnyITask {
   /**
    * Creates an ITask with number of threads equal to 1.
    */
-  ITask() : super() { }
+  ITask() : super() {}
 
   /**
    * Constructs an ITask with a specified number of threads.
    * @param numThreads the number of threads associated with this ITask
    */
-  ITask(size_t numThreads) : super(numThreads) {  }
+  ITask(size_t numThreads) : super(numThreads) {}
 
   /**
    * Constructs an ITask with a specified number of threads as well as additional scheduling options.
@@ -183,14 +179,17 @@ class ITask: public AnyITask {
    * @param microTimeoutTime the timeout period for checking for data
    * @note If the ITask is declared as a start task or is polling, then executeTask() should properly handle nullptr data
    */
-  ITask(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime) : super(numThreads, isStartTask, poll, microTimeoutTime){ }
+  ITask(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime) : super(numThreads,
+                                                                                         isStartTask,
+                                                                                         poll,
+                                                                                         microTimeoutTime) {}
 
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////// VIRTUAL FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  virtual ~ITask() override { }
+  virtual ~ITask() override {}
 
   virtual void initialize() override {}
 
@@ -205,7 +204,7 @@ class ITask: public AnyITask {
   /**
    * @copydoc AnyITask::canTerminate
    */
-  virtual bool canTerminate(std::shared_ptr<AnyConnector> inputConnector)  override {
+  virtual bool canTerminate(std::shared_ptr<AnyConnector> inputConnector) override {
     return inputConnector->isInputTerminated();
   }
 
@@ -274,9 +273,8 @@ class ITask: public AnyITask {
    * @param deep whether to do a deep copy and copy the memory managers as well
    * @return the copy of the ITask
    */
-  ITask<T, U> *copyITask(bool deep) override
-  {
-    ITask<T,U> *iTaskCopy = copy();
+  ITask<T, U> *copyITask(bool deep) override {
+    ITask<T, U> *iTaskCopy = copy();
 
     if (deep)
       copyMemoryEdges(iTaskCopy);
@@ -298,7 +296,7 @@ class ITask: public AnyITask {
    * @param result the result data to be passed
    */
   void addResult(U *result) {
-   this->ownerTask->addResult(std::shared_ptr<U>(result));
+    this->ownerTask->addResult(std::shared_ptr<U>(result));
   }
 
   /**
@@ -317,8 +315,7 @@ class ITask: public AnyITask {
   /**
    * @copydoc AnyITask::inTypeName
    */
-  std::string inTypeName() override final
-  {
+  std::string inTypeName() override final {
     int status;
     char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
     std::string ret(realName);
@@ -332,8 +329,7 @@ class ITask: public AnyITask {
   /**
    * @copydoc AnyITask::outTypeName
    */
-  std::string outTypeName() override final
-  {
+  std::string outTypeName() override final {
     int status;
     char *realName = abi::__cxa_demangle(typeid(U).name(), 0, 0, &status);
     std::string ret(realName);
@@ -347,8 +343,7 @@ class ITask: public AnyITask {
   /**
    * @copydoc AnyITask::getAddress
    */
-  std::string getAddress() override final
-  {
+  std::string getAddress() override final {
     return ownerTask->getAddress();
   }
 
@@ -356,8 +351,7 @@ class ITask: public AnyITask {
    * Sets the owner task manager for this ITask
    * @param ownerTask the task manager that owns this ITask
    */
-  void setTaskManager(TaskManager<T, U> *ownerTask)
-  {
+  void setTaskManager(TaskManager<T, U> *ownerTask) {
     this->ownerTask = ownerTask;
   }
 
@@ -365,8 +359,7 @@ class ITask: public AnyITask {
    * Gets the owner task manager for this ITask
    * @return the owner task manager
    */
-  TaskManager<T, U> *getOwnerTaskManager()
-  {
+  TaskManager<T, U> *getOwnerTaskManager() {
     return this->ownerTask;
   }
 
@@ -374,7 +367,7 @@ class ITask: public AnyITask {
    * Gathers profile data.
    * @param taskManagerProfiles the mapping between the task manager and the profile data for the task manager.
    */
-  virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) { }
+  virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) {}
 
  private:
   //! @cond Doxygen_Suppress
@@ -387,6 +380,5 @@ class ITask: public AnyITask {
 };
 
 }
-
 
 #endif //HTGS_ITASK_HPP

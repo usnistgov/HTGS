@@ -22,24 +22,27 @@ namespace htgs {
  * @brief Abstract class that describes how memory is allocated and freed
  *
  * @details
- * This class is used in conjunction with TaskGraph::addMemoryManagerEdge and is required
+ * This class is used in conjunction with TaskGraphConf::addMemoryManagerEdge and is required
  * in order to define how a MemoryManager allocates memory for its memory pool.
+ *
+ * If the memory allocator is to be shared among multiple memory managers, then the allocator must be wrapped into
+ * a std::shared_ptr.
  *
  * Example implementation:
  * @code
- * class FFTWMemoryAllocator : public htgs::IMemoryAllocator<fftw_complex *>
+ * class FFTWMemoryAllocator : public htgs::IMemoryAllocator<fftw_complex>
  * {
  *   FFTWMemoryAllocator(size_t size) : IMemoryAllocator(size) {}
  *
- *   virtual fftw_complex *memAlloc(size_t size) {
+ *   fftw_complex *memAlloc(size_t size) override {
  *     return fftw_alloc_complex(size);
  *   }
  *
- *   virtual fftw_complex *memAlloc() {
+ *   fftw_complex *memAlloc() override {
  *   	return fftw_alloc_complex(this->size());
  *   }
  *
- *   virtual void memFree(fftw_complex *&memory) {
+ *   void memFree(fftw_complex *&memory) override {
  *     fftw_free(memory);
  *   }
  *
@@ -52,11 +55,11 @@ namespace htgs {
  * FFTTask *fftTask = new FFTTask();
  * MatMulTask *matMul = new MatMulTask();
  *
- * htgs::TaskGraph<FFTData, VoidData> *taskGraph = new htgs::TaskGraph();
+ * htgs::TaskGraphConf<FFTData, VoidData> *taskGraph = new htgs::TaskGraphConf();
  *
  * taskGraph->addEdge(fftTask, matMul);
  *
- * taskGraph->addMemoryManagerEdge("fft", fftTask, matMul, new FFTWMemoryAllocator(imageSize), memoryPoolSize);
+ * taskGraph->addMemoryManagerEdge("fft", fftTask, new FFTWMemoryAllocator(imageSize), memoryPoolSize, htgs::MMType::Static);
  * @endcode
  * @tparam T the memory type
  */
@@ -67,12 +70,12 @@ class IMemoryAllocator : public AnyMemoryAllocator {
    * Creates a memory allocator
    * @param size the number of elements to allocate
    */
-  IMemoryAllocator(size_t size) : AnyMemoryAllocator(size) { }
+  IMemoryAllocator(size_t size) : AnyMemoryAllocator(size) {}
 
   /**
    * Destructor
    */
-  virtual ~IMemoryAllocator() { }
+  virtual ~IMemoryAllocator() {}
 
   /**
    * Pure virtual function that allocates a piece of memory with a specific size.

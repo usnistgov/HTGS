@@ -12,9 +12,8 @@
  *
  */
 
-#ifndef HTGS_BOOKKEEPER_H
-#define HTGS_BOOKKEEPER_H
-
+#ifndef HTGS_BOOKKEEPER_HPP
+#define HTGS_BOOKKEEPER_HPP
 
 #include "ITask.hpp"
 #include "VoidData.hpp"
@@ -32,15 +31,18 @@ namespace htgs {
  *
  * To use the bookkeeper, create an IRule and an ITask. The IRule represents the rule that produces data
  * to the ITask. An edge is created with a RuleManager acting as the intermediary between the IRule and the ITask.
- * These RuleManagers are created automatically when adding the bookkeeper using the TaskGraph::addRule function.
- * Each RuleManager represents a different edge to another ITask connected to a Bookkeeper and can have multiple
- * IRules connecting the ITask.
+ * These RuleManagers are created automatically when adding the bookkeeper using the TaskGraphConf::addRuleEdge function.
+ * Each RuleManager represents a different edge to another ITask connected to a Bookkeeper and have one
+ * IRule connecting the ITask.
+ *
+ * If you wish to share an IRule with multiple Bookkeepers, you must wrap the IRule into a shared_ptr prior to
+ * calling the TaskGraphConf::addRuleEdge function.
  *
  * 
  *
  * Example usage:
  * @code
- * htgs::TaskGraph<htgs::VoidData, htgs::VoidData> *tGraph = new htgs::TaskGraph<VoidData, VoidData>();
+ * htgs::TaskGraphConf<htgs::VoidData, htgs::VoidData> *tGraph = new htgs::TaskGraphConf<VoidData, VoidData>();
  *
  * htgs::Bookkeeper<MatrixData> *bk = new htgs::BookKeeper<MatrixData>();
  *
@@ -48,14 +50,14 @@ namespace htgs {
  * ScalMultiplyTask *scalMul = new ScalMultiplyTask();
  *
  * // Submits data from bk to scalMul using rule MatrixRule. Only submits data if MatrixRule adds results
- * tGraph->addRule(bk, scalMul, new MatrixRule());
+ * tGraph->addRuleEdge(bk, scalMul, new MatrixRule());
  * @endcode
  *
  * @tparam T the input data type for the Bookkeeper ITask, T must derive from IData.
  *
  */
 template<class T>
-class Bookkeeper: public ITask<T, VoidData> {
+class Bookkeeper : public ITask<T, VoidData> {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
 
  public:
@@ -193,7 +195,7 @@ class Bookkeeper: public ITask<T, VoidData> {
       ruleManStr.erase(0, 1);
       oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName() << "\"];" << std::endl;
     }
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName()) : "");
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: " + this->inTypeName()) : "");
 
     oss << idStr + "[label=\"Bookkeeper" + inOutLabel + "\"];\n";
 
@@ -217,5 +219,4 @@ class Bookkeeper: public ITask<T, VoidData> {
 };
 }
 
-
-#endif //HTGS_BOOKKEEPER_H
+#endif //HTGS_BOOKKEEPER_HPP

@@ -31,9 +31,8 @@ namespace htgs {
  *
  * @tparam T the type of data that is allocated by the memory manager
  */
-template <class T>
-class MemoryEdge : public EdgeDescriptor
-{
+template<class T>
+class MemoryEdge : public EdgeDescriptor {
  public:
   /**
    * Creates a memory edge.
@@ -46,19 +45,20 @@ class MemoryEdge : public EdgeDescriptor
              MemoryManager<T> *memoryManager)
       : memoryEdgeName(memoryEdgeName),
         getMemoryTask(getMemoryTask),
-        memoryManager(memoryManager)
-        {}
+        memoryManager(memoryManager) {}
 
-~MemoryEdge() override { }
+  ~MemoryEdge() override {}
 
   void applyEdge(AnyTaskGraphConf *graph) override {
 
     // Check to make sure that the getMemoryTask or releaseMemoryTasks do not have this named edge already
     if (getMemoryTask->hasMemoryEdge(memoryEdgeName))
-      throw std::runtime_error("Error getMemoryTask: " + getMemoryTask->getName() + " already has the memory edge: " + memoryEdgeName);
+      throw std::runtime_error(
+          "Error getMemoryTask: " + getMemoryTask->getName() + " already has the memory edge: " + memoryEdgeName);
 
     if (!graph->hasTask(getMemoryTask))
-      throw std::runtime_error("Error getMemoryTask: " + getMemoryTask->getName() + " must be added to the graph you are connecting the memory edge too.");
+      throw std::runtime_error("Error getMemoryTask: " + getMemoryTask->getName()
+                                   + " must be added to the graph you are connecting the memory edge too.");
 
     auto memTaskManager = graph->getTaskManager(memoryManager);
 
@@ -70,10 +70,15 @@ class MemoryEdge : public EdgeDescriptor
 
     releaseMemoryConnector->incrementInputTaskCount();
 
-    getMemoryTask->attachMemoryEdge(memoryEdgeName, getMemoryConnector, releaseMemoryConnector, memoryManager->getType());
+    getMemoryTask->attachMemoryEdge(memoryEdgeName,
+                                    getMemoryConnector,
+                                    releaseMemoryConnector,
+                                    memoryManager->getType());
   }
   EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {
-    return new MemoryEdge<T>(memoryEdgeName, graph->getCopy(getMemoryTask), (MemoryManager<T> *)graph->getCopy(memoryManager));
+    return new MemoryEdge<T>(memoryEdgeName,
+                             graph->getCopy(getMemoryTask),
+                             (MemoryManager<T> *) graph->getCopy(memoryManager));
   }
  private:
 

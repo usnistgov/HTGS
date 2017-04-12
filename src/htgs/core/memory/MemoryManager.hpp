@@ -28,28 +28,23 @@ namespace htgs {
  * The memory pool is allocated using the IMemoryAllocator interface. As soon
  * as data is available in the pool, it is pushed to the ITask associated with the memory.
  *
- * The memoryPoolSize should be sufficient to process the algorithm based on the release
- * rules added to the MemoryData when an ITask gets the memory. These release rules should
- * be satisfied by the traversal of data specified based on algorithm and system memory capacity requirements.
+ * The memoryPoolSize should be large enough to process the algorithm based on the release
+ * rules added to the MemoryData when an ITask gets memory from a memory manager. These release rules should
+ * be satisfied by the traversal of data that is specific to an algorithm and system memory capacity requirements.
  *
- * There are three types of memory managers:
+ * There are two types of memory managers:
  * (1) Static
  * (2) Dynamic
- * (3) User Managed
  *
- * Static memory managers allocate memory at initialization, and free memory during shutdown.
+ * Static memory managers allocate memory at initialization, and free memory using the destructor.
  *
  * Dynamic memory managers do not allocate memory. Memory allocation is moved to the ITask. Memory returned from an
- * ITask will be freed when rules are satisfied.
- *
- * User managed memory managers do not allocate or free memory. All memory allocation and freeing is left up to the
- * user to manage. The manager acts as a throttling mechanism that can be used to ensure memory limits are satisfied.
+ * ITask will be freed when the IMemoryRelease rule indicates the memory is ready to be released.
  *
  * @tparam T the input/output MemoryData type for the MemoryManager; i.e., double *
  */
 template<class T>
-class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
-
+class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
 
  public:
   /**
@@ -60,7 +55,10 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
    * @param memoryAllocator the allocator for how the memory pool allocates the memory.
    * @param type the type of memory manager to create
    */
-  MemoryManager(std::string name, size_t memoryPoolSize, std::shared_ptr<IMemoryAllocator<T>> memoryAllocator, MMType type) : ITask<
+  MemoryManager(std::string name,
+                size_t memoryPoolSize,
+                std::shared_ptr<IMemoryAllocator<T>> memoryAllocator,
+                MMType type) : ITask<
       MemoryData<T>,
       MemoryData<T>>(1, true, false, 0L) {
     this->allocator = memoryAllocator;
@@ -69,8 +67,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
     this->name = name;
     this->type = type;
   }
-
-
 
   /**
    * Destructor
@@ -101,7 +97,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   /**
    * Shuts down the MemoryManager memory is only released when the underlying graph destructs the memory manager.
    */
-  void shutdown() override{
+  void shutdown() override {
 //    bool release = false;
 //    if (type == MMType::Static)
 //      release = true;
@@ -130,8 +126,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
           }
         }
 
-      }
-      else {
+      } else {
         std::cerr << "Memory manager received data from another pipeline!" << std::endl;
       }
     }
@@ -155,11 +150,9 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
   virtual std::string getName() override {
     std::string typeStr;
     switch (this->type) {
-      case MMType::Static:
-        typeStr = "static";
+      case MMType::Static:typeStr = "static";
         break;
-      case MMType::Dynamic:
-        typeStr = "dynamic";
+      case MMType::Dynamic:typeStr = "dynamic";
         break;
     }
     return std::string("MM(" + typeStr + "): " + this->name);
@@ -201,8 +194,7 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
     * Gets the demangled type name of the connector
     * @return the demangled type name
     */
-  std::string typeName()
-  {
+  std::string typeName() {
     int status;
     char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
     std::string ret(realName);
@@ -212,7 +204,6 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
     return ret;
 
   }
-
 
   /**
    * Gets the memory manager type.
@@ -239,7 +230,8 @@ class MemoryManager: public ITask<MemoryData<T>, MemoryData<T>> {
 
     if (output != nullptr) {
       oss << dotId << " -> " << output->getDotId() << "[color=sienna];" << std::endl;
-      oss << output->getDotId() + "[label=\""+ this->typeName() +"\",style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
+      oss << output->getDotId() + "[label=\"" + this->typeName()
+          + "\",style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
     }
 
     oss << dotId + ";\n";

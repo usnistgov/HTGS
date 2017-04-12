@@ -10,7 +10,7 @@
  *
  * @brief VoidData is used for data that is empty/void.
  * @details
- * Often used when a ITask or TaskGraph does not have an input or output to another ITask
+ * Often used when a ITask or TaskGraphConf does not have an input or output to another ITask
  */
 #ifndef HTGS_VOIDDATA_HPP
 #define HTGS_VOIDDATA_HPP
@@ -34,12 +34,12 @@ namespace htgs {
  * @endcode
  *
  */
-class VoidData: public IData {
+class VoidData : public IData {
  public:
   /**
    * Constructs VoidData
    */
-  VoidData() { }
+  VoidData() {}
 };
 }
 

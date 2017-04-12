@@ -36,7 +36,7 @@ class IRule;
  *
  * Example Usage:
  * @code
- * htgs::TaskGraph<htgs::VoidData, htgs::VoidData> *taskGraph = new htgs::TaskGraph<htgs::VoidData, htgs::VoidData>();
+ * htgs::TaskGraphConf<htgs::VoidData, htgs::VoidData> *taskGraph = new htgs::TaskGraphConf<htgs::VoidData, htgs::VoidData>();
  * htgs::Bookkeeper<Data1> *bkTask = new htgs::Bookkeeper<Data1>();
  *
  * // DataRule implements IRule<Data1, Data2> to be compatible with ruleMan
@@ -46,13 +46,13 @@ class IRule;
  * Data2ProcessingTask *data2Task = new Data2ProcessingTask();
  *
  * // Creates edge between the Bookkeeper and the Data2ProcessingTask, where rule defines when data is sent
- * taskGraph->addRule(bkTask, data2Task, rule);
+ * taskGraph->addRuleEdge(bkTask, rule, data2Task);
  * @endcode
  *
  * @tparam T the input data type for the RuleManager, T must derive from IData.
  * @tparam U the output data type for the RuleManager, U  must derive from IData.
  */
-template <class T, class U>
+template<class T, class U>
 class RuleManager : public AnyRuleManagerInOnly<T> {
   static_assert(std::is_base_of<IData, T>::value, "T must derive from IData");
   static_assert(std::is_base_of<IData, U>::value, "U must derive from IData");
@@ -66,7 +66,8 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
    * @note This function should only be called by the HTGS API
    * @internal
    */
-  RuleManager(std::shared_ptr<htgs::IRule<T, U>> rule) : rule(rule), pipelineId(0), numPipelines(1), terminated(false) { }
+  RuleManager(std::shared_ptr<htgs::IRule<T, U>> rule)
+      : rule(rule), pipelineId(0), numPipelines(1), terminated(false) {}
 
   /**
    * Destructor
@@ -75,25 +76,23 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
 
   void executeTask(std::shared_ptr<T> data) override {
 
-
     this->rule->getMutex().lock();
 
-      // Check if the rule is expecting data or not
-      checkRuleTermination();
+    // Check if the rule is expecting data or not
+    checkRuleTermination();
 
-      DEBUG_VERBOSE("Rule: " << rule->getName() << " consuming data: " << data);
-      auto result = rule->applyRuleFunction(data, pipelineId);
+    DEBUG_VERBOSE("Rule: " << rule->getName() << " consuming data: " << data);
+    auto result = rule->applyRuleFunction(data, pipelineId);
 
-      if (result != nullptr && result->size() > 0)
-      {
-        if (this->connector != nullptr) {
-          this->connector->produceData(result);
-        }
+    if (result != nullptr && result->size() > 0) {
+      if (this->connector != nullptr) {
+        this->connector->produceData(result);
       }
+    }
 
 
-      // Check if the rule is ready to be terminated after processing data (in case no more data
-      checkRuleTermination();
+    // Check if the rule is ready to be terminated after processing data (in case no more data
+    checkRuleTermination();
 
     this->rule->getMutex().unlock();
   }
@@ -114,9 +113,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
     return this->connector;
   }
 
-
-  void initialize(size_t pipelineId, size_t numPipelines, std::string address) override
-  {
+  void initialize(size_t pipelineId, size_t numPipelines, std::string address) override {
     DEBUG_VERBOSE("Initialized " << this->getName() << " pipeline id: " << pipelineId);
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
@@ -139,8 +136,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
     rule->shutdownRule(this->pipelineId);
   }
 
-  bool isTerminated() override
-  {
+  bool isTerminated() override {
     return terminated;
   }
 
@@ -153,8 +149,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
  private:
 
   //! @cond Doxygen_Suppress
-  void checkRuleTermination()
-  {
+  void checkRuleTermination() {
     if (!terminated) {
       // Check if the rule is ready to be terminated before and after processing data
       if (rule->canTerminateRule(pipelineId)) {

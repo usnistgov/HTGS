@@ -17,8 +17,7 @@
  */
 namespace htgs {
 
-
-template <class T, class U>
+template<class T, class U>
 using IRuleList = std::list<std::shared_ptr<IRule<T, U>>>;
 
 /**
@@ -78,12 +77,8 @@ typedef std::map<AnyMemoryAllocator *, std::shared_ptr<AnyMemoryAllocator>> MemA
  */
 typedef std::pair<AnyMemoryAllocator *, std::shared_ptr<AnyMemoryAllocator>> MemAllocPair;
 
-
-template <class V>
+template<class V>
 using m_data_t = std::shared_ptr<MemoryData<V>>;
-
-
-
 
 }
 #endif //HTGS_TYPES_HPP

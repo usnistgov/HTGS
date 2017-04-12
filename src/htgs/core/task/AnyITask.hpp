@@ -47,8 +47,8 @@ class AnyITask {
     this->poll = false;
     this->microTimeoutTime = 0;
 
-    memoryEdges = std::shared_ptr<ConnectorMap> (new ConnectorMap());
-    releaseMemoryEdges = std::shared_ptr<ConnectorMap> (new ConnectorMap());
+    memoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
+    releaseMemoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
 
     this->pipelineId = 0;
     this->numPipelines = 1;
@@ -64,8 +64,8 @@ class AnyITask {
     this->poll = false;
     this->microTimeoutTime = 0L;
 
-    memoryEdges = std::shared_ptr<ConnectorMap> (new ConnectorMap());
-    releaseMemoryEdges = std::shared_ptr<ConnectorMap> (new ConnectorMap());
+    memoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
+    releaseMemoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
 
     this->pipelineId = 0;
     this->numPipelines = 1;
@@ -85,8 +85,8 @@ class AnyITask {
     this->poll = poll;
     this->microTimeoutTime = microTimeoutTime;
 
-    memoryEdges = std::shared_ptr<ConnectorMap> (new ConnectorMap());
-    releaseMemoryEdges = std::shared_ptr<ConnectorMap> (new ConnectorMap());
+    memoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
+    releaseMemoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
 
     this->pipelineId = 0;
     this->numPipelines = 1;
@@ -100,7 +100,7 @@ class AnyITask {
   /**
    * Destructor
    */
-  virtual ~AnyITask() { }
+  virtual ~AnyITask() {}
 
   /**
    * Pure virtual function to copy an ITask
@@ -132,11 +132,10 @@ class AnyITask {
    */
   virtual std::string getDotFillColor() = 0;
 
-
-    /**
-     * Gets the shape for graphviz dot
-     * @return the shape
-     */
+  /**
+   * Gets the shape for graphviz dot
+   * @return the shape
+   */
   virtual std::string getDotShape() = 0;
 
   /**
@@ -167,7 +166,10 @@ class AnyITask {
    * @param output the output connector for this task
    * @return the dot that represents the interaction between the input/output and the internal custom dot notation
    */
-  virtual std::string genDot(int flags, std::string dotId, std::shared_ptr<htgs::AnyConnector> input, std::shared_ptr<htgs::AnyConnector> output) {
+  virtual std::string genDot(int flags,
+                             std::string dotId,
+                             std::shared_ptr<htgs::AnyConnector> input,
+                             std::shared_ptr<htgs::AnyConnector> output) {
     std::ostringstream oss;
 
     if (input != nullptr) {
@@ -188,19 +190,19 @@ class AnyITask {
   /**
   * Virtual function that is called to debug the ITask
   */
-  virtual void debug() { }
+  virtual void debug() {}
 
   /**
    * Provides debug output for a node in the dot graph.
    * @return a string representation of the debug output that is added to the dot graph.
    */
-  virtual std::string debugDotNode() { return "";}
+  virtual std::string debugDotNode() { return ""; }
 
   /**
    * Virtual function that is called to provide profile output for the ITask
    * @note \#define PROFILE to enable profiling
    */
-  virtual void profile() { }
+  virtual void profile() {}
 
   /**
   * Gets the demangled input type name of the connector
@@ -242,7 +244,7 @@ class AnyITask {
  * @return the additiona dota attributes for the dot graph representation
  */
   virtual std::string genDot(int flags, std::string dotId) {
-    return dotId + ";\n" ;
+    return dotId + ";\n";
 //    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
 //    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
 //    return dotId + "[label=\"" + this->getName() +
@@ -280,8 +282,7 @@ class AnyITask {
    * Gets the pipeline ID
    * @return the pipeline id
    */
-  size_t getPipelineId()
-  {
+  size_t getPipelineId() {
     return this->pipelineId;
   }
 
@@ -300,8 +301,7 @@ class AnyITask {
    * Sets the task graph communicator.
    * @param communicator
    */
-  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator)
-  {
+  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator) {
     this->taskGraphCommunicator = communicator;
   }
 
@@ -361,8 +361,7 @@ class AnyITask {
    * Copies the memory edges from this AnyITask to another AnyITask
    * @param iTaskCopy the other AnyITask to copy the memory edges too
    */
-  void copyMemoryEdges(AnyITask * iTaskCopy)
-  {
+  void copyMemoryEdges(AnyITask *iTaskCopy) {
     iTaskCopy->setMemoryEdges(this->memoryEdges);
     iTaskCopy->setReleaseMemoryEdges(this->releaseMemoryEdges);
   }
@@ -414,7 +413,11 @@ class AnyITask {
    */
   template<class V>
   void releaseMemory(m_data_t<V> memory) {
-    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket(this->getName(), this->getAddress(), memory->getMemoryManagerName(), memory->getAddress(), memory));
+    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket(this->getName(),
+                                                                                        this->getAddress(),
+                                                                                        memory->getMemoryManagerName(),
+                                                                                        memory->getAddress(),
+                                                                                        memory));
     this->taskGraphCommunicator->produceDataPacket(dataPacket);
   }
 
@@ -444,15 +447,13 @@ class AnyITask {
                         std::shared_ptr<AnyConnector> releaseMemoryConnector, MMType type) {
     if (hasMemoryEdge(name)) {
       std::cerr << "ERROR: " << this->getName() << " already has a memory edge named " << name << std::endl;
-    }
-    else {
+    } else {
       memoryEdges->insert(ConnectorPair(name, getMemoryConnector));
       releaseMemoryEdges->insert(ConnectorPair(name, releaseMemoryConnector));
     }
 
     DEBUG("Num memory getters " << memoryEdges->size());
   }
-
 
   /**
    * Creates a dot notation representation for this task
@@ -541,8 +542,7 @@ class AnyITask {
  private:
 
   template<class V>
-  m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem)
-  {
+  m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem) {
     assert(("Unable to find memory edge 'name' for task", this->memoryEdges->find(name) != this->memoryEdges->end()));
 
     auto conn = memoryEdges->find(name)->second;
@@ -552,9 +552,10 @@ class AnyITask {
 
     memory->setMemoryReleaseRule(releaseRule);
 
-    if (memory->getType() != type)
-    {
-      std::cerr << "Error: Incorrect usage of getMemory. Dynamic memory managers use 'getDynamicMemory', Static memory managers use 'getMemory' for task " << this->getName() << " on memory edge " <<  name << std::endl;
+    if (memory->getType() != type) {
+      std::cerr
+          << "Error: Incorrect usage of getMemory. Dynamic memory managers use 'getDynamicMemory', Static memory managers use 'getMemory' for task "
+          << this->getName() << " on memory edge " << name << std::endl;
       exit(-1);
     }
 
@@ -566,15 +567,18 @@ class AnyITask {
   //! @endcond
 
 
-  size_t numThreads; //!< The number of threads to be used with this ITask (forms a thread pool) used when creating a TaskManager
+  size_t
+      numThreads; //!< The number of threads to be used with this ITask (forms a thread pool) used when creating a TaskManager
   bool startTask; //!< Whether the ITask will be a start task used when creating a TaskManager
   bool poll; //!< Whether the ITask should poll for data used when creating a TaskManager
   size_t microTimeoutTime; //!< The timeout time for polling in microseconds used when creating a TaskManager
   size_t pipelineId; //!< The execution pipeline id for the ITask
   size_t numPipelines; //!< The number of pipelines that exist for this task
 
-  std::shared_ptr<ConnectorMap> memoryEdges; //!< A mapping from memory edge name to memory manager connector for getting memory
-  std::shared_ptr<ConnectorMap> releaseMemoryEdges; //!< A mapping from the memory edge name to the memory manager's input connector to shutdown the memory manager
+  std::shared_ptr<ConnectorMap>
+      memoryEdges; //!< A mapping from memory edge name to memory manager connector for getting memory
+  std::shared_ptr<ConnectorMap>
+      releaseMemoryEdges; //!< A mapping from the memory edge name to the memory manager's input connector to shutdown the memory manager
   TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph connector communicator
 
 };

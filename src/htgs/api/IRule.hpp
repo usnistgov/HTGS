@@ -24,7 +24,7 @@
 
 namespace htgs {
 
-template <class T>
+template<class T>
 class StateContainer;
 
 /**
@@ -44,6 +44,9 @@ class StateContainer;
  * thus ensuring that no race conditions occur when updating the state when multiple Bookkeepers are attempting
  * to process the same IRule.
  *
+ * It is possible to share the same IRule among multiple bookkeepers by wrapping the IRule into a std::shared_ptr and calling
+ * TaskGraphConf::addRuleEdge. The rule will be synchronously accessed among the bookkeepers.
+ *
  * Example Implementation
  * @code
  * class SimpleIRule : public htgs::IRule<Data1, Data2>
@@ -55,12 +58,13 @@ class StateContainer;
  *   virtual void shutdownRule(int pipelineId) { }
  *   virtual void applyRule(std::shared_ptr<Data1> data, int pipelineId)
  *   {
- *		// Process state updates
+ *		// Store data updates
  *		state[data.getRow()][data.getCol()] = data;
  *
  *		// Check for some dependency
  *		if (state[data.getRow()+1][data.getCol()])
  *		{
+ *		    // Send work along edge to next task
  *			addResult(new Data2(data, state[data.getRow()+1][data.getCol()]));
  *		}
  *   }
@@ -76,12 +80,13 @@ class StateContainer;
  * htgs::Bookkeeper<Data1> *bkTask = new htgs::Bookkeeper<Data1>();
  *
  * // SimpleIRule has input type 'Data1' and output type 'Data2'
+ * // Use std::shared_ptr<SimpleIRule> if sharing among multiple bookkeepers
  * SimpleIRule *simpleRule = new SimpleIRule();
  *
  * // SimpleTask has input type 'Data2'
  * SimpleTask *resultTask = new SimpleTask();
  *
- * htgs::TaskGraph<VoidData, VoidData> *taskGraph = new htgs::TaskGraph<VoidData, VoidData>();
+ * htgs::TaskGraphConf<VoidData, VoidData> *taskGraph = new htgs::TaskGraphConf<VoidData, VoidData>();
  *
  * // Adds simpleRule that connects the bkTask to the resultTask
  * taskGraph->addRuleEdge(bkTask, simpleRule, resultTask);
@@ -112,8 +117,7 @@ class IRule : public AnyIRule {
    * Destructor
    */
   virtual ~IRule() override {
-    if (output != nullptr)
-    {
+    if (output != nullptr) {
       output->clear();
       delete output;
       output = nullptr;
@@ -129,7 +133,7 @@ class IRule : public AnyIRule {
   /**
    * @copydoc AnyIRule::shutdownRule
    */
-  virtual void shutdownRule(size_t pipelineId) override { }
+  virtual void shutdownRule(size_t pipelineId) override {}
 
   /**
    * @copydoc AnyIRule::getName
@@ -190,8 +194,7 @@ class IRule : public AnyIRule {
    * @param width the width of the state container
    * @return a pointer to the state container allocated
    */
-  StateContainer<std::shared_ptr<T>> *allocStateContainer(size_t height, size_t width)
-  {
+  StateContainer<std::shared_ptr<T>> *allocStateContainer(size_t height, size_t width) {
     return new StateContainer<std::shared_ptr<T>>(height, width, nullptr);
   }
 
@@ -203,9 +206,8 @@ class IRule : public AnyIRule {
    * @return a pointer to the state container allocated
    * @tparam V the state container type
    */
-  template <class V>
-  StateContainer<V> *allocStateContainer(size_t height, size_t width, V defaultValue)
-  {
+  template<class V>
+  StateContainer<V> *allocStateContainer(size_t height, size_t width, V defaultValue) {
     return new StateContainer<V>(height, width, defaultValue);
   }
 
@@ -214,8 +216,7 @@ class IRule : public AnyIRule {
    * @param size the size of the state container
    * @return a pointer to the state container allocated
    */
-  StateContainer<std::shared_ptr<T>> *allocStateContainer(size_t size)
-  {
+  StateContainer<std::shared_ptr<T>> *allocStateContainer(size_t size) {
     return new StateContainer<std::shared_ptr<T>>(size, 0, nullptr);
   }
 
@@ -226,14 +227,14 @@ class IRule : public AnyIRule {
    * @return a pointer to the state container allocated
    * @tparam V the state container type
    */
-  template <class V>
-  StateContainer<V> *allocStateContainer(size_t size, V defaultValue)
-  {
+  template<class V>
+  StateContainer<V> *allocStateContainer(size_t size, V defaultValue) {
     return new StateContainer<V>(size, 0, defaultValue);
   }
 
  private:
-  std::list<std::shared_ptr<U>> * output; //!< The output data that is sent as soon as the applyRule has finished processing
+  std::list<std::shared_ptr<U>>
+      *output; //!< The output data that is sent as soon as the applyRule has finished processing
 };
 
 /**
@@ -256,7 +257,7 @@ class IRule : public AnyIRule {
  * @tparam T the type of data for the state container
  *
  */
-template <class T>
+template<class T>
 class StateContainer {
 
  public:
@@ -267,15 +268,13 @@ class StateContainer {
    * @param width the width of the state container
    * @param emptyData the data value that represents there is no data
    */
-  StateContainer(size_t height, size_t width, T emptyData)
-  {
+  StateContainer(size_t height, size_t width, T emptyData) {
     this->width = width;
     this->height = height;
     this->emptyData = emptyData;
-    data = new T[width*height];
+    data = new T[width * height];
 
-    for (size_t i = 0; i < width*height; i++)
-    {
+    for (size_t i = 0; i < width * height; i++) {
       data[i] = this->emptyData;
     }
   }
@@ -283,9 +282,8 @@ class StateContainer {
   /**
    * Destructor
    */
-  ~StateContainer()
-  {
-    delete []data;
+  ~StateContainer() {
+    delete[]data;
   }
 
   /**
@@ -350,7 +348,7 @@ class StateContainer {
    * @param row the row to remove data from
    * @param col the column to remove data from
    */
-  void remove (size_t row, size_t col) {
+  void remove(size_t row, size_t col) {
     set(row, col, emptyData);
   }
 
@@ -392,12 +390,9 @@ class StateContainer {
    * Iterates over all elements and prints a 1 if data is not equal to the empty data,
    * otherwise it prints 0.
    */
-  void printState()
-  {
-    for (size_t r = 0; r < height; r++)
-    {
-      for (size_t c = 0; c < width; c++)
-      {
+  void printState() {
+    for (size_t r = 0; r < height; r++) {
+      for (size_t c = 0; c < width; c++) {
         if (this->has(r, c))
           std::cout << "1";
         else
@@ -411,18 +406,14 @@ class StateContainer {
    * Prints the contents of the state container.
    * Iterates over all elements and prints the contents within.
    */
-  void printContents()
-  {
-    for (size_t r = 0; r < height; r++)
-    {
-      for (size_t c = 0; c < width; c++)
-      {
+  void printContents() {
+    for (size_t r = 0; r < height; r++) {
+      for (size_t c = 0; c < width; c++) {
         std::cout << this->get(r, c) << " ";
       }
       std::cout << std::endl;
     }
   }
-
 
  private:
   /**
@@ -431,8 +422,7 @@ class StateContainer {
    * @param col the column
    * @return the mapping from two dimensions to one dimension
    */
-  size_t computeIndex(size_t row, size_t col) const
-  {
+  size_t computeIndex(size_t row, size_t col) const {
     return row * width + col;
   }
 
@@ -443,6 +433,5 @@ class StateContainer {
 };
 
 }
-
 
 #endif //HTGS_IRULE_HPP

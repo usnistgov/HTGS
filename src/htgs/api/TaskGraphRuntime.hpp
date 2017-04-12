@@ -14,7 +14,6 @@
 #ifndef HTGS_TASKGRAPHRUNTIME_HPP
 #define HTGS_TASKGRAPHRUNTIME_HPP
 
-
 #include <thread>
 #include "htgs/core/graph/AnyTaskGraphConf.hpp"
 #include "htgs/core/task/AnyTaskManager.hpp"
@@ -37,7 +36,8 @@ namespace htgs {
  * A Runtime can be executed asynchronously with executeRuntime(), allowing for interaction with the main TaskGraph to
  * submit/receive data to/from the TaskGraph.
  *
- * To wait for the Runtime to finish processing all of the data for a TaskGraph, use waitForRuntime().
+ * To wait for the Runtime to finish processing all of the data for a TaskGraph, use waitForRuntime(). Be sure to indicate
+ * that the input data stream for the graph is closing prior to calling waitForRuntime() (see below).
  *
  * To execute and wait for the Runtime, use executeAndWaitForRuntime(). If data is being produced for the task graph,
  * then the TaskGraph::finishedProducingData function must be called prior to waiting for the runtime
@@ -67,9 +67,9 @@ namespace htgs {
  * taskGraph->finishedProducingData();
  *
  * // Process the output until there is no more output to process
- * while(!taskGraph->getOutputConnector()->isInputTerminated())
+ * while(!taskGraph->isInputTerminated())
  * {
- *   std::shared_ptr<Data2> data = taskGraph->getOuputConnector()->consumeData();
+ *   std::shared_ptr<Data2> data = taskGraph->consumeData();
  *
  *   if (data != nullptr) {
  *     // Do post processing
@@ -167,9 +167,9 @@ class TaskGraphRuntime {
 
       if (numThreads > 0) {
         std::list<AnyTaskManager *> taskList;
-        std::shared_ptr<std::atomic_size_t> atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(numThreads));
+        std::shared_ptr<std::atomic_size_t>
+            atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(numThreads));
         taskList.push_back(task);
-
 
         for (size_t i = 1; i < numThreads; i++) {
           AnyTaskManager *taskCopy = task->copy(true);
@@ -188,19 +188,17 @@ class TaskGraphRuntime {
           threadId++;
         }
 
-      } else{
+      } else {
         std::cerr << task->getName() << "Has no threads specified." << std::endl;
       }
     }
 
-    for (AnyTaskManager *newVertex : newVertices)
-    {
+    for (AnyTaskManager *newVertex : newVertices) {
       graph->addTaskManager(newVertex);
     }
 
     this->executed = true;
   }
-
 
  private:
   std::list<std::thread *> threads; //!< A list of all threads spawned for the Runtime
@@ -210,6 +208,5 @@ class TaskGraphRuntime {
 
 };
 }
-
 
 #endif //HTGS_TASKGRAPHRUNTIME_HPP

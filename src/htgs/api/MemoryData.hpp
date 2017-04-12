@@ -34,8 +34,10 @@ namespace htgs {
  * In order to properly share this data, it should be forwarded along with other IData until the ITask
  * responsible for releasing the data back to its MemoryManager is called.
  *
- * To receive memory from the MemoryManager use ITask::memGet.
- * To send memory to the MemoryManager use ITask::memRelease
+ * To receive memory from the MemoryManager use ITask::getMemory.
+ * To send memory to the MemoryManager use ITask::releaseMemory
+ *
+ * Use htgs::m_data_t<Type> from <htgs/types/Types.hpp> when handling MemoryData to reduce code size.
  *
  * Example Usage:
  * @code
@@ -43,12 +45,12 @@ namespace htgs {
  *   {
  *     ...
  *     // Shared memory getter
- *     std::shared_ptr<htgs::MemoryData<int *>> readBuffer = this->memGet<int *>("readMemory", new ReleaseCountRule(1));
+ *     // If you don't use m_data_t -> std::shared_ptr<htgs::MemoryData<int>>
+ *     htgs::m_data_t<int> readBuffer = this->memGet<int>("readMemory", new ReleaseCountRule(1));
  *     readData(data->getFile(), readBuffer->get());
  *
  *     // Shared memory release example
- *     if (this->hasMemReleaser("otherMemory")
- *     	this->memRelease("otherMemory", data->getMemory());
+ *     this->releaseMemory("otherMemory", data->getMemory());
  *
  *     addResult(new Data2(readBuffer));
  *     ...
@@ -57,12 +59,12 @@ namespace htgs {
  *
  * Example attaching MemoryManager:
  * @code
- * taskGraph->addMemoryManagerEdge("readMemory", readTask, mulTask, new ReadMemoryAllocator(), readMemoryPoolSize);
+ * taskGraph->addMemoryManagerEdge("readMemory", readTask, new ReadMemoryAllocator(), readMemoryPoolSize);
  * @endcode
  * @tparam T the type of memory to be held by the MemoryData, this will automatically be converted to a pointer type
  */
 template<class T>
-class MemoryData: public IData {
+class MemoryData : public IData {
  public:
   /**
    * Creates MemoryData with the specified IMemoryAllocator
@@ -71,7 +73,10 @@ class MemoryData: public IData {
    * @param memoryManagerName the name of the memory manager that allocated this memory
    * @param type the type of the memory manager that allocated this memory
    */
-  MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator, std::string address, std::string memoryManagerName, MMType type) {
+  MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator,
+             std::string address,
+             std::string memoryManagerName,
+             MMType type) {
     this->type = type;
     this->address = address;
     this->memoryManagerName = memoryManagerName;
@@ -129,8 +134,7 @@ class MemoryData: public IData {
    * @param rule the new rule that manages the memory
    */
   void setMemoryReleaseRule(IMemoryReleaseRule *rule) {
-    if (memoryReleaseRule)
-    {
+    if (memoryReleaseRule) {
       delete memoryReleaseRule;
       memoryReleaseRule = nullptr;
     }
@@ -204,7 +208,7 @@ class MemoryData: public IData {
    * @return the value at index
    * @note T must be a pointer to memory to use this functionality.
    */
-  const T &operator[] (size_t idx) const {
+  const T &operator[](size_t idx) const {
     return *(this->memory + idx);
   }
 
@@ -214,7 +218,7 @@ class MemoryData: public IData {
    * @return the value at index
    * @note T must be a pointer to memory to use this functionality.
    */
-   T &operator[] (size_t idx) {
+  T &operator[](size_t idx) {
     return *(this->memory + idx);
   }
 
@@ -246,7 +250,12 @@ class MemoryData: public IData {
    * @note This function should only be called by the HTGS API
    * @internal
    */
-  MemoryData<T> *copy() { return new MemoryData<T>(this->allocator, this->address, this->memoryManagerName, this->type); }
+  MemoryData<T> *copy() {
+    return new MemoryData<T>(this->allocator,
+                             this->address,
+                             this->memoryManagerName,
+                             this->type);
+  }
 
   /**
    * Allocates the memory that this memory data is managed with the specified size

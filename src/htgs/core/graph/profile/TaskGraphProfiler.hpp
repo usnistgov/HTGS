@@ -30,7 +30,7 @@ namespace htgs {
  * as a dot file. DOTGEN flags are used to specify options to enable/disable features for the graph.
  *
  *
- * @note to enable profiling you must add the directive PROFILE prior to compilation. If PROFILE is
+ * @note To enable profiling you must add the directive PROFILE prior to compilation. If PROFILE is
  * not defined, then a basic visualization is done showing just the graph structure.
  *
  */
@@ -41,8 +41,7 @@ class TaskGraphProfiler {
    * Constructs the task graph profiler.
    * @param flags the DOTGEN flags to enable/disable features
    */
-  TaskGraphProfiler(int flags) : flags(flags)
-  {
+  TaskGraphProfiler(int flags) : flags(flags) {
     taskManagerProfiles = new std::map<AnyTaskManager *, TaskManagerProfile *>();
   }
 
@@ -50,8 +49,7 @@ class TaskGraphProfiler {
    * Destructor
    */
   ~TaskGraphProfiler() {
-    for (auto v : *taskManagerProfiles)
-    {
+    for (auto v : *taskManagerProfiles) {
       delete v.second;
       v.second = nullptr;
     }
@@ -64,8 +62,7 @@ class TaskGraphProfiler {
    * Builds a profile for the graph, (called after execution is done)
    * @param graphConf the graph that is profiled
    */
-  void buildProfile(AnyTaskGraphConf *graphConf)
-  {
+  void buildProfile(AnyTaskGraphConf *graphConf) {
     graphConf->gatherProfilingData(taskManagerProfiles);
   }
 
@@ -73,9 +70,9 @@ class TaskGraphProfiler {
    * Prints the profile data to console.
    */
   void printProfiles() {
-    for (auto t : *taskManagerProfiles)
-    {
-      std::cout << t.first->getName() << " addr: " << t.first->getAddress() << " id: " <<  t.first->getThreadId() << " Profile: " << *t.second << std::endl;
+    for (auto t : *taskManagerProfiles) {
+      std::cout << t.first->getName() << " addr: " << t.first->getAddress() << " id: " << t.first->getThreadId()
+                << " Profile: " << *t.second << std::endl;
     }
   }
 
@@ -91,26 +88,22 @@ class TaskGraphProfiler {
    * @return the dot graph with labeling for profiling if profiling is enabled.
    * @note The directive PROFILE must be defined to enable outputting profile data.
    */
-  std::string genDotProfile(std::string curDotGraph, int colorFlag)
-  {
+  std::string genDotProfile(std::string curDotGraph, int colorFlag) {
     std::string ret = "";
 
     // If all threading is disabled, then compute the averages only, based on first thread
-    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) == 0)
-    {
+    if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) == 0) {
       computeAverages();
     }
 
     bool useColorMap = false;
     std::unordered_map<std::string, std::string> *colorMap = nullptr;
-    if (colorFlag != 0)
-    {
+    if (colorFlag != 0) {
       useColorMap = true;
       colorMap = genColorMap(colorFlag);
     }
 
-    for (auto t : *taskManagerProfiles)
-    {
+    for (auto t : *taskManagerProfiles) {
       auto tMan = t.first;
       auto tProfile = t.second;
 
@@ -120,17 +113,21 @@ class TaskGraphProfiler {
 
       if (curDotGraph.find(dotId + ";") != std::string::npos) {
 
-        std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ tFun->inTypeName() + "\nout: " + tFun->outTypeName()) : "");
-        std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(tFun->getNumThreads())));
+        std::string inOutLabel =
+            (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: " + tFun->inTypeName() + "\nout: "
+                + tFun->outTypeName()) : "");
+        std::string threadLabel =
+            (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(tFun->getNumThreads())));
         ret += dotId + "[label=\"" + tFun->getDotLabelName() +
-            (tFun->debugDotNode() != "" ? ("\n"+tFun->debugDotNode()+"\n") : "") +
+            (tFun->debugDotNode() != "" ? ("\n" + tFun->debugDotNode() + "\n") : "") +
             threadLabel + inOutLabel + "\n" +
             tProfile->genDot(flags) +
             "\",shape=" + tFun->getDotShape() +
             ",style=filled" +
             ",fillcolor=" + tFun->getDotFillColor()
-            + (useColorMap ? ",penwidth=5,color=\"" + colorMap->at(dotId) + "\"" : ", color=" + tFun->getDotShapeColor())
-            +",width=.2,height=.2];\n";
+            + (useColorMap ? ",penwidth=5,color=\"" + colorMap->at(dotId) + "\"" : ", color="
+                + tFun->getDotShapeColor())
+            + ",width=.2,height=.2];\n";
       }
     }
 
@@ -145,8 +142,7 @@ class TaskGraphProfiler {
   /**
    * Computes the averages for all profile data.
    */
-  void computeAverages()
-  {
+  void computeAverages() {
     std::map<AnyTaskManager *, TaskManagerProfile *> finalProfiles;
     // Address + name + thread ID = unique
 
@@ -157,8 +153,7 @@ class TaskGraphProfiler {
     std::set<std::string> keys;
 
     // Gather multimap
-    for (auto t : *taskManagerProfiles)
-    {
+    for (auto t : *taskManagerProfiles) {
       auto tMan = t.first;
       std::string key = tMan->getAddress() + tMan->getName();
       keys.insert(key);
@@ -166,31 +161,25 @@ class TaskGraphProfiler {
     }
 
     // Loop through each key
-    for (auto key : keys)
-    {
+    for (auto key : keys) {
       auto valRange = averageMap.equal_range(key);
 
       AnyTaskManager *mainManager = nullptr;
       TaskManagerProfile *finalProfile = nullptr;
 
       int count = 0;
-      for (auto i = valRange.first; i != valRange.second; ++i)
-      {
+      for (auto i = valRange.first; i != valRange.second; ++i) {
         auto profilePair = (*i).second;
 
-        if (finalProfile == nullptr)
-        {
+        if (finalProfile == nullptr) {
           finalProfile = profilePair.second;
-        }
-        else
-        {
+        } else {
           finalProfile->sum(profilePair.second);
         }
 
-        if (profilePair.first->getThreadId() == 0)
-        {
+        if (profilePair.first->getThreadId() == 0) {
           mainManager = profilePair.first;
-        } else{
+        } else {
           delete profilePair.second;
           profilePair.second = nullptr;
         }
@@ -200,17 +189,14 @@ class TaskGraphProfiler {
       if (finalProfile != nullptr && mainManager != nullptr) {
         finalProfile->average(count);
         finalProfiles.insert(std::pair<AnyTaskManager *, TaskManagerProfile *>(mainManager, finalProfile));
-      }
-      else
-      {
+      } else {
         std::cout << "Something screwy happened . . ." << std::endl;
       }
     }
 
     taskManagerProfiles->clear();
 
-    for (auto t : finalProfiles)
-    {
+    for (auto t : finalProfiles) {
       taskManagerProfiles->insert(t);
     }
 
@@ -224,19 +210,17 @@ class TaskGraphProfiler {
    * @param colorFlag selects which profile data to use when generating colors.
    * @return the color map
    */
-  std::unordered_map<std::string, std::string> *genColorMap(int colorFlag)
-  {
+  std::unordered_map<std::string, std::string> *genColorMap(int colorFlag) {
     std::unordered_map<std::string, std::string> *colorMap = new std::unordered_map<std::string, std::string>();
 
-    int rColor[10] = {0,0,0,0,85,170,255,255,255,255};
-    int gColor[10] = {0,85,170,255,255,255,255,170,85,0};
-    int bColor[10] = {255,255,255,255,170,85,0,0,0,0};
+    int rColor[10] = {0, 0, 0, 0, 85, 170, 255, 255, 255, 255};
+    int gColor[10] = {0, 85, 170, 255, 255, 255, 255, 170, 85, 0};
+    int bColor[10] = {255, 255, 255, 255, 170, 85, 0, 0, 0, 0};
 
     std::deque<double> vals;
     double maxTime = 0.0;
     double totalTime = 0.0;
-    for (auto v : *taskManagerProfiles)
-    {
+    for (auto v : *taskManagerProfiles) {
       double val = v.second->getValue(colorFlag);
       if (val > 0) {
         totalTime += val;
@@ -246,8 +230,7 @@ class TaskGraphProfiler {
         maxTime = val;
     }
 
-    for (auto v : *taskManagerProfiles)
-    {
+    for (auto v : *taskManagerProfiles) {
       if (v.second->getValue(colorFlag) == 0.0) {
         colorMap->insert(std::pair<std::string, std::string>(v.first->getTaskFunction()->getDotId(), "black"));
         continue;
@@ -277,7 +260,7 @@ class TaskGraphProfiler {
 
       char hexcol[16];
 
-      snprintf(hexcol, sizeof(hexcol), "%02x%02x%02x", red & 0xff, green & 0xff ,blue & 0xff);
+      snprintf(hexcol, sizeof(hexcol), "%02x%02x%02x", red & 0xff, green & 0xff, blue & 0xff);
       std::string color(hexcol);
       color = "#" + color;
 
@@ -286,7 +269,6 @@ class TaskGraphProfiler {
 
     return colorMap;
   }
-
 
   std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles; //!< The profile data for all task managers
   int flags; //!< The DOTGEN bit flags

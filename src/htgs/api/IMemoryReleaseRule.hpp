@@ -20,12 +20,12 @@ namespace htgs {
  * @brief Abstract class that describes when memory can be released/reused
  *
  * @details
- * This class is used anytime memory is requested by an ITask to a MemoryManager.
- * To receive memory use the function ITask::memGet
+ * This class is used anytime memory is requested by an ITask from a MemoryManager.
+ * To receive memory use the function ITask::getMemory
  *
  * IMemoryReleaseRule is attached to the MemoryData. The MemoryData,
- * should be added to IData as data flows through a TaskGraph until the memory
- * can be released with ITask::memRelease
+ * should be added to IData as data flows through a TaskGraphConf until the memory
+ * can be released with ITask::releaseMemory
  *
  * When memory is released, the MemoryManager processes the memory by first updating the
  * state with memoryUsed(), then if canReleaseMemory() returns true, the memory will be recycled.
@@ -39,7 +39,7 @@ namespace htgs {
  *
  * 	virtual void memoryUsed() { releaseCount--; }
  *
- * 	virtual bool canReleaseMEmory() { return releaseCount == 0; }
+ * 	virtual bool canReleaseMemory() { return releaseCount == 0; }
  *
  * private:
  *  int releaseCount;
@@ -57,7 +57,7 @@ namespace htgs {
  *   {
  *     ...
  *     // Get memory from "memEdge" MemoryManager, and attach the ReleaseCount rule to the memory
- *     std::shared_ptr<htgs::MemoryData<double *>>mem = this->memGet<double *>("memEdge", new ReleaseCountRule(4));
+ *     htgs::m_data_t<double> mem = this->memGet<double>("memEdge", new ReleaseCountRule(4));
  *
  *     ...
  *
@@ -76,7 +76,7 @@ class IMemoryReleaseRule {
   /**
    * Destructor
    */
-  virtual ~IMemoryReleaseRule() { }
+  virtual ~IMemoryReleaseRule() {}
 
   /**
    * Pure virtual function to update the state of when memory has been used.
