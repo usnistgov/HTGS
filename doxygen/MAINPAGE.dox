@@ -12,6 +12,77 @@ You are solely responsible for determining the appropriateness of using and dist
 
 - - -
 
+Getting Started {#get-started}
+=======
+The HTGS API is a header-only library. To compile using HTGS use the following compilation flags:
+~~~~~~~~~~~~~~~~~~~~~
+-std=c++11 -pthread -I$HTGS_INSTALLATION_DIR$
+~~~~~~~~~~~~~~~~~~~~~
+
+To enable CUDA compilation use the directive (must have CUDA installed):
+~~~~~~~~~~~~~~~~~~~~~
+-DUSE_CUDA
+~~~~~~~~~~~~~~~~~~~~~
+
+Installation and documentation for CUDA can be found [here](http://docs.nvidia.com/cuda/index.html#axzz4eWVEar2N)
+
+## Dependencies: ##
+1. cmake v2.7+
+2. gcc/g++ v4.8.x (or higher, C++11)
+3. pthreads
+4. (Optional) doxygen
+5. (Optional) graphviz
+
+## CMake Options: ##
+ CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)
+
+ BUILD_DOXYGEN - Creates doxygen documentation (view online at: Documentation)
+
+ RUN_GTEST - Compiles and runs google unit tests for HTGS ('make run-test' to re-run)
+
+~~~~~~~~~~~~~~~~~~~~~
+    :$ git clone https://github.com/usnistgov/HTGS.git
+    :$ cd <HTGS_Directory>
+    :<HTGS_Directory>$ mkdir build && cd build
+    :<HTGS_Directory>/build$ ccmake ../         (or cmake-gui)
+
+    'Configure' and setup cmake parameters
+    'Configure' and 'Build'
+
+    :<HTGS_Directory>/build$ make
+    :<HTGS_Directory>/build$ make install
+~~~~~~~~~~~~~~~~~~~~~
+
+
+Approach {#approach}
+=======
+The intent of the hybrid task graph scheduler (HTGS) API is to transform an algorithm into a pipelined workflow system,
+which aims at fully utilizing a high performance compute system (multi-core CPUs, multiple accelerators, and high-speed I/O).
+HTGS defines an abstract execution model, framework, and API.
+
+The HTGS model combines two paradigms, dataflow and task scheduling. Dataflow semantics represents an algorithm at a high-level
+of abstraction as a dataflow graph, similar to signal processing dataflow graphs. Task scheduling provides the threading model.
+A variant of task scheduling is used in which a task is assigned a pool of threads, which processes data using a shared queue.
+In this way data is sent to each task, which processes each item independently using the thread pool. This method of parallelism
+and orchestration requires a deep understanding of an algorithm and how to decompose the problem domain, which is required when
+parallelizing any algorithm.
+
+The HTGS framework defines the components for building HTGS task graphs: tasks, bookkeepers, memory managers, and execution pipelines.
+These components are defined in such a way to provide a separation of concerns between computation, state maintenance, memory,
+and scalability. Through this representation an algorithm can be approached at a high level of abstraction.
+
+The HTGS API is used to implement an algorithm that is represented within the HTGS framework. The API is designed in such a
+way that the graph representation from the model and framework is explicit. This allows for mapping the analysis phase
+of using HTGS with the implementation (and back). The primary use of this representation is to allow rapid prototyping and
+experimentation for performance.
+
+The general idea with using HTGS is to overlap I/O with computation. I/O can be represented by disk, network, PCI express, or
+any metric that involves shipping data closer to the compute hardware. HTGS tasks should operate within memory for that compute
+hardware, such that the underlying task implementation be designed to improve utilization on the desired architecture (i.e. use vector
+processing units). Ultimately, HTGS provides abstractions for four components, which we treat as first-class issues:
+(1) Memory management, (2) Concurrency, (3) Expressing data locality, and (4) Managing data dependencies.
+
+
 HTGS Design Methodology {#methodlogy}
 =========
 
@@ -20,15 +91,21 @@ remaining steps are coding and revisiting of the pictoral stages.
 
 ![](Methodology.png)
 
-1. Represent algorithm as a parallel algorithm where computational kernels are laid out as a series of modular functions.
-2. Represent the parallel algorithm as a dataflow graph
+## 1. Parallel Algorithm Design ##
+
+  - Represent algorithm as a parallel algorithm where computational kernels are laid out as a series of modular functions.
+
+## 2. Represent as Dataflow ##
   - Map computational functions to nodes
   - Edges are data dependencies
     + Annotate edges with data types/parameters
-3. Design the HTGS task graph
+
+## 3. HTGS Task Graph Design ##
   - Computational entities are tasks
   - Dependencies are managed by Bookkeeper
-4. Implement using the HTGS API
+
+## 4. HTGS API Coding ##
+  - Implement using the HTGS API
   - One Create an htgs::ITask for each computational entity.
   - htgs::IData is used to represent any data that is needed for each htgs::ITask
     + htgs::IData is transmitted as input and output from an htgs::ITask, which is based on the htgs::ITask's template types T, U, respectively.
@@ -38,7 +115,8 @@ remaining steps are coding and revisiting of the pictoral stages.
   - Connect each task using the htgs::TaskGraphConf::addEdge or htgs::TaskGraphConf::addRuleEdge
   - Debug using dot file generation with htgs::TaskGraphConf::writeDotToFile
     + Real-time visualization (coming soon)
-5. Refine and optimize
+
+## 5. Refine and Optimize ##
   - Modify data granularity and scheduling behavior
     + Improve data locality and data reuse
   - Create CUDA variants with htgs::ICudaTask
@@ -52,91 +130,14 @@ remaining steps are coding and revisiting of the pictoral stages.
     + Defines data reuse with programmer-defined htgs::IMemoryReleaseRule
   - Real-time visualization (coming soon)
 
-
-Motivation {#motivation}
-=========
-Modern compute systems are highly complex to program on, particularly when trying to balance among multiple GPU cards,
-multi-core CPUs, and multiple disks. The hybrid task graph scheduler application programmer interface (HTGS API)
-provides tools to transform an algorithm into a hybrid TaskGraph that is used to execute on these systems with the
-aim of extracting performance through full utilization of its compute resources. Using a hybrid TaskGraph, an algorithm is executed across
-many CPU threads as a multiple-producer, multiple-consumer application. Each task (function) within the graph will overlap
-with other tasks, thus enabling overlapping computation with other computations (whether on CPU or multiple GPUs) and
-computation with I/O (possibly multiple storage devices). This method of pipelining is the primary technique to gain performance.
-The API also provides mechanisms for throttling data producers through memory managers. Each memory manager is bound
-to a particular device (CPU/GPU) and manages the data based on programmer-defined rules. This approach enables data intensive
-applications to work within memory limits.
-
-
-Approach {#approach}
-=======
-The intent of the hybrid task graph scheduler (HTGS) API is to transform an algorithm into a hybrid TaskGraph, which is
-used to fully utilize a high performance compute system (multi-core CPUs, multiple accelerators, and multiple disks).
-The elements of the hybrid TaskGraph are created using an object-oriented approach where the components within the TaskGraph
-are interfaces that are used to implement depedencies, memory rules, decomposition rules, and computational functions.
-Connecting these components with data edges formulates the TaskGraph. Speciality ITask objects can also be defined to expand the API 
-to enable new types of computation on hybrid systems; for example, the HTGS API defines an ICudaTask for NVIDIA CUDA GPUs.
-
-The hybrid TaskGraph is a technique inspired by past research where an algorithm is represented as a hybrid pipeline
-workflow system. [1][2] This API generalizes the hybrid pipeline workflow system approach.
-
-In hybrid pipeline workflow systems, each computational component is pipelined through a multiple producer multiple consumer model.
-By doing so, a pipeline is formed to overlap computation with I/O, such as disk or PCI express data transfers. The hybrid TaskGraph
-implements this technique such that each ITask, which is managed by
-a TaskScheduler, is executed using one or more CPU threads. When data is sent to a TaskScheduler, the ITask is executed.
-Assuming data is flowing among multiple ITasks, each execute function will run concurrently. If a TaskScheduler
-is overwhelmed with data, then a thread pool can be associated with a TaskScheduler. Threads within the thread pool are bound
-to duplicate copies of its TaskScheduler and the underlying ITask.
-
-An ITask runs as soon as data is sent from the TaskScheduler. Using this method there are two types of parallelism: (1)
-Task parallelism: Each task executes concurrently when data is available, and (2) data parallelism: A task has a thread pool
-to help process large quantities of data. If a graph executes data on the GPU, then the sub-graph that represents the
-GPU computation can be encapsulated into an ExecutionPipeline ITask, which will duplicate the sub-graph; one for each
-GPU on a system. Each sub-graph processes data concurrently across all GPUs attached to a system.
-
-Another key component of HTGS is its underlying memory management system. In many TaskGraphs one ITask may be required to
-allocate memory that is used by another ITask. If the ITask allocating memory processes data much faster than the other ITask,
-then the memory allocation could use all the available memory in a system. To provide better fine-grained control of memory
-between two ITask's a MemoryManager is introduced, which acts as a memory edge between two ITasks; one ITask that gets memory,
-while the other releases memory. The memory that is allocated is recycled using a memory pool and is only released based
-on memory rules that are defined and attached to memory. This system effectively
-throttles a TaskGraph as the ITask getting memory will block and wait until memory is available from the MemoryManager.
-For CUDA memory, a CudaMemoryManager is used.
-
-
-
-Steps to Programming with HTGS {#steps}
-======
-There are three steps involved in implementing an algorithm using HTGS.
-
-1. Represent the algorithm as a dataflow graph. Where nodes in the graph represent computational entities, and edges
-represent data dependencies. The computational entities should represent large components of a computation. For example
-the Fast Fourier Transform of an image.
-
-2. Implement functionality of each computational entity as independent function calls. Parameters to the function calls
-could represent the data from the edges shown in the dataflow graph.
-
-3. Use the HTGS API:
-  - Create an ITask for each computational entity.
-  - IData is used to represent any data that is needed for each ITask
-    + Data is transmitted as input and output from an ITask, which is based on the ITask's template types T, U, respectively.
-  - Connect each entity using the TaskGraph::addEdge or TaskGraph::addBookkeeperRule
-    + If dependencies occur among multiple ITask's, then a Bookkeeper is used to process those dependencies. Define
-an IRule that processes the dependency, which should produce work for the ITask that requires the dependency.
-  - If there are memory concerns, then two tasks can be connected through a memory edge with TaskGraph::addMemoryManagerEdge.
-    + One task gets the memory, and the other releases the memory. The memory is released based on a programmer-defined IMemoryRelease rule
-  - For CUDA ITask's, partition the graph into CUDA-only computation and formulate the partitioned graph into an ExecutionPipeline
-    + The ExecutionPipeline can be used to duplicate the graph such that each duplicated graph executes on a separate GPU in parallel
-
-
-
 Overview of HTGS {#overview}
 ============
 The HTGS API is split into two modules:
 1. The User API
-   - Classes that begin with 'I' denote interfaces that are implemented: ITask, IMemoryReleaseRule, etc.
+   - Classes that begin with 'I' denote interfaces that are to be implemented: htgs::ITask, htgs::IMemoryReleaseRule, etc.
 2. The Core API
 
-The user API is found in <htgs/api/...> and contains the API that programmers use to define a TaskGraph. The majority
+The user API is found in <htgs/api/...> and contains the API that programmers use to define a htgs::TaskGraphConf. The majority
  of programs should only use the User API.
 
 The core API is found in <htgs/core/...> and holds the underlying sub-systems that the user API operates with.
@@ -150,31 +151,67 @@ If the two ITasks must be in two different TaskGraphs, then a new type of TaskGr
 the [TaskGraph](@ref htgs::TaskGraph) class.
 
 
-Examples {#examples}
+Tutorials {#tutorials}
 =========
 
-[Tutorial 1](@ref tutorial1)
-[Tutorial 2](@ref tutorial2)
++ [Tutorial 0](@ref tutorial0) - Getting started with the HTGS Tutorials - [HTGS Tutorials Github](https://github.com/usnistgov/HTGS-Tutorials)
+  - Compiling and running the tutorials
+  - Using CLion with the HTGS Tutorials
+  - Using Eclipse CDT with the HTGS Tutorials
 
-- How to represent data using IData
-- How to create an ITask
-- How to create a TaskGraph
-- How to execute a TaskGraph
-- Sending data to TaskGraphs
-- Post-processing data from TaskGraphs
-- How to manage dependencies
-- How to use the MemoryManager
-- How to use ICudaTask
-- How to use ExecutionPipelines
-- Strategies for performance
-- Profiling
-- Debugging
++ [Tutorial 1](@ref tutorial1) - Adding two numbers in HTGS - [Source Code](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial1)
+  - Making an htgs::ITask
+  - Creating htgs::IData
+  - Using the htgs:TaskGraphConf
+  - Executing with the htgs::TaskGraphRuntime
+  - How to interact with the htgs::TaskGraphConf
 
++ [Tutorial 2a](@ref tutorial2) - Implementing the HadamardProduct - [Source Code](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial2)
+  - Creating a dependency with the htgs::Bookkeeper and htgs::IRule
+  - Methods for domain decomposition
+  - Debugging
 
-Citations
-------
-[1]: [Blattner, T.; Keyrouz, W.; Chalfoun, J.; Stivalet, B.; Brady, M.; Shujia Zhou, "A Hybrid CPU-GPU System for Stitching Large Scale Optical Microscopy Images," in Parallel Processing (ICPP), 2014 43rd International Conference on , vol., no., pp.1-9, 9-12 Sept. 2014
-doi: 10.1109/ICPP.2014.9](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6957209&isnumber=6957198)
++ [Tutorial 2b](@ref tutorial2) - Augmenting the graph from Tutorial 2a to use disk - [Source Code]()
+  - Managing memory
+    + Basic htgs::IMemoryReleaseRule and htgs::IMemoryAllocator
+    + How to htgs::ITask::getMemory
+    + How to htgs::ITask::releaseMemory
 
-[2]: Blattner, T.; "A Hybrid CPU/GPU Pipeline Workflow System". Master's thesis, 2013. University of Maryland Baltimore County
++ [Tutorial 3a](@ref tutorial3) - Implementing Matrix Multiplication [Source Code]()
+  - Complex dependencies
+  - Terminating cyclic graphs
+  - Profiling and optimizations
+
++ [Tutorial 3b](@ref tutorial3) - Augmenting the graph from Tutorial 3a to use disk (optional memory mapped files) - [Source Code]()
+  - Managing memory
+  - Complex htgs::IMemoryReleaseRule
+    + Handling locality
+
++ [Tutorial 4](@ref tutorial4) - Augmenting the graph from Tutorial 3a to use CUDA - [Source Code]()
+  - Sending data to/from the GPU with htgs::ICudaTask
+  - Techniques for data locality
+
++ [Tutorial 5](@ref tutorial5) - Augmenting the graph from Tutorial 4 to use the htgs::ExecutionPipeline - [Source Code]()
+  - Scaling to multiple GPUs for matrix multiplication
+  - Decomposition strategies to improve locality
+
++ [Tutorial 6a](@ref tutorial6) - Implementing Block LU Decomposition - [Source Code]()
+  - Methods for handling non-uniform computation
+  - Understanding the effects of poor decomposition strategies
+
++ [Tutorial 6b](@ref tutorial6) - Implementing Block+Panel LU Decomposition - [Source Code] ()
+  - Methods for changing decomposition strategies
+  - Analyzing the effects of good decomposition strategies
+
++ [Tutorial 7a](@ref tutorial7) - Augmenting the graph from Tutorial 6b to use CUDA - [Source Code]()
+  - Understanding the effects of locality and data motion
+
++ [Tutorial 7b](@ref tutorial7) - Incorporating advanced locality techniques to Tutorial 7a - [Source Code] ()
+  - Implementing a sliding window to improve locality
+  - Effects of out-of-core computation on the GPU
+
++ [Tutorial8] (@ref tutorial8) - Augmenting the graph from Tutorial 7b to use htgs::ExecutionPipeline
+   - Scaling to multiple GPUs for LU Decomposition
+   - Profiling to understand future improvements
+
 */

@@ -4,17 +4,16 @@ Tutorial 1 {#tutorial1}
 
 In this tutorial we will be introducing the basics of the Hybrid Task Graph Scheduler (HTGS) API.
 
-The source code for the tutorial is found in "test/tutorial1"
+The [Source Code]() can be viewed in the HTGS-Tutorials github repository. 
 
 We will be implementing a simple add function to add two numbers and
- return the result. This is a test case just to introduce
-  the API and how to work with it.
+ return the result, which introduces the API and how to work with it.
 
 Objectives {#objectives}
 =======
 
 1. How to represent data: (input and output)
-  - How to customize the priority of data
+  - How to customize the priority of data (optional)
 
 2. How to operate on data with an ITask
 3. How to add an ITask to a TaskGraph
@@ -26,8 +25,8 @@ API Used {#api-used}
 
 - \<htgs/api/IData.hpp\>
 - \<htgs/api/ITask.hpp\>
-- \<htgs/api/TaskGraph.hpp\>
-- \<htgs/api/Runtime.hpp\>
+- \<htgs/api/TaskGraphConf.hpp\>
+- \<htgs/api/TaskGraphRuntime.hpp\>
 
 Implementation {#implementation}
 ======
