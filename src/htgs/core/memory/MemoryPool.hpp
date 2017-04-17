@@ -142,8 +142,7 @@ class MemoryPool {
   }
 
  private:
-  std::list<m_data_t < T>> *
-  allMemory; //!< The list of all memory that has been allocated by the memory pool
+  std::list<m_data_t <T>> *allMemory; //!< The list of all memory that has been allocated by the memory pool
   BlockingQueue <m_data_t<T>> *memoryQueue; //!< A blocking queue for getting/recycling memory
   size_t queueSize; //!< The size of the memory queue
 

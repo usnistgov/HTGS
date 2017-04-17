@@ -255,7 +255,7 @@ class ICudaTask : public ITask<T, U> {
    * @retval TRUE if the pipeline id has peer to peer GPU copy
    * @retval FALSE if the pipeline id has peer to peer GPU copy
    */
-  bool hasPeerToPeerCopy(size_t pipelineId) { return !requiresCopy(cudaId); }
+  bool hasPeerToPeerCopy(size_t pipelineId) { return !requiresCopy((size_t)cudaId); }
 
   /**
    * Will automatically copy from one GPU to another (if it is required).
