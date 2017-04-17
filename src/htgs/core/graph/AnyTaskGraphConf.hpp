@@ -342,6 +342,9 @@ class AnyTaskGraphConf {
    * Writes the basic dot representation of the task graph to disk.
    *
    * @param file the filename (will not create directories)
+   *
+   * @note Use the directive PROFILE to enable profiling output and call after execution.
+   * @note Calling this function prior to execution show the graph structure.
    */
   void writeDotToFile(std::string file) {
     writeDotToFile(file, 0);
@@ -354,9 +357,13 @@ class AnyTaskGraphConf {
    * Example:
    * taskGraph->writeDotToFile("example.dot", DOTGEN_FLAG_HIDE_MEM_EDGES | DOTGEN_FLAG_SHOW_IN_OUT_TYPES);
    *
+   * The bit flags are aggregated using bit-wise OR operator.
+   *
    * @param file the filename (will not create directories)
    * @param flags the flags for DOTGEN
-   * @note Use the directive PROFILE to enable profiling output.
+   * @note Use the directive PROFILE to enable profiling output and call after execution.
+   * @note See TaskGraphDotGenFlags.hpp for list of bit flags
+   * @note Calling this function prior to execution show the graph structure.
    */
   void writeDotToFile(std::string file, int flags) {
     bool graphColored = false;

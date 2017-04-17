@@ -32,26 +32,26 @@ DOXYFILE_ENCODING = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME = htgs
+PROJECT_NAME = HTGS
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER = 1.0
+PROJECT_NUMBER = v2.0
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF = 
+PROJECT_BRIEF = "The Hybrid Task Graph Scheduler"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO = 
+PROJECT_LOGO = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/resources/HTGS-Logo-color-main.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -771,7 +771,7 @@ WARN_LOGFILE =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT = @CMAKE_CURRENT_SOURCE_DIR@/src/htgs @CMAKE_CURRENT_SOURCE_DIR@/doxygen/MAINPAGE.dox @CMAKE_CURRENT_SOURCE_DIR@/doxygen/markdown/Tutorial1.md @CMAKE_CURRENT_SOURCE_DIR@/doxygen/markdown/Tutorial2.md
+INPUT = @CMAKE_CURRENT_SOURCE_DIR@/src/htgs @CMAKE_CURRENT_SOURCE_DIR@/doxygen/MAINPAGE.dox @CMAKE_CURRENT_SOURCE_DIR@/doxygen/Tutorial1.md @CMAKE_CURRENT_SOURCE_DIR@/doxygen/Tutorial2.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -864,7 +864,7 @@ EXAMPLE_RECURSIVE = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH = 
+IMAGE_PATH = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/resources
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1130,7 +1130,7 @@ HTML_STYLESHEET =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET = 
+HTML_EXTRA_STYLESHEET = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/resources/image-styles.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1140,7 +1140,7 @@ HTML_EXTRA_STYLESHEET =
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES = 
+HTML_EXTRA_FILES = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/resources/Methodology.png
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
@@ -1705,7 +1705,7 @@ LATEX_FOOTER =
 # markers available.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-LATEX_EXTRA_FILES = 
+LATEX_EXTRA_FILES = @CMAKE_CURRENT_SOURCE_DIR@/doxygen/resources/Methodology.png
 
 # If the PDF_HYPERLINKS tag is set to YES, the LaTeX that is generated is
 # prepared for conversion to PDF (using ps2pdf or pdflatex). The PDF file will

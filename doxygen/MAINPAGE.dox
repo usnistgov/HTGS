@@ -10,6 +10,49 @@ You are solely responsible for determining the appropriateness of using and dist
 
 @author Timothy Blattner
 
+- - -
+
+HTGS Design Methodology {#methodlogy}
+=========
+
+There are five steps in the HTGS design methodology, as shown below. The first three steps are _white-board_ stages; the
+remaining steps are coding and revisiting of the pictoral stages.
+
+![](Methodology.png)
+
+1. Represent algorithm as a parallel algorithm where computational kernels are laid out as a series of modular functions.
+2. Represent the parallel algorithm as a dataflow graph
+  - Map computational functions to nodes
+  - Edges are data dependencies
+    + Annotate edges with data types/parameters
+3. Design the HTGS task graph
+  - Computational entities are tasks
+  - Dependencies are managed by Bookkeeper
+4. Implement using the HTGS API
+  - One Create an htgs::ITask for each computational entity.
+  - htgs::IData is used to represent any data that is needed for each htgs::ITask
+    + htgs::IData is transmitted as input and output from an htgs::ITask, which is based on the htgs::ITask's template types T, U, respectively.
+  - Process dependencies using htgs::Bookkeeper
+    + Uses htgs::IRule to process dependencies
+    + htgs::IRule determines when to produce work
+  - Connect each task using the htgs::TaskGraphConf::addEdge or htgs::TaskGraphConf::addRuleEdge
+  - Debug using dot file generation with htgs::TaskGraphConf::writeDotToFile
+    + Real-time visualization (coming soon)
+5. Refine and optimize
+  - Modify data granularity and scheduling behavior
+    + Improve data locality and data reuse
+  - Create CUDA variants with htgs::ICudaTask
+    + Add htgs::ICudaTask to copy data to/from GPU before/after CUDA variant
+  - Scale to multiple GPUs with htgs::ExecutionPipeline
+  - Use HTGS profiling (add the directive "-DPROFILE" in compilation)
+    + Output the graph after execution using htgs::TaskGraphConf::writeDotToFile
+    + Visually identify bottlenecks
+  - Add memory edges where necessary to regulate memory with htgs::TaskGraphConf::addMemoryManagerEdge
+    + Restricts the amount of memory transmitted through graph
+    + Defines data reuse with programmer-defined htgs::IMemoryReleaseRule
+  - Real-time visualization (coming soon)
+
+
 Motivation {#motivation}
 =========
 Modern compute systems are highly complex to program on, particularly when trying to balance among multiple GPU cards,
