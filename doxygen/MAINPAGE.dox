@@ -12,51 +12,18 @@ You are solely responsible for determining the appropriateness of using and dist
 
 - - -
 
-Getting Started {#get-started}
+[TOC]
+
+Installation {#installation}
 =======
-The HTGS API is a header-only library. To compile using HTGS use the following compilation flags:
-~~~~~~~~~~~~~~~~~~~~~
--std=c++11 -pthread -I$HTGS_INSTALLATION_DIR$
-~~~~~~~~~~~~~~~~~~~~~
 
-To enable CUDA compilation use the directive (must have CUDA installed):
-~~~~~~~~~~~~~~~~~~~~~
--DUSE_CUDA
-~~~~~~~~~~~~~~~~~~~~~
+[Getting Started](@ref install-instructions)
 
-Installation and documentation for CUDA can be found [here](http://docs.nvidia.com/cuda/index.html#axzz4eWVEar2N)
-
-## Dependencies: ##
-1. cmake v2.7+
-2. gcc/g++ v4.8.x (or higher, C++11)
-3. pthreads
-4. (Optional) doxygen
-5. (Optional) graphviz
-
-## CMake Options: ##
- CMAKE_INSTALL_PREFIX - Where to install HTGS (and documentation)
-
- BUILD_DOXYGEN - Creates doxygen documentation (view online at: Documentation)
-
- RUN_GTEST - Compiles and runs google unit tests for HTGS ('make run-test' to re-run)
-
-~~~~~~~~~~~~~~~~~~~~~
-    :$ git clone https://github.com/usnistgov/HTGS.git
-    :$ cd <HTGS_Directory>
-    :<HTGS_Directory>$ mkdir build && cd build
-    :<HTGS_Directory>/build$ ccmake ../         (or cmake-gui)
-
-    'Configure' and setup cmake parameters
-    'Configure' and 'Build'
-
-    :<HTGS_Directory>/build$ make
-    :<HTGS_Directory>/build$ make install
-~~~~~~~~~~~~~~~~~~~~~
-
+- - -
 
 Approach {#approach}
 =======
-The intent of the hybrid task graph scheduler (HTGS) API is to transform an algorithm into a pipelined workflow system,
+The intent of the Hybrid Task Graph Scheduler (HTGS) API is to transform an algorithm into a pipelined workflow system,
 which aims at fully utilizing a high performance compute system (multi-core CPUs, multiple accelerators, and high-speed I/O).
 HTGS defines an abstract execution model, framework, and API.
 
@@ -106,9 +73,9 @@ remaining steps are coding and revisiting of the pictoral stages.
 
 ## 4. HTGS API Coding ##
   - Implement using the HTGS API
-  - One Create an htgs::ITask for each computational entity.
+  - One Create a htgs::ITask for each computational entity.
   - htgs::IData is used to represent any data that is needed for each htgs::ITask
-    + htgs::IData is transmitted as input and output from an htgs::ITask, which is based on the htgs::ITask's template types T, U, respectively.
+    + htgs::IData is transmitted as input and output from a htgs::ITask, which is based on the htgs::ITask's template types T, U, respectively.
   - Process dependencies using htgs::Bookkeeper
     + Uses htgs::IRule to process dependencies
     + htgs::IRule determines when to produce work
@@ -137,18 +104,16 @@ The HTGS API is split into two modules:
    - Classes that begin with 'I' denote interfaces that are to be implemented: htgs::ITask, htgs::IMemoryReleaseRule, etc.
 2. The Core API
 
-The user API is found in <htgs/api/...> and contains the API that programmers use to define a htgs::TaskGraphConf. The majority
+The user API is found in <htgs/api/...> and contains the API that programmers use to create a htgs::TaskGraphConf. The majority
  of programs should only use the User API.
 
 The core API is found in <htgs/core/...> and holds the underlying sub-systems that the user API operates with.
 
-Although there is a separation between the user and core APIs, there is a method to add new functionality into HTGS.
-The [ICustomEdge](@ref htgs::ICustomEdge) is an interface that informs a TaskGraph on how to create a customized edge between
-producer and consumer ITasks.
-The new types of edges can either directly connect two ITask's together or two TaskSchedulers.
-The main limiting factor of the ICustomEdge is it assumes that both ITasks will be added to the same TaskGraph.
-If the two ITasks must be in two different TaskGraphs, then a new type of TaskGraph will need to be created by inheriting
-the [TaskGraph](@ref htgs::TaskGraph) class.
+Although there is a separation between the user and core APIs, there are methods to add high-level abstractions that can be used to new functionality into HTGS.
+The htgs::EdgeDescriptor is one such abstraction that is used as an interface to describe how an edge connecting one or more tasks is applied to a task graph
+and copied. This can be extended to create new types of edges. Currently the htgs::ProducerConsumerEdge, htgs::RuleEdge, and htgs::MemoryEdge
+are used to define how to connect tasks for the htgs::TaskGraphConf::addEdge, htgs::TaskGraphConf::addRuleEdge,
+and htgs::TaskGraphConf::addMemoryManagerEdge functions, respectively.
 
 
 Tutorials {#tutorials}
@@ -156,22 +121,23 @@ Tutorials {#tutorials}
 
 + [Tutorial 0](@ref tutorial0) - Getting started with the HTGS Tutorials - [HTGS Tutorials Github](https://github.com/usnistgov/HTGS-Tutorials)
   - Compiling and running the tutorials
+  - Using the command-line with the HTGS Tutorials
   - Using CLion with the HTGS Tutorials
   - Using Eclipse CDT with the HTGS Tutorials
 
 + [Tutorial 1](@ref tutorial1) - Adding two numbers in HTGS - [Source Code](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial1)
-  - Making an htgs::ITask
+  - Making a htgs::ITask
   - Creating htgs::IData
   - Using the htgs:TaskGraphConf
   - Executing with the htgs::TaskGraphRuntime
   - How to interact with the htgs::TaskGraphConf
 
-+ [Tutorial 2a](@ref tutorial2) - Implementing the HadamardProduct - [Source Code](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial2)
++ [Tutorial 2a](@ref tutorial2a) - Implementing the HadamardProduct - [Source Code](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial2)
   - Creating a dependency with the htgs::Bookkeeper and htgs::IRule
   - Methods for domain decomposition
   - Debugging
 
-+ [Tutorial 2b](@ref tutorial2) - Augmenting the graph from Tutorial 2a to use disk - [Source Code]()
++ [Tutorial 2b](@ref tutorial2b) - Augmenting the graph from Tutorial 2a to use disk - [Source Code]()
   - Managing memory
     + Basic htgs::IMemoryReleaseRule and htgs::IMemoryAllocator
     + How to htgs::ITask::getMemory

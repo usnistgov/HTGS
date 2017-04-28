@@ -312,7 +312,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * Adds a CudaMemoryManager edge with the specified name to the TaskGraphConf.
    * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
    * the TaskGraphConf.
-   * @param name the name of the memory edge
+   * @param name the name of the memory edge, should be unique compared to all memory edges added to the TaskGraphConf and any TaskGraphConf within an ExecutionPipeline
    * @param getMemoryTask the ITask that is getting memory
    * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
    * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
@@ -344,12 +344,12 @@ class TaskGraphConf : public AnyTaskGraphConf {
  * Adds a CudaMemoryManager edge with the specified name to the TaskGraphConf.
  * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
  * the TaskGraphConf.
- * @param name the name of the memory edge
+ * @param name the name of the memory edge, should be unique compared to all memory edges added to the TaskGraphConf and any TaskGraphConf within an ExecutionPipeline
  * @param getMemoryTask the ITask that is getting memory
  * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
  * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
  * @param type the type of memory manager
- * @param contexts the array of all Cuda contexts
+ *e @param contexts the array of all Cuda contexts
  * @note the memoryPoolSize can cause out of memory errors for the GPU if the allocator->size() * memoryPoolSize exceeds the total GPU memory
  * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
  */
@@ -372,14 +372,14 @@ class TaskGraphConf : public AnyTaskGraphConf {
 #endif
 
   /**
-   * Adds a MemoryManager edge with the specified name to the TaskGraph.
-   * @param name the name of the memory edge
+   * Adds a MemoryManager edge with the specified name to the TaskGraphConf.
+   * @param name the name of the memory edge, should be unique compared to all memory edges added to the TaskGraphConf and any TaskGraphConf within an ExecutionPipeline
    * @param getMemoryTask the ITask that is getting memory
-   * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
-   * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
+   * @param allocator the allocator describing how memory is allocated
+   * @param memoryPoolSize the size of the memory pool that is allocated by the MemoryManager
    * @param type the type of memory manager
    * @note the memoryPoolSize can cause out of memory errors for the system if the allocator->size() * memoryPoolSize exceeds the total system memory
-   * @tparam V the type of memory; i.e., 'double *'
+   * @tparam V the type of memory; i.e., 'double'
    * @note Use this function if the rule connecting the  bookkeeper and consumer are shared among multiple graphs that you create.
    */
   template<class V, class IMemoryAllocatorType>
@@ -398,14 +398,14 @@ class TaskGraphConf : public AnyTaskGraphConf {
   }
 
   /**
- * Adds a MemoryManager edge with the specified name to the TaskGraph.
- * @param name the name of the memory edge
+ * Adds a MemoryManager edge with the specified name to the TaskGraphConf.
+ * @param name the name of the memory edge, should be unique compared to all memory edges added to the TaskGraphConf and any TaskGraphConf within an ExecutionPipeline
  * @param getMemoryTask the ITask that is getting memory
- * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
- * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
+ * @param allocator the allocator describing how memory is allocated
+ * @param memoryPoolSize the size of the memory pool that is allocated by the MemoryManager
  * @param type the type of memory manager
  * @note the memoryPoolSize can cause out of memory errors for the system if the allocator->size() * memoryPoolSize exceeds the total system memory
- * @tparam V the type of memory; i.e., 'double *'
+ * @tparam V the type of memory; i.e., 'double'
  */
   template<class V>
   void addMemoryManagerEdge(std::string name,

@@ -9,7 +9,7 @@ The [Source Code]() can be viewed in the HTGS-Tutorials github repository.
 We will be implementing a simple add function to add two numbers and
  return the result, which introduces the API and how to work with it.
 
-Objectives {#objectives}
+Objectives {#tut1-objectives}
 =======
 
 1. How to represent data: (input and output)
@@ -20,7 +20,7 @@ Objectives {#objectives}
 4. How to add data into a TaskGraph
 5. How to process data from a TaskGraph
 
-API Used {#api-used}
+API Used {#tut1-api-used}
 ======
 
 - \<htgs/api/IData.hpp\>
@@ -28,7 +28,7 @@ API Used {#api-used}
 - \<htgs/api/TaskGraphConf.hpp\>
 - \<htgs/api/TaskGraphRuntime.hpp\>
 
-Implementation {#implementation}
+Implementation {#tut1-implementation}
 ======
 
 Below we will go into detail on each of the components needed to implement the algorithm x+y=z. Before we
@@ -40,38 +40,38 @@ Algorithm: \f$x+y=z\f$
 
 Dataflow graph:
 
-![XY Dataflow](figures/tut1XY-dataflow.png)
+![XY Dataflow](tut1XY-dataflow.png)
 
 TaskGraph:
 
-![XY Taskgraph](figures/tut1XY-taskgraph.png)
+![XY Taskgraph](tut1XY-taskgraph.png)
 
 We transform the dataflow graph into a TaskGraph. We have two input
 types for the x+y operation, so we will compose the inputs into a single object
 to hold both x and y data. The result of the graph is a single value, so another
 data object is used to hold the ouput. There will be one compute task, which is
-responsible for the operation x+y.
+responsible for the operation x+y and producing the result z.
 
 
-## Data {#data}
-The algorithm we are implementing adds two numbers and returns a result. One data class will be responsible for
-passing the two numbers to the Task and another data class will store the output. **Data is defined by inheriting the IData
+## Data {#tut1-data}
+The algorithm we are implementing adds two numbers and returns a result. One htgs::IData class will be responsible for
+passing the two numbers to a htgs::ITask and another htgs::IData class will store the output. **htgs::IData is defined by inheriting the htgs::IData
 interface.**
 
-When data is passed from Task to Task it is inserted into a [Connector](@ref htgs::Connector), which uses
+When data is passed from htgs::ITask to htgs::ITask (or as input/output of a htgs::TaskGraphConf) it is inserted into a htgs::Connector, which uses
 a FIFO queue to hold data (transformed into a priority queue using the USE_PRIORITY_QUEUE directive)
 
-If a Task expects multiple input values, then IData acts as a container where each of those input values is a single object.
+If a htgs::ITask expects multiple input values, then htgs::IData can act as a container where each of those input values are stored within a single object.
 
-All data in HTGS is represented as [IData](@ref htgs::IData). IData is an interface and contains only one (optional)
- virtual function: [IData::compare](@ref htgs::IData::compare). Compare can be used to customize
- the ordering of data in the Connector's queue. **Priority is enabled only if the USE_PRIORITY_QUEUE directive is defined.**
+All data in HTGS is represented as htgs::IData. htgs::IData is an interface and contains only one (optional)
+ virtual function: htgs::IData::compare. The compare function can be used to customize
+ the ordering of data in the htgs::Connector's queue. **Priority is enabled only if the USE_PRIORITY_QUEUE directive is defined.**
 
-### Input data implementation {#input-data}
+### Input data implementation {#tut1-input-data}
 
 ~~~~{.c}
 #include <htgs/api/IData.hpp>
-
+// with ': public htgs::IData', InputData becomes a child of IData and can be used within htgs::ITask's
 class InputData : public htgs::IData
 {
  public:
@@ -88,7 +88,7 @@ class InputData : public htgs::IData
 
 ~~~~
 
-### Output data implementation {#output-data}
+### Output data implementation {#tut1-output-data}
 
 ~~~~~~~~~~~~~~~~~{.c}
 #include <htgs/api/IData.hpp>
@@ -96,6 +96,7 @@ class InputData : public htgs::IData
 class OutputData : public htgs::IData
 {
 public:
+  // Optional IData(size_t order) constructor to specify ordering of OutputData (must define USE_PRIORITY_QUEUE directive)
   OutputData(int result) : IData(result),  result(result) {}
 
   int getResult() const { return result; }
@@ -105,12 +106,12 @@ public:
 };
 ~~~~~~~~~~~~~~~~~
 
-### Notes {#data-notes}
+### Notes {#tut1-data-notes}
 
-- IData can contain multiple input data being sent to an ITask
+- htgs::IData can hold any number of input parameters being sent to a htgs::ITask
 - Assuming USE_PRIORITY_QUEUE directive is defined
-    + Uses order constructor for IData, which will provide an ordering based on the lowest value first.
-    + The ordering can be customized if the [IData::compare](@ref htgs::IData::compare) function is overriden
+    + Uses order constructor for htgs::IData::IData(size_t order), which will provide an ordering based on the lowest value first.
+    + The ordering can be customized if the htgs::IData::compare function is overriden
 
 Example altering the order of data to highest value first (USE_PRIORITY_QUEUE directive to enable priority):
 ~~~~~~~~~~~~{.c}
@@ -120,61 +121,34 @@ bool compare(const std::shared_ptr<OutputData> p2) const {
 }
 ~~~~~~~~~~~~
 
-## Tasks {#tasks}
+## Tasks {#tut1-tasks}
 
-To implement the add function of the algorithm, we will only be needing one Task. **A Task is
-defined by inheriting the ITask interface.**
+To implement the add function of the algorithm, we will only be needing one htgs::ITask. **A task is
+defined by inheriting htgs::ITask.**
 
-Data is sent to/from an ITask through a TaskScheduler. The TaskScheduler manages
-the ITask's input/output Connectors. The input is passed to the [ITask::executeTask](@ref htgs::ITask::executeTask) function.
-The output is processed by calling the [ITask::addResult](@ref htgs::ITask::addResult) function from
-within the executeTask function.
+The htgs::ITask specifies five virtual functions that customize the functionality of a task:
+1. htgs::ITask::executeTask - Consumes one input htgs::IData object and produces zero or more output htgs::IData objects. Data is produced as output for the task by calling the htgs::ITask::addResult function.
+2. htgs::ITask::copy - Creates a copy of the htgs::ITask, each copy is bound to a separate thread to form a thread pool for the task
+3. htgs::ITask::initialize - (Optional) Called when a CPU thread has attached to the task. This can be used to allocate local task-level memory and/or bind the task and thread to an accelerator. DEFAULT: Does nothing.
+4. htgs::ITask::canTerminate - (Optional) Identifies if the task is ready to terminate. DEFAULT: Terminates when there is no longer any input coming from the task using htgs::Connector:isInputTerminated
+5. htgs::ITask::shutdown - (Optional) Called when the task is terminating. DEFAULT: Does nothing.
 
-The TaskScheduler is setup when adding an ITask to a TaskGraph.
-Multi-threading for an ITask is defined by the constructor for the ITask. Other options such as polling for data or
-initiating execution without data is also within various constructors for the ITask. These features
-are demonstrated in the next tutorial.
-
-The ordering of the data entering/leaving an ITask can be customized using the USE_PRIORITY_QUEUE directive and by
-defining the priority of IData through its compare function or order constructor.
-
-Every ITask has an input type and and output type.
+Every htgs::ITask has an input type and and output type.
 These types are defined by the first and second template parameters, respectively.
 
-There are 5 mandatory functions that every ITask must implement:
+The number of threads that are associated with a htgs::ITask and how it interacts with the thread are controlled using one of the four htgs::ITask::ITask constructors. For example using htgs::ITask::ITask(size_t numThreads) will allocate numThreads threads for this htgs::ITask. By doing so, increases the number of threads consuming input data. The htgs::ITask also has additional capabilities that can be used in conjunction with the htgs::ExecutionPipeline, such as getting the pipelineId. These advanced features will be described in a later tutorial.
 
-1) [ITask::initialize(pipelineId, ...)](@ref htgs::ITask::initialize)
-        - Called immediately when the thread that is bound to its TaskScheduler begins executing. Two variations available.
-        One for simple initialization and other to aid in more advanced components such as work stealing. The basic
-        usage of the initialize is to allocate local memory to be used by an ITask. This memory should be freed in
-        the shutdown function. If the ITask is in an [ExecutionPipeline](htgs::ExecutionPipeline), then the pipelineId indicate which
-       pipeline the Task belongs to. This will be shown and used in a future tutorial.
+A htgs::TaskManager is created when adding a htgs::ITask to a htgs::TaskGraphConf. The htgs::TaskManager interacts with the htgs::ITask by sending the htgs::ITask data and producing data when the htgs::ITask::addResult is called. The htgs::TaskManager can be controlled through some of the more advanced constructors from the htgs::ITask. Below is a brief description of what these parameters do.
+1. numThreads - How many threads are spawned for the htgs::ITask (>=1)
+2. isStartTask - If set to TRUE, then immediately processes one data item, sent as nullptr, to the htgs::ITask::executTask function. Can be used to begin processing producing data from a task, such as reading from disk.
+3. poll -  If set to TRUE, will continually poll for data from the input connector based on a timeout period. If the timeout expires, then nullptr data is sent to the htgs::ITask::executTask function
+4. microTimeoutTime - The timeout time in microseconds for polling.
 
-2) [ITask::shutdown()](@ref htgs::ITask::shutdown)
-        - Called when the ITask::isTerminated function returns true. At this point the thread bound
-    to the Task is about to terminate. Often used to deallocate local ITask memory.
+The interaction between the ITask, htgs::TaskManager, and htgs::TaskManagerThread is shown below:
 
-3) [ITask::executeTask(data)](@ref htgs::ITask::executeTask)
-        - Function to process input data. Using the [ITask::addResult](@ref htgs::ITask::addResult) function,
-     output data is sent to the next connected Task.
+![](tut1-itask-callgraph.png)
 
-4) [ITask::copy()](@ref htgs::ITask::copy)
-        - Creates a copy of the ITask. Called during the [Runtime](@ref htgs::Runtime) when a Task is being copied
-        and bound to a thread. This function is used for concurrency/multithreading.
-        If data is shared among ITask's that are copied, then proper synchronization may be required to manage that data.
-
-5) [ITask::isTerminated(inputConnector)](@ref htgs::ITask::isTerminated)
-        - Determines if the Task is ready to be terminated. In most cases, the ITask should use
-    the input htgs::Connector, which is passed as a parameter to isTerminated.
-    The [Connector::isInputTerminated](@ref htgs::Connector::isInputTerminated)
-    function can be used by the ITask to check if all producers for the connector have finished sending data
-    and the data queue is empty.
-
-The interaction between the ITask, TaskScheduler, and TaskScheduler's thread is shown below:
-
-<img src="figures/tut1-itask-callgraph.png" style="width: 80%; height: 80%"/>
-
-### AddTask Implementation {#addtask-implementation}
+### AddTask Implementation {#tut1-addtask-implementation}
 
 ~~~~~~~~~~{.c}
 
@@ -183,110 +157,109 @@ The interaction between the ITask, TaskScheduler, and TaskScheduler's thread is 
 
 #include <htgs/api/ITask.hpp>
 
+// with ':public htgs::ITask<InputData, OutputData>', AddTask becomes a child of ITask, 
+// which consumes data of type InputData and produces data of type OutputData
 class AddTask : public htgs::ITask<InputData, OutputData>
 {
 public:
-    virtual void initialize(int pipelineId, int numPipelines) { }
-    virtual void shutdown() { }
-    virtual void executeTask(std::shared_ptr<InputData> data) {
+    virtual void executeTask(std::shared_ptr<InputData> data) override {
         // Adds x + y
         int sum = data->getX() + data->getY();
 
         // Sends data along output edge
         this->addResult(new OutputData(sum));
     }
-    virtual AddTask *copy() {
+
+    virtual AddTask *copy() override {
         return new AddTask();
     }
-    virtual bool isTerminated(std::shared_ptr<htgs::BaseConnector> inputConnector) {
+
+    // Optional
+    virtual void initialize() override { }
+
+    // Optional
+    virtual void shutdown() override { }
+
+    // Optional
+    virtual bool canTerminate(std::shared_ptr<htgs::AnyConnector> inputConnector) override {
         return inputConnector->isInputTerminated();
     }
 };
 ~~~~~~~~~~
 
-### Notes {#task-notes}
+### Notes {#tut1-task-notes}
 
-- The input and output types of the ITask are defined by the first and second template parameters, respectively.
-- Memory leaks are avoided by using the C++11 std::shared_ptr class. When adding data with addResult,
-the memory pointer allocated will be automatically wrapped into a shared_ptr to ensure it gets
-freed once all references have finished referring to it.
-- There are two variations of the initialize function. In most cases the basic version should be only be used
+- The input and output types of the htgs::ITask are defined by the first and second template parameters, respectively.
+- Memory leaks are avoided by using the C++11 std::shared_ptr class. When adding data with htgs::ITask::addResult,
+the memory pointer allocated will be automatically wrapped into a std::shared_ptr to ensure it gets
+freed once all references have finished referring to it. Alternatively, you can pass a std::shared_ptr to htgs::ITask::addResult
 
-## Creating and Executing a TaskGraph {#create-and-execute-taskgraph}
+## Creating and Executing the htgs::TaskGraphConf {#tut1-create-and-execute-taskgraph}
 
-The TaskGraph is used to connect Tasks with their TaskSchedulers and connect the TaskSchedulers together
-using Connectors.
+The htgs::TaskGraphConf is used to connect htgs::ITask's into a graph that is executed concurrently. The premise of the htgs::TaskGraphConf is
+to provide a separate of concerns between managing memory, dependencies, and computation. A htgs::TaskGraphConf has an input and output type, which
+are used to produce and consume data to/from the htgs::TaskGraphConf.
 
-There are five functions available to connect an ITask to another ITask in a TaskGraph.
+These are the primary functions used to add a htgs::ITask to a htgs::TaskGraphConf
 
-1) [TaskGraph::addGraphInputConsumer(iTask)](@ref htgs::TaskGraph::addGraphInputConsumer)
-    + Sets the iTask to be the consumer of input that enters the TaskGraph (The input type of the TaskGraph, must match the input type of the Task)
+1. htgs::TaskGraphConf::setGraphConsumerTask
+  + Sets the htgs::ITask that will be consuming data that is inserted into the htgs::TaskGraphConf during execution
+  + The input type of the htgs::ITask must match the input type of the htgs::TaskGraphConf
+  + There can only be one htgs::ITask that consumes data from the htgs::TaskGraphConf
+    - If multiple are required, then a htgs::Bookkeeper can be used to distribute data among multiple htgs::ITask
 
-2) [TaskGraph::addGraphOutputProducer(iTask)](@ref htgs::TaskGraph::addGraphOutputProducer)
-    + Sets the iTask to be the producer of output that leaves the TaskGraph
-    (the output type of the TaskGraph, must match the output type of the Task)
+2) htgs::TaskGraphConf::addGraphProducerTask 
+  - Specifies a htgs::ITask that will be producing data for the htgs::TaskGraphConf
+  - The output type of the htgs::ITask must match the output type of the htgs::TaskGraphConf  
+  - There can be multiple htgs::ITask s producing data for the htgs::TaskGraphConf
 
-3) [TaskGraph::addEdge(iTaskProducer, iTaskConsumer)](@ref htgs::TaskGraph::addEdge)
-    + Connects two Task's together (The output type of the producer, must match the input type of the consumer)
+3) htgs::TaskGraphConf::addEdge (Demonstrated in future tutorials)
+  - Adds an edge to the graph where one htgs::ITask produces data for another htgs::ITask, which consumes that data
+  - The output type of the htgs::ITask producing data must match the input type of the htgs::ITask consuming that data
 
-4) [TaskGraph::addRule(bookkeeper, iTaskConsumer, iRule)](@ref htgs::TaskGraph::addRule)
-    + Adds a rule to a bookkeeper for sending data to a consumer (demonstrated in a future tutorial)
+4) htgs::TaskGraphConf::addRuleEdge (Demonstrated in future tutorials)
+  - Connects a htgs::Bookkeeper to a htgs::ITask where a htgs::IRule determines when to produce data based on the state of the computation
+  - Two variants are available
+    + Specifying std::shared_ptr for the htgs::IRule allows the htgs::IRule to be shared among multiple htgs::TaskGraphConf
+      - Each htgs::IRule is access synchronously through a shared mutex
+    + Specifying without std::shared_ptr should not be shared among multiple htgs::TaskGraphConf
+      - The htgs::TaskGraphConf wraps the memory into a std::shared_ptr internally
 
-5) [TaskGraph::addCustomEdge(iCustomEdge)](@ref htgs::TaskGraph::addCustomEdge)
-    + Creates a customized connection between a producer and consumer (demonstrated in a future tutorial)
+5) htgs::TaskGraphConf::addMemoryManagerEdge (Demonstrated in future tutorials)
+  - Attaches a htgs::MemoryManager to a htgs::ITask, so the htgs::ITask can use htgs::ITask::getMemory
+  - Acts as a mechanism for sharing memory among multiple htgs::ITask
+  - Limited resource based on memory pool size
+  - Specifies htgs::m_data_t, which can be released using htgs::ITask::releaseMemory
 
-Every TaskGraph has an input type and output type to allow sending/receiving data to/from a TaskGraph.
-In this tutorial we will be demonstrating this functionality.
+There are two steps necessary for adding data to a graph and ensuring the graph will finish executing.
 
-There are three steps necessary for adding data to a graph and ensuring the graph will finish executing.
+1. (Optional) Specify an ITask that will be processing the input data with htgs::TaskGraphConf::setGraphConsumerTask
+  + Alternatively can specify a task in the graph as a _startTask_ to begin processing immediately
+2. When there is no more data to be produced: htgs::TaskGraphConf::finishedProducingData
+  + Must be called to terminate the graph
+  + If it is not called, then the htgs::TaskGraphConf will never finish executing
 
-1. Specify the ITask that will be processing the input data with [TaskGraph::addGraphInputConsumer](@ref htgs::TaskGraph::addGraphInputConsumer)
-2. Increment the number of producers with [TaskGraph::incrementGraphInputProducer](@ref htgs::TaskGraph::incrementGraphInputProducer)
-3. When there is no more data to be produced: [TaskGraph::finishedProducingData](@ref htgs::TaskGraph::finishedProducingData)
+ To process the output of a TaskGraph use the htgs::TaskGraphConf::consumeData. To
+ determine if there is no more data being produced by the TaskGraph, use htgs::TaskGraphConf::isOutputTerminated.
 
-If [TaskGraph::incrementGraphInputProducer](@ref htgs::TaskGraph::incrementGraphInputProducer) is specified and
- [TaskGraph::finishedProducingData](@ref htgs::TaskGraph::finishedProducingData) is never called, then the TaskGraph
- will not finish executing.
+To execute a htgs::TaskGraphConf use the htgs::TaskGraphRuntime. The
+htgs::TaskGraphRuntime will create and launch threads. If a htgs::ITask has more than
+one thread specified, then the htgs::TaskGraphRuntime will duplicate the htgs::ITask such that each thread will be responsible
+for a separate instance of the htgs::ITask.
 
- To process the output of a TaskGraph use the [TaskGraph::consumeData](@ref htgs::TaskGraph::consumeData) function. To
- determine if there is no more data being produced by the TaskGraph, use the
- [TaskGraph::isOutputTerminated](@ref htgs::TaskGraph::isOutputTerminated) function.
+The htgs::TaskGraphRuntime specifies the following functions:
+1. htgs::TaskGraphRuntime::executeRuntime - Spawns and launches threads, returning back to the caller
+2. htgs::TaskGraphRuntime::waitForRuntime - Waits for threads to finish (thread join)
+3. htgs::TaskGraphRuntime::executeAndWaitForRuntime - Executes and then waits for the runtime to finish
 
-To execute a TaskGraph, the TaskGraph is managed by the [Runtime](@ref htgs::Runtime). The
-Runtime will create threads, which are bound to TaskSchedulers. If a Task has more than
-one thread specified, then the Runtime will duplicate the Task such that each thread will be responsible
-for a separate instance of the Task.
+Calling **delete** on the runtime will release all memory associated with the htgs::TaskGraphConf, including
+htgs::ITask allocations.
 
-If there are complications when running a TaskGraph, the TaskGraph can be saved as a dot
- file with the function [TaskGraph::writeDotToFile](@ref htgs::TaskGraph::writeDotToFile), which can be visually shown
- with the following command 'dot -Tpng \<filename\> -o \<filename\>.png'.
- The dot command is provided in the [GraphViz software](http://www.graphviz.org/). Below is an example dot file that is
- generated and the associated image representation:
-
- Dot file generated using "taskGraph->writeDotToFile("tutorial1.dot")":
- ~~~~~
-digraph {
-node[shape=record, fontsize=10, fontname="Verdana"];
-edge[fontsize=10, fontname="Verdana"];
-graph [compound=true];
-x10f6380 -> x10f6010;
-x10f6380[label="",shape=box,style=filled,color=black,width=.2,height=.2];
-x10f6010 -> x10f6720;
-x10f6720[label="",shape=box,style=filled,color=black,width=.2,height=.2];
-x10f6010[label="x+y=z"];
-}
- ~~~~~
-
- And the image generated with GraphViz using "dot -Tpng tutorial1.dot -o tutorial1.png"
-![Tutorial1 TaskGraph](figures/tutorial1.png)
-
-
-
-### Main function (create and execute TaskGraph) {#main-function}
+### Main function (create and execute TaskGraph) {#tut1-main-function}
 
 ~~~~~~~~~~{.c}
-#include <htgs/api/TaskGraph.hpp>
-#include <htgs/api/Runtime.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
+#include <htgs/api/TaskGraphRuntime.hpp>
 #include "tasks/AddTask.h"
 
 int main() {
@@ -295,19 +268,16 @@ int main() {
     AddTask *addTask = new AddTask();
 
     // Creates the TaskGraph
-    auto taskGraph = new htgs::TaskGraph<InputData, OutputData>();
+    auto taskGraph = new htgs::TaskGraphConf<InputData, OutputData>();
 
     // Declares that AddTask will be processing the input of a TaskGraph
-    taskGraph->addGraphInputConsumer(addTask);
+    taskGraph->setGraphConsumerTask(addTask);
 
     // Declares that AddTask will be producing data for the output of a TaskGraph
-    taskGraph->addGraphOutputProducer(addTask);
-
-    // Increments the number of producers (the main thread will be producing data)
-    taskGraph->incrementGraphInputProducer();
+    taskGraph->addGraphProducerTask(addTask);
 
     // Launch the taskGraph
-    auto runtime = new htgs::Runtime(taskGraph);
+    auto runtime = new htgs::TaskGraphRuntime(taskGraph);
 
     runtime->executeRuntime();
 
@@ -327,6 +297,7 @@ int main() {
     runtime->waitForRuntime();
 
     // Process the ouput of the TaskGraph until no more data is available
+    // Could process this data prior to runtime->waitForRuntime()
     while (!taskGraph->isOutputTerminated())
     {
         auto data = taskGraph->consumeData();
@@ -357,41 +328,68 @@ Result: 18
 ~~~~
 
 
+### Debugging and profiling a htgs::TaskGraphConf {#tut1-debug}
+
+If there are complications when running a htgs::TaskGraphConf, then the configuration can be saved as a dot
+ file with the function htgs::TaskGraphConf::writeDotToFile, which can be visually shown
+ with the following command 'dot -Tpng \<filename\> -o \<filename\>.png' from [Graphviz](http://www.graphviz.org).
+ Below is an example dot file that is generated and the associated image representation:
+
+ Dot file generated using "taskGraph->writeDotToFile("tutorial1.dot")":
+ ~~~~~
+digraph {
+node[shape=record, fontsize=10, fontname="Verdana"];
+edge[fontsize=10, fontname="Verdana"];
+graph [compound=true];
+x10f6380 -> x10f6010;
+x10f6380[label="",shape=box,style=filled,color=black,width=.2,height=.2];
+x10f6010 -> x10f6720;
+x10f6720[label="",shape=box,style=filled,color=black,width=.2,height=.2];
+x10f6010[label="x+y=z"];
+}
+ ~~~~~
+
+ And the image generated with GraphViz using "dot -Tpng tutorial1.dot -o tutorial1.png"
+![Tutorial1 TaskGraph](tutorial1.png)
+
+
+If the htgs::TaskGraphConf::writeDotToFile is used after the htgs::TaskGraphRuntime has finished and the PROFILE directive has been defined,
+then profiling data will be generated within the dot file representation. Various flags can be used to customize the dot file, found in <htgs/types/TaskGraphDotGenFlags.hpp>.
+
+
 ### Notes {#taskgraph-notes}
 
 - The input and output types for each Task being added must match based on the way they are being added
 into a TaskGraph
-    + Example 1: addEdge types match based on output of producer and input of consumer
-    + Example 2: addGraphInputConsumer types match based on input of graph and input on consumer
+    + Example 1: htgs::TaskGraphConf::addEdge types match based on output of producer and input of consumer
+    + Example 2: htgs::TaskGraphConf::setGraphConsumerTask types match based on input of graph and input on consumer
 - To release all memory for HTGS, you only need to delete the runtime.
 - Threading is managed by the runtime, which will spawn threads and join on them.
 - If the main thread or some other component is producing data for a TaskGraph:
-    1. Specify the ITask that will be processing the input data with [TaskGraph::addGraphInputConsumer](@ref htgs::TaskGraph::addGraphInputConsumer)
-    2. Increment the number of producers with [TaskGraph::incrementGraphInputProducer](@ref htgs::TaskGraph::incrementGraphInputProducer)
-    3. When there is no more data to be produced: [TaskGraph::finishedProducingData](@ref htgs::TaskGraph::finishedProducingData)
-- Use the [TaskGraph::consumeData](@ref htgs::TaskGraph::consumeData) function to retrieve the output from a TaskGraph.
-- Use the [TaskGraph::isOutputTerminated](@ref htgs::TaskGraph::isOutputTerminated) function to check if the TaskGraph has
-finished producing data.
+    1. Specify the ITask that will be processing the input data with  htgs::TaskGraphConf::setGraphConsumerTask
+    2. Always call htgs::TaskGraphConf::finishedProducingData when there is no more data to be produced
+- Use the htgs::TaskGraphConf::consumeData to retrieve the output from a TaskGraph.
+- Use the htgs::TaskGraphConf::isOutputTerminated to check if the TaskGraph has finished producing data.
 
 
 Summary {#summary}
 ======
 
 In this tutorial, we looked at the basics of the HTGS API.
-- Data using IData
-- Compute Functions using the ITask interface
-- Creating a TaskGraph
-- Executing a TaskGraph
-- Sending data into a TaskGraph
-- Processing data produced by a TaskGraph
+- Data using htgs::IData
+- Compute functions using the htgs::ITask interface
+- Creating a htgs::TaskGraphConf
+- Executing a htgs::TaskGraphConf with the htgs::TaskGraphRuntime
+- Producing data for a htgs::TaskGraphConf
+- Consuming data produced by a htgs::TaskGraphConf
 
-In the next tutorial, we will introduce two operations that assist in representing algorithms that contain
-dependencies and strict memory limitations: (1) Bookkeeper and (2) MemoryManager.
+In [Tutorial2a](@ref tutorial2a) and [Tutorial2b](@ref tutorial2b), we will introduce two operations that assist in representing algorithms that contain
+dependencies with the htgs::Bookkeeper and strict memory limitations using the htgs::MemoryManager.
 
 Additional information:
-- Header files that begin the 'I' denote interfaces; examples: [IData](@ref htgs::IData) and [ITask](@ref htgs::ITask)
-- An ITask is managed by a TaskScheduler which works with Task's input and output Connectors, and calls the
-underlying ITask API.
-- Tasks are connected through [Connectors](@ref htgs::Connector), which are setup when adding an ITask to a [TaskGraph](@ref htgs::TaskGraph).
-- When transforming an algorithm into a TaskGraph, it helps to create a dataflow representation first to aid in understanding
-data dependencies. This is particularly useful when setting up IData and as will be seen in the next tutorial Bookkeeper rules and MemoryManagers.
+- Header files that begin the 'I' denote an interface that is to be implemented; examples: htgs::IData and htgs::ITask
+- a htgs::ITask is managed by a htgs::TaskManager which works with the htgs::ITask's input and output htgs::Connectors, and calls the
+underlying htgs::ITask functions.
+- The htgs::Task use the htgs::Connector, which are setup when adding an ITask to a htgs::TaskGraphConf
+- When transforming an algorithm into a htgs::TaskGraphConf, it helps to create a dataflow representation first to aid in understanding
+data dependencies and parallelism. This is particularly useful when determining how to represent htgs::IData, which will be further demonstrated in [Tutorial2a](@ref tutorial2a) 

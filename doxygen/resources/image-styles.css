@@ -1,1 +1,13 @@
-img[alt="Methodology.png"] {width: 500px; }
+img[alt="Methodology.png"] { width: 500px; }
+img[alt="tut1-itask-callgraph.png"] { width: 60%; height: 60%; }
+img[alt="hadamardProductFigure.png"] { width: 35%; height: 35%; }
+img[alt="blocksize-impact.png"] { width: 40%; height: 40%; }
+img[alt="tut2Hadamard-dataflow.png"] { width: 50%; height 50%; }
+img[alt="tut2Hadamard-taskgraph.png"] { width: 75%; height: 75%; }
+img[alt="tut2Hadamard-taskgraph-memory.png"] { width: 75%; height: 75%; }
+img[alt="taskBookkeeper-v2.png"] { width: 50%; height: 50%; }
+img[alt="staticMemoryManager.png"] { width: 85%; height: 85%; }
+img[alt="dynamicMemoryManager.png"] { width: 85%; height: 85%; }
+img[alt="matMulDecomp.png"] { width: 35%; height: 35%; }
+img[alt="data-flow-gemm-only.png"] { width: 70%; height: 70%; }
+img[alt="matMulTaskGraphv2.png"] { width: 70%; height: 70%; }
