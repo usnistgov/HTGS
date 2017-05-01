@@ -6,11 +6,13 @@ In part A of this tutorial we introduce how to represent a dependency using the 
 
 The source code for the tutorial can be found at [Source Code]().
 
-We have implemented a number of utility functions and tasks that are reused across the remaining tutorials, which can be viewed [here](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial-utils).
+We have implemented a number of utility functions and tasks that are reused across the remaining tutorials, which can be viewed here: 
+[utility functions](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial-utils) and [tasks](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial-utils/matrix-library).
 
 The algorithm we will be using for parts A and B of this tutorial is the [Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices)), which is the product of elements of two matrices of equal size. 
 There are two things to keep an eye out for in part A: (1) transforming an algorithm's representation to enable
 better pipelining and parallelism and (2) representing a dependency to ensure data is loaded prior to execution.
+
 
 
 Objectives {#tut2a-objectives}
@@ -88,7 +90,7 @@ For part A of this tutorial, we assume the data is generated in the _Read_ task.
 The two read functions are merged into a single read task, and use a flag to indicate whether to read from matrix A or B. This step could easily be represented as
 two separate read tasks for matrices A and B. In this case, a preliminary htgs::Bookkeeper would be used to process
 the input of the htgs::TaskGraphConf and distribute the incoming data between the two read tasks. This is due to the htgs::TaskGraphConf only allowing
-a single task responsible for consuming data from the graph. In [tutorial3](@ref tutorial3), we will demonstrate this concept.
+a single task responsible for consuming data from the graph. In [tutorial3A](@ref tutorial3a), we will demonstrate this concept.
 
 Every task in this htgs::TaskGraphConf can have one or more threads processing data. This allows the read task to pipeline
 with the Hadamard product task, overlapping the I/O of loading a matrix block with computing the
@@ -437,6 +439,7 @@ To use the htgs::Bookkeeper, an htgs::IRule must be defined. The htgs::IRule rep
 
  
 ### HadamardLoadRule {#tut2a-load-rule}
+
 ~~~~{.c}
 #include <htgs/api/IRule.hpp>
 #include "../../tutorial-utils/matrix-library/data/MatrixBlockData.h"
@@ -514,7 +517,7 @@ shared among multiple htgs:Bookkeepers, then the htgs::IRule must be wrapped int
 Belows is the source code implementation for setup, construction of the task TaskGraph, executing the TaskGraph, and processing
 the output of the TaskGraph.
 
-We use the SimpleClock implementation from the [Tutorial Utility Functions](@ref https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial-utils) to measure the execution time.
+We use the SimpleClock implementation from the [Tutorial Utility Functions](https://github.com/usnistgov/HTGS-Tutorials/blob/master/tutorial-utils/SimpleClock.h) to measure the execution time.
 
 The traversal order with operating on matrices A and B for the Hadamard product is defined using
 the htgs::TaskGraphConf::produceData function. The graph processes this data in a first in, first out (FIFO) ordering, which can be switched to a priority queue by defining the directive USE_PRIORITY_QUEUE.
@@ -681,7 +684,7 @@ In this tutorial, we looked at parallelism/pipelining and handling dependencies.
 - How to specify a pool of threads for an htgs::ITask
 - The functions needed to define a dependency using htgs::IRule
 
-In [part B of Tutorial 2](@ref Tutorial2b), we augment the graph presented in this Tutorial to read matrices from disk. We also include the use
+In [part B of Tutorial 2](@ref tutorial2b), we augment the graph presented in this Tutorial to read matrices from disk. We also include the use
 of memory managers to throttle the graph, ensuring that memory limits are satisfied.
 
 Additional information:

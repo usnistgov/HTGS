@@ -39,7 +39,7 @@ The primary change is altering the generate matrix task to read from disk and ad
 ![Task graph with annotated memory edges](tut2Hadamard-taskgraph-memory.png)
 
 Using the memory edges, we are able to ensure that a fixed number of block-sized matrices flow through the graph, staying within memory limits. The memory is allocated using the htgs::MemoryManager. A htgs::IMemoryReleaseRule is specified to determine when the memory can be released. For the Hadamard product, this rule is trivial because the memory can be released as soon as the data has been used for computation. In more complex examples, such as matrix
-multiplication ([Tutorial 3](@ref tutorial3)), data reuse must be carefully analyzed to ensure that the system does not deadlock; i.e. the memory never gets released because its release rule cannot be satisfied based on the traversal of data. The way an algorithm uses its data is important to understand to optimize these release rules, which ideally keeps data close to its processor for as long as possible.
+multiplication ([Tutorial 3](@ref tutorial3a)), data reuse must be carefully analyzed to ensure that the system does not deadlock; i.e. the memory never gets released because its release rule cannot be satisfied based on the traversal of data. The way an algorithm uses its data is important to understand to optimize these release rules, which ideally keeps data close to its processor for as long as possible.
 
 The Hadamard product with memory management creates three memory edges for the two input matrices and the output matrix. In the pictoral representation, we mark that the Hadamard product task releases the memory for matrices A and B. Matrix C has a floating edge indicating that the memory will be released elsewhere. In actuality, the HTGS API only specifies the task that is allocating memory. This will be described in further detail later on in this tutorial.
 
@@ -252,6 +252,7 @@ class HadamardProductTaskWithReleaseMem : public htgs::ITask<MatrixBlockMulData<
 This tutorial reuses all of the htgs::Bookkeeper and htgs::IRule implementations from [Tutorial2A](@ref tut2a-bookkeeper)
 
 ## Throttling Tasks with a Memory Manager {#tut2b-memory-manager}
+
 The htgs::MemoryManager is a htgs::ITask that is created when adding a memory edge to a htgs::ITask. A memory edge
 is similar to any other edge,  except it connects directly to the htgs::ITask rather than through a htgs::TaskManager. This edge
 acts as a mechism for the task to get htgs::MemoryData from a htgs::MemoryManager. The htgs::MemoryManager maintains a pool of htgs::MemoryData.
@@ -287,6 +288,7 @@ is not too much memory being allocated.
   In the next sections, we will go into the details as to how each of these MemoryManager types vary and process MemoryData.
 
 ### Static Memory Manager {#tut2b-static-mm}
+
 The static MemoryManager is a memory manager that recycles memory when it is released. All of the memory for the memory pool is allocated once
 when the MemoryManager is initialized and freed when the MemoryManager is shutdown. The diagram below shows how
 MemoryData is processed when an ITask releases memory. First, when MemoryData enters the MemoryManager,
@@ -300,6 +302,7 @@ so the ITask getting memory can wake up and acquire MemoryData.
 ![Static memory manager](staticMemoryManager.png)
 
 ### Dynamic Memory Manager {#tut2b-dynamic-mm}
+
 The dynamic MemoryManager contains a similar structure as the static MemoryManager with how it processes MemoryData.
 The primary difference is when the dynamic
 MemoryManager allocates and frees memory. In the static MemoryManager all memory is allocated during initialization and freed
@@ -331,6 +334,7 @@ Within the htgs::MemoryData there are two functions that must be defined to use 
   to be one.
 
 ### MatrixAllocator {#tut2b-matrix-allocator}
+
 ~~~~ {.c}
  #include <htgs/api/IMemoryAllocator.hpp>
  
@@ -358,6 +362,7 @@ Within the htgs::MemoryData there are two functions that must be defined to use 
 ~~~~
 
 ### MatrixMemoryRule {#tut2b-matrix-memory-rule}
+
 ~~~~ {.c}
 #include <htgs/api/IMemoryReleaseRule.hpp>
  

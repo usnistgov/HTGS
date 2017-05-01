@@ -141,7 +141,7 @@ a given row,column block request. This pointer is sent to the next task with the
 dimension size of the block. 
 
 The [MatMulBlkTask](@ref tut3a-matmul-task) receives MatrixBlockMulData. We use
-the [computeMatMul](@ref LinkToFunction) function to process the matrix multiplication of two of the matrices from
+the [computeMatMul](https://github.com/usnistgov/HTGS-Tutorials/blob/master/tutorial-utils/matrix-library/operations/matmul.cpp) function to process the matrix multiplication of two of the matrices from
 the input data. The sub-result is stored
 in a piece of memory that is dynamically allocated within the execute function, which is then send along the output
 edge using htgs::ITask::addResult.
@@ -726,7 +726,7 @@ Belows is the source code implementation for setup, construction of the task Tas
 
 We also include functions for computing the algorithm without HTGS and validating the results.
 
-To reduce code size, we have created a [MatMulArgs](@ref Link to MatMulArgs) class to handle parsing command-line arguments.
+To reduce code size, we have created a [MatMulArgs](https://github.com/usnistgov/HTGS-Tutorials/blob/master/tutorial-utils/matrix-library/args/MatMulArgs.cpp) class to handle parsing command-line arguments.
 
 The input matrices are initialized prior to execution, and the result matrix is assumed to have been initialized with zeros.
 
