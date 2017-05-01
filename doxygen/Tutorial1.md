@@ -4,7 +4,7 @@ Tutorial 1 {#tutorial1}
 
 In this tutorial we will be introducing the basics of the Hybrid Task Graph Scheduler (HTGS) API.
 
-The [Source Code]() can be viewed in the HTGS-Tutorials github repository. 
+The [Source Code](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial1) can be viewed in the HTGS-Tutorials github repository. 
 
 We will be implementing a simple add function to add two numbers and
  return the result, which introduces the API and how to work with it.

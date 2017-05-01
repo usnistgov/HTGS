@@ -4,7 +4,7 @@ Tutorial 2A {#tutorial2a}
 
 In part A of this tutorial we introduce how to represent a dependency using the htgs::Bookkeeper and htgs::IRule.
 
-The source code for the tutorial can be found at [Source Code]().
+The source code for the tutorial can be found at [Source Code](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial2).
 
 We have implemented a number of utility functions and tasks that are reused across the remaining tutorials, which can be viewed here: 
 [utility functions](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial-utils) and [tasks](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial-utils/matrix-library).

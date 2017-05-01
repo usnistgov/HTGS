@@ -4,7 +4,7 @@ Tutorial 2B {#tutorial2b}
 
 In this tutorial we expand on [Tutorial 2A](@ref tutorial2a) by adding two components to the previous task graph: (1) Reading the matrices from disk and (2) Using memory managers to stay within memory limits. 
 
-The source code for the tutorial is found [here](location updated).
+The source code for the tutorial is found [here](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial2/with-disk).
 
 Objectives {#tut2b-objectives}
 =======

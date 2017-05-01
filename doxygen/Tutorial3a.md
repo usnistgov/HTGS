@@ -4,8 +4,13 @@ Tutorial 3A {#tutorial3a}
 
 In this tutorial we implement the matrix multiplication algorithm and how to represent it using HTGS. Matrix
 multiplication provides interesting challenges in decomposition of data and managing their dependencies. 
-Parts A and B of this tutorial assume the data is pre-loaded into memory. Part C will incorporate memory mapped files, 
-loading the matrices from disk, and a third variant is available [here](Link to third version), which stores matrix blocks as files.
+
+The source code for this tutorial can be found [here](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial3)
+
+Parts A and B of this tutorial assume the data is pre-loaded into memory. Part C will incorporate memory mapped files to load matrices from disk, available
+[here](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial3/with-mmap). A Third version is also available that uses similar block-based files
+as in the Hadamard product implementation in Tutorial 2B, found [here](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial3/with-disk).
+
 
 Objectives {#tut3a-objectives}
 =======
