@@ -52,6 +52,7 @@ var NAVTREE =
           [ "Notes", "tutorial2a.html#tut2a-task-notes", null ]
         ] ],
         [ "Managing Dependencies with the Bookkeeper and IRule", "tutorial2a.html#tut2a-bookkeeper", [
+          [ "HadamardLoadRule", "tutorial2a.html#tut2a-load-rule", null ],
           [ "Notes", "tutorial2a.html#tut2a-bookkeeper-notes", null ]
         ] ],
         [ "Creating and Executing the htgs::TaskGraphConf", "tutorial2a.html#tut2a-create-and-execute-taskgraph", [
@@ -75,6 +76,8 @@ var NAVTREE =
         [ "Throttling Tasks with a Memory Manager", "tutorial2b.html#tut2b-memory-manager", [
           [ "Static Memory Manager", "tutorial2b.html#tut2b-static-mm", null ],
           [ "Dynamic Memory Manager", "tutorial2b.html#tut2b-dynamic-mm", null ],
+          [ "MatrixAllocator", "tutorial2b.html#tut2b-matrix-allocator", null ],
+          [ "MatrixMemoryRule", "tutorial2b.html#tut2b-matrix-memory-rule", null ],
           [ "Notes", "tutorial2b.html#tut2b-memorymanagement-notes", null ]
         ] ],
         [ "Creating and Executing the TaskGraph", "tutorial2b.html#tut2b-create-and-execute-taskgraph", [
