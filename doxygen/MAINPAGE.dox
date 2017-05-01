@@ -143,15 +143,24 @@ Tutorials {#tutorials}
     + How to htgs::ITask::getMemory
     + How to htgs::ITask::releaseMemory
 
-+ [Tutorial 3a](@ref tutorial3) - Implementing Matrix Multiplication [Source Code]()
++ [Tutorial 3a](@ref tutorial3a) - Implementing Matrix Multiplication [Source Code]()
   - Complex dependencies
   - Terminating cyclic graphs
   - Profiling and optimizations
 
-+ [Tutorial 3b](@ref tutorial3) - Augmenting the graph from Tutorial 3a to use disk (optional memory mapped files) - [Source Code]()
-  - Managing memory
-  - Complex htgs::IMemoryReleaseRule
-    + Handling locality
+-----------------------------------------------------------------------
+Tutorials below are still under development
+-----------------------------------------------------------------------
+
++ [Tutorial 3b](@ref tutorial3b) - Profiling and debugging the graph from Tutorial 3a.
+  - GraphViz visualizations
+  - Development experimentation for performance
+  - Identifying bottlenecks
+  - Incorporating high performance libraries into HTGS tasks
+
++ [Tutorial 3c](@ref tutorial3c) - Augmenting the graph from Tutorial3a to use memory mapped files.
+  - How to incorporate memory mapped files into a task
+  - Performance comparrisons
 
 + [Tutorial 4](@ref tutorial4) - Augmenting the graph from Tutorial 3a to use CUDA - [Source Code]()
   - Sending data to/from the GPU with htgs::ICudaTask
