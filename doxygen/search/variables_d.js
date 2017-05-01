@@ -1,5 +1,10 @@
 var searchData=
 [
-  ['queue',['queue',['../classhtgs_1_1_connector.html#aa6cefac1e0ccd061c5c947d795f4c245',1,'htgs::Connector::queue()'],['../classhtgs_1_1_blocking_queue.html#a86f0cb98de1be92e2f2ea875b9fbd134',1,'htgs::BlockingQueue::queue()'],['../classhtgs_1_1_priority_blocking_queue.html#ace4a5afb354382af644c2da514961562',1,'htgs::PriorityBlockingQueue::queue()']]],
-  ['queuesize',['queueSize',['../classhtgs_1_1_memory_pool.html#ad86ae7d4f07678fe06eec6f8c403dede',1,'htgs::MemoryPool::queueSize()'],['../classhtgs_1_1_blocking_queue.html#aff568c04a600d5beeddbe6cb201533f1',1,'htgs::BlockingQueue::queueSize()'],['../classhtgs_1_1_priority_blocking_queue.html#a280ebfb8ecf115c53115fe5b0a4a76e5',1,'htgs::PriorityBlockingQueue::queueSize()']]]
+  ['parentcomm',['parentComm',['../classhtgs_1_1_task_graph_communicator.html#aed2f5c2927f968725723a9c080f6891d',1,'htgs::TaskGraphCommunicator']]],
+  ['peercontexts',['peerContexts',['../classhtgs_1_1_i_cuda_task.html#a52704937e46c5bf120069fa9bc3e88d3',1,'htgs::ICudaTask']]],
+  ['pipelineid',['pipelineId',['../classhtgs_1_1_memory_data.html#a71e34f4464ca7f8248d5e3053857bc81',1,'htgs::MemoryData::pipelineId()'],['../classhtgs_1_1_any_task_graph_conf.html#a20c0fbc00b87ccbe193243d8e8c6e63b',1,'htgs::AnyTaskGraphConf::pipelineId()'],['../classhtgs_1_1_rule_manager.html#a44289578ab2f7b3f251607eefd996cc0',1,'htgs::RuleManager::pipelineId()'],['../classhtgs_1_1_any_i_task.html#a08622ac16b7f3273702e1f665db9567a',1,'htgs::AnyITask::pipelineId()'],['../classhtgs_1_1_any_task_manager.html#af0d7a9991559a62f27dfff38d2f4ef7b',1,'htgs::AnyTaskManager::pipelineId()']]],
+  ['poll',['poll',['../classhtgs_1_1_any_i_task.html#a48b25f5302f442df21bc1a1056922096',1,'htgs::AnyITask::poll()'],['../classhtgs_1_1_any_task_manager.html#a6a9878ae79f7e1c47ac278399256f5b2',1,'htgs::AnyTaskManager::poll()']]],
+  ['pool',['pool',['../classhtgs_1_1_memory_manager.html#a836d00cf269ffdde89c6c81bb5db94d9',1,'htgs::MemoryManager']]],
+  ['producer',['producer',['../classhtgs_1_1_producer_consumer_edge.html#ac1707d5faf5f833b5a8d1fb763fa0615',1,'htgs::ProducerConsumerEdge']]],
+  ['producertaskcount',['producerTaskCount',['../classhtgs_1_1_any_connector.html#a385cd53dc475c138c217fb582cff42b7',1,'htgs::AnyConnector']]]
 ];

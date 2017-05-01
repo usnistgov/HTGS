@@ -1,0 +1,6 @@
+<map id="htgs::AnyITask::genDot" name="htgs::AnyITask::genDot">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a5e708d23390a04d5bd162442c3020817" title="Gets the demangled input type name of the connector. " alt="" coords="226,5,419,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a18dd451a0899d6325e21ceb1d953b845" title="Gets the demangled output type name of the connector. " alt="" coords="222,56,423,83"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#a35a98bd2bfb55ddffe8f0d01faa3354b" title="Gets the number of threads associated with this ITask. " alt="" coords="217,107,429,133"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Pure virtual function to get the name of an ITask. " alt="" coords="237,157,409,184"/>
+</map>

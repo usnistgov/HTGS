@@ -1,3 +1,3 @@
 <map id="htgs::MemoryPool&lt; T &gt;" name="htgs::MemoryPool&lt; T &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_blocking_queue.html" title="htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::MemoryData\&lt; T \&gt; \&gt; \&gt;" alt="" coords="5,5,165,61"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; m_data_t\&lt; T \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="5,160,156,413"/>
 </map>

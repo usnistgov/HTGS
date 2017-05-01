@@ -1,0 +1,6 @@
+<map id="htgs::ICudaTask::genDot" name="htgs::ICudaTask::genDot">
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html#a8f977bcb22ff0c29f012941dc176f1ea" title="Gets the demangled input type name of the connector. " alt="" coords="233,5,404,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html#a96a561b1a52da1e364ab068abf98b605" title="Gets the demangled output type name of the connector. " alt="" coords="229,56,408,83"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_i_task.html#abeeada962181237186b47285ab5b8947" title="Gets the number of threads associated with this ITask. " alt="" coords="224,107,413,133"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_i_cuda_task.html#a09251c89aea49412169a5b602ef2ee49" title="Virtual function that gets the name of this ICudaTask. " alt="" coords="229,157,409,184"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;::copyITask" name="htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;::copyITask">
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6" title="Pure virtual function to copy an ITask. " alt="" coords="265,5,389,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a8151861566f3566b2bfbeb4c61db8d5d" title="Copies the memory edges from this AnyITask to another AnyITask. " alt="" coords="229,57,424,98"/>
+</map>

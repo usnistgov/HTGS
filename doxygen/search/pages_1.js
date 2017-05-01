@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['tutorial_201',['Tutorial 1',['../tutorial1.html',1,'']]],
-  ['tutorial_202',['Tutorial 2',['../tutorial2.html',1,'']]]
+  ['hybrid_20task_20graph_20scheduler_20_28htgs_29_20_2d_20an_20application_20programming_20interface_20to_20generate_20hybrid_20pipeline_20workflow_20systems',['Hybrid Task Graph Scheduler (HTGS) - An application programming interface to generate hybrid pipeline workflow systems',['../index.html',1,'']]]
 ];

@@ -1,0 +1,10 @@
+<map id="htgs::TaskGraphConf::addEdge" name="htgs::TaskGraphConf::addEdge">
+<area shape="rect" id="node2" href="$classhtgs_1_1_producer_consumer_edge.html#a29095f6580e30b37af93f2dbd1346b98" title="Applies an edge to a task graph. " alt="" coords="200,169,397,211"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_graph_conf.html#a955128064919d0284de0765aae41cfd3" title="Gets the task manager that is responsible for a particular ITask. " alt="" coords="445,71,616,112"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_task_manager.html#a86523b19da2edf80ee678ff722407468" title="Gets the input Connector. " alt="" coords="459,136,602,177"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_task_manager.html#a7a31d2eb4ffe1abe4190c4783dedf5fe" title="Sets the input BaseConnector. " alt="" coords="459,201,602,243"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_task_manager.html#a80e941fce5be320e19e213abfe2b719f" title="Sets the output BaseConnector. " alt="" coords="459,267,602,308"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a1413cf98c99559ff2f72b352bfe83b8b" title="Gets the number of threads associated with this TaskManager. " alt="" coords="664,5,821,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_manager.html#acc16c9c9455034e0842b9476ab97997b" title="Gets whether this task manager will begin executing immediately with nullptr data or not..." alt="" coords="664,71,821,112"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html#a8a11ac50fa8263425f2f496249660e8d" title="Gets whether the task manager is polling for data or not. " alt="" coords="664,136,821,177"/>
+</map>

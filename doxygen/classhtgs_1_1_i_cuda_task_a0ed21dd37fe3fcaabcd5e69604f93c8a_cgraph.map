@@ -1,3 +1,3 @@
 <map id="htgs::ICudaTask::requiresCopy" name="htgs::ICudaTask::requiresCopy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_cuda_task.html#a70470776641d6134e2dd9bd1bbe2d226" title="Checks if the requested pipelineId requires GPU&#45;to&#45;GPU copy. " alt="" coords="259,5,463,32"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_cuda_task.html#aa84c6764a48c3398b293a978fb61a1c4" title="Checks if the requested pipelineId requires GPU&#45;to&#45;GPU copy. " alt="" coords="257,5,461,32"/>
 </map>

@@ -1,0 +1,6 @@
+<map id="htgs::CudaMemoryManager::initialize" name="htgs::CudaMemoryManager::initialize">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a9eee31ff0a32d0ec08648edcb26ec096" title="Gets the pipeline ID. " alt="" coords="436,5,631,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_memory_manager.html#a39516b53dcd7ea8c978292bb6334d14a" title="Initializes the MemoryManager, filling the memory pool with allocated data. " alt="" coords="236,62,388,103"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_i_task.html#ae29cf1039ab3b9d9426b67b226a42dcc" title="htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt;\l \&gt;::getAddress" alt="" coords="446,56,621,112"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_memory_manager.html#a491ec9545d1a185d9d114b1fedef64f1" title="Gets the name of the MemoryManager. " alt="" coords="457,135,609,177"/>
+</map>

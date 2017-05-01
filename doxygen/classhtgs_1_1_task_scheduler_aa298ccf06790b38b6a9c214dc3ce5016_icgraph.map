@@ -1,0 +1,4 @@
+<map id="htgs::TaskScheduler::getOutputConnector" name="htgs::TaskScheduler::getOutputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#af088d730ba1cb913c22eb51b657f3132" title="Initializes the execution pipeline and duplicates the task graph numPipeline times. " alt="" coords="233,5,391,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_scheduler.html#a0051bf17da8fcfb7932899cb9a812f30" title="htgs::TaskScheduler\l\&lt; MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::copy" alt="" coords="200,69,424,125"/>
+</map>

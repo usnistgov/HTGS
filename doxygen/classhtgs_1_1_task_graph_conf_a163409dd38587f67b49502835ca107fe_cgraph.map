@@ -1,0 +1,6 @@
+<map id="htgs::TaskGraphConf::copy" name="htgs::TaskGraphConf::copy">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a6885d5ddfcee1dadee68e5b9a586a0f1" title="Creates an exact copy of this task graph. " alt="" coords="212,37,359,79"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_graph_conf.html#a9bfd2aa56fe389eb612ce95e1b86cfba" title="Gets the address for the task graph. " alt="" coords="200,103,371,144"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_graph_conf.html#a425d80a4f7d1b1f672d9bdaffb4d7199" title="Gets the pipeline ID for the task graph configuration. " alt="" coords="419,5,589,47"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_graph_conf.html#ae86445492fc9421c0c5132bd608e2460" title="Gets the number of pipelines that exist for this task graph. " alt="" coords="419,71,589,112"/>
+</map>

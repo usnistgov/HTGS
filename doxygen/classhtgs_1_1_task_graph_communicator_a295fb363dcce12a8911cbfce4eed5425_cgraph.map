@@ -1,0 +1,5 @@
+<map id="htgs::TaskGraphCommunicator::spawnChildrenThreads" name="htgs::TaskGraphCommunicator::spawnChildrenThreads">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_communicator.html#ab746a9ae33df0d5a8936515877250e3c" title="Spawns the thread for this communicator. " alt="" coords="257,5,461,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_communicator.html#af3a6b8fdd0e01948ac65a338a6f5edb8" title="Main run function for the thread, which processes data packets until it is terminated. " alt="" coords="509,13,740,39"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_communicator.html#a397bdb0aa3b8ac823c38ea78009516a4" title="Processes one data packet. " alt="" coords="788,5,992,47"/>
+</map>

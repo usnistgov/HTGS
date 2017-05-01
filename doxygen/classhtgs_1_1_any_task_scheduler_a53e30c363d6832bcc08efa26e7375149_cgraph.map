@@ -1,0 +1,4 @@
+<map id="htgs::AnyTaskScheduler::getName" name="htgs::AnyTaskScheduler::getName">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_scheduler.html#a4c96ed2ca3802f3a85b35e3d1006a6bf" title="Gets the ITask function associated with the TaskScheduler. " alt="" coords="223,5,388,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Pure virtual function to get the name of an ITask. " alt="" coords="219,71,391,97"/>
+</map>

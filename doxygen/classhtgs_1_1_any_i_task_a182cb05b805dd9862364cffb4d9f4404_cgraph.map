@@ -1,0 +1,6 @@
+<map id="htgs::AnyITask::getReleaseMemoryEdges" name="htgs::AnyITask::getReleaseMemoryEdges">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#af29719d6760e609023ffcb8e966ed3ab" title="Retrieves memory from a memory edge. " alt="" coords="249,5,433,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_connector.html#a214201fdc99a49c328fbc00dd0ff74d2" title="Consumes data from the queue. " alt="" coords="239,56,443,83"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Virtual function to get the name of an ITask. " alt="" coords="255,107,427,133"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_blocking_queue.html#ac3130a5a177b85f4c22dbe309aeb995a" title="Removes an element from the queue. " alt="" coords="491,49,633,90"/>
+</map>

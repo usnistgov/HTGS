@@ -1,0 +1,4 @@
+<map id="htgs::AnyTaskManager::setRuntimeThread" name="htgs::AnyTaskManager::setRuntimeThread">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a08e71b0553d1e504aab0c30321b6a15d" title="Destructor. " alt="" coords="219,5,377,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_manager_thread.html#a97a34b965375ed6f1e5f012434f675a7" title="Constructs a TaskManagerThread with a specified AnyTaskManager and atomic number of threads that is s..." alt="" coords="211,71,385,112"/>
+</map>

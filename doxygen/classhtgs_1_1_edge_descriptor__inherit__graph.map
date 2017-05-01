@@ -1,0 +1,5 @@
+<map id="htgs::EdgeDescriptor" name="htgs::EdgeDescriptor">
+<area shape="rect" id="node2" href="$classhtgs_1_1_memory_edge.html" title="Implements the memory edge that is added to the graph. " alt="" coords="5,167,169,318"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_producer_consumer_edge.html" title="Implements the producer consumer edge that connects two tasks where one task is producing data and th..." alt="" coords="194,167,391,318"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_rule_edge.html" title="Implements the rule edge that is added to the graph. " alt="" coords="415,160,551,325"/>
+</map>

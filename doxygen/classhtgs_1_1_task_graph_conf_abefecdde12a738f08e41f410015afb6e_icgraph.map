@@ -1,0 +1,4 @@
+<map id="htgs::TaskGraphConf::getInputConnector" name="htgs::TaskGraphConf::getInputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012" title="Initializes the execution pipeline and duplicates the task graph based on the number of pipelines..." alt="" coords="200,5,359,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#ac20b128cb5435b26a948f43c533ded4b" title="Generates the dot graph as a string. " alt="" coords="206,71,353,112"/>
+</map>

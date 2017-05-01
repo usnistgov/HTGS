@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['useconnector',['useConnector',['../classhtgs_1_1_i_custom_edge.html#a584cea03bc5d575475145799fb5ec88f',1,'htgs::ICustomEdge']]]
+  ['updateaddressandpipelines',['updateAddressAndPipelines',['../classhtgs_1_1_any_task_manager.html#ac8fd1f24a8826697b09ace4d5701b6fa',1,'htgs::AnyTaskManager']]],
+  ['updatecommunicator',['updateCommunicator',['../classhtgs_1_1_task_graph_conf.html#aa359ab69ff6f839d233f2486e32d0605',1,'htgs::TaskGraphConf::updateCommunicator()'],['../classhtgs_1_1_any_task_graph_conf.html#a212dfebfd5947c01bbe58e219bab33ba',1,'htgs::AnyTaskGraphConf::updateCommunicator()']]],
+  ['updatetaskmanagersaddressingandpipelines',['updateTaskManagersAddressingAndPipelines',['../classhtgs_1_1_any_task_graph_conf.html#a0266ddf4dcfd6907939ac9418bafc6d2',1,'htgs::AnyTaskGraphConf']]]
 ];

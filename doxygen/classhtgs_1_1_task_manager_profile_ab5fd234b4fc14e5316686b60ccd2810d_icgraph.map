@@ -1,0 +1,6 @@
+<map id="htgs::TaskManagerProfile::getComputeTime" name="htgs::TaskManagerProfile::getComputeTime">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_manager_profile.html#ac32c6b6b7bd73ecc6721c6ab2683be04" title="Computes the sum for the compute time and wait time between this profile and some other profile..." alt="" coords="224,13,428,39"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_profiler.html#ac5ed174f350b5d0a13f8b7fec3007e43" title="Computes the averages for all profile data. " alt="" coords="476,5,636,47"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_profiler.html#a7a1bbbd9dd1811fd3b26ee42bab6bd21" title="Generates the dot profile for the graph. " alt="" coords="684,5,844,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_conf.html#ac20b128cb5435b26a948f43c533ded4b" title="Generates the dot graph as a string. " alt="" coords="892,5,1039,47"/>
+</map>

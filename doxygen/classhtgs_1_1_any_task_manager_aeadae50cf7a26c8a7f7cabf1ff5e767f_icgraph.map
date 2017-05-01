@@ -1,0 +1,8 @@
+<map id="htgs::AnyTaskManager::getName" name="htgs::AnyTaskManager::getName">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a93b99695e2206cba562ff05024a67ee6" title="Prints the profiling data to std::cout. " alt="" coords="240,5,397,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#aebf4e6cd9768f7e4ee66b64dc2490f19" title="Shuts down the TaskManager. " alt="" coords="240,71,397,112"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a275a1a6e47d017ae58de4760228a2711" title="Provides debug output. " alt="" coords="240,136,397,177"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_manager.html#a40800564af46581910448370180d9f39" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::initialize" alt="" coords="211,201,427,257"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_task_manager.html#a866285bd20abf0961214245492a83ce7" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::executeTask" alt="" coords="211,281,427,337"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_task_manager.html#a49b211d4c25e44e112a329896fabe020" title="Adds the result data to the output connector. " alt="" coords="211,361,427,417"/>
+</map>

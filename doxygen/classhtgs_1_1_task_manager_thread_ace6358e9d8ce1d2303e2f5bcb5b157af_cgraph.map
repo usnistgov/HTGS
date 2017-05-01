@@ -1,0 +1,9 @@
+<map id="htgs::TaskManagerThread::run" name="htgs::TaskManagerThread::run">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#aeadae50cf7a26c8a7f7cabf1ff5e767f" title="Gets the name of the ITask. " alt="" coords="468,76,625,117"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_manager.html#ab2b97333cdfa9be21d1083ac62e1f830" title="Initializes the TaskManager. " alt="" coords="253,29,411,71"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html#af094c18aa5264704a48ded6706dd9e7a" title="Executes the TaskManager. " alt="" coords="253,95,411,136"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_any_task_manager.html#aebf4e6cd9768f7e4ee66b64dc2490f19" title="Shuts down the TaskManager. " alt="" coords="253,160,411,201"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="691,135,848,176"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Virtual function to get the name of an ITask. " alt="" coords="683,83,855,110"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_any_i_task.html#a6fed14efba9c1f1cfb95ecd7c6fde6da" title="Virtual function that is called when an ITask is being shutdown by it&#39;s owner thread. " alt="" coords="459,193,634,219"/>
+</map>

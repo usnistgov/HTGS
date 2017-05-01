@@ -1,4 +1,4 @@
-<map id="htgs::TaskScheduler&lt; V, W &gt;" name="htgs::TaskScheduler&lt; V, W &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_base_task_scheduler.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="17,5,188,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_base_task_scheduler_runtime_thread.html" title="Manages a BaseTaskScheduler that is bound to a thread for execution. " alt="" coords="92,97,313,138"/>
+<map id="htgs::TaskScheduler&lt; T, U &gt;" name="htgs::TaskScheduler&lt; T, U &gt;">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_scheduler.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="29,5,193,376"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_scheduler_thread.html" title="Manages a TaskScheduler that is bound to a thread for execution. " alt="" coords="100,441,340,650"/>
 </map>

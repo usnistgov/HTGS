@@ -1,5 +1,5 @@
 <map id="htgs::BaseTaskSchedulerRuntimeThread::run" name="htgs::BaseTaskSchedulerRuntimeThread::run">
 <area shape="rect" id="node2" href="$classhtgs_1_1_runtime.html#a7f6f3656b206a43d9499e27241c592a7" title="Executes the Runtime. " alt="" coords="275,45,482,72"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipeline times. " alt="" coords="542,5,701,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipelines times. " alt="" coords="542,5,701,46"/>
 <area shape="rect" id="node4" href="$classhtgs_1_1_runtime.html#a7af89f35a813fda87845e6b80fc08c5f" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="531,70,712,111"/>
 </map>

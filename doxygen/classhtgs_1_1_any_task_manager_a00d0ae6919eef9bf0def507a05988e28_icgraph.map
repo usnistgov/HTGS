@@ -1,0 +1,5 @@
+<map id="htgs::AnyTaskManager::setOutputConnector" name="htgs::AnyTaskManager::setOutputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a0857e5a678b01922a513cd2327114864" title="Sets the task that is producing data for the output of the graph. " alt="" coords="211,5,377,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#a8ce4d72dc9c5ad94762d75778dfc650f" title="Provides debug output for the TaskGraphConf. " alt="" coords="221,71,367,112"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a08e71b0553d1e504aab0c30321b6a15d" title="Destructor. " alt="" coords="215,136,373,177"/>
+</map>

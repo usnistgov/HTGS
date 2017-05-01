@@ -1,3 +1,3 @@
-<map id="htgs::Connector&lt; V &gt;" name="htgs::Connector&lt; V &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_base_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="6,5,151,32"/>
+<map id="htgs::Connector&lt; T &gt;" name="htgs::Connector&lt; T &gt;">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,5,197,288"/>
 </map>

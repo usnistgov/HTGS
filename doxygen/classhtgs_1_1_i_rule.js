@@ -1,19 +1,17 @@
 var classhtgs_1_1_i_rule =
 [
-    [ "IRule", "classhtgs_1_1_i_rule.html#acbbb8b01a22afe8785df3582c07a77cf", null ],
-    [ "~IRule", "classhtgs_1_1_i_rule.html#a99ba4eb4d3e14e33d9ddbb78da75399c", null ],
-    [ "addResult", "classhtgs_1_1_i_rule.html#af5bd50e5556023e8e90557cbfdc60565", null ],
-    [ "addResult", "classhtgs_1_1_i_rule.html#afdb62b01e15514e4a1be6240e621efcf", null ],
-    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#a6b736444d85499e1020fc675d6c80548", null ],
-    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#a0513848ebf16a39f02cca82d60b32992", null ],
-    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#aab7a8b60b6c8abc15dc162060f1d2a28", null ],
-    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#af03b83b95b14c88584393872bf4b91cb", null ],
-    [ "applyRule", "classhtgs_1_1_i_rule.html#ae4c792ac122b08ece4023043351c65f8", null ],
-    [ "applyRuleFunction", "classhtgs_1_1_i_rule.html#af2daf5fd5d7325c703d2a393f98c8a8b", null ],
-    [ "getMutex", "classhtgs_1_1_i_rule.html#aeda1a10de72cc469a1e4af9b5425e4b0", null ],
-    [ "getName", "classhtgs_1_1_i_rule.html#aaaaea7cb4872d2f8033a24840fef3f2c", null ],
-    [ "isRuleTerminated", "classhtgs_1_1_i_rule.html#a81fff94bdc6829f49c33d90d859bc792", null ],
-    [ "shutdownRule", "classhtgs_1_1_i_rule.html#a60e0b2dc38f9431342975920361c0b84", null ],
-    [ "mutex", "classhtgs_1_1_i_rule.html#a8cef019e95b070f81aa85e35e986f2db", null ],
-    [ "output", "classhtgs_1_1_i_rule.html#af9d58fe833a4b359ffb6eabd6c4e679a", null ]
+    [ "IRule", "classhtgs_1_1_i_rule.html#ad320c20c0d1b964983d90565c25bf74d", null ],
+    [ "~IRule", "classhtgs_1_1_i_rule.html#a07c2d0e1d683892cd9afc13fb73adbdf", null ],
+    [ "addResult", "classhtgs_1_1_i_rule.html#ab97407718736e3ee65417aecf9e79cc2", null ],
+    [ "addResult", "classhtgs_1_1_i_rule.html#a5b62218b64549272aa6ef19e6b81b1fc", null ],
+    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#a8baa4e2f1a4126d21fe20ca378a5a72b", null ],
+    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#a1e10944b079f2daf485932f7b5f3e543", null ],
+    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#a73afffa52923f366895d995f48a10cb4", null ],
+    [ "allocStateContainer", "classhtgs_1_1_i_rule.html#a3f403fbafa677f71e09c61496b44c7a4", null ],
+    [ "applyRule", "classhtgs_1_1_i_rule.html#af9621be64de28b94f76e3f3e0a2d62b4", null ],
+    [ "applyRuleFunction", "classhtgs_1_1_i_rule.html#ac49f147e7ab890a8a1f3f76db5a9b386", null ],
+    [ "canTerminateRule", "classhtgs_1_1_i_rule.html#acf7da2e1b9b25fce31a4dedb34d0df94", null ],
+    [ "getName", "classhtgs_1_1_i_rule.html#a148fee616c01f057ddc522f2bf6a8b20", null ],
+    [ "shutdownRule", "classhtgs_1_1_i_rule.html#ab4ce46ea03c5c21db97eb51ae42dbe1b", null ],
+    [ "output", "classhtgs_1_1_i_rule.html#ae57587d08bbf4cf1110279e1683cfbcb", null ]
 ];

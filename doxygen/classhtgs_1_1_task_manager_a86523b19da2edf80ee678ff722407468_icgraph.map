@@ -1,0 +1,8 @@
+<map id="htgs::TaskManager::getInputConnector" name="htgs::TaskManager::getInputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_producer_consumer_edge.html#a29095f6580e30b37af93f2dbd1346b98" title="Applies an edge to a task graph. " alt="" coords="205,8,403,49"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_rule_edge.html#abda0599079fdd04d849422ed0df7140f" title="Applies an edge to a task graph. " alt="" coords="213,75,395,102"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_task_manager.html#ac129bf52b39a0b2eedca9e9c58220d9d" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::copy" alt="" coords="196,126,412,182"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_task_manager.html#a49b211d4c25e44e112a329896fabe020" title="Adds the result data to the output connector. " alt="" coords="196,206,412,262"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#aeaf80f060f13a40b41579a8678acad01" title="Adds an edge to the graph, where one task produces data for a consumer task. " alt="" coords="460,5,607,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_conf.html#aedfc932815a7b264da00c35d274f5274" title="Creates a rule edge that is managed by a bookkeeper. " alt="" coords="460,71,607,112"/>
+</map>

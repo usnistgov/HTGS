@@ -1,3 +1,4 @@
 <map id="htgs::ITask::copy" name="htgs::ITask::copy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html#a50ddfa059fc5891ce19a4690aaa2f294" title="Copies the ITask including its list of memGetters and memReleasers. " alt="" coords="179,4,354,60"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html#abf500f783e58f78909ef01f4cc2367d9" title="htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt;\l \&gt;::printProfile" alt="" coords="177,5,352,61"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html#af5eb7fcf9b6c14e3fe5c6b23b7c0cee0" title="Copies the ITask (including a copy of all memory edges) " alt="" coords="177,85,352,141"/>
 </map>

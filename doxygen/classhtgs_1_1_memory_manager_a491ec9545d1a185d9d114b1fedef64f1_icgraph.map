@@ -1,0 +1,6 @@
+<map id="htgs::MemoryManager::getName" name="htgs::MemoryManager::getName">
+<area shape="rect" id="node2" href="$classhtgs_1_1_cuda_memory_manager.html#a3919c95b78a13759729e4320e02991e5" title="Gets the name of the CudaMemoryManager. " alt="" coords="205,5,388,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_memory_manager.html#a39516b53dcd7ea8c978292bb6334d14a" title="Initializes the MemoryManager, filling the memory pool with allocated data. " alt="" coords="221,71,373,112"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_memory_manager.html#a0b7f83115365a52a1835b35fd192d179" title="Provides debug output for MemoryManager. " alt="" coords="221,136,373,177"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_cuda_memory_manager.html#a19932f90e9acff70da1575e870f76334" title="Initializes the CudaMemoryManager by setting which GPU the CudaMemoryManager is repsonsible prior to ..." alt="" coords="436,71,619,112"/>
+</map>

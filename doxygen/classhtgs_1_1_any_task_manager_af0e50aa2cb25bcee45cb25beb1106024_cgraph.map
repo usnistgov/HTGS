@@ -1,0 +1,4 @@
+<map id="htgs::AnyTaskManager::getMaxQueueSize" name="htgs::AnyTaskManager::getMaxQueueSize">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a93f4149f6700ff67d87d439fca8c539f" title="Gets the input Connector. " alt="" coords="211,5,368,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a276f98c8235a97c35819b055ca068c79" title="Gets the address of the task manager. " alt="" coords="211,71,368,112"/>
+</map>

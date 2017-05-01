@@ -1,0 +1,10 @@
+<map id="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/graph/AnyTaskGraphConf.hpp" name="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/graph/AnyTaskGraphConf.hpp">
+<area shape="rect" id="node2" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="24,317,188,373"/>
+<area shape="rect" id="node4" href="$_edge_descriptor_8hpp.html" title="Implements the edge descriptor interface to build edges for a task graph. " alt="" coords="306,109,515,165"/>
+<area shape="rect" id="node7" href="$_producer_consumer_edge_8hpp.html" title="Implements a producer consumer edge, which is a type of edge descriptor. " alt="" coords="26,213,288,269"/>
+<area shape="rect" id="node8" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="533,213,709,269"/>
+<area shape="rect" id="node9" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="620,109,851,165"/>
+<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="177,421,340,477"/>
+<area shape="rect" id="node5" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="312,213,508,269"/>
+<area shape="rect" id="node6" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="329,317,492,373"/>
+</map>

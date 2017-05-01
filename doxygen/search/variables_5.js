@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['edges',['edges',['../classhtgs_1_1_task_graph.html#a758cb146a6f665f8115c5d539e94a62b',1,'htgs::TaskGraph']]],
+  ['edges',['edges',['../classhtgs_1_1_task_graph_conf.html#a393e82c28c1a3ed0bd619f5ca51da5f9',1,'htgs::TaskGraphConf']]],
   ['emptydata',['emptyData',['../classhtgs_1_1_state_container.html#af61479851956fa66a34262a86c64c130',1,'htgs::StateContainer']]],
-  ['executed',['executed',['../classhtgs_1_1_runtime.html#a5e91f10bf0a0a7399ee3bfe9f184f84a',1,'htgs::Runtime']]]
+  ['executed',['executed',['../classhtgs_1_1_task_graph_runtime.html#a2a189b5d9e740ceff22ba2ec4c072319',1,'htgs::TaskGraphRuntime']]]
 ];

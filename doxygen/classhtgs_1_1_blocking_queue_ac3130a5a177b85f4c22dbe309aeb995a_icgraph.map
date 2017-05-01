@@ -1,5 +1,5 @@
 <map id="htgs::BlockingQueue::Dequeue" name="htgs::BlockingQueue::Dequeue">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#a214a654d8291fd69c33653bc573dc56c" title="Consumes data from the priority queue. " alt="" coords="198,60,402,87"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html#ac29e3c78e0079017d17fb3e39e05fd41" title="Retrieves memory from a memory edge. " alt="" coords="462,5,637,61"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_task.html#a322b23d307ce1b12d302ce2d622f8308" title="Retrieves memory from a memory edge that is managed by the user. " alt="" coords="451,85,648,141"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#a214201fdc99a49c328fbc00dd0ff74d2" title="Consumes data from the queue. " alt="" coords="196,13,400,39"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_memory_pool.html#a4437112ee72dfd477138c083400492a7" title="Gets the next piece of memory from the MemoryPool. " alt="" coords="197,63,399,90"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a182cb05b805dd9862364cffb4d9f4404" title="Gets the memory edges for releasing memory for the memory manager, used to shutdown the memory manage..." alt="" coords="448,5,633,47"/>
 </map>

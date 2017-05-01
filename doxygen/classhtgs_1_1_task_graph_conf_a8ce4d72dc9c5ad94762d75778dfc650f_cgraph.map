@@ -1,0 +1,10 @@
+<map id="htgs::TaskGraphConf::debug" name="htgs::TaskGraphConf::debug">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_graph_conf.html#a5070d48b8ad2c2ff5117424ae719d68c" title="Get the vertices of the TaskGraph. " alt="" coords="200,5,371,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#a6885d5ddfcee1dadee68e5b9a586a0f1" title="Creates an exact copy of this task graph. " alt="" coords="212,71,359,112"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_graph_conf.html#aebf4bd5dfbb48517acd389e18fa97960" title="Gets the task manager copy for a given ITask. " alt="" coords="200,136,371,177"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="207,201,364,243"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_any_task_graph_conf.html#a1d0eb84a2a9990da8c11f353350bf489" title="Adds a task manager to the task graph. " alt="" coords="200,267,371,308"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_any_task_manager.html#a00d0ae6919eef9bf0def507a05988e28" title="Sets the output BaseConnector. " alt="" coords="207,332,364,373"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_graph_conf.html#a425d80a4f7d1b1f672d9bdaffb4d7199" title="Gets the pipeline ID for the task graph configuration. " alt="" coords="419,39,589,80"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_graph_conf.html#ae86445492fc9421c0c5132bd608e2460" title="Gets the number of pipelines that exist for this task graph. " alt="" coords="419,104,589,145"/>
+</map>

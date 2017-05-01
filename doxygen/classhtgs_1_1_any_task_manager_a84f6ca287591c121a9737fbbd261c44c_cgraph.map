@@ -1,0 +1,4 @@
+<map id="htgs::AnyTaskManager::setPipelineId" name="htgs::AnyTaskManager::setPipelineId">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="229,5,387,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a0689f15595e3e717cd538f7d76b0d43b" title="Sets the pipeline Id for this ITask. " alt="" coords="211,71,405,98"/>
+</map>

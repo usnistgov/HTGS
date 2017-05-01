@@ -1,5 +1,0 @@
-<map id="htgs::ExecutionPipeline::genDot" name="htgs::ExecutionPipeline::genDot">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html#aa6fcf566e71f6346281c42db8d09c530" title="Gets the input connector for the TaskGraph. " alt="" coords="229,5,403,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#af25a3227493e4c38a2d81e0cd2709a47" title="Gets the name for the execution pipeline. " alt="" coords="237,70,395,111"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph.html#a4617fee561077b5f3e1dc2078468dfe7" title="Generate the content only of the graph (excludes all graph definitions and attributes) ..." alt="" coords="214,135,418,177"/>
-</map>

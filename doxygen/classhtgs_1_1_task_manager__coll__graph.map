@@ -1,0 +1,10 @@
+<map id="htgs::TaskManager&lt; T, U &gt;" name="htgs::TaskManager&lt; T, U &gt;">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="7,977,165,1333"/>
+<area shape="rect" id="node13" href="$classhtgs_1_1_task_manager_thread.html" title="Manages a TaskManager that is bound to a thread for execution. " alt="" coords="102,1396,342,1605"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_communicator.html" title="Implements the task graph communicator where a task&#39;s address and name are mapped to their input conn..." alt="" coords="203,632,433,915"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::DataPacket \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="637,301,796,569"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="29,154,109,231"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="5,5,132,97"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="368,397,452,474"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="476,389,613,481"/>
+</map>

@@ -1,2 +1,4 @@
 \form#0:$x+y=z$
 \form#1:$A \circ B = C$
+\form#2:$A^{m,n} \times B^{n,p} = C^{m,p}$
+\form#3:$A \times B = C$

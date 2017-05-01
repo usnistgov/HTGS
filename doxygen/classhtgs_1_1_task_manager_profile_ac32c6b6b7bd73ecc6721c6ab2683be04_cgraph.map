@@ -1,0 +1,4 @@
+<map id="htgs::TaskManagerProfile::sum" name="htgs::TaskManagerProfile::sum">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_manager_profile.html#ab5fd234b4fc14e5316686b60ccd2810d" title="Gets the compute time. " alt="" coords="257,5,428,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_manager_profile.html#a055d37f9dc211ff6239cf5602aafb4f9" title="Gets the wait time. " alt="" coords="257,71,428,112"/>
+</map>

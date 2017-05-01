@@ -1,3 +1,4 @@
 <map id="htgs::TaskGraph&lt; V, W &gt;" name="htgs::TaskGraph&lt; V, W &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_base_task_graph.html" title="Creates a parent TaskGraph that removes the template arguments. " alt="" coords="17,5,165,32"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_graph.html" title="{htgs::AnyTaskGraph\n|&#45; taskCopyMap\l&#45; taskManagers\l&#45; pipelineId\l&#45; numPipelines\l|+ AnyTaskGraph()\l+ ~AnyTaskGraph()\l+ getTaskManagers()\l+ getCopy()\l+ getCopy()\l+ getTaskManager()\l+ addTaskManager()\l+ getPipelineId()\l+ getNumPipelines()\l+ getGraphConsumerTaskScheduler()\land 10 more...\l&#45; createCopy()\l}" alt="" coords="5,49,248,332"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_scheduler.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="272,5,436,376"/>
 </map>

@@ -1,0 +1,5 @@
+<map id="htgs::AnyTaskScheduler::isStartTask" name="htgs::AnyTaskScheduler::isStartTask">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_scheduler.html#a827c408e4dd55e91096aaeafd1c544c7" title="Constructs an AnyTaskScheduler with an ITask as the task function and specific runtime parameters..." alt="" coords="248,5,413,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_scheduler.html#a0051bf17da8fcfb7932899cb9a812f30" title="htgs::TaskScheduler\l\&lt; MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::copy" alt="" coords="219,69,443,125"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_scheduler.html#a45edc2cf7670c0197517cd478685794d" title="htgs::TaskScheduler\l\&lt; MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::executeTask" alt="" coords="219,149,443,205"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="htgs::AnyTaskGraphConf::getNumPipelines" name="htgs::AnyTaskGraphConf::getNumPipelines">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a6885d5ddfcee1dadee68e5b9a586a0f1" title="Creates an exact copy of this task graph. " alt="" coords="224,39,371,80"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#a163409dd38587f67b49502835ca107fe" title="Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines..." alt="" coords="419,5,565,47"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_conf.html#a8ce4d72dc9c5ad94762d75778dfc650f" title="Provides debug output for the TaskGraphConf. " alt="" coords="419,71,565,112"/>
+</map>

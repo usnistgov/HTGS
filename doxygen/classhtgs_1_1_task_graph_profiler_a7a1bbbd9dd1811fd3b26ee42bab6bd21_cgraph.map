@@ -1,0 +1,8 @@
+<map id="htgs::TaskGraphProfiler::genDotProfile" name="htgs::TaskGraphProfiler::genDotProfile">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_profiler.html#ac5ed174f350b5d0a13f8b7fec3007e43" title="Computes the averages for all profile data. " alt="" coords="213,68,373,109"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_task_graph_profiler.html#af3d514e541d177c598977d4ced9b82a2" title="Generates the color map. " alt="" coords="213,133,373,175"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_manager_profile.html#ac32c6b6b7bd73ecc6721c6ab2683be04" title="Computes the sum for the compute time and wait time between this profile and some other profile..." alt="" coords="421,46,625,73"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_task_manager_profile.html#a24c292178ff04f1d37791d38b0ed6226" title="Computes the average compute and wait time for the profile. " alt="" coords="438,97,609,139"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_manager_profile.html#ab5fd234b4fc14e5316686b60ccd2810d" title="Gets the compute time. " alt="" coords="673,5,844,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_manager_profile.html#a055d37f9dc211ff6239cf5602aafb4f9" title="Gets the wait time. " alt="" coords="673,71,844,112"/>
+</map>

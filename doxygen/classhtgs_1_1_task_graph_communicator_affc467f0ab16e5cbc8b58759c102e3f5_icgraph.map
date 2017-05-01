@@ -1,0 +1,7 @@
+<map id="htgs::TaskGraphCommunicator::processFlattenTaskNameConnectorMap" name="htgs::TaskGraphCommunicator::processFlattenTaskNameConnectorMap">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_communicator.html#ad319bc32bb481ed30efa133c472de1e7" title="Spawns threads only if the task graph communicator calling this function is the root communicator..." alt="" coords="319,75,523,116"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_communicator.html#a61bcb15d176dfe295d8238d8a7cc67f8" title="Checks if the root can spawn threads yet or not. " alt="" coords="590,29,794,71"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_task_graph_communicator.html#a43d306262f4a7c90f8a8b3e4923fc271" title="Increments the number of graphs received by the root communicator. " alt="" coords="571,119,813,160"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_communicator.html#a5a72607eaa8b546c25867d946ba07c02" title="Adds the mapping between a task&#39;s address and its name to the input connector for that task..." alt="" coords="861,75,1065,116"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_conf.html#aa359ab69ff6f839d233f2486e32d0605" title="Virtual function that initiates updating the task graph communicator. " alt="" coords="1113,75,1268,116"/>
+</map>

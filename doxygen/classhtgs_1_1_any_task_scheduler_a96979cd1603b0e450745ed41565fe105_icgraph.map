@@ -1,0 +1,5 @@
+<map id="htgs::AnyTaskScheduler::getInputConnector" name="htgs::AnyTaskScheduler::getInputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_scheduler.html#aceadf286249f80b904d05834121274d4" title="Adds the input Connector for this TaskScheduler to the pipeline connector list. " alt="" coords="219,5,384,46"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_scheduler.html#a1a491a871b200d6a7aea08188aa03bfc" title="Provides debug output. " alt="" coords="219,70,384,111"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_scheduler.html#ac06479e4f1470cf0c44323553fc9076c" title="Gets the dot notation for this TaskScheduler. " alt="" coords="219,135,384,177"/>
+</map>

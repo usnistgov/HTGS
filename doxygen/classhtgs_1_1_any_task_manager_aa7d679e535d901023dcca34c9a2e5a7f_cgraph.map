@@ -1,0 +1,4 @@
+<map id="htgs::AnyTaskManager::setNumPipelines" name="htgs::AnyTaskManager::setNumPipelines">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="241,5,399,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a256f8715ea4a6128345fdf569effda1d" title="Sets the number of pipelines that this ITask belongs too. " alt="" coords="211,71,429,98"/>
+</map>

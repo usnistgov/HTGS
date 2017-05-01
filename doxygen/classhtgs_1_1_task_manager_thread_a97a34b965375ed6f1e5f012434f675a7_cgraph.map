@@ -1,0 +1,4 @@
+<map id="htgs::TaskManagerThread::TaskManagerThread" name="htgs::TaskManagerThread::TaskManagerThread">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a6ef5c057ad7e4c04d682255bbc2f87ce" title="Sets the thread that is executing this TaskManager. " alt="" coords="228,5,385,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a3835dec55379ff5f53e15cfc553e7978" title="Sets the thread id associated with the TaskManager. " alt="" coords="228,71,385,112"/>
+</map>

@@ -1,4 +1,0 @@
-<map id="htgs::RuleManager::setOutputConnector" name="htgs::RuleManager::setOutputConnector">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#aabc7f8c57ee1e180915e03469f02aef1" title="Increments the number of producers for the Connector. " alt="" coords="195,5,375,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_rule_manager.html#a51dd70935321bfba6e83993d5af53b27" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="215,70,355,111"/>
-</map>

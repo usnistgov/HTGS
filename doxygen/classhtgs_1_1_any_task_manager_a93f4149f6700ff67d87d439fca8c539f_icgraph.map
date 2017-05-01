@@ -1,0 +1,8 @@
+<map id="htgs::AnyTaskManager::getInputConnector" name="htgs::AnyTaskManager::getInputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a08e71b0553d1e504aab0c30321b6a15d" title="Destructor. " alt="" coords="211,5,368,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a93b99695e2206cba562ff05024a67ee6" title="Prints the profiling data to std::cout. " alt="" coords="211,71,368,112"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a275a1a6e47d017ae58de4760228a2711" title="Provides debug output. " alt="" coords="211,136,368,177"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_manager.html#a7b54f80608be88502883ef3e39c44aa0" title="Gets the dot notation for this TaskManager. " alt="" coords="211,201,368,243"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html#af0e50aa2cb25bcee45cb25beb1106024" title="Gets the maximum size the input queue became during execution. " alt="" coords="211,267,368,308"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_task_manager.html#a631205c3e8a7d68c9fe202cf00db9b6a" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::gatherProfileData" alt="" coords="416,259,632,315"/>
+</map>

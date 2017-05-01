@@ -1,0 +1,16 @@
+<map id="htgs::AnyITask::getName" name="htgs::AnyITask::getName">
+<area shape="rect" id="node2" href="$classhtgs_1_1_memory_edge.html#a960debcbabc20c51c995b3dd5aa0715e" title="Applies an edge to a task graph. " alt="" coords="513,49,714,75"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a08fc31b54062fb19c2398f9d0b937107" title="Destructor. " alt="" coords="250,39,433,66"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#a1695fa9a8bd1ff5599c1388f648fc9fa" title="Releases memory onto a memory edge, which is transferred by the graph communicator. " alt="" coords="237,90,445,117"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_i_task.html#a07b227fd650170a87eb3f15a7c291039" title="Attaches a memory edge to this ITask to get memory. " alt="" coords="225,141,457,167"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_i_task.html#a4f8a3558a1f0ca11acd02394de45ce8d" title="Gets the name of the ITask with it&#39;s pipeline ID. " alt="" coords="242,192,441,233"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_any_i_task.html#a182cb05b805dd9862364cffb4d9f4404" title="Gets the memory edges for releasing memory for the memory manager, used to shutdown the memory manage..." alt="" coords="249,257,434,299"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_any_task_manager.html#aeadae50cf7a26c8a7f7cabf1ff5e767f" title="Gets the name of the ITask. " alt="" coords="263,355,420,396"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_any_task_manager.html#acb81e4159df78c01740c4d4e41df86f3" title="Gets the name of the ITask with it&#39;s pipeline ID. " alt="" coords="530,159,697,200"/>
+<area shape="rect" id="node10" href="$classhtgs_1_1_any_task_manager.html#a93b99695e2206cba562ff05024a67ee6" title="Prints the profiling data to std::cout. " alt="" coords="535,224,692,265"/>
+<area shape="rect" id="node11" href="$classhtgs_1_1_any_task_manager.html#aebf4e6cd9768f7e4ee66b64dc2490f19" title="Shuts down the TaskManager. " alt="" coords="535,289,692,331"/>
+<area shape="rect" id="node12" href="$classhtgs_1_1_any_task_manager.html#a275a1a6e47d017ae58de4760228a2711" title="Provides debug output. " alt="" coords="535,355,692,396"/>
+<area shape="rect" id="node13" href="$classhtgs_1_1_task_manager.html#a40800564af46581910448370180d9f39" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::initialize" alt="" coords="505,419,721,475"/>
+<area shape="rect" id="node14" href="$classhtgs_1_1_task_manager.html#a866285bd20abf0961214245492a83ce7" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::executeTask" alt="" coords="505,499,721,555"/>
+<area shape="rect" id="node15" href="$classhtgs_1_1_task_manager.html#a49b211d4c25e44e112a329896fabe020" title="Adds the result data to the output connector. " alt="" coords="505,579,721,635"/>
+</map>

@@ -1,11 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classhtgs_1_1_base_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="6,125,125,152"/>
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="196,67,335,93"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_i_task.html" title="htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;" alt="" coords="175,118,356,159"/>
-<area shape="rect" id="node8" href="$classhtgs_1_1_i_task.html" title="htgs::ITask\&lt; T, VoidData \&gt;" alt="" coords="174,184,357,211"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="418,5,577,46"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="413,71,582,97"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="405,125,589,152"/>
-<area shape="rect" id="node7" href="$classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a Cuda GPU prio..." alt="" coords="638,125,853,152"/>
-<area shape="rect" id="node9" href="$classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="419,184,575,211"/>
+<area shape="rect" id="node1" href="$classhtgs_1_1_any_memory_allocator.html" title="Create a base class for a memory allocator that removes the template and defines common functionality..." alt="" coords="5,5,181,32"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_memory_allocator.html" title="Abstract class that describes how memory is allocated and freed. " alt="" coords="229,5,419,32"/>
 </map>

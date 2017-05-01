@@ -1,0 +1,21 @@
+<map id="htgs::AnyTaskManager::getTaskFunction" name="htgs::AnyTaskManager::getTaskFunction">
+<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a8ce4d72dc9c5ad94762d75778dfc650f" title="Provides debug output for the TaskGraphConf. " alt="" coords="236,5,383,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_graph_conf.html#a2cb1c1247c6d27518d3a919e18fd3cf8" title="Creates a copy of a task manager and adds the copy and a mapping between the task manager copy and th..." alt="" coords="224,71,395,112"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_manager.html#a08e71b0553d1e504aab0c30321b6a15d" title="Destructor. " alt="" coords="231,136,388,177"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html#a93b99695e2206cba562ff05024a67ee6" title="Prints the profiling data to std::cout. " alt="" coords="485,152,643,193"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_any_task_manager.html#af8a16ce21ee06e3f250a4e68f98f3037" title="Sets the task graph communicator. " alt="" coords="211,421,408,463"/>
+<area shape="rect" id="node11" href="$classhtgs_1_1_any_task_manager.html#aa7d679e535d901023dcca34c9a2e5a7f" title="Sets the number of pipelines associated with the TaskManager. " alt="" coords="231,487,388,528"/>
+<area shape="rect" id="node12" href="$classhtgs_1_1_any_task_manager.html#a84f6ca287591c121a9737fbbd261c44c" title="Sets the pipeline Id associated with the TaskManager. " alt="" coords="231,552,388,593"/>
+<area shape="rect" id="node13" href="$classhtgs_1_1_any_task_manager.html#aebf4e6cd9768f7e4ee66b64dc2490f19" title="Shuts down the TaskManager. " alt="" coords="485,217,643,259"/>
+<area shape="rect" id="node14" href="$classhtgs_1_1_any_task_manager.html#aeadae50cf7a26c8a7f7cabf1ff5e767f" title="Gets the name of the ITask. " alt="" coords="231,304,388,345"/>
+<area shape="rect" id="node15" href="$classhtgs_1_1_any_task_manager.html#a275a1a6e47d017ae58de4760228a2711" title="Provides debug output. " alt="" coords="485,521,643,563"/>
+<area shape="rect" id="node19" href="$classhtgs_1_1_any_task_manager.html#acb81e4159df78c01740c4d4e41df86f3" title="Gets the name of the ITask with it&#39;s pipeline ID. " alt="" coords="226,617,393,659"/>
+<area shape="rect" id="node20" href="$classhtgs_1_1_any_task_manager.html#a7b54f80608be88502883ef3e39c44aa0" title="Gets the dot notation for this TaskManager. " alt="" coords="231,683,388,724"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_graph_conf.html#ada2dd0d09a53a9bd9652ea0490d0f1ec" title="Creates a copy of each task from the list of AnyTaskManagers passed as a parameter. " alt="" coords="479,71,649,112"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_task_graph_runtime.html#a1ebd18efd3e1262e46800f98790368a9" title="Executes the Runtime. " alt="" coords="480,587,648,628"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012" title="Initializes the execution pipeline and duplicates the task graph based on the number of pipelines..." alt="" coords="738,553,897,595"/>
+<area shape="rect" id="node10" href="$classhtgs_1_1_task_graph_runtime.html#a55210fa09f813799e7ee8d3512860d06" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="720,619,915,660"/>
+<area shape="rect" id="node16" href="$classhtgs_1_1_task_manager.html#a40800564af46581910448370180d9f39" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::initialize" alt="" coords="456,282,672,338"/>
+<area shape="rect" id="node17" href="$classhtgs_1_1_task_manager.html#a866285bd20abf0961214245492a83ce7" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::executeTask" alt="" coords="456,362,672,418"/>
+<area shape="rect" id="node18" href="$classhtgs_1_1_task_manager.html#a49b211d4c25e44e112a329896fabe020" title="Adds the result data to the output connector. " alt="" coords="456,442,672,498"/>
+</map>

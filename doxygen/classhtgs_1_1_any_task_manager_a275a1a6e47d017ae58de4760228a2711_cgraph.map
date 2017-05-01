@@ -1,0 +1,8 @@
+<map id="htgs::AnyTaskManager::debug" name="htgs::AnyTaskManager::debug">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#aeadae50cf7a26c8a7f7cabf1ff5e767f" title="Gets the name of the ITask. " alt="" coords="211,64,368,105"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="423,5,581,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_manager.html#a93f4149f6700ff67d87d439fca8c539f" title="Gets the input Connector. " alt="" coords="211,129,368,171"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html#ada8ec5e556a64a31c8c2edde5877f33d" title="Gets the output Connector. " alt="" coords="211,195,368,236"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_any_i_task.html#a46a32bc1d7bf6eea75b796756d25ea93" title="Virtual function that is called to debug the ITask. " alt="" coords="212,261,367,287"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Virtual function to get the name of an ITask. " alt="" coords="416,71,588,98"/>
+</map>

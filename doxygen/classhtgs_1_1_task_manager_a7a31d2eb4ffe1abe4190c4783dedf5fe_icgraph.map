@@ -1,0 +1,6 @@
+<map id="htgs::TaskManager::setInputConnector" name="htgs::TaskManager::setInputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_producer_consumer_edge.html#a29095f6580e30b37af93f2dbd1346b98" title="Applies an edge to a task graph. " alt="" coords="196,8,393,49"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_rule_edge.html#abda0599079fdd04d849422ed0df7140f" title="Applies an edge to a task graph. " alt="" coords="204,75,385,102"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#aeaf80f060f13a40b41579a8678acad01" title="Adds an edge to the graph, where one task produces data for a consumer task. " alt="" coords="441,5,588,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_conf.html#aedfc932815a7b264da00c35d274f5274" title="Creates a rule edge that is managed by a bookkeeper. " alt="" coords="441,71,588,112"/>
+</map>

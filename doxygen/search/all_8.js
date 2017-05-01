@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['has',['has',['../classhtgs_1_1_state_container.html#a3cc92341cd052da597e62074e3b8bab2',1,'htgs::StateContainer::has(int row, int col) const '],['../classhtgs_1_1_state_container.html#a868fd95ee29d0a12217154dea5a44866',1,'htgs::StateContainer::has(int index) const ']]],
-  ['hasmemgetter',['hasMemGetter',['../classhtgs_1_1_i_task.html#abab5b1e090cf381b91dca983665bae2b',1,'htgs::ITask::hasMemGetter()'],['../classhtgs_1_1_base_i_task.html#a78b3648edc2293d0690df61645d9a279',1,'htgs::BaseITask::hasMemGetter()']]],
-  ['hasmemreleaser',['hasMemReleaser',['../classhtgs_1_1_i_task.html#aa1f3f2adfcd1d95465f343aab9a63662',1,'htgs::ITask::hasMemReleaser()'],['../classhtgs_1_1_task_graph.html#a1ef6760e463dea6e6bf38d8cfa72c94e',1,'htgs::TaskGraph::hasMemReleaser()'],['../classhtgs_1_1_base_i_task.html#aa5aa98e3cb8e12b452c8422856b51593',1,'htgs::BaseITask::hasMemReleaser()']]],
-  ['hasnothreadsremaining',['hasNoThreadsRemaining',['../classhtgs_1_1_base_task_scheduler_runtime_thread.html#ab477611a4658642117670f883ee8e829',1,'htgs::BaseTaskSchedulerRuntimeThread']]],
-  ['haspeertopeercopy',['hasPeerToPeerCopy',['../classhtgs_1_1_i_cuda_task.html#a2d5770e50a2e5c9fc669386dc40f6502',1,'htgs::ICudaTask']]],
-  ['height',['height',['../classhtgs_1_1_state_container.html#a08655c7794cafbb7fe70d2e3ac71ad28',1,'htgs::StateContainer']]],
+  ['has',['has',['../classhtgs_1_1_state_container.html#ab66e44251551ea2367bee974d36af306',1,'htgs::StateContainer::has(size_t row, size_t col) const '],['../classhtgs_1_1_state_container.html#ab6a6394ee03a268285662cffd954720e',1,'htgs::StateContainer::has(size_t index) const ']]],
+  ['hasmemoryedge',['hasMemoryEdge',['../classhtgs_1_1_any_i_task.html#a7a2a3413aba1c422531a94a1177c7477',1,'htgs::AnyITask']]],
+  ['hasnothreadsremaining',['hasNoThreadsRemaining',['../classhtgs_1_1_task_manager_thread.html#a749d9f4da045de1d9de8950af778d44c',1,'htgs::TaskManagerThread']]],
+  ['haspeertopeercopy',['hasPeerToPeerCopy',['../classhtgs_1_1_i_cuda_task.html#a2766c0114e43c0a84ed27a204ec51212',1,'htgs::ICudaTask']]],
+  ['hastask',['hasTask',['../classhtgs_1_1_any_task_graph_conf.html#a70e7dc6a67d31162ccd0fe0802cd10bf',1,'htgs::AnyTaskGraphConf']]],
+  ['height',['height',['../classhtgs_1_1_state_container.html#a883261a55ca6482f45e332430a7ebfed',1,'htgs::StateContainer']]],
   ['hybrid_20task_20graph_20scheduler_20_28htgs_29_20_2d_20an_20application_20programming_20interface_20to_20generate_20hybrid_20pipeline_20workflow_20systems',['Hybrid Task Graph Scheduler (HTGS) - An application programming interface to generate hybrid pipeline workflow systems',['../index.html',1,'']]]
 ];

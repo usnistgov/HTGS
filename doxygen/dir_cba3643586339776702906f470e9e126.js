@@ -1,20 +1,16 @@
 var dir_cba3643586339776702906f470e9e126 =
 [
     [ "Bookkeeper.hpp", "_bookkeeper_8hpp.html", [
-      [ "BaseRuleManager", "classhtgs_1_1_base_rule_manager.html", "classhtgs_1_1_base_rule_manager" ],
       [ "Bookkeeper", "classhtgs_1_1_bookkeeper.html", "classhtgs_1_1_bookkeeper" ]
     ] ],
     [ "ExecutionPipeline.hpp", "_execution_pipeline_8hpp.html", [
       [ "IRule", "classhtgs_1_1_i_rule.html", "classhtgs_1_1_i_rule" ],
-      [ "TaskGraph", "classhtgs_1_1_task_graph.html", "classhtgs_1_1_task_graph" ],
+      [ "TaskGraphConf", "classhtgs_1_1_task_graph_conf.html", "classhtgs_1_1_task_graph_conf" ],
       [ "ExecutionPipeline", "classhtgs_1_1_execution_pipeline.html", "classhtgs_1_1_execution_pipeline" ]
     ] ],
     [ "ICudaTask.hpp", "_i_cuda_task_8hpp.html", [
       [ "MemoryData", "classhtgs_1_1_memory_data.html", "classhtgs_1_1_memory_data" ],
       [ "ICudaTask", "classhtgs_1_1_i_cuda_task.html", "classhtgs_1_1_i_cuda_task" ]
-    ] ],
-    [ "ICustomEdge.hpp", "_i_custom_edge_8hpp.html", [
-      [ "ICustomEdge", "classhtgs_1_1_i_custom_edge.html", "classhtgs_1_1_i_custom_edge" ]
     ] ],
     [ "IData.hpp", "_i_data_8hpp.html", [
       [ "IData", "classhtgs_1_1_i_data.html", "classhtgs_1_1_i_data" ]
@@ -30,14 +26,19 @@ var dir_cba3643586339776702906f470e9e126 =
       [ "IRule", "classhtgs_1_1_i_rule.html", "classhtgs_1_1_i_rule" ],
       [ "StateContainer", "classhtgs_1_1_state_container.html", "classhtgs_1_1_state_container" ]
     ] ],
-    [ "ITask.hpp", "_i_task_8hpp.html", "_i_task_8hpp" ],
+    [ "ITask.hpp", "_i_task_8hpp.html", [
+      [ "TaskManager", "classhtgs_1_1_task_manager.html", "classhtgs_1_1_task_manager" ],
+      [ "ITask", "classhtgs_1_1_i_task.html", "classhtgs_1_1_i_task" ]
+    ] ],
     [ "MemoryData.hpp", "_memory_data_8hpp.html", [
       [ "MemoryData", "classhtgs_1_1_memory_data.html", "classhtgs_1_1_memory_data" ]
     ] ],
-    [ "Runtime.hpp", "_runtime_8hpp.html", [
-      [ "Runtime", "classhtgs_1_1_runtime.html", "classhtgs_1_1_runtime" ]
+    [ "TaskGraphConf.hpp", "_task_graph_conf_8hpp.html", [
+      [ "TaskGraphConf", "classhtgs_1_1_task_graph_conf.html", "classhtgs_1_1_task_graph_conf" ]
     ] ],
-    [ "TaskGraph.hpp", "_task_graph_8hpp.html", "_task_graph_8hpp" ],
+    [ "TaskGraphRuntime.hpp", "_task_graph_runtime_8hpp.html", [
+      [ "TaskGraphRuntime", "classhtgs_1_1_task_graph_runtime.html", "classhtgs_1_1_task_graph_runtime" ]
+    ] ],
     [ "VoidData.hpp", "_void_data_8hpp.html", [
       [ "VoidData", "classhtgs_1_1_void_data.html", "classhtgs_1_1_void_data" ]
     ] ]

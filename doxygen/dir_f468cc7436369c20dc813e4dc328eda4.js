@@ -1,15 +1,12 @@
 var dir_f468cc7436369c20dc813e4dc328eda4 =
 [
-    [ "history", "dir_d1873ae54ed22a3c1fa6b8f75a9c5744.html", "dir_d1873ae54ed22a3c1fa6b8f75a9c5744" ],
-    [ "BaseConnector.hpp", "_base_connector_8hpp.html", [
-      [ "BaseConnector", "classhtgs_1_1_base_connector.html", "classhtgs_1_1_base_connector" ]
+    [ "edge", "dir_0bf9e1b20b4ecc6a28e970c17ca951a0.html", "dir_0bf9e1b20b4ecc6a28e970c17ca951a0" ],
+    [ "profile", "dir_74db4a3e118e89bfc11328d9cea147b2.html", "dir_74db4a3e118e89bfc11328d9cea147b2" ],
+    [ "AnyConnector.hpp", "_any_connector_8hpp.html", [
+      [ "AnyConnector", "classhtgs_1_1_any_connector.html", "classhtgs_1_1_any_connector" ]
     ] ],
-    [ "BaseTaskGraph.hpp", "_base_task_graph_8hpp.html", [
-      [ "BaseTaskGraph", "classhtgs_1_1_base_task_graph.html", "classhtgs_1_1_base_task_graph" ]
-    ] ],
+    [ "AnyTaskGraphConf.hpp", "_any_task_graph_conf_8hpp.html", "_any_task_graph_conf_8hpp" ],
     [ "Connector.hpp", "_connector_8hpp.html", [
-      [ "PriorityBlockingQueue", "classhtgs_1_1_priority_blocking_queue.html", "classhtgs_1_1_priority_blocking_queue" ],
-      [ "TaskScheduler", "classhtgs_1_1_task_scheduler.html", "classhtgs_1_1_task_scheduler" ],
       [ "Connector", "classhtgs_1_1_connector.html", "classhtgs_1_1_connector" ]
     ] ]
 ];

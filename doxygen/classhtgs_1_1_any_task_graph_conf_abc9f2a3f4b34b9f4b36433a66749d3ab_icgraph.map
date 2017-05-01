@@ -1,0 +1,6 @@
+<map id="htgs::AnyTaskGraphConf::getNumberOfSubGraphs" name="htgs::AnyTaskGraphConf::getNumberOfSubGraphs">
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_graph_conf.html#aa19d20385562125945430fff451b1347" title="Initializes the task graph just prior to spawning threads. " alt="" coords="227,39,397,80"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_runtime.html#a1ebd18efd3e1262e46800f98790368a9" title="Executes the Runtime. " alt="" coords="445,39,613,80"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012" title="Initializes the execution pipeline and duplicates the task graph based on the number of pipelines..." alt="" coords="679,5,838,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_runtime.html#a55210fa09f813799e7ee8d3512860d06" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="661,71,856,112"/>
+</map>

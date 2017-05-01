@@ -1,0 +1,5 @@
+<map id="htgs::RuleManager::setOutputConnector" name="htgs::RuleManager::setOutputConnector">
+<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012" title="Initializes the execution pipeline and duplicates the task graph based on the number of pipelines..." alt="" coords="205,5,363,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_rule_edge.html#abda0599079fdd04d849422ed0df7140f" title="Applies an edge to a task graph. " alt="" coords="193,71,375,98"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_conf.html#aedfc932815a7b264da00c35d274f5274" title="Creates a rule edge that is managed by a bookkeeper. " alt="" coords="423,64,569,105"/>
+</map>

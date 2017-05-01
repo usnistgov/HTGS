@@ -1,0 +1,4 @@
+<map id="htgs::ICudaTask::executeTask" name="htgs::ICudaTask::executeTask">
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_cuda_task.html#a8e48c0cb9c2f52b8539d80494a7618f9" title="Virtual function that is called when the ICudaTask has been initialized and is bound to a CUDA GPU..." alt="" coords="256,5,431,47"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_cuda_task.html#a9139d923f48e4084b92be0db2b357402" title="Initializes the CudaTask to be bound to a particular GPU. " alt="" coords="479,13,653,39"/>
+</map>

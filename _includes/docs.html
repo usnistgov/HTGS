@@ -53,8 +53,8 @@
                     <pre><code class="language-cpp">
   #include &lthtgs/api/IData.hpp&gt
   #include &lthtgs/api/ITask.hpp&gt
-  #include &lthtgs/api/TaskGraph.hpp&gt
-  #include &lthtgs/api/Runtime.hpp&gt
+  #include &lthtgs/api/TaskGraphConf.hpp&gt
+  #include &lthtgs/api/TaskGraphRuntime.hpp&gt
 
   class InputData : public htgs::IData
   {
@@ -78,11 +78,6 @@
   class AddTask : public htgs::ITask&ltInputData, OutputData&gt
   {
     public:
-      virtual void initialize(int pipelineId, int numPipeline) { }
-      virtual void shutdown() { }
-      virtual bool isTerminated(std::shared_ptr&lthtgs::BaseConnector&gt inputConnector) {
-        return inputConnector-&gtisInputTerminated();
-      }
       virtual AddTask *copy() { return new AddTask(); }
       virtual void executeTask(std::shared_ptr&ltInputData&gt data) {
         int sum = data->getX() + data->getY();
@@ -92,12 +87,11 @@
 
   int main() {
     AddTask *addTask = new AddTask();
-    auto taskGraph = new htgs::TaskGraph&ltInputData, OutputData&gt();
-    taskGraph-&gtaddGraphOutputProducer(addTask);
-    taskGraph-&gtaddGraphInputConsumer(addTask);
-    taskGraph-&gtincrementGraphInputProducer();
+    auto taskGraph = new htgs::TaskGraphConf&ltInputData, OutputData&gt();
+    taskGraph-&gtsetGraphConsumerTask(addTask);
+    taskGraph-&gtaddGraphProducerTask(addTask);
 
-    auto runtime = new htgs::Runtime(taskGraph);
+    auto runtime = new htgs::TaskGraphRuntime(taskGraph);
     runtime-&gtexecuteRuntime();
 
     int numData = 10;

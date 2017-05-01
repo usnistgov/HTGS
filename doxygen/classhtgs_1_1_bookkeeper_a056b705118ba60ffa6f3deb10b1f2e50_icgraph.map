@@ -1,0 +1,4 @@
+<map id="htgs::Bookkeeper::addRuleManager" name="htgs::Bookkeeper::addRuleManager">
+<area shape="rect" id="node2" href="$classhtgs_1_1_rule_edge.html#abda0599079fdd04d849422ed0df7140f" title="Applies an edge to a task graph. " alt="" coords="235,12,416,39"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#a348db328787079fd041e41ebf4d087bb" title="Creates a rule edge that is managed by a bookkeeper. " alt="" coords="465,5,623,46"/>
+</map>

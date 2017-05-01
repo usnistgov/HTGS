@@ -1,0 +1,11 @@
+<map id="htgs::AnyITask" name="htgs::AnyITask">
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="225,402,372,626"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ getName()\land 16 more...\l}" alt="" coords="409,395,591,633"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; T, VoidData \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ getName()\land 16 more...\l}" alt="" coords="615,402,798,626"/>
+<area shape="rect" id="node10" href="$classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; U, W \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ getName()\land 16 more...\l}" alt="" coords="822,402,965,626"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="5,681,189,1052"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,703,383,1030"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="408,696,600,1037"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="397,1100,611,1221"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="629,740,785,993"/>
+</map>

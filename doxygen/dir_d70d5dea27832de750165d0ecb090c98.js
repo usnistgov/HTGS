@@ -1,16 +1,14 @@
 var dir_d70d5dea27832de750165d0ecb090c98 =
 [
-    [ "BaseITask.hpp", "_base_i_task_8hpp.html", [
-      [ "BaseITask", "classhtgs_1_1_base_i_task.html", "classhtgs_1_1_base_i_task" ]
+    [ "AnyITask.hpp", "_any_i_task_8hpp.html", [
+      [ "AnyITask", "classhtgs_1_1_any_i_task.html", "classhtgs_1_1_any_i_task" ]
     ] ],
-    [ "BaseTaskScheduler.hpp", "_base_task_scheduler_8hpp.html", [
-      [ "ITask", "classhtgs_1_1_i_task.html", "classhtgs_1_1_i_task" ],
-      [ "BaseTaskScheduler", "classhtgs_1_1_base_task_scheduler.html", "classhtgs_1_1_base_task_scheduler" ],
-      [ "BaseTaskSchedulerRuntimeThread", "classhtgs_1_1_base_task_scheduler_runtime_thread.html", "classhtgs_1_1_base_task_scheduler_runtime_thread" ]
+    [ "AnyTaskManager.hpp", "_any_task_manager_8hpp.html", [
+      [ "AnyTaskManager", "classhtgs_1_1_any_task_manager.html", "classhtgs_1_1_any_task_manager" ],
+      [ "TaskManagerThread", "classhtgs_1_1_task_manager_thread.html", "classhtgs_1_1_task_manager_thread" ]
     ] ],
-    [ "TaskScheduler.hpp", "_task_scheduler_8hpp.html", [
-      [ "Connector", "classhtgs_1_1_connector.html", "classhtgs_1_1_connector" ],
+    [ "TaskManager.hpp", "_task_manager_8hpp.html", [
       [ "ITask", "classhtgs_1_1_i_task.html", "classhtgs_1_1_i_task" ],
-      [ "TaskScheduler", "classhtgs_1_1_task_scheduler.html", "classhtgs_1_1_task_scheduler" ]
+      [ "TaskManager", "classhtgs_1_1_task_manager.html", "classhtgs_1_1_task_manager" ]
     ] ]
 ];

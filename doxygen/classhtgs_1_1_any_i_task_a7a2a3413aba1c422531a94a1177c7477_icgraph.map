@@ -1,0 +1,4 @@
+<map id="htgs::AnyITask::hasMemoryEdge" name="htgs::AnyITask::hasMemoryEdge">
+<area shape="rect" id="node2" href="$classhtgs_1_1_memory_edge.html#a960debcbabc20c51c995b3dd5aa0715e" title="Applies an edge to a task graph. " alt="" coords="551,5,752,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a07b227fd650170a87eb3f15a7c291039" title="Attaches a memory edge to this ITask to get memory. " alt="" coords="271,31,503,57"/>
+</map>

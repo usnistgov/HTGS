@@ -1,4 +1,4 @@
-<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/ICustomEdge.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/ICustomEdge.hpp">
-<area shape="rect" id="node2" href="$_task_graph_8hpp.html" title="Implements the TaskGraph class responsible for managing ITask connections. " alt="" coords="13,97,240,138"/>
-<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="28,187,225,243"/>
+<map id="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/api/ICustomEdge.hpp" name="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/api/ICustomEdge.hpp">
+<area shape="rect" id="node2" href="$_task_graph_8hpp.html" title="Implements the TaskGraph class responsible for managing ITask connections. " alt="" coords="5,109,168,165"/>
+<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="5,213,168,269"/>
 </map>

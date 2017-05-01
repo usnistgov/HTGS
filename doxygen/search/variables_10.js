@@ -1,12 +1,6 @@
 var searchData=
 [
-  ['task',['task',['../classhtgs_1_1_base_task_scheduler_runtime_thread.html#ae8cbfb519c3f46ef8775daa079eda875',1,'htgs::BaseTaskSchedulerRuntimeThread']]],
-  ['taskcomputetime',['taskComputeTime',['../classhtgs_1_1_task_scheduler.html#ad78887e9088906b9ddb5ab6ad025650d',1,'htgs::TaskScheduler']]],
-  ['taskfunction',['taskFunction',['../classhtgs_1_1_task_scheduler.html#ac520a7201780309092846700f60896fe',1,'htgs::TaskScheduler']]],
-  ['taskwaittime',['taskWaitTime',['../classhtgs_1_1_task_scheduler.html#a5217428df205d5647dcf8c7f9418ff60',1,'htgs::TaskScheduler']]],
-  ['terminated',['terminated',['../classhtgs_1_1_base_task_scheduler_runtime_thread.html#acb64273ff4c82f2275a808d811b6ae1b',1,'htgs::BaseTaskSchedulerRuntimeThread']]],
-  ['threadid',['threadId',['../classhtgs_1_1_task_scheduler.html#ade22ed0fdcd2446cc075f6844fbaefbe',1,'htgs::TaskScheduler']]],
-  ['threads',['threads',['../classhtgs_1_1_runtime.html#a63fc371c15f730019bb698933d44e560',1,'htgs::Runtime']]],
-  ['timeout',['timeout',['../classhtgs_1_1_task_scheduler.html#ab6694ff0ab6fc9b522c17e66b9ae700f',1,'htgs::TaskScheduler']]],
-  ['type',['type',['../classhtgs_1_1_memory_manager_key.html#a7dd85c54c031a97a4328095c2e9483e9',1,'htgs::MemoryManagerKey::type()'],['../classhtgs_1_1_memory_manager.html#ae17b24032e292d1bb685b417c531190a',1,'htgs::MemoryManager::type()']]]
+  ['size',['size',['../classhtgs_1_1_memory_data.html#a0b3e2dd26c5cb1b26c5bfe73cf9d2262',1,'htgs::MemoryData']]],
+  ['starttask',['startTask',['../classhtgs_1_1_any_i_task.html#ada677c56c3a896abeb2f7a22f870bc9f',1,'htgs::AnyITask::startTask()'],['../classhtgs_1_1_any_task_manager.html#a326e8b72ac91e3dcac08ccaad3301676',1,'htgs::AnyTaskManager::startTask()']]],
+  ['stream',['stream',['../classhtgs_1_1_i_cuda_task.html#a0e11becef7b34a87934ea336978cf5af',1,'htgs::ICudaTask']]]
 ];

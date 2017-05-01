@@ -1,0 +1,11 @@
+<map id="htgs::TaskGraphConf::addRuleEdge" name="htgs::TaskGraphConf::addRuleEdge">
+<area shape="rect" id="node2" href="$classhtgs_1_1_rule_edge.html#abda0599079fdd04d849422ed0df7140f" title="Applies an edge to a task graph. " alt="" coords="200,177,381,203"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_graph_conf.html#a955128064919d0284de0765aae41cfd3" title="Gets the task manager that is responsible for a particular ITask. " alt="" coords="429,71,600,112"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_task_manager.html#a86523b19da2edf80ee678ff722407468" title="Gets the input Connector. " alt="" coords="443,136,586,177"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_rule_manager.html#a2321a94c82589527a5bb805e7fdb380a" title="Sets the output connector that the RuleManager is attached to. " alt="" coords="445,201,585,243"/>
+<area shape="rect" id="node10" href="$classhtgs_1_1_task_manager.html#a7a31d2eb4ffe1abe4190c4783dedf5fe" title="Sets the input BaseConnector. " alt="" coords="443,267,586,308"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a1413cf98c99559ff2f72b352bfe83b8b" title="Gets the number of threads associated with this TaskManager. " alt="" coords="648,5,805,47"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_manager.html#acc16c9c9455034e0842b9476ab97997b" title="Gets whether this task manager will begin executing immediately with nullptr data or not..." alt="" coords="648,71,805,112"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html#a8a11ac50fa8263425f2f496249660e8d" title="Gets whether the task manager is polling for data or not. " alt="" coords="648,136,805,177"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_rule_manager.html#a4fd3ab92bf27777b613b268740fe9110" title="Gets the name of the RuleManager and the names of all IRules that it manages. " alt="" coords="657,201,797,243"/>
+</map>

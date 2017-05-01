@@ -1,4 +1,5 @@
 <map id="htgs::MemoryManager::getName" name="htgs::MemoryManager::getName">
 <area shape="rect" id="node2" href="$classhtgs_1_1_cuda_memory_manager.html#a8dbbb9ca41c2d68f03bc1ecbc7f7996a" title="Gets the name of the CudaMemoryManager. " alt="" coords="206,5,389,46"/>
 <area shape="rect" id="node3" href="$classhtgs_1_1_memory_manager.html#af51107f9fa1796412d312fca691a1186" title="Provides debug output for MemoryManager. " alt="" coords="221,70,373,111"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_memory_manager.html#aa035f4e2061577f38fe1e42066e674fe" title="Virtual function that generates the input/output and per&#45;task dot notation. " alt="" coords="221,135,373,177"/>
 </map>
