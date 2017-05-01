@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskManager::getAddress" name="htgs::AnyTaskManager::getAddress">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#af0e50aa2cb25bcee45cb25beb1106024" title="Gets the maximum size the input queue became during execution. " alt="" coords="240,13,397,54"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_manager.html#ac129bf52b39a0b2eedca9e9c58220d9d" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::copy" alt="" coords="211,77,427,133"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_manager.html#a631205c3e8a7d68c9fe202cf00db9b6a" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::gatherProfileData" alt="" coords="475,5,691,61"/>
-</map>

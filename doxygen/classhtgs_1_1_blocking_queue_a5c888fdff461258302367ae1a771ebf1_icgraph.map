@@ -1,7 +1,0 @@
-<map id="htgs::BlockingQueue::Enqueue" name="htgs::BlockingQueue::Enqueue">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#a697baa2c67e14abf2d706f9a3c1dca3e" title="Awakens all Tasks that are consuming data from this connector. " alt="" coords="196,5,424,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_connector.html#a8a118e27dd5ea9dbd5024101c12f7afa" title="Produces any data into the queue. " alt="" coords="225,57,395,98"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_connector.html#a901ff54affbc9cc0aa15ab52fc40d984" title="Produces data into the queue. " alt="" coords="211,123,409,149"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_memory_pool.html#aab0df3bff75ffdff2a28d7f5b99f8461" title="Fills the pool with memory and specifies the pipelineId to be associated with the MemoryData..." alt="" coords="223,173,397,200"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_memory_pool.html#a368fdce6d727504ecebae736f8aa1fcd" title="Adds memory back into the MemoryPool. " alt="" coords="208,224,412,251"/>
-</map>

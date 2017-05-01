@@ -1,19 +1,19 @@
-<map id="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/graph/profile/TaskManagerProfile.hpp" name="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/graph/profile/TaskManagerProfile.hpp">
-<area shape="rect" id="node2" href="$_any_task_graph_conf_8hpp.html" title="Implements the base class used by the TaskGraphConf, which removes the template arguments and impleme..." alt="" coords="503,421,706,477"/>
-<area shape="rect" id="node10" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="5,525,236,581"/>
-<area shape="rect" id="node11" href="$_any_task_manager_8hpp.html" title="Implements the parent class for a Task to remove the template arguments and the TaskManagerThread to ..." alt="" coords="501,109,684,165"/>
-<area shape="rect" id="node3" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="260,525,424,581"/>
-<area shape="rect" id="node5" href="$_edge_descriptor_8hpp.html" title="Implements the edge descriptor interface to build edges for a task graph. " alt="" coords="500,525,709,581"/>
-<area shape="rect" id="node8" href="$_producer_consumer_edge_8hpp.html" title="Implements a producer consumer edge, which is a type of edge descriptor. " alt="" coords="273,629,534,685"/>
-<area shape="rect" id="node9" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="1034,629,1210,685"/>
-<area shape="rect" id="node4" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="930,837,1093,893"/>
-<area shape="rect" id="node6" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="559,629,755,685"/>
-<area shape="rect" id="node7" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="694,733,857,789"/>
-<area shape="rect" id="node12" href="$_any_i_task_8hpp.html" title="Implements parent ITask, removing template arguments. " alt="" coords="509,213,677,269"/>
-<area shape="rect" id="node13" href="$_task_manager_8hpp.html" title="Implements a TaskManager that interacts with an ITask and holds the input and output Connector for th..." alt="" coords="753,213,921,269"/>
-<area shape="rect" id="node14" href="$_i_task_8hpp.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="802,317,965,373"/>
-<area shape="rect" id="node15" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="1107,525,1270,581"/>
-<area shape="rect" id="node16" href="$_i_cuda_task_8hpp.html" title="ICudaTask.hpp is used to define an NVIDIA Cuda GPU Tasks. " alt="" coords="1345,421,1507,477"/>
-<area shape="rect" id="node17" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="784,525,983,581"/>
-<area shape="rect" id="node18" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="779,629,1009,685"/>
+<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/graph/profile/TaskManagerProfile.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/graph/profile/TaskManagerProfile.hpp">
+<area shape="rect" id="node2" href="$_any_task_graph_conf_8hpp.html" title="Implements the base class used by the TaskGraphConf, which removes the template arguments and impleme..." alt="" coords="501,407,680,463"/>
+<area shape="rect" id="node10" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="5,511,200,567"/>
+<area shape="rect" id="node11" href="$_any_task_manager_8hpp.html" title="Implements the parent class for a Task to remove the template arguments and the TaskManagerThread to ..." alt="" coords="503,109,675,165"/>
+<area shape="rect" id="node3" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="224,511,427,567"/>
+<area shape="rect" id="node5" href="$_edge_descriptor_8hpp.html" title="Implements the edge descriptor interface to build edges for a task graph. " alt="" coords="501,511,680,567"/>
+<area shape="rect" id="node8" href="$_producer_consumer_edge_8hpp.html" title="Implements a producer consumer edge, which is a type of edge descriptor. " alt="" coords="329,615,554,671"/>
+<area shape="rect" id="node9" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="1000,615,1179,671"/>
+<area shape="rect" id="node4" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="896,823,1093,879"/>
+<area shape="rect" id="node6" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="579,615,757,671"/>
+<area shape="rect" id="node7" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="672,719,875,775"/>
+<area shape="rect" id="node12" href="$_any_i_task_8hpp.html" title="Implements parent ITask, removing template arguments. " alt="" coords="503,213,675,269"/>
+<area shape="rect" id="node13" href="$_task_manager_8hpp.html" title="Implements a TaskManager that interacts with an ITask and holds the input and output Connector for th..." alt="" coords="733,213,905,269"/>
+<area shape="rect" id="node14" href="$_i_task_8hpp.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="753,317,951,359"/>
+<area shape="rect" id="node15" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="1075,518,1309,559"/>
+<area shape="rect" id="node16" href="$_i_cuda_task_8hpp.html" title="ICudaTask.hpp is used to define an NVIDIA Cuda GPU Tasks. " alt="" coords="1385,414,1613,455"/>
+<area shape="rect" id="node17" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="755,511,949,567"/>
+<area shape="rect" id="node18" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="781,615,976,671"/>
 </map>

@@ -1,4 +1,0 @@
-<map id="htgs::AnyTaskGraphConf::gatherProfilingData" name="htgs::AnyTaskGraphConf::gatherProfilingData">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_profiler.html#a8248c034f6dd27f9874a8ecb0f574aeb" title="Builds a profile for the graph, (called after execution is done) " alt="" coords="224,5,384,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#ac20b128cb5435b26a948f43c533ded4b" title="Generates the dot graph as a string. " alt="" coords="432,5,579,47"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="htgs::AnyITask::attachMemoryEdge" name="htgs::AnyITask::attachMemoryEdge">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a7a2a3413aba1c422531a94a1177c7477" title="Checks whether this ITask contains a memory edge for a specified name. " alt="" coords="285,5,503,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Virtual function to get the name of an ITask. " alt="" coords="308,56,480,83"/>
-</map>

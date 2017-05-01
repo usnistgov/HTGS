@@ -1,5 +1,0 @@
-<map id="htgs::Bookkeeper::getName" name="htgs::Bookkeeper::getName">
-<area shape="rect" id="node2" href="$classhtgs_1_1_bookkeeper.html#a056b705118ba60ffa6f3deb10b1f2e50" title="Adds rule manager to this bookkeeper. " alt="" coords="243,5,423,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_bookkeeper.html#a5a5c437cbc56c3ec352253b67b1e51b3" title="Provides debug output for the rule manager. " alt="" coords="249,71,416,98"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_bookkeeper.html#ad9c5e6ba0b7bd66b7de8f68c18fad234" title="Shuts down this bookkeeper and all of it&#39;s RuleManagers. " alt="" coords="239,122,427,149"/>
-</map>

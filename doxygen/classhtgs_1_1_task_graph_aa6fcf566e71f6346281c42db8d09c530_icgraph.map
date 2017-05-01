@@ -1,4 +1,0 @@
-<map id="htgs::TaskGraph::getInputConnector" name="htgs::TaskGraph::getInputConnector">
-<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipelines times. " alt="" coords="230,5,389,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#a7332ddb69534960ea00a715c1307804c" title="Virtual function that adds additional dot attributes to this node. " alt="" coords="230,70,389,111"/>
-</map>

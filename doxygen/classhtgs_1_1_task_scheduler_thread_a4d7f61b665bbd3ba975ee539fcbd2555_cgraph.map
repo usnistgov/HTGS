@@ -1,9 +1,0 @@
-<map id="htgs::TaskManagerThread::run" name="htgs::TaskManagerThread::run">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_scheduler.html#a53e30c363d6832bcc08efa26e7375149" title="Gets the name of the ITask. " alt="" coords="480,76,645,118"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_scheduler.html#a74246b950711d64b75a92316990cc85f" title="Initializes the TaskScheduler. " alt="" coords="261,30,427,71"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_scheduler.html#aa8d49f52e3c1294fb20184ae028007db" title="Executes the TaskScheduler. " alt="" coords="261,95,427,136"/>
-<area shape="rect" id="node7" href="$classhtgs_1_1_any_task_scheduler.html#a084ab8ca38ecf4816a3045cea78e8984" title="Shuts down the TaskScheduler. " alt="" coords="261,160,427,202"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_scheduler.html#a4c96ed2ca3802f3a85b35e3d1006a6bf" title="Gets the ITask function associated with the TaskScheduler. " alt="" coords="703,135,868,176"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Pure virtual function to get the name of an ITask. " alt="" coords="699,84,871,110"/>
-<area shape="rect" id="node8" href="$classhtgs_1_1_any_i_task.html#a6fed14efba9c1f1cfb95ecd7c6fde6da" title="Virtual function that is called when an ITask is being shutdown by it&#39;s owner thread. " alt="" coords="475,193,650,220"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="htgs::BookkeeperKey" name="htgs::BookkeeperKey">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="5,13,251,369"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_scheduler.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="275,5,439,376"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_rule_scheduler.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="464,93,627,288"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskScheduler::getNameWithPipelineId" name="htgs::AnyTaskScheduler::getNameWithPipelineId">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_scheduler.html#a4c96ed2ca3802f3a85b35e3d1006a6bf" title="Gets the ITask function associated with the TaskScheduler. " alt="" coords="239,5,404,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a4f8a3558a1f0ca11acd02394de45ce8d" title="Gets the name of the ITask with it&#39;s pipeline ID. " alt="" coords="222,70,421,111"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Pure virtual function to get the name of an ITask. " alt="" coords="470,77,642,104"/>
-</map>

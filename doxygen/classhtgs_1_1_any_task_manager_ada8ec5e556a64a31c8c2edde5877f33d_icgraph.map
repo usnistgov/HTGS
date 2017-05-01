@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskManager::getOutputConnector" name="htgs::AnyTaskManager::getOutputConnector">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a08e71b0553d1e504aab0c30321b6a15d" title="Destructor. " alt="" coords="211,5,368,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a275a1a6e47d017ae58de4760228a2711" title="Provides debug output. " alt="" coords="211,71,368,112"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a7b54f80608be88502883ef3e39c44aa0" title="Gets the dot notation for this TaskManager. " alt="" coords="211,136,368,177"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="htgs::Connector::genDot" name="htgs::Connector::genDot">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#ac4c2f2880525ce04ba51a4aecf9055f8" title="Gets the id used for dot graphs for GraphViz. " alt="" coords="229,5,403,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_connector.html#a9a2bcbf65d7735ab10e829514cd6d6b2" title="Gets the number of producers adding data to the Connector. " alt="" coords="219,57,413,98"/>
-</map>

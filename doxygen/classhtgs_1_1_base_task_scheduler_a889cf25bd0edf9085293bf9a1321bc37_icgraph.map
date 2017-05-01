@@ -1,6 +1,0 @@
-<map id="htgs::BaseTaskScheduler::copy" name="htgs::BaseTaskScheduler::copy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_runtime.html#a7f6f3656b206a43d9499e27241c592a7" title="Executes the Runtime. " alt="" coords="227,45,434,72"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph.html#a9eb8248f52fb8f4ce7bc39ab4246b098" title="Creates a copy of the TaskGraph with the specified pipeline Id and number of pipelines. " alt="" coords="259,97,402,138"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipelines times. " alt="" coords="494,5,653,46"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_runtime.html#a7af89f35a813fda87845e6b80fc08c5f" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="483,70,664,111"/>
-</map>

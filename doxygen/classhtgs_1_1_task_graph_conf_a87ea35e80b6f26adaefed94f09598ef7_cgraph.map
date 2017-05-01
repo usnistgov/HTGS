@@ -1,4 +1,0 @@
-<map id="htgs::TaskGraphConf::releaseMemory" name="htgs::TaskGraphConf::releaseMemory">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_graph_conf.html#a9bfd2aa56fe389eb612ce95e1b86cfba" title="Gets the address for the task graph. " alt="" coords="217,5,387,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_communicator.html#acdb4da0a89bf85675bd48bb3f0845f01" title="Produces data packet to be processed for the task graph communicator. " alt="" coords="200,71,404,112"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskManager::getNameWithPipelineId" name="htgs::AnyTaskManager::getNameWithPipelineId">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="241,5,398,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a4f8a3558a1f0ca11acd02394de45ce8d" title="Gets the name of the ITask with it&#39;s pipeline ID. " alt="" coords="220,71,419,112"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Virtual function to get the name of an ITask. " alt="" coords="467,78,639,105"/>
-</map>

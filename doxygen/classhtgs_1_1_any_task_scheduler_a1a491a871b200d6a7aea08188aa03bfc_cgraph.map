@@ -1,8 +1,0 @@
-<map id="htgs::AnyTaskScheduler::debug" name="htgs::AnyTaskScheduler::debug">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_scheduler.html#a53e30c363d6832bcc08efa26e7375149" title="Gets the name of the ITask. " alt="" coords="219,63,384,105"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_scheduler.html#a4c96ed2ca3802f3a85b35e3d1006a6bf" title="Gets the ITask function associated with the TaskScheduler. " alt="" coords="436,5,601,46"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_scheduler.html#a96979cd1603b0e450745ed41565fe105" title="Gets the input Connector. " alt="" coords="219,129,384,170"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_scheduler.html#a8bb1ac741cbf425c708428a7227982df" title="Gets the output Connector. " alt="" coords="219,194,384,235"/>
-<area shape="rect" id="node7" href="$classhtgs_1_1_any_i_task.html#a46a32bc1d7bf6eea75b796756d25ea93" title="Virtual function that is called to debug the ITask. " alt="" coords="224,260,379,287"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#acd41e1181edd2bff304531bea64db28c" title="Pure virtual function to get the name of an ITask. " alt="" coords="433,71,605,97"/>
-</map>

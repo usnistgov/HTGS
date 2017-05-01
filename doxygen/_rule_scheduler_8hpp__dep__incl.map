@@ -1,7 +1,0 @@
-<map id="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/rules/RuleScheduler.hpp" name="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/rules/RuleScheduler.hpp">
-<area shape="rect" id="node2" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="8,109,171,165"/>
-<area shape="rect" id="node6" href="$_i_rule_8hpp.html" title="Provides an interface to send data along RuleManager edges for processing state and dependencies..." alt="" coords="195,109,357,165"/>
-<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="5,421,168,477"/>
-<area shape="rect" id="node4" href="$_rule_edge_8hpp_source.html" title="/home/tjb3/phd&#45;research\l/HTGS&#45;dev/src/htgs/core\l/graph/edge/RuleEdge.hpp" alt="" coords="64,213,240,269"/>
-<area shape="rect" id="node5" href="$_task_graph_8hpp.html" title="Implements the TaskGraph class responsible for managing ITask connections. " alt="" coords="67,317,229,373"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="htgs::BaseBaseRuleManager" name="htgs::BaseBaseRuleManager">
-<area shape="rect" id="node2" href="$classhtgs_1_1_base_rule_manager.html" title="{htgs::BaseRuleManager\&lt; T \&gt;\n||+ ~BaseRuleManager()\l+ executeTask()\l+ initialize()\l+ shutdown()\l+ isTerminated()\l+ getName()\l+ copy()\l+ debug()\l+ getConnector()\l+ setOutputConnector()\l+ getRuleNames()\l}" alt="" coords="5,189,200,413"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_base_rule_manager.html" title="Parent class for the RuleManager that removes the output template type of the RuleManager. " alt="" coords="225,189,420,413"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). " alt="" coords="23,461,181,832"/>
-</map>

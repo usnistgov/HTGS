@@ -1,5 +1,0 @@
-<map id="htgs::TaskGraphConf::copy" name="htgs::TaskGraphConf::copy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_graph_conf.html#a5070d48b8ad2c2ff5117424ae719d68c" title="Get the vertices of the TaskGraph. " alt="" coords="200,5,371,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_edge_descriptor.html#aac5e5bb9b297515b37fdb98d7a543b7b" title="Creates a copy of the edge descriptor to be added to other graphs, such as those within execution pip..." alt="" coords="213,71,358,112"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_edge_descriptor.html#a41dad46584c6c53f699ea3c28158d6ea" title="Applies an edge to a task graph. " alt="" coords="213,136,358,177"/>
-</map>

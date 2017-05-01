@@ -1,7 +1,0 @@
-<map id="htgs::TaskGraphConf::setGraphConsumerTask" name="htgs::TaskGraphConf::setGraphConsumerTask">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_graph_conf.html#a955128064919d0284de0765aae41cfd3" title="Gets the task manager that is responsible for a particular ITask. " alt="" coords="225,71,396,112"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html#a8efe983bd29b94a479dc89dae8b666f5" title="Sets the input BaseConnector. " alt="" coords="232,136,389,177"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a1413cf98c99559ff2f72b352bfe83b8b" title="Gets the number of threads associated with this TaskManager. " alt="" coords="444,5,601,47"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#acc16c9c9455034e0842b9476ab97997b" title="Gets whether this task manager will begin executing immediately with nullptr data or not..." alt="" coords="444,71,601,112"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_manager.html#a8a11ac50fa8263425f2f496249660e8d" title="Gets whether the task manager is polling for data or not. " alt="" coords="444,136,601,177"/>
-</map>

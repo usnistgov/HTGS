@@ -1,4 +1,0 @@
-<map id="htgs::AnyTaskManager::getComputeTime" name="htgs::AnyTaskManager::getComputeTime">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a93b99695e2206cba562ff05024a67ee6" title="Prints the profiling data to std::cout. " alt="" coords="240,5,397,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_manager.html#a631205c3e8a7d68c9fe202cf00db9b6a" title="htgs::TaskManager\&lt;\l MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::gatherProfileData" alt="" coords="211,70,427,126"/>
-</map>

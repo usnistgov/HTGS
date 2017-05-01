@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskGraphConf::getCopy" name="htgs::AnyTaskGraphConf::getCopy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_memory_edge.html#a95ee70f7bc3f25e61f2c46aeffac48a1" title="Creates a copy of the edge descriptor to be added to other graphs, such as those within execution pip..." alt="" coords="239,5,407,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_producer_consumer_edge.html#a59331efc79cb29f0ee970c1e9ec83090" title="Creates a copy of the edge descriptor to be added to other graphs, such as those within execution pip..." alt="" coords="224,57,421,98"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_rule_edge.html#abf728ac3ad8fe95e6adb4fd457ba998d" title="Creates a copy of the edge descriptor to be added to other graphs, such as those within execution pip..." alt="" coords="249,123,397,149"/>
-</map>

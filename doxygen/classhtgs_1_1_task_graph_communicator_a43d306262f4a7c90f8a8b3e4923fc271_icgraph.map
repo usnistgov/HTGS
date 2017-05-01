@@ -1,4 +1,0 @@
-<map id="htgs::TaskGraphCommunicator::incrementRootCommunicatorGraphs" name="htgs::TaskGraphCommunicator::incrementRootCommunicatorGraphs">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_communicator.html#a5a72607eaa8b546c25867d946ba07c02" title="Adds the mapping between a task&#39;s address and its name to the input connector for that task..." alt="" coords="296,29,500,71"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#aa359ab69ff6f839d233f2486e32d0605" title="Virtual function that initiates updating the task graph communicator. " alt="" coords="548,29,703,71"/>
-</map>

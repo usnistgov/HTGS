@@ -1,5 +1,0 @@
-<map id="htgs::ExecutionPipeline::getName" name="htgs::ExecutionPipeline::getName">
-<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#a8a825f63eff36782c46b265dd2dc5851" title="Shuts down the execution pipeline. " alt="" coords="212,5,371,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#a409fb080726562470ee8599786bc365e" title="Provides debugging output for the execution pipeline. " alt="" coords="212,71,371,112"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_execution_pipeline.html#a37103e1adaeaaa706e3af046043caa44" title="Virtual function that generates the input/output and per&#45;task dot notation. " alt="" coords="212,136,371,177"/>
-</map>

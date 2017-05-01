@@ -1,5 +1,0 @@
-<map id="htgs::ICudaTask::requiresCopy" name="htgs::ICudaTask::requiresCopy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_cuda_task.html#a0ed21dd37fe3fcaabcd5e69604f93c8a" title="Checks if the requested pipelineId requires GPU&#45;to&#45;GPU copy. " alt="" coords="259,5,463,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_i_cuda_task.html#a2d5770e50a2e5c9fc669386dc40f6502" title="Checks if the requested pipelineId allows peer to peer GPU copy. " alt="" coords="274,57,449,98"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html#a4a4248e1d7d15fed78692de1f09d09e7" title="Will automatically copy from one GPU to another (if it is required). " alt="" coords="270,123,453,149"/>
-</map>

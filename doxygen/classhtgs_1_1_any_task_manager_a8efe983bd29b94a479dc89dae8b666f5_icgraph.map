@@ -1,4 +1,0 @@
-<map id="htgs::AnyTaskManager::setInputConnector" name="htgs::AnyTaskManager::setInputConnector">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a23520b3b3054e16c59784b0d3a289811" title="Sets the task that is consuming data from the input of the graph. " alt="" coords="211,5,383,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#a08e71b0553d1e504aab0c30321b6a15d" title="Destructor. " alt="" coords="218,71,375,112"/>
-</map>

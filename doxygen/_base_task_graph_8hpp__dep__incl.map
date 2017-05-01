@@ -1,5 +1,0 @@
-<map id="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/graph/BaseTaskGraph.hpp" name="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/graph/BaseTaskGraph.hpp">
-<area shape="rect" id="node2" href="$_task_graph_8hpp.html" title="Implements the TaskGraph class responsible for managing ITask connections. " alt="" coords="5,109,168,165"/>
-<area shape="rect" id="node4" href="$_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="192,109,355,165"/>
-<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="99,213,261,269"/>
-</map>

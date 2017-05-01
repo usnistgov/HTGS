@@ -1,4 +1,0 @@
-<map id="htgs::ExecutionPipeline::copy" name="htgs::ExecutionPipeline::copy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a9eee31ff0a32d0ec08648edcb26ec096" title="Gets the pipeline ID. " alt="" coords="224,5,419,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#aa897627d33f6525fe8c88ae6fe1f7827" title="Gets the number of pipelines for the task&#39;s execution pipeline. " alt="" coords="212,56,431,83"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="htgs::Bookkeeper::initialize" name="htgs::Bookkeeper::initialize">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a9eee31ff0a32d0ec08648edcb26ec096" title="Gets the pipeline ID. " alt="" coords="244,5,439,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#aa897627d33f6525fe8c88ae6fe1f7827" title="Gets the number of pipelines for the task&#39;s execution pipeline. " alt="" coords="232,56,451,83"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_task.html#ae29cf1039ab3b9d9426b67b226a42dcc" title="htgs::ITask\&lt; T, VoidData\l \&gt;::getAddress" alt="" coords="256,107,427,149"/>
-</map>

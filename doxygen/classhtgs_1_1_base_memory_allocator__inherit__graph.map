@@ -1,5 +1,0 @@
-<map id="htgs::BaseMemoryAllocator" name="htgs::BaseMemoryAllocator">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_memory_allocator.html" title="Abstract class that describes how memory is allocated and freed. " alt="" coords="5,138,195,289"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_i_memory_allocator.html" title="{htgs::IMemoryAllocator\l\&lt; void * \&gt;\n|&#45; _size\l|+ IMemoryAllocator()\l+ ~IMemoryAllocator()\l+ size()\l+ memAlloc()\l+ memAlloc()\l+ memFree()\l}" alt="" coords="219,131,376,296"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_void_memory_allocator.html" title="Special allocator for user&#45;managed memory managers. " alt="" coords="208,344,387,480"/>
-</map>

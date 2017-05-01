@@ -1,4 +1,0 @@
-<map id="htgs::TaskScheduler::getOutputConnector" name="htgs::TaskScheduler::getOutputConnector">
-<area shape="rect" id="node2" href="$classhtgs_1_1_execution_pipeline.html#a44a8067a04fe35d93591036ddc3ff5b4" title="Initializes the execution pipeline and duplicates the task graph numPipelines times. " alt="" coords="201,5,359,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_scheduler.html#ae00ec4fa3b29967beac59532fcc4815c" title="Copies the TaskScheduler. " alt="" coords="209,70,351,111"/>
-</map>

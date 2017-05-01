@@ -1,4 +1,0 @@
-<map id="htgs::BlockingQueue::isEmpty" name="htgs::BlockingQueue::isEmpty">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#ac57f6cb1a8f74822d3e11d8277d3e696" title="Checks whether the producer for this Connector has finished pushing data onto its queue..." alt="" coords="201,5,363,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_memory_pool.html#a522cdebb61e05442b61918ae34c7241a" title="Gets whether the pool is empty or not. " alt="" coords="196,71,368,112"/>
-</map>

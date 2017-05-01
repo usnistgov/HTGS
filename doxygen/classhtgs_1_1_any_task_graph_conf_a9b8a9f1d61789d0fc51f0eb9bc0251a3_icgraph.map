@@ -1,8 +1,0 @@
-<map id="htgs::AnyTaskGraphConf::getTaskManagers" name="htgs::AnyTaskGraphConf::getTaskManagers">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a68503448c6b1c9e5cc194b0254db7c37" title="Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines..." alt="" coords="235,5,381,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#a25596e47cfb919b836a04b586b76a8b3" title="Generates the dot graph as a string. " alt="" coords="229,70,387,111"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_conf.html#ab7c1b735da1bd6442bab63866ce381f9" title="Provides debug output for the TaskGraphConf. " alt="" coords="235,135,381,177"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_runtime.html#a1ebd18efd3e1262e46800f98790368a9" title="Executes the Runtime. " alt="" coords="224,201,392,242"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012" title="Initializes the execution pipeline and duplicates the task graph based on the number of pipelines..." alt="" coords="458,167,617,209"/>
-<area shape="rect" id="node7" href="$classhtgs_1_1_task_graph_runtime.html#a55210fa09f813799e7ee8d3512860d06" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="440,233,635,274"/>
-</map>

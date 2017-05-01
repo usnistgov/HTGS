@@ -1,4 +1,0 @@
-<map id="htgs::AnyTaskGraphConf::createCopy" name="htgs::AnyTaskGraphConf::createCopy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="224,5,381,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#ae7adb7f99a4971ec1bfee7995f9918fe" title="Copies the TaskManager. " alt="" coords="224,71,381,112"/>
-</map>

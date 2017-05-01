@@ -1,5 +1,0 @@
-<map id="htgs::ICudaTask::initialize" name="htgs::ICudaTask::initialize">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a9eee31ff0a32d0ec08648edcb26ec096" title="Gets the pipeline ID. " alt="" coords="228,5,423,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_i_cuda_task.html#a8e48c0cb9c2f52b8539d80494a7618f9" title="Virtual function that is called when the ICudaTask has been initialized and is bound to a CUDA GPU..." alt="" coords="238,57,413,98"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html#af5d304db53e1d4ce2572e309bcf987c3" title="Executes the ICudaTask on some data. " alt="" coords="471,64,673,91"/>
-</map>

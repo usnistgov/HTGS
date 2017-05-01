@@ -1,4 +1,0 @@
-<map id="htgs::BaseTaskGraph" name="htgs::BaseTaskGraph">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. " alt="" coords="5,189,205,560"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html" title="{htgs::TaskGraph\&lt; T, U \&gt;\n|&#45; graphInputConsumers\l&#45; graphOutputProducers\l&#45; edges\l&#45; vertices\l&#45; producerConsumerKeys\l&#45; bookkeeperKeys\l&#45; memoryManagerKeys\l&#45; consumerTaskConnectorMap\l&#45; iTaskMap\l&#45; ruleEdgeMap\land 9 more...\l|+ TaskGraph()\l+ TaskGraph()\l+ ~TaskGraph()\l+ writeDotToFile()\l+ writeDotToFile()\l+ genDotGraphContent()\l+ genDotGraph()\l+ produceData()\l+ produceData()\l+ produceData()\land 35 more...\l}" alt="" coords="230,189,431,560"/>
-</map>

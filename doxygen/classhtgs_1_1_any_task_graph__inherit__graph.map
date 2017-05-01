@@ -1,4 +1,0 @@
-<map id="htgs::AnyTaskGraph" name="htgs::AnyTaskGraph">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html" title="Manages a group of connected ITasks and their connections. " alt="" coords="5,336,275,619"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html" title="{htgs::TaskGraph\&lt; T, U \&gt;\n|&#45; edges\l&#45; graphConsumerTaskManager\l&#45; graphProducerTaskManager\l&#45; input\l&#45; output\l|+ TaskGraph()\l+ TaskGraph()\l+ ~TaskGraph()\l+ copy()\l+ copy()\l+ addEdge()\l+ addRuleEdge()\l+ addCudaMemoryManagerEdge()\l+ addUserManagedMemoryManagerEdge()\l+ addMemoryManagerEdge()\land 16 more...\l}" alt="" coords="299,336,569,619"/>
-</map>

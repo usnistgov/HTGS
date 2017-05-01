@@ -1,6 +1,0 @@
-<map id="htgs::AnyITask::setTaskGraphCommunicator" name="htgs::AnyITask::setTaskGraphCommunicator">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#af8a16ce21ee06e3f250a4e68f98f3037" title="Sets the task graph communicator. " alt="" coords="255,39,452,80"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_runtime.html#a1ebd18efd3e1262e46800f98790368a9" title="Executes the Runtime. " alt="" coords="500,39,668,80"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012" title="Initializes the execution pipeline and duplicates the task graph based on the number of pipelines..." alt="" coords="734,5,893,47"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_runtime.html#a55210fa09f813799e7ee8d3512860d06" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="716,71,911,112"/>
-</map>

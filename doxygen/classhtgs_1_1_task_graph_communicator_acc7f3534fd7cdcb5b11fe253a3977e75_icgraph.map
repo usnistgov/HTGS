@@ -1,5 +1,0 @@
-<map id="htgs::TaskGraphCommunicator::getAddress" name="htgs::TaskGraphCommunicator::getAddress">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_communicator.html#a4e03bd448e09411634cfd89b8ef48324" title="Prints the task graph communicator tree recursively to std::cout. " alt="" coords="257,5,461,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_communicator.html#a2ea46482827c460c7499d198befd9dec" title="Adds a child communicator for this task graph communicator. " alt="" coords="257,71,461,112"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_communicator.html#a3e2d7c194f9c25836ab191b125d51c13" title="Constructs the task graph communicator. " alt="" coords="509,71,713,112"/>
-</map>

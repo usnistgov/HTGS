@@ -1,8 +1,0 @@
-<map id="htgs::StateContainer::computeIndex" name="htgs::StateContainer::computeIndex">
-<area shape="rect" id="node2" href="$classhtgs_1_1_state_container.html#a4df36c283be8e0d1c426dc9ee4f7cca9" title="Sets a value (by reference) at a row column. " alt="" coords="199,12,367,39"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_state_container.html#ae166e57b423b759c2d445a9ede627df9" title="Sets a value at a row column (uses assignment operator) " alt="" coords="211,63,354,105"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_state_container.html#ae087fa4725db8bdc0196a91ba95573d6" title="Gets a value from a row column. " alt="" coords="199,129,367,156"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_state_container.html#a3cc92341cd052da597e62074e3b8bab2" title="Checks whether the specified row column has data. " alt="" coords="197,180,368,207"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_state_container.html#a2e93431d5ee8189a2e0281710ba0e113" title="Removes the data from the specified row and column. " alt="" coords="417,5,559,46"/>
-<area shape="rect" id="node7" href="$classhtgs_1_1_state_container.html#abc89b5ac963dfd0a1e892169efe9aaa8" title="Prints the state of the state container. " alt="" coords="417,173,559,214"/>
-</map>

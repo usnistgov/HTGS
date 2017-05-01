@@ -1,4 +1,0 @@
-<map id="htgs::TaskManager::setOutputConnector" name="htgs::TaskManager::setOutputConnector">
-<area shape="rect" id="node2" href="$classhtgs_1_1_producer_consumer_edge.html#a29095f6580e30b37af93f2dbd1346b98" title="Applies an edge to a task graph. " alt="" coords="196,5,393,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#aeaf80f060f13a40b41579a8678acad01" title="Adds an edge to the graph, where one task produces data for a consumer task. " alt="" coords="441,5,588,47"/>
-</map>

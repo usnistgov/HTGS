@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskGraphConf::getAddress" name="htgs::AnyTaskGraphConf::getAddress">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a5be2d8e8919ab1e7b23da33cb74c8ad5" title="Constructs a TaskGraph. " alt="" coords="224,5,371,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_conf.html#a163409dd38587f67b49502835ca107fe" title="Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines..." alt="" coords="224,71,371,112"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_conf.html#a87ea35e80b6f26adaefed94f09598ef7" title="Releases memory back to its memory manager. " alt="" coords="224,136,371,177"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="htgs::TaskGraphCommunicator::TaskGraphCommunicator" name="htgs::TaskGraphCommunicator::TaskGraphCommunicator">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_communicator.html#a2ea46482827c460c7499d198befd9dec" title="Adds a child communicator for this task graph communicator. " alt="" coords="257,5,461,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_communicator.html#acc7f3534fd7cdcb5b11fe253a3977e75" title="Gets the address of the task graph communicator. " alt="" coords="509,5,713,47"/>
-</map>

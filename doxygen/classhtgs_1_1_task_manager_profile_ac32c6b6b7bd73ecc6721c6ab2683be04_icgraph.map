@@ -1,5 +1,0 @@
-<map id="htgs::TaskManagerProfile::sum" name="htgs::TaskManagerProfile::sum">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_profiler.html#ac5ed174f350b5d0a13f8b7fec3007e43" title="Computes the averages for all profile data. " alt="" coords="257,5,417,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph_profiler.html#a7a1bbbd9dd1811fd3b26ee42bab6bd21" title="Generates the dot profile for the graph. " alt="" coords="465,5,625,47"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_conf.html#ac20b128cb5435b26a948f43c533ded4b" title="Generates the dot graph as a string. " alt="" coords="673,5,820,47"/>
-</map>

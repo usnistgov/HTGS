@@ -1,4 +1,0 @@
-<map id="htgs::AnyTaskScheduler::getPipelineConnectors" name="htgs::AnyTaskScheduler::getPipelineConnectors">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_scheduler.html#a4550dcff2d754939d6cb93421595369f" title="htgs::TaskScheduler\l\&lt; MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::initialize" alt="" coords="219,5,443,61"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_scheduler.html#a0051bf17da8fcfb7932899cb9a812f30" title="htgs::TaskScheduler\l\&lt; MemoryData\&lt; T \&gt;, MemoryData\l\&lt; T \&gt; \&gt;::copy" alt="" coords="219,85,443,141"/>
-</map>

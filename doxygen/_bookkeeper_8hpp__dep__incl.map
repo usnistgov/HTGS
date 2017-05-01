@@ -1,5 +1,5 @@
-<map id="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/api/Bookkeeper.hpp" name="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/api/Bookkeeper.hpp">
-<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="5,317,168,373"/>
-<area shape="rect" id="node3" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="64,109,240,165"/>
-<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="67,213,229,269"/>
+<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/Bookkeeper.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/Bookkeeper.hpp">
+<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="27,303,225,359"/>
+<area shape="rect" id="node3" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="99,95,278,151"/>
+<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="94,199,297,255"/>
 </map>

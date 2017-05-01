@@ -1,4 +1,0 @@
-<map id="htgs::TaskGraph::addGraphMemoryManagerEdge" name="htgs::TaskGraph::addGraphMemoryManagerEdge">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph.html#a9eb8248f52fb8f4ce7bc39ab4246b098" title="Creates a copy of the TaskGraph with the specified pipeline Id and number of pipelines. " alt="" coords="286,5,429,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_task_graph.html#a95f57abc60c2b59f5b686f0334c4c56f" title="Adds a MemoryManager that is managed by the user with this graph as the memory releaser. " alt="" coords="237,69,477,125"/>
-</map>

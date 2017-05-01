@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskGraphConf::getTaskManager" name="htgs::AnyTaskGraphConf::getTaskManager">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a1413cf98c99559ff2f72b352bfe83b8b" title="Gets the number of threads associated with this TaskManager. " alt="" coords="224,5,381,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_task_manager.html#acc16c9c9455034e0842b9476ab97997b" title="Gets whether this task manager will begin executing immediately with nullptr data or not..." alt="" coords="224,71,381,112"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a8a11ac50fa8263425f2f496249660e8d" title="Gets whether the task manager is polling for data or not. " alt="" coords="224,136,381,177"/>
-</map>

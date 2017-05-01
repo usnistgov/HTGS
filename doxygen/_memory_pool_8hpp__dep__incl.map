@@ -1,7 +1,7 @@
-<map id="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/memory/MemoryPool.hpp" name="/home/tjb3/phd&#45;research/HTGS&#45;dev/src/htgs/core/memory/MemoryPool.hpp">
-<area shape="rect" id="node2" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="123,109,321,165"/>
-<area shape="rect" id="node3" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="5,213,201,269"/>
-<area shape="rect" id="node6" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="225,213,456,269"/>
-<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="141,317,303,373"/>
-<area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="141,421,303,477"/>
+<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryPool.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryPool.hpp">
+<area shape="rect" id="node2" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="103,109,297,165"/>
+<area shape="rect" id="node3" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="5,213,184,269"/>
+<area shape="rect" id="node6" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="208,213,403,269"/>
+<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="99,317,301,373"/>
+<area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="101,421,299,477"/>
 </map>

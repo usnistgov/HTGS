@@ -1,4 +1,0 @@
-<map id="htgs::TaskGraphCommunicator::produceDataPacket" name="htgs::TaskGraphCommunicator::produceDataPacket">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a87ea35e80b6f26adaefed94f09598ef7" title="Releases memory back to its memory manager. " alt="" coords="288,5,435,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a1695fa9a8bd1ff5599c1388f648fc9fa" title="Releases memory onto a memory edge, which is transferred by the graph communicator. " alt="" coords="257,71,465,98"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="htgs::AnyITask::genDot" name="htgs::AnyITask::genDot">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a950b031a669641923068673109f1a5d2" title="Gets the id used for dot nodes. " alt="" coords="215,5,384,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a89a4c99907a6b444e2c8a151e3055022" title="Virtual function that generates the input/output and per&#45;task dot notation. " alt="" coords="219,56,380,83"/>
-</map>

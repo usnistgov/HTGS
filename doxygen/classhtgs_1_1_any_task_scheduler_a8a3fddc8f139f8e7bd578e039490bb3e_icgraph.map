@@ -1,5 +1,0 @@
-<map id="htgs::AnyTaskScheduler::copy" name="htgs::AnyTaskScheduler::copy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_runtime.html#a7f6f3656b206a43d9499e27241c592a7" title="Executes the Runtime. " alt="" coords="219,45,426,72"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#af088d730ba1cb913c22eb51b657f3132" title="Initializes the execution pipeline and duplicates the task graph numPipeline times. " alt="" coords="486,5,645,46"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_runtime.html#a7af89f35a813fda87845e6b80fc08c5f" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="475,70,656,111"/>
-</map>

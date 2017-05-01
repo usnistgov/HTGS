@@ -1,8 +1,0 @@
-<map id="htgs::AnyTaskManager::copy" name="htgs::AnyTaskManager::copy">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_runtime.html#a1ebd18efd3e1262e46800f98790368a9" title="Executes the Runtime. " alt="" coords="212,71,380,112"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_any_task_graph_conf.html#a2cb1c1247c6d27518d3a919e18fd3cf8" title="Creates a copy of a task manager and adds the copy and a mapping between the task manager copy and th..." alt="" coords="211,136,381,177"/>
-<area shape="rect" id="node7" href="$classhtgs_1_1_any_task_manager.html#a08e71b0553d1e504aab0c30321b6a15d" title="Destructor. " alt="" coords="217,201,375,243"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012" title="Initializes the execution pipeline and duplicates the task graph based on the number of pipelines..." alt="" coords="447,5,606,47"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_runtime.html#a55210fa09f813799e7ee8d3512860d06" title="Executes the Runtime and then waits for it to finish processing. " alt="" coords="429,71,624,112"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_graph_conf.html#ada2dd0d09a53a9bd9652ea0490d0f1ec" title="Creates a copy of each task from the list of AnyTaskManagers passed as a parameter. " alt="" coords="441,136,612,177"/>
-</map>

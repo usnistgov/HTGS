@@ -1,5 +1,0 @@
-<map id="htgs::AnyITask::copyITask" name="htgs::AnyITask::copyITask">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a38960397af48fada4690c7ce35bde1e2" title="Virtual function that is called to provide profile output for the ITask. " alt="" coords="233,13,388,39"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#ab428a1870e69900ba20ffb8285ecc8f1" title="Provides profile output for the ITask,. " alt="" coords="436,13,623,39"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_task_manager.html#a93b99695e2206cba562ff05024a67ee6" title="Prints the profiling data to std::cout. " alt="" coords="671,5,828,47"/>
-</map>

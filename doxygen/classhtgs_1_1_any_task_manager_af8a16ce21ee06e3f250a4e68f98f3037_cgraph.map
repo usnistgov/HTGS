@@ -1,4 +1,0 @@
-<map id="htgs::AnyTaskManager::setTaskGraphCommunicator" name="htgs::AnyTaskManager::setTaskGraphCommunicator">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_task_manager.html#a0854bbc3e048874e9351a79353472e8f" title="Gets the ITask function associated with the TaskManager. " alt="" coords="273,5,430,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#aa20eed280a1e07be28ef60f120e0c0be" title="Sets the task graph communicator. " alt="" coords="251,71,452,112"/>
-</map>

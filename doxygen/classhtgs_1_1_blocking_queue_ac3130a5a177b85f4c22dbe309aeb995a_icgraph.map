@@ -1,5 +1,0 @@
-<map id="htgs::BlockingQueue::Dequeue" name="htgs::BlockingQueue::Dequeue">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html#a214201fdc99a49c328fbc00dd0ff74d2" title="Consumes data from the queue. " alt="" coords="196,13,400,39"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_memory_pool.html#a4437112ee72dfd477138c083400492a7" title="Gets the next piece of memory from the MemoryPool. " alt="" coords="197,63,399,90"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a182cb05b805dd9862364cffb4d9f4404" title="Gets the memory edges for releasing memory for the memory manager, used to shutdown the memory manage..." alt="" coords="448,5,633,47"/>
-</map>

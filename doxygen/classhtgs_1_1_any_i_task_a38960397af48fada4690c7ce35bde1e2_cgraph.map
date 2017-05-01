@@ -1,7 +1,0 @@
-<map id="htgs::AnyITask::profile" name="htgs::AnyITask::profile">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html#a5e708d23390a04d5bd162442c3020817" title="Gets the demangled input type name of the connector. " alt="" coords="212,5,405,32"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html#a18dd451a0899d6325e21ceb1d953b845" title="Gets the demangled output type name of the connector. " alt="" coords="208,56,409,83"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html#afaed43aafe335bee187de0f0f36c055e" title="Gets the address from the owner task, which is the address of the task graph. " alt="" coords="216,107,401,133"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_any_i_task.html#afb5f268cb0b26dbb7875bd3dd6877b36" title="Copies the ITask including its list of memGetters and memReleasers. " alt="" coords="219,157,399,184"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_any_i_task.html#a317a42c070f93b4e858792833e8cfffa" title="Prints the profile data to std::out. " alt="" coords="218,208,399,235"/>
-</map>

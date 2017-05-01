@@ -1,6 +1,0 @@
-<map id="htgs::BaseTaskSchedulerRuntimeThread::run" name="htgs::BaseTaskSchedulerRuntimeThread::run">
-<area shape="rect" id="node2" href="$classhtgs_1_1_base_task_scheduler.html#a6444f1872c8e6521ae37cabb9e1be109" title="Gets the name of the Task. " alt="" coords="275,5,447,46"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_base_task_scheduler.html#aff2fca80065d739b64afb2200e05c135" title="Initializes the Task. " alt="" coords="275,70,447,111"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_base_task_scheduler.html#a04b73fc54a057319db7ba2d4dbcaa816" title="Executes the Task. " alt="" coords="275,135,447,177"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_base_task_scheduler.html#a421761b20d523be7a5c2ee8c9f4573a9" title="Shuts down the Task. " alt="" coords="275,201,447,242"/>
-</map>

@@ -1,3 +1,0 @@
-<map id="htgs::AnyTaskGraphConf::getMemoryAllocator" name="htgs::AnyTaskGraphConf::getMemoryAllocator">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a806d4e5a57572f548c6682c81b28084e" title="Adds a CudaMemoryManager edge with the specified name to the TaskGraphConf. " alt="" coords="224,5,433,47"/>
-</map>

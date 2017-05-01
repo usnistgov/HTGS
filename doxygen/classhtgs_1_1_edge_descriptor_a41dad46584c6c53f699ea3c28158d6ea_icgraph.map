@@ -1,4 +1,0 @@
-<map id="htgs::EdgeDescriptor::applyEdge" name="htgs::EdgeDescriptor::applyEdge">
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html#a32a135c436eb931cc7d002758e021335" title="Creates a mirror copy of the TaskGraph with the specified pipelineId and number of pipelines..." alt="" coords="199,5,345,47"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_edge_descriptor.html#a3f3cdb00a46eda7873ae6f2871b43f39" title="Destructor. " alt="" coords="199,71,345,112"/>
-</map>
