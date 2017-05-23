@@ -148,15 +148,15 @@ Tutorials {#tutorials}
   - Terminating cyclic graphs
   - Profiling and optimizations
 
------------------------------------------------------------------------
-Tutorials below are still under development
------------------------------------------------------------------------
-
 + [Tutorial 3b](@ref tutorial3b) - Profiling and debugging the graph from Tutorial 3a.
   - GraphViz visualizations
   - Development experimentation for performance
   - Identifying bottlenecks
   - Incorporating high performance libraries into HTGS tasks
+
+-----------------------------------------------------------------------
+Tutorials below are still under development
+-----------------------------------------------------------------------
 
 + [Tutorial 3c](@ref tutorial3c) - Augmenting the graph from Tutorial3a to use memory mapped files.
   - How to incorporate memory mapped files into a task
