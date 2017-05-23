@@ -139,6 +139,13 @@ class AnyITask {
   virtual std::string getDotShape() = 0;
 
   /**
+   * Virtual function that can be used to add custom output for dot visualizations
+   * @return the values for dot visualization added to the label for the task's dot node,
+   * use '\n' to create newlines to add additional profile data
+   */
+  virtual std::string getDotCustomProfile() = 0;
+
+  /**
  * Virtual function that is called when an ITask is being shutdown by it's owner thread.
  */
   virtual void shutdown() = 0;

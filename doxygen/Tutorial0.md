@@ -8,12 +8,13 @@ Downloading the Tutorials {#tut0-download}
 =======
 
 ## Dependencies: ##
-1. cmake v2.7+
-2. gcc/g++ v4.8.x (or higher, C++11)
-3. pthreads
-4. (Optional) [Graphviz](http://www.graphviz.org/)
-5. (Optional, except Tutorials 3b and 6) [OpenBLAS](http://www.openblas.net/)
-6. (Optional, except for Tutorials 4, 5, 7, and 8) [CUDA](https://developer.nvidia.com/cuda-downloads) (Requires one or more CUDA-Enabled GPUs on system)
+1. HTGS (See [Getting Started](@ref install-instructions))
+2. cmake v2.7+
+3. gcc/g++ v4.8.x (or higher, C++11)
+4. pthreads
+5. (Optional) [Graphviz](http://www.graphviz.org/)
+6. (Optional, except Tutorials 3b and 6) [OpenBLAS](http://www.openblas.net/)
+7. (Optional, except for Tutorials 4, 5, 7, and 8) [CUDA](https://developer.nvidia.com/cuda-downloads) (Requires one or more CUDA-Enabled GPUs on system)
 
 ## CMake Options: ##
 HTGS_INCLUDE_DIR - HTGS include directory, example: /usr/local/include

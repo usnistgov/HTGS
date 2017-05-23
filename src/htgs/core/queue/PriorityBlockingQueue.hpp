@@ -210,6 +210,10 @@ class PriorityBlockingQueue {
     size_t getQueueActiveMaxSize() const {
         return queueActiveMaxSize;
     }
+
+  void resetMaxQueueSize() {
+    queueActiveMaxSize = 0;
+  }
 #endif
 
  private:

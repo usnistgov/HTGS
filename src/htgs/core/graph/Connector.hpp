@@ -90,6 +90,12 @@ class Connector : public AnyConnector {
 #endif
   }
 
+  void resetMaxQueueSize() override {
+#ifdef PROFILE
+    this->queue.resetMaxQueueSize();
+#endif
+  }
+
   void produceAnyData(std::shared_ptr<IData> data) override {
     DEBUG_VERBOSE("Connector " << this << " producing any data: " << data);
     std::shared_ptr<T> dataCast = std::dynamic_pointer_cast<T>(data);

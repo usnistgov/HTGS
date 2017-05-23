@@ -185,6 +185,8 @@ class BlockingQueue {
     return nullptr;
   }
 
+
+
 #ifdef PROFILE
   //  unsigned long long int getEnqueueLockTime() const {
   //      return enqueueLockTime;
@@ -202,6 +204,10 @@ class BlockingQueue {
     size_t getQueueActiveMaxSize() const {
         return queueActiveMaxSize;
     }
+
+  void resetMaxQueueSize() {
+    queueActiveMaxSize = 0;
+  }
 #endif
 
  private:

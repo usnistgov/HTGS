@@ -122,6 +122,7 @@ class TaskGraphProfiler {
             (tFun->debugDotNode() != "" ? ("\n" + tFun->debugDotNode() + "\n") : "") +
             threadLabel + inOutLabel + "\n" +
             tProfile->genDot(flags) +
+            (tFun->getDotCustomProfile() != "" ? ("\n" + tFun->getDotCustomProfile() + "\n") : "") +
             "\",shape=" + tFun->getDotShape() +
             ",style=filled" +
             ",fillcolor=" + tFun->getDotFillColor()

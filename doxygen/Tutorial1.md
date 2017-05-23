@@ -112,6 +112,8 @@ public:
 - Assuming USE_PRIORITY_QUEUE directive is defined
     + Uses order constructor for htgs::IData::IData(size_t order), which will provide an ordering based on the lowest value first.
     + The ordering can be customized if the htgs::IData::compare function is overriden
+    + Defined by specifying -DUSE_PRIORITY_QUEUE during compilation.
+      - In CMake, add_definitions(-DUSE_PRIORITY_QUEUE)
 
 Example altering the order of data to highest value first (USE_PRIORITY_QUEUE directive to enable priority):
 ~~~~~~~~~~~~{.c}

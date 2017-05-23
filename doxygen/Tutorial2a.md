@@ -120,6 +120,8 @@ from task to task reduces code size, while holding onto the necessary metadata.
 
 We also templatized the MatrixBlockData and MatrixBlockMulData to enable representing multiple types of data to further reduce code size. 
 
+These data classes also use the MatrixType enums, which can be found [here](https://github.com/usnistgov/HTGS-Tutorials/tree/master/tutorial-utils/enums).
+
 ### MatrixRequestData {#tut2a-matrix-request}
 
 ~~~~{.c}

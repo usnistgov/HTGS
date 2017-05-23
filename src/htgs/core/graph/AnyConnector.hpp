@@ -159,6 +159,11 @@ class AnyConnector {
    */
   virtual size_t getMaxQueueSize() = 0;
 
+  /**
+   * Resets the max queue size profile.
+   */
+  virtual void resetMaxQueueSize() = 0;
+
  private:
   std::atomic_size_t producerTaskCount; //!< The number of producers adding data to the connector
 

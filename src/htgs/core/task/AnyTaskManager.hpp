@@ -416,6 +416,28 @@ class AnyTaskManager {
 #endif
   }
 
+  /**
+   * Resets the profile data for this task.
+   */
+  void resetProfile() {
+    taskComputeTime = 0;
+    taskWaitTime = 0;
+    if (this->getInputConnector() != nullptr)
+    {
+      this->getInputConnector()->resetMaxQueueSize();
+    }
+
+  }
+
+  /**
+   * Gets the task's compute time.
+   * @return the compute time in microseconds.
+   */
+  unsigned long long int getTaskComputeTime()
+  {
+    return taskComputeTime;
+  }
+
   //! @cond Doxygen_Suppress
   std::string prefix() {
     return std::string(

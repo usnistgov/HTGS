@@ -248,6 +248,10 @@ class ITask : public AnyITask {
     return "box";
   }
 
+  virtual std::string getDotCustomProfile() override {
+    return "";
+  }
+
   /**
    * @copydoc AnyITask::printProfile
    */
@@ -311,6 +315,23 @@ class ITask : public AnyITask {
     this->ownerTask = ownerTask;
     super::initialize(pipelineId, numPipeline);
   }
+
+  /**
+   * Resets profile data
+   */
+  void resetProfile()
+  {
+    this->ownerTask->resetProfile();
+  }
+
+  /**
+   * Gets the task's compute time.
+   * @return the compute time in microseconds.
+   */
+  unsigned long long int getTaskComputeTime() const {
+    return this->ownerTask->getTaskComputeTime();
+  }
+
 
   /**
    * @copydoc AnyITask::inTypeName
