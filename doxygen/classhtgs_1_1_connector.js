@@ -12,6 +12,7 @@ var classhtgs_1_1_connector =
     [ "produceData", "classhtgs_1_1_connector.html#ac5e8741985e45bbd6e9fdd0d5cc27a36", null ],
     [ "profileConsume", "classhtgs_1_1_connector.html#aaac4532ac40501d0a878853dd9bf7d03", null ],
     [ "profileProduce", "classhtgs_1_1_connector.html#ac4fe521dd57c572bd9aa0e216879bbf3", null ],
+    [ "resetMaxQueueSize", "classhtgs_1_1_connector.html#ac68ad16b4cc29257120a3777ac4c2391", null ],
     [ "typeName", "classhtgs_1_1_connector.html#a137e5af3242d75ad6f1ae3305c7c82aa", null ],
     [ "wakeupConsumer", "classhtgs_1_1_connector.html#a697baa2c67e14abf2d706f9a3c1dca3e", null ],
     [ "queue", "classhtgs_1_1_connector.html#aff310e7837468fe36ec08861727fde1c", null ]

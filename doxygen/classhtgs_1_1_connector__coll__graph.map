@@ -1,4 +1,4 @@
 <map id="htgs::Connector&lt; T &gt;" name="htgs::Connector&lt; T &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,160,197,443"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; T \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="221,175,387,428"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,175,197,399"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; T \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="221,160,387,413"/>
 </map>

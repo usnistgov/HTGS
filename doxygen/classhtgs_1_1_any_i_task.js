@@ -15,6 +15,7 @@ var classhtgs_1_1_any_i_task =
     [ "genDot", "classhtgs_1_1_any_i_task.html#af78302a59c8fbfba98b5254f81dd8557", null ],
     [ "genDot", "classhtgs_1_1_any_i_task.html#a21c2f4b6a35e07f87420e28af48d115a", null ],
     [ "getAddress", "classhtgs_1_1_any_i_task.html#afaed43aafe335bee187de0f0f36c055e", null ],
+    [ "getDotCustomProfile", "classhtgs_1_1_any_i_task.html#a7a5218e1e27ed8dae0e7d28dc8f0e0f0", null ],
     [ "getDotFillColor", "classhtgs_1_1_any_i_task.html#afaedea5315448cc4184c966b072fc3b1", null ],
     [ "getDotId", "classhtgs_1_1_any_i_task.html#a950b031a669641923068673109f1a5d2", null ],
     [ "getDotLabelName", "classhtgs_1_1_any_i_task.html#a1e7d3f06c5edba7dd4319f93fc2ecbea", null ],

@@ -13,6 +13,7 @@ var classhtgs_1_1_any_connector =
     [ "producerFinished", "classhtgs_1_1_any_connector.html#accb1fe9ddad2376b03a52463c9f1f55d", null ],
     [ "profileConsume", "classhtgs_1_1_any_connector.html#a9dd929f6e9c895f75d0c9fab7164cc80", null ],
     [ "profileProduce", "classhtgs_1_1_any_connector.html#a6ef2fc38499dd6b57c701608b4984e64", null ],
+    [ "resetMaxQueueSize", "classhtgs_1_1_any_connector.html#a46b94a932f64c56603151c7e131eb03b", null ],
     [ "typeName", "classhtgs_1_1_any_connector.html#a32a17adaa3b7d5913054e266593219bc", null ],
     [ "wakeupConsumer", "classhtgs_1_1_any_connector.html#a688a6987419d14118767d12128897d53", null ],
     [ "producerTaskCount", "classhtgs_1_1_any_connector.html#a385cd53dc475c138c217fb582cff42b7", null ]

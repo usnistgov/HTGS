@@ -183,6 +183,10 @@ Notes</h3>
 <li>Assuming USE_PRIORITY_QUEUE directive is defined<ul>
 <li>Uses order constructor for <a class="el" href="classhtgs_1_1_i_data.html#a85c04d1470d11fe8aa8bf8c5dceadf94" title="Constructs IData with integer ordering. ">htgs::IData::IData(size_t order)</a>, which will provide an ordering based on the lowest value first.</li>
 <li>The ordering can be customized if the <a class="el" href="classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0" title="Virtual IData comparison function, can be used for custom ordering. ">htgs::IData::compare</a> function is overriden</li>
+<li>Defined by specifying -DUSE_PRIORITY_QUEUE during compilation.<ul>
+<li>In CMake, add_definitions(-DUSE_PRIORITY_QUEUE)</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

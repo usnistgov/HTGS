@@ -128,7 +128,7 @@ Inheritance diagram for htgs::Connector&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_connector__inherit__graph.png" border="0" usemap="#htgs_1_1_connector_3_01_t_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="htgs_1_1_connector_3_01_t_01_4_inherit__map" id="htgs_1_1_connector_3_01_t_01_4_inherit__map">
-<area shape="rect" id="node2" href="classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,5,197,288"/>
+<area shape="rect" id="node2" href="classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,5,197,229"/>
 </map>
 </div>
 <div class="dynheader">
@@ -136,8 +136,8 @@ Collaboration diagram for htgs::Connector&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_connector__coll__graph.png" border="0" usemap="#htgs_1_1_connector_3_01_t_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="htgs_1_1_connector_3_01_t_01_4_coll__map" id="htgs_1_1_connector_3_01_t_01_4_coll__map">
-<area shape="rect" id="node2" href="classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,160,197,443"/>
-<area shape="rect" id="node3" href="classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; T \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="221,175,387,428"/>
+<area shape="rect" id="node2" href="classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,175,197,399"/>
+<area shape="rect" id="node3" href="classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; T \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="221,160,387,413"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -169,6 +169,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8914185b86b4f4529630371db47b50f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#ac8914185b86b4f4529630371db47b50f">getMaxQueueSize</a> () override</td></tr>
 <tr class="memdesc:ac8914185b86b4f4529630371db47b50f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum queue size that this connector has in its data queue.  <a href="#ac8914185b86b4f4529630371db47b50f">More...</a><br /></td></tr>
 <tr class="separator:ac8914185b86b4f4529630371db47b50f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac68ad16b4cc29257120a3777ac4c2391"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac68ad16b4cc29257120a3777ac4c2391"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#ac68ad16b4cc29257120a3777ac4c2391">resetMaxQueueSize</a> () override</td></tr>
+<tr class="memdesc:ac68ad16b4cc29257120a3777ac4c2391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the max queue size profile. <br /></td></tr>
+<tr class="separator:ac68ad16b4cc29257120a3777ac4c2391"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a118e27dd5ea9dbd5024101c12f7afa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#a8a118e27dd5ea9dbd5024101c12f7afa">produceAnyData</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_i_data.html">IData</a> &gt; data) override</td></tr>
 <tr class="memdesc:a8a118e27dd5ea9dbd5024101c12f7afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Produces any data into the queue.  <a href="#a8a118e27dd5ea9dbd5024101c12f7afa">More...</a><br /></td></tr>
 <tr class="separator:a8a118e27dd5ea9dbd5024101c12f7afa"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -115,25 +115,13 @@ var NAVTREE =
     ] ],
     [ "Tutorial 3B", "tutorial3b.html", [
       [ "Objectives ", "tutorial3b.html#tut3b-objectives", null ],
-      [ "API Used ", "tutorial3b.html#tut3b-api-used", null ],
-      [ "Implementation ", "tutorial3b.html#tut3b-implementation", [
-        [ "Data", "tutorial3b.html#tut3b-data", null ],
-        [ "Tasks", "tutorial3b.html#tut3b-tasks", [
-          [ "LoadMatrixTask", "tutorial3b.html#tut3b-load-matrix-task", null ],
-          [ "MatMulBlkTask", "tutorial3b.html#tut3b-matmul-task", null ],
-          [ "MatMulAccumTask", "tutorial3b.html#tut3b-matmul-accum-task", null ],
-          [ "MatMulOutputTask", "tutorial3b.html#tut3b-matmul-output-task", null ],
-          [ "Notes", "tutorial3b.html#tut3b-task-notes", null ]
+      [ "API Used ", "tutorial3b.html#tut3b-api-used", [
+        [ "Implementation, Data, Tasks, and Dependencies", "tutorial3b.html#tut3b-imp-data-tasks-dep", null ],
+        [ "Debugging and Profiling htgs::TaskGraphConf", "tutorial3b.html#tut3b-debug-taskgraph", [
+          [ "Visualizing Before Executing a htgs::TaskGraphConf", "tutorial3b.html#tut3b-vis-before", null ],
+          [ "Visualizing After Executing a htgs::TaskGraphConf", "tutorial3b.html#tut3b-vis-after", null ]
         ] ],
-        [ "Managing Dependencies with the Bookkeeper and IRule", "tutorial3b.html#tut3b-bookkeeper", [
-          [ "MatMulDistributeRule", "tutorial3b.html#tut3b-distr-rule", null ],
-          [ "MatMulLoadRule", "tutorial3b.html#tut3b-load-rule", null ],
-          [ "MatMulAccumulateRule", "tutorial3b.html#tut3b-acc-rule", null ],
-          [ "MatMulOutputRule", "tutorial3b.html#tut3b-output-rule", null ],
-          [ "Notes", "tutorial3b.html#tut3b-bookkeeper-notes", null ]
-        ] ],
-        [ "Creating and Executing the htgs::TaskGraphConf", "tutorial3b.html#tut3b-create-and-execute-taskgraph", [
-          [ "Main function (Matrix Multiplication)", "tutorial3b.html#tut3b-main-function", null ],
+        [ "Improving Utilization of Matrix Multiplication in HTGS", "tutorial3b.html#tut3b-optimize", [
           [ "Notes", "tutorial3b.html#tut3b-taskgraph-notes", null ]
         ] ]
       ] ],
@@ -166,9 +154,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classhtgs_1_1_any_task_graph_conf.html#af036e1aa6ec1fa431d2428c30d896653",
-"classhtgs_1_1_memory_data.html#a31811d95506bd1e1b4f9f8f4d7323eb7",
-"classhtgs_1_1_task_manager.html#af3aedc8010045d4936f549f377aa1dd9"
+"classhtgs_1_1_any_task_graph_conf.html#ae86445492fc9421c0c5132bd608e2460",
+"classhtgs_1_1_i_task.html#af5eb7fcf9b6c14e3fe5c6b23b7c0cee0",
+"classhtgs_1_1_task_manager.html#a86523b19da2edf80ee678ff722407468"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
