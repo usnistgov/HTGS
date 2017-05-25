@@ -24,6 +24,10 @@
 #include <htgs/core/memory/CudaMemoryManager.hpp>
 #endif
 
+#ifdef WS_PROFILE
+#include "../../../WebSocketProfiler.hpp"
+#endif
+
 namespace htgs {
 
 /**
@@ -138,12 +142,35 @@ class TaskGraphConf : public AnyTaskGraphConf {
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
     this->input->incrementInputTaskCount();
-    graphConsumerTaskManager = nullptr;
-    graphProducerTaskManagers = new std::list<AnyTaskManager *>();
+    this->graphConsumerTaskManager = nullptr;
+    this->graphProducerTaskManagers = new std::list<AnyTaskManager *>();
 
-    edges = new std::list<EdgeDescriptor *>();
+    this->edges = new std::list<EdgeDescriptor *>();
 
-    taskConnectorCommunicator = new TaskGraphCommunicator(nullptr, this->getAddress());
+    this->taskConnectorCommunicator = new TaskGraphCommunicator(nullptr, this->getAddress());
+
+#ifdef WS_PROFILE
+    // Create web socket profiler task
+    WebSocketProfiler *profileTask = new WebSocketProfiler();
+
+    // Create input connector and task manager
+    std::shared_ptr<Connector<ProfileData>> wsConnector(new Connector<ProfileData>());
+    this->wsProfileTaskManager= new TaskManager<ProfileData, VoidData>(profileTask,
+                                                                       profileTask->getNumThreads(),
+                                                                       profileTask->isStartTask(),
+                                                                       profileTask->isPoll(),
+                                                                       profileTask->getMicroTimeoutTime(),
+                                                                       0,
+                                                                       1,
+                                                                       "0");
+
+    this->wsProfileTaskManager->setInputConnector(wsConnector);
+
+    // Add task to communicator
+    TaskNameConnectorPair pair("0:" + this->wsProfileTaskManager->getName(), wsConnector);
+    this->taskConnectorCommunicator->addTaskNameConnectorPair(pair);
+#endif
+
   }
 
   /**
@@ -156,17 +183,28 @@ class TaskGraphConf : public AnyTaskGraphConf {
   TaskGraphConf(size_t pipelineId,
                 size_t numPipelines,
                 std::string baseAddress,
-                TaskGraphCommunicator *parentCommunicator) : AnyTaskGraphConf(pipelineId, numPipelines, baseAddress) {
+                TaskGraphCommunicator *parentCommunicator
+#ifdef WS_PROFILE
+                , TaskManager<ProfileData, VoidData> *wsProfileTaskManager
+#endif
+  ) : AnyTaskGraphConf(pipelineId, numPipelines, baseAddress) {
     this->input = std::shared_ptr<Connector<T>>(new Connector<T>());
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
     this->input->incrementInputTaskCount();
+
     graphConsumerTaskManager = nullptr;
     graphProducerTaskManagers = new std::list<AnyTaskManager *>();
 
     edges = new std::list<EdgeDescriptor *>();
 
     taskConnectorCommunicator = new TaskGraphCommunicator(parentCommunicator, this->getAddress());
+
+#ifdef WS_PROFILE
+    this->wsProfileTaskManager = wsProfileTaskManager;
+    this->wsProfileThread = nullptr;
+#endif
+
   }
 
   /**
@@ -181,6 +219,15 @@ class TaskGraphConf : public AnyTaskGraphConf {
     }
     delete edges;
     edges = nullptr;
+
+#ifdef WS_PROFILE
+    if (wsProfileThread != nullptr)
+    {
+      this->wsProfileTaskManager->getInputConnector()->producerFinished();
+      this->wsProfileTaskManager->getInputConnector()->wakeupConsumer();
+      this->wsProfileThread->join();
+    }
+#endif
 
     if (taskConnectorCommunicator != nullptr)
       taskConnectorCommunicator->terminateGracefully();
@@ -223,7 +270,11 @@ class TaskGraphConf : public AnyTaskGraphConf {
                             std::shared_ptr<Connector<U>> output,
                             std::string baseAddress,
                             TaskGraphCommunicator *parentCommunicator) {
+#ifdef WS_PROFILE
+    TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator, this->wsProfileTaskManager);
+#else
     TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator);
+#endif
 
     // Copy the tasks to form lookup between old ITasks and new copies
     graphCopy->copyTasks(this->getTaskManagers());
@@ -442,6 +493,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
   TaskGraphCommunicator *getTaskGraphCommunicator() const { return this->taskConnectorCommunicator; }
 
   void updateCommunicator() override {
+
     auto taskNameConnectorMap = this->getTaskConnectorNameMap();
 
     // Send the map to the taskGraphCommunicator
@@ -450,6 +502,18 @@ class TaskGraphConf : public AnyTaskGraphConf {
     for (auto t : *this->getTaskManagers()) {
       t->setTaskGraphCommunicator(this->taskConnectorCommunicator);
     }
+
+#ifdef WS_PROFILE
+    if (this->getAddress() == "0") {
+      // Create thread
+      std::shared_ptr<std::atomic_size_t>
+          atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(1));
+      TaskManagerThread *runtimeThread = new TaskManagerThread(0, this->wsProfileTaskManager, atomicNumThreads);
+      this->wsProfileThread = new std::thread(&TaskManagerThread::run, runtimeThread);
+    }
+    usleep(300000);
+#endif
+
   }
 
   /**
@@ -679,6 +743,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
     DEBUG("-----------------------------------------------");
   }
 
+#ifdef WS_PROFILE
+  void sendProfileData(std::shared_ptr<ProfileData> profileData)
+  {
+    this->wsProfileTaskManager->getInputConnector()->produceAnyData(profileData);
+  }
+#endif
+
  private:
 
   //! @cond Doxygen_Suppress
@@ -726,6 +797,12 @@ class TaskGraphConf : public AnyTaskGraphConf {
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph
 
   TaskGraphCommunicator *taskConnectorCommunicator; //!< The task graph communicator for the task graph.
+
+#ifdef WS_PROFILE
+  TaskManager<ProfileData, VoidData> *wsProfileTaskManager; // !< The task manager for the web socket profiler
+  std::thread *wsProfileThread; // !< The thread for the web socket profiler task manager
+#endif
+
 };
 }
 

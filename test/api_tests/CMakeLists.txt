@@ -7,6 +7,11 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 #add_definitions(-DDEBUG_FLAG)
+add_definitions(-DPROFILE)
+include_directories(/home/tjb3/local/include)
+link_directories(/home/tjb3/local/lib)
+
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 set(SIMPLE_SRC
@@ -84,6 +89,7 @@ set(SIMPLECUDA_SRC
 	target_link_libraries(runAPITests ${CUDA_LIBRARIES})
 	target_link_libraries(runAPITests cuda)
 	target_compile_definitions(runAPITests PUBLIC -DUSE_CUDA)
+
 else()
 	add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} api_check.cpp)
 endif(CUDA_FOUND)

@@ -118,17 +118,16 @@ class TaskGraphProfiler {
                 + tFun->outTypeName()) : "");
         std::string threadLabel =
             (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(tFun->getNumThreads())));
-        ret += dotId + "[label=\"" + tFun->getDotLabelName() +
-            (tFun->debugDotNode() != "" ? ("\n" + tFun->debugDotNode() + "\n") : "") +
-            threadLabel + inOutLabel + "\n" +
-            tProfile->genDot(flags) +
-            (tFun->getDotCustomProfile() != "" ? ("\n" + tFun->getDotCustomProfile() + "\n") : "") +
-            "\",shape=" + tFun->getDotShape() +
-            ",style=filled" +
-            ",fillcolor=" + tFun->getDotFillColor()
-            + (useColorMap ? ",penwidth=5,color=\"" + colorMap->at(dotId) + "\"" : ", color="
-                + tFun->getDotShapeColor())
-            + ",width=.2,height=.2];\n";
+        ret += dotId + "[label=\"" + tFun->getDotLabelName();
+        ret += (tFun->debugDotNode() != "" ? ("\n" + tFun->debugDotNode() + "\n") : "");
+        ret += threadLabel + inOutLabel + "\n";
+        ret += tProfile->genDot(flags);
+        ret += (tFun->getDotCustomProfile() != "" ? ("\n" + tFun->getDotCustomProfile() + "\n") : "");
+        ret += "\",shape=" + tFun->getDotShape();
+        ret += ",style=filled";
+        ret += ",fillcolor=" + tFun->getDotFillColor();
+        ret +=(useColorMap ? ",penwidth=5,color=\"" + colorMap->at(dotId) + "\"" : ", color=" + tFun->getDotShapeColor());
+        ret += ",width=.2,height=.2];\n";
       }
     }
 

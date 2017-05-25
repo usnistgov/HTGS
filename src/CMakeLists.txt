@@ -3,6 +3,9 @@
 # NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 # You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../cmake-modules")
+
+
 install(DIRECTORY htgs
         DESTINATION include
         COMPONENT headers)
@@ -11,15 +14,32 @@ install(DIRECTORY htgs
 
 if (BUILD_MAIN)
 
-    add_definitions(-DPROFILE)
+#    add_definitions(-DPROFILE)
+#    add_definitions(-DWS_PROFILE)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -Wall -Wextra -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -Wall -Wextra -Wno-unused-parameter")
 
-file(GLOB_RECURSE INC_ALL "*.hpp" "*.h")
-find_package(Threads REQUIRED)
-link_libraries(${CMAKE_THREAD_LIBS_INIT})
-include_directories(".")
+    file(GLOB_RECURSE INC_ALL "*.hpp" "*.h")
+    find_package(Threads REQUIRED)
+    find_package(HTGSVisualizer REQUIRED)
 
-add_executable(main "main.cpp" ${INC_ALL})
+    link_libraries(${CMAKE_THREAD_LIBS_INIT})
+    include_directories(".")
+
+
+    include_directories(${LIBHTGS_VISUALIZER_INCLUDE_DIRS})
+
+    add_definitions(${HTGS_VISUALIZER_DEFINITIONS})
+#    link_directories(/home/tjb3/local/lib)
+
+    add_executable(main "main.cpp" ${INC_ALL})
+
+    target_link_libraries(main ${LIBHTGS_VISUALIZER_LIBRARIES})
+
+#    target_link_libraries(main htgsVisualizer)
+#    target_link_libraries(main uWS)
+#    target_link_libraries(main z)
+#    target_link_libraries(main ssl)
+#    target_link_libraries(main uv)
 
 endif(BUILD_MAIN)

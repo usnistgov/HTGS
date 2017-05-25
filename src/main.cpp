@@ -135,7 +135,7 @@ int main()
 
   int NUM_DATA = 100;
   bool useBK = true;
-  int nVertices = 5;
+  int nVertices = 3;
   TestData *testData;
 
 

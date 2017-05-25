@@ -293,6 +293,15 @@ class TaskGraphCommunicator {
   }
 
   /**
+   * Adds a single task name connector pair to the communicator.
+   * @param pair the task name and connector pair
+   */
+  void addTaskNameConnectorPair(std::pair<std::string, std::shared_ptr<AnyConnector>> pair)
+  {
+    taskNameConnectorMap->insert(pair);
+  }
+
+  /**
    * Adds the mapping between a task's address and its name to the input connector for that task.
    *
    * This will add all of these mappings to this task graph communicator. After which the parent
