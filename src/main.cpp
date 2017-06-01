@@ -90,7 +90,8 @@ class TestTask : public htgs::ITask<TestData, TestData> {
 
   std::string debugDotNode() override {
     std::stringstream ss;
-    ss << "Addr: " << this->getAddress();
+    ss << "Addr: " << this->getAddress() << std::endl;
+    ss << "Phys Addr: " << this;
     return ss.str();
   }
 
@@ -268,8 +269,8 @@ int main()
   std::cout << "Finished processing " << count << " elements" << std::endl;
 
   runtime->waitForRuntime();
-
-  execGraph->writeDotToFile("test.dot", DOTGEN_COLOR_MAX_Q_SZ | DOTGEN_COLOR_WAIT_TIME | DOTGEN_COLOR_COMP_TIME);
+  execGraph->writeDotToFile("test.dot", DOTGEN_FLAG_SHOW_ALL_THREADING);
+  execGraph->writeDotToFile("test.dot", DOTGEN_COLOR_MAX_Q_SZ | DOTGEN_COLOR_WAIT_TIME | DOTGEN_COLOR_COMP_TIME | DOTGEN_FLAG_SHOW_ALL_THREADING);
 
 //  execGraph->printProfile();
 

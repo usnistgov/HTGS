@@ -72,6 +72,24 @@ class RuleEdge : public EdgeDescriptor {
 
     consumerTaskManager->setInputConnector(connector);
     bookkeeper->addRuleManager(ruleManager);
+
+#ifdef WS_PROFILE
+    // Add nodes
+    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(bookkeeper, "Bookkeeper"));
+    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(consumer, consumer->getName()));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(connector.get(), std::to_string(connector->getProducerCount())));
+
+    graph->sendProfileData(producerData);
+    graph->sendProfileData(consumerData);
+    graph->sendProfileData(connectorData);
+
+    std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(bookkeeper, connector.get()));
+    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(connector.get(), consumer));
+
+    graph->sendProfileData(producerConnectorData);
+    graph->sendProfileData(connectorConsumerData);
+#endif
+
   }
 
   EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {

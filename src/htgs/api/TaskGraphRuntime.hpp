@@ -192,7 +192,7 @@ class TaskGraphRuntime {
         std::cerr << task->getName() << "Has no threads specified." << std::endl;
       }
     }
-
+    // TODO: Send graph construction
     for (AnyTaskManager *newVertex : newVertices) {
       graph->addTaskManager(newVertex);
     }

@@ -568,6 +568,20 @@ class TaskGraphConf : public AnyTaskGraphConf {
   void setGraphConsumerTask(ITask<T, W> *task) {
     this->graphConsumerTaskManager = this->getTaskManager(task);
     this->graphConsumerTaskManager->setInputConnector(this->input);
+
+#ifdef WS_PROFILE
+    // Add nodes
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(input.get(), input->getProducerCount() + " Graph Input"));
+    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(task, task->getName()));
+
+    this->sendProfileData(consumerData);
+    this->sendProfileData(connectorData);
+
+    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(input.get(), task));
+
+    this->sendProfileData(connectorConsumerData);
+#endif
+
   }
 
   /**
@@ -584,6 +598,20 @@ class TaskGraphConf : public AnyTaskGraphConf {
     taskManager->setOutputConnector(this->output);
 
     this->graphProducerTaskManagers->push_back(taskManager);
+
+#ifdef WS_PROFILE
+    // Add nodes
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
+    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
+
+    this->sendProfileData(producerData);
+    this->sendProfileData(connectorData);
+
+    std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
+
+    this->sendProfileData(connectorProducerData);
+#endif
+
   }
 
   /**
@@ -744,7 +772,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
   }
 
 #ifdef WS_PROFILE
-  void sendProfileData(std::shared_ptr<ProfileData> profileData)
+  void sendProfileData(std::shared_ptr<ProfileData> profileData) override
   {
     this->wsProfileTaskManager->getInputConnector()->produceAnyData(profileData);
   }
@@ -762,6 +790,21 @@ class TaskGraphConf : public AnyTaskGraphConf {
       this->graphConsumerTaskManager = copy;
       this->graphConsumerTaskManager->setInputConnector(this->input);
       this->addTaskManager(this->graphConsumerTaskManager);
+
+#ifdef WS_PROFILE
+      // TODO: Ensure this is doable with visualizer, this is an update edge and remove node type task
+      // Add nodes
+//      std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
+//      std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
+//
+//      this->sendProfileData(producerData);
+//      this->sendProfileData(connectorData);
+//
+//      std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
+//
+//      this->sendProfileData(connectorProducerData);
+#endif
+
     }
   }
 
@@ -775,6 +818,20 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
         this->output->incrementInputTaskCount();
         this->addTaskManager(copy);
+
+#ifdef WS_PROFILE
+        // TODO: Ensure this is doable with visualizer, this is an update edge and remove node type task
+        // Add nodes
+//      std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
+//      std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
+//
+//      this->sendProfileData(producerData);
+//      this->sendProfileData(connectorData);
+//
+//      std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
+//
+//      this->sendProfileData(connectorProducerData);
+#endif
       }
     }
   }

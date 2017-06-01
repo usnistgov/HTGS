@@ -234,6 +234,7 @@ class TaskGraphCommunicator {
       // If all the graphs have produced their updates, then begin the communication threads
       if (numGraphsReceived == numGraphsSpawned) {
         this->rootSpawnThreads();
+        // TODO: Send graph construction complete
       }
 
     } else {

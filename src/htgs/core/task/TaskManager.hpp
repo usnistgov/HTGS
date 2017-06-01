@@ -142,6 +142,7 @@ class TaskManager : public AnyTaskManager {
       DEBUG_VERBOSE(prefix() << this->getName() << " is a start task");
       this->setStartTask(false);
       auto start = std::chrono::high_resolution_clock::now();
+      // TODO: WS_PROFILE Executing task
       this->taskFunction->executeTask(nullptr);
       auto finish = std::chrono::high_resolution_clock::now();
 
@@ -156,6 +157,8 @@ class TaskManager : public AnyTaskManager {
     }
     auto start = std::chrono::high_resolution_clock::now();
 
+    // TODO: WS_PROFILE waiting for data
+
     if (this->isPoll())
       data = this->inputConnector->pollConsumeData(this->getTimeout());
     else
@@ -167,8 +170,9 @@ class TaskManager : public AnyTaskManager {
 
     DEBUG_VERBOSE(prefix() << this->getName() << " received data: " << data << " from " << inputConnector);
 
-    if (data != nullptr) {
+    if (data != nullptr || this->isPoll()) {
       start = std::chrono::high_resolution_clock::now();
+      // TODO: WS_PROFILE Executing
       this->taskFunction->executeTask(data);
       finish = std::chrono::high_resolution_clock::now();
 
@@ -239,9 +243,10 @@ class TaskManager : public AnyTaskManager {
     // If there is a runtime thread, then begin termination
     if (this->runtimeThread != nullptr) {
       this->runtimeThread->terminate();
-
+      // TODO: Task is terminating
       // If this is the last thread for this task then close the output
       if (this->runtimeThread->decrementAndCheckNumThreadsRemaining()) {
+        // TODO: Update output connector name (reduced by 1)
         if (this->getOutputConnector() != nullptr) {
           this->getOutputConnector()->producerFinished();
 
@@ -256,6 +261,7 @@ class TaskManager : public AnyTaskManager {
         for (auto nameManagerPair : *memManagerConnectorMap) {
           DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
 
+          // TODO: Update Memory manager and connector
           std::shared_ptr<AnyConnector> connector = nameManagerPair.second;
           connector->producerFinished();
 

@@ -15,6 +15,9 @@
 #include "EdgeDescriptor.hpp"
 #include <htgs/api/ITask.hpp>
 #include <htgs/core/graph/AnyTaskGraphConf.hpp>
+#ifdef WS_PROFILE
+#include <htgs/core/graph/profile/CustomProfile.hpp>
+#endif
 
 namespace htgs {
 
@@ -60,6 +63,22 @@ class ProducerConsumerEdge : public EdgeDescriptor {
 
     consumerTaskManager->setInputConnector(connector);
     producerTaskManager->setOutputConnector(connector);
+#ifdef WS_PROFILE
+    // Add nodes
+    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(producer, producer->getName()));
+    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(consumer, consumer->getName()));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(connector.get(), std::to_string(connector->getProducerCount())));
+
+    graph->sendProfileData(producerData);
+    graph->sendProfileData(consumerData);
+    graph->sendProfileData(connectorData);
+
+    std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(producer, connector.get()));
+    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(connector.get(), consumer));
+
+    graph->sendProfileData(producerConnectorData);
+    graph->sendProfileData(connectorConsumerData);
+#endif
   }
 
   EdgeDescriptor *copy(AnyTaskGraphConf *graph) override {

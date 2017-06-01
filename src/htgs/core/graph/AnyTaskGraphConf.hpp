@@ -25,6 +25,9 @@
 #include <htgs/core/task/AnyITask.hpp>
 #include <htgs/types/Types.hpp>
 #include <htgs/core/graph/profile/TaskManagerProfile.hpp>
+#ifdef WS_PROFILE
+#include <htgs/core/graph/profile/ProfileData.hpp>
+#endif
 
 namespace htgs {
 
@@ -147,6 +150,16 @@ class AnyTaskGraphConf {
    * @return
    */
   virtual TaskGraphCommunicator *getTaskGraphCommunicator() const = 0;
+
+#ifdef WS_PROFILE
+  /**
+   * Virtual function to send profile data directly to the WebSocketProfiler
+   * @param profileData the profiling data
+   * @note Must define WS_PROFILE directive
+   */
+  virtual void sendProfileData(std::shared_ptr<ProfileData> profileData) = 0;
+#endif
+
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
