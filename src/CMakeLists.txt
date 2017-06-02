@@ -21,7 +21,7 @@ if (BUILD_MAIN)
 
     file(GLOB_RECURSE INC_ALL "*.hpp" "*.h")
     find_package(Threads REQUIRED)
-    #find_package(HTGSVisualizer QUIET)
+    find_package(HTGSVisualizer QUIET)
 
     link_libraries(${CMAKE_THREAD_LIBS_INIT})
     include_directories(".")

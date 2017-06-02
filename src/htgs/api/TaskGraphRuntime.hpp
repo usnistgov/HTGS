@@ -157,6 +157,8 @@ class TaskGraphRuntime {
     // Initialize graph and setup task graph taskGraphCommunicator
     this->graph->initialize();
 
+    usleep(900000);
+
     std::list<AnyTaskManager *> *vertices = this->graph->getTaskManagers();
     std::list<AnyTaskManager *> newVertices;
     DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");

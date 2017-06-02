@@ -18,7 +18,7 @@ find_package (CUDA QUIET)
 
 option(BUILD_DOXYGEN "Creates the doxygen documentation of the API" OFF)
 option(RUN_GTEST "Downloads google unit test API and runs google test scripts to test HTGS core and api" OFF)
-option(BUILD_MAIN "Compiles main function for testing changes to API" ON)
+option(BUILD_MAIN "Compiles main function for testing changes to API" OFF)
 
 if (RUN_GTEST)
     # Download and unpack googletest at configure time

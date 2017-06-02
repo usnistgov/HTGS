@@ -14,6 +14,7 @@
 #define HTGS_MEMORYEDGE_HPP
 
 #include <htgs/core/memory/MemoryManager.hpp>
+#include <htgs/core/graph/profile/CustomProfile.hpp>
 #include "EdgeDescriptor.hpp"
 
 namespace htgs {
@@ -77,14 +78,14 @@ class MemoryEdge : public EdgeDescriptor {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> memoryData(new CreateNodeProfile(memoryManager, memoryManager->getName()));
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(getMemoryConnector.get(), std::to_string(getMemoryConnector->getProducerCount())));
+    std::shared_ptr<ProfileData> memoryData(new CreateNodeProfile(memoryManager, nullptr, "MemoryManager"));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(getMemoryConnector.get(), nullptr, std::to_string(getMemoryConnector->getProducerCount())));
 
     graph->sendProfileData(memoryData);
     graph->sendProfileData(connectorData);
 
-    std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(memoryManager, getMemoryConnector.get()));
-    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(getMemoryConnector.get(), getMemoryTask));
+    std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(memoryManager, getMemoryConnector.get(), memoryEdgeName, nullptr));
+    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(getMemoryConnector.get(), getMemoryTask, memoryManager->inTypeName(), nullptr));
 
     graph->sendProfileData(producerConnectorData);
     graph->sendProfileData(connectorConsumerData);

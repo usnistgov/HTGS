@@ -25,7 +25,8 @@
 #endif
 
 #ifdef WS_PROFILE
-#include "../../../WebSocketProfiler.hpp"
+#include <htgs/core/graph/profile/CustomProfile.hpp>
+#include <htgs/core/graph/profile/WebSocketProfiler.hpp>
 #endif
 
 namespace htgs {
@@ -505,6 +506,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 #ifdef WS_PROFILE
     if (this->getAddress() == "0") {
+      std::cout << "Launching threaed" << std::endl;
       // Create thread
       std::shared_ptr<std::atomic_size_t>
           atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(1));
@@ -571,13 +573,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(input.get(), input->getProducerCount() + " Graph Input"));
-    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(task, task->getName()));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(input.get(), nullptr, input->getProducerCount() + " Graph Input"));
+    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(task, nullptr, task->getName()));
 
     this->sendProfileData(consumerData);
     this->sendProfileData(connectorData);
 
-    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(input.get(), task));
+    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(input.get(), task, "", nullptr));
 
     this->sendProfileData(connectorConsumerData);
 #endif
@@ -601,13 +603,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
-    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), nullptr, output->getProducerCount() + " Graph Output"));
+    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, nullptr, task->getName()));
 
     this->sendProfileData(producerData);
     this->sendProfileData(connectorData);
 
-    std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
+    std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task, "", nullptr));
 
     this->sendProfileData(connectorProducerData);
 #endif
