@@ -65,9 +65,9 @@ class ProducerConsumerEdge : public EdgeDescriptor {
     producerTaskManager->setOutputConnector(connector);
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(producer, nullptr, producer->getName()));
-    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(consumer, nullptr, consumer->getName()));
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(connector.get(), nullptr, std::to_string(connector->getProducerCount())));
+    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(producer, graph, producer->getName()));
+    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(consumer, graph, consumer->getName()));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(connector.get(), graph, std::to_string(connector->getProducerCount())));
 
     graph->sendProfileData(producerData);
     graph->sendProfileData(consumerData);

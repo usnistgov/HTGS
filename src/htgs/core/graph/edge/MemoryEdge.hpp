@@ -78,8 +78,8 @@ class MemoryEdge : public EdgeDescriptor {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> memoryData(new CreateNodeProfile(memoryManager, nullptr, "MemoryManager"));
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(getMemoryConnector.get(), nullptr, std::to_string(getMemoryConnector->getProducerCount())));
+    std::shared_ptr<ProfileData> memoryData(new CreateNodeProfile(memoryManager, graph, "MemoryManager"));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(getMemoryConnector.get(), graph, std::to_string(getMemoryConnector->getProducerCount())));
 
     graph->sendProfileData(memoryData);
     graph->sendProfileData(connectorData);

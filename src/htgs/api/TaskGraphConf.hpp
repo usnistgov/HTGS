@@ -573,8 +573,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(input.get(), nullptr, input->getProducerCount() + " Graph Input"));
-    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(task, nullptr, task->getName()));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(input.get(), this, input->getProducerCount() + " Graph Input"));
+    std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(task, this, task->getName()));
 
     this->sendProfileData(consumerData);
     this->sendProfileData(connectorData);
@@ -603,13 +603,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), nullptr, output->getProducerCount() + " Graph Output"));
-    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, nullptr, task->getName()));
+    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), this, output->getProducerCount() + " Graph Output"));
+    std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, this, task->getName()));
 
     this->sendProfileData(producerData);
     this->sendProfileData(connectorData);
 
-    std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task, "", nullptr));
+    std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(task, output.get(), "", nullptr));
 
     this->sendProfileData(connectorProducerData);
 #endif
