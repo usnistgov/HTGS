@@ -134,6 +134,7 @@ class TaskManager : public AnyTaskManager {
   }
 
   void executeTask() override {
+
     std::shared_ptr<T> data = nullptr;
 
     DEBUG_VERBOSE(prefix() << "Running task: " << this->getName());
@@ -142,8 +143,16 @@ class TaskManager : public AnyTaskManager {
       DEBUG_VERBOSE(prefix() << this->getName() << " is a start task");
       this->setStartTask(false);
       auto start = std::chrono::high_resolution_clock::now();
-      // TODO: WS_PROFILE Executing task
+
+#ifdef WS_PROFILE
+      this->sendWSProfileUpdate(StatusCode::EXECUTE);
+#endif
+
       this->taskFunction->executeTask(nullptr);
+
+#ifdef WS_PROFILE
+      this->sendWSProfileUpdate(StatusCode::WAITING);
+#endif
       auto finish = std::chrono::high_resolution_clock::now();
 
       this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
@@ -157,8 +166,9 @@ class TaskManager : public AnyTaskManager {
     }
     auto start = std::chrono::high_resolution_clock::now();
 
-    // TODO: WS_PROFILE waiting for data
-
+#ifdef WS_PROFILE
+    this->sendWSProfileUpdate(StatusCode::WAITING);
+#endif
     if (this->isPoll())
       data = this->inputConnector->pollConsumeData(this->getTimeout());
     else
@@ -172,7 +182,9 @@ class TaskManager : public AnyTaskManager {
 
     if (data != nullptr || this->isPoll()) {
       start = std::chrono::high_resolution_clock::now();
-      // TODO: WS_PROFILE Executing
+#ifdef WS_PROFILE
+      this->sendWSProfileUpdate(StatusCode::EXECUTE);
+#endif
       this->taskFunction->executeTask(data);
       finish = std::chrono::high_resolution_clock::now();
 
@@ -243,10 +255,18 @@ class TaskManager : public AnyTaskManager {
     // If there is a runtime thread, then begin termination
     if (this->runtimeThread != nullptr) {
       this->runtimeThread->terminate();
-      // TODO: Task is terminating
+
+#ifdef WS_PROFILE
+      this->sendWSProfileUpdate(StatusCode::SHUTDOWN);
+#endif
+
       // If this is the last thread for this task then close the output
       if (this->runtimeThread->decrementAndCheckNumThreadsRemaining()) {
-        // TODO: Update output connector name (reduced by 1)
+
+#ifdef WS_PROFILE
+        // Update output connector, this task is no longer producing for it
+        this->sendWSProfileUpdate(this->getOutputConnector().get(), StatusCode::DECREMENT);
+#endif
         if (this->getOutputConnector() != nullptr) {
           this->getOutputConnector()->producerFinished();
 
@@ -261,8 +281,13 @@ class TaskManager : public AnyTaskManager {
         for (auto nameManagerPair : *memManagerConnectorMap) {
           DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
 
-          // TODO: Update Memory manager and connector
+
           std::shared_ptr<AnyConnector> connector = nameManagerPair.second;
+#ifdef WS_PROFILE
+          // TODO: This might not be necessary
+          // Update memory manager connector, this task is no longer producing for it
+          this->sendWSProfileUpdate(connector.get(), StatusCode::DECREMENT);
+#endif
           connector->producerFinished();
 
           if (connector->isInputTerminated())
@@ -279,6 +304,26 @@ class TaskManager : public AnyTaskManager {
       }
     }
   }
+
+#ifdef WS_PROFILE
+  void sendWSProfileUpdate(StatusCode code)
+  {
+    if (this->getName() == "WebSocketProfiler")
+      return;
+    std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(this->getTaskFunction(), code));
+    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
+    this->sendDataPacket(dataPacket);
+  }
+
+  void sendWSProfileUpdate(void * addr, StatusCode code)
+  {
+    if (this->getName() == "WebSocketProfiler")
+      return;
+    std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(addr, code));
+    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
+    this->sendDataPacket(dataPacket);
+  }
+#endif
 
   typedef AnyTaskManager super;
   //! @endcond

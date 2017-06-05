@@ -200,6 +200,9 @@ class ExecutionPipeline : public ITask<T, U> {
           *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(),
                                          this->getTaskGraphCommunicator());
 
+#ifdef WS_PROFILE
+      // TODO: Update parent for graphCopy to point to the execution pipeline
+#endif
       DEBUG("Setting up input and output of pipeline " << i);
 
       for (std::shared_ptr<IRule<T, T>> rule : *this->inputRules) {

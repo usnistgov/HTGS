@@ -77,7 +77,7 @@ class RuleEdge : public EdgeDescriptor {
     // Add nodes
     std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(bookkeeper, graph, "Bookkeeper"));
     std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(consumer, graph, consumer->getName()));
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(connector.get(), graph, std::to_string(connector->getProducerCount())));
+    std::shared_ptr<ProfileData> connectorData(new CreateConnectorProfile(connector.get(), graph, connector->getProducerCount(), ""));
 
     graph->sendProfileData(producerData);
     graph->sendProfileData(consumerData);

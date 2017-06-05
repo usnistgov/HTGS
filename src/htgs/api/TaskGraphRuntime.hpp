@@ -159,6 +159,7 @@ class TaskGraphRuntime {
 #ifdef WS_PROFILE
     usleep(900000);
 #endif
+
     std::list<AnyTaskManager *> *vertices = this->graph->getTaskManagers();
     std::list<AnyTaskManager *> newVertices;
     DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
@@ -175,6 +176,18 @@ class TaskGraphRuntime {
 
         for (size_t i = 1; i < numThreads; i++) {
           AnyTaskManager *taskCopy = task->copy(true);
+
+#ifdef WS_PROFILE
+          // Generate . . . and send data . . .
+          std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(taskCopy->getTaskFunction(), graph, taskCopy->getName()));
+          graph->sendProfileData(producerData);
+
+          std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(taskCopy->getInputConnector().get(), taskCopy->getTaskFunction(), "", nullptr));
+          std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(taskCopy->getTaskFunction(), taskCopy->getOutputConnector().get(), "", nullptr));
+
+          graph->sendProfileData(connectorConsumerData);
+          graph->sendProfileData(producerConnectorData);
+#endif
 
           // Add communicator to task copy to enable communication
           taskCopy->setTaskGraphCommunicator(graph->getTaskGraphCommunicator());
@@ -194,10 +207,19 @@ class TaskGraphRuntime {
         std::cerr << task->getName() << "Has no threads specified." << std::endl;
       }
     }
-    // TODO: Send graph construction
+
+
+#ifdef WS_PROFILE
+    usleep(100000);
+
+    std::shared_ptr<ProfileData> graphCreationComplete(new GraphCompleteProfile(graph));
+    graph->sendProfileData(graphCreationComplete);
+#endif
+
     for (AnyTaskManager *newVertex : newVertices) {
       graph->addTaskManager(newVertex);
     }
+
 
     this->executed = true;
   }

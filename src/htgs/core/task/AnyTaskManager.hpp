@@ -21,6 +21,11 @@
 #include <htgs/core/graph/profile/TaskManagerProfile.hpp>
 #include "AnyITask.hpp"
 
+#ifdef WS_PROFILE
+#include <htgs/core/graph/profile/ProfileData.hpp>
+#include <htgs/core/graph/profile/CustomProfile.hpp>
+#endif
+
 namespace htgs {
 class TaskManagerThread;
 
@@ -204,6 +209,15 @@ class AnyTaskManager {
   void setTaskGraphCommunicator(TaskGraphCommunicator *communicator) {
     this->taskGraphCommunicator = communicator;
     this->getTaskFunction()->setTaskGraphCommunicator(this->taskGraphCommunicator);
+  }
+
+  /**
+   * Sends data packet along task graph communicator
+   * @param packet the data packet to communicate
+   */
+  void sendDataPacket(std::shared_ptr<DataPacket> packet)
+  {
+    this->taskGraphCommunicator->produceDataPacket(packet);
   }
 
   /**

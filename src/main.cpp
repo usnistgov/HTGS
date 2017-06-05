@@ -30,6 +30,7 @@ class AddTask : public htgs::ITask<InputData, OutputData>
  public:
   virtual AddTask *copy() { return new AddTask(); }
   virtual void executeTask(std::shared_ptr<InputData> data) {
+    usleep(1000);
     int sum = data->getX() + data->getY();
     this->addResult(new OutputData(sum));
   }
@@ -38,18 +39,37 @@ class AddTask : public htgs::ITask<InputData, OutputData>
   }
 };
 
+class SquareResult : public htgs::ITask<OutputData, OutputData>
+{
+ public:
+  SquareResult(size_t numThreads) : ITask(numThreads) {}
+  virtual SquareResult *copy() { return new SquareResult(this->getNumThreads()); }
+  virtual void executeTask(std::shared_ptr<OutputData> data) {
+    usleep(50000);
+    int result = data->getResult() * data->getResult();
+    this->addResult(new OutputData(result));
+  }
+  std::string getName() override {
+    return "X^2 = Z";
+  }
+};
+
 int main() {
   AddTask *addTask = new AddTask();
+  SquareResult *addTask2 = new SquareResult(3);
+  SquareResult *addTask3 = new SquareResult(10);
   auto taskGraph = new htgs::TaskGraphConf<InputData, OutputData>();
   taskGraph->setGraphConsumerTask(addTask);
-  taskGraph->addGraphProducerTask(addTask);
+  taskGraph->addEdge(addTask, addTask2);
+  taskGraph->addEdge(addTask2, addTask3);
+  taskGraph->addGraphProducerTask(addTask3);
 
   auto runtime = new htgs::TaskGraphRuntime(taskGraph);
   runtime->executeRuntime();
 
   usleep(9000000);
 
-  int numData = 10;
+  int numData = 1000;
   for (int i = 0; i < numData; i++) {
     auto inputData = new InputData(i, i);
     taskGraph->produceData(inputData);
@@ -57,12 +77,16 @@ int main() {
 
   taskGraph->finishedProducingData();
 
-  runtime->waitForRuntime();
-
   while(!taskGraph->isOutputTerminated()) {
     auto data = taskGraph->consumeData();
-    std::cout << "Result: " << data->getResult() << std::endl;
+    if (data != nullptr) {
+      std::cout << "Result: " << data->getResult() << std::endl;
+    }
   }
+
+  runtime->waitForRuntime();
+
+  usleep(900000);
 
   delete runtime;
 }

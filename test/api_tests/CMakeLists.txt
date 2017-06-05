@@ -94,7 +94,20 @@ else()
 	add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} api_check.cpp)
 endif(CUDA_FOUND)
 
+# TODO: REMOVE
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake-modules")
+
+#find_package(HTGSVisualizer REQUIRED)
+
+#include_directories(${LIBHTGS_VISUALIZER_INCLUDE_DIRS})
+#add_definitions(${HTGS_VISUALIZER_DEFINITIONS})
+
+
 target_link_libraries(runAPITests gtest gtest_main)
+
+# TODO: REMOVE THIS
+#target_link_libraries(runAPITests ${LIBHTGS_VISUALIZER_LIBRARIES})
+
 
 add_custom_target(run-test ALL DEPENDS runAPITests
 	COMMAND ${CMAKE_BINARY_DIR}/test/api_tests/runAPITests)

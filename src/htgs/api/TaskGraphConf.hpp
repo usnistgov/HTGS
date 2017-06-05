@@ -166,10 +166,19 @@ class TaskGraphConf : public AnyTaskGraphConf {
                                                                        "0");
 
     this->wsProfileTaskManager->setInputConnector(wsConnector);
+    wsConnector->incrementInputTaskCount();
 
     // Add task to communicator
     TaskNameConnectorPair pair("0:" + this->wsProfileTaskManager->getName(), wsConnector);
+
     this->taskConnectorCommunicator->addTaskNameConnectorPair(pair);
+
+    // Send root graph creation
+    std::shared_ptr<ProfileData> createGraphData(new CreateNodeProfile(this, nullptr, ""));
+    this->sendProfileData(createGraphData);
+
+    std::cout << "Creating " << this->wsProfileTaskManager->getName() << " with connector addr: " << wsConnector << std::endl;
+
 #endif
 
   }
@@ -273,6 +282,10 @@ class TaskGraphConf : public AnyTaskGraphConf {
                             TaskGraphCommunicator *parentCommunicator) {
 #ifdef WS_PROFILE
     TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator, this->wsProfileTaskManager);
+
+    // Send child graph creation
+    std::shared_ptr<ProfileData> createGraphData(new CreateNodeProfile(graphCopy, this, ""));
+    this->sendProfileData(createGraphData);
 #else
     TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator);
 #endif
@@ -555,7 +568,10 @@ class TaskGraphConf : public AnyTaskGraphConf {
     if (this->input->getProducerCount() == 0) {
       this->input->wakeupConsumer();
     }
-
+#ifdef WS_PROFILE
+    std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(this->input.get(), StatusCode::DECREMENT));
+    this->sendProfileData(updateStatus);
+#endif
   }
 
   /**
@@ -573,7 +589,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(input.get(), this, input->getProducerCount() + " Graph Input"));
+    std::shared_ptr<ProfileData> connectorData(new CreateConnectorProfile(input.get(), this, input->getProducerCount(), "Graph Input"));
     std::shared_ptr<ProfileData> consumerData(new CreateNodeProfile(task, this, task->getName()));
 
     this->sendProfileData(consumerData);
@@ -603,7 +619,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 #ifdef WS_PROFILE
     // Add nodes
-    std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), this, output->getProducerCount() + " Graph Output"));
+    std::shared_ptr<ProfileData> connectorData(new CreateConnectorProfile(output.get(), this, output->getProducerCount(), "Graph Output"));
     std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, this, task->getName()));
 
     this->sendProfileData(producerData);
