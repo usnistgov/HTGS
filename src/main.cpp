@@ -30,7 +30,6 @@ class AddTask : public htgs::ITask<InputData, OutputData>
  public:
   virtual AddTask *copy() { return new AddTask(); }
   virtual void executeTask(std::shared_ptr<InputData> data) {
-    usleep(1000);
     int sum = data->getX() + data->getY();
     this->addResult(new OutputData(sum));
   }
@@ -39,13 +38,30 @@ class AddTask : public htgs::ITask<InputData, OutputData>
   }
 };
 
+class SimpleRule : public htgs::IRule<OutputData, OutputData> {
+ public:
+
+  SimpleRule() {}
+
+  virtual void shutdownRule(size_t pipelineId) {  }
+
+  virtual void applyRule(std::shared_ptr<OutputData> data, size_t pipelineId) {
+    if ((data->getResult() % 2) == 0)
+      addResult(data);
+  }
+
+  virtual std::string getName() {
+    return "EvenRule";
+  }
+ private:
+};
+
 class SquareResult : public htgs::ITask<OutputData, OutputData>
 {
  public:
   SquareResult(size_t numThreads) : ITask(numThreads) {}
   virtual SquareResult *copy() { return new SquareResult(this->getNumThreads()); }
   virtual void executeTask(std::shared_ptr<OutputData> data) {
-    usleep(50000);
     int result = data->getResult() * data->getResult();
     this->addResult(new OutputData(result));
   }
@@ -58,16 +74,17 @@ int main() {
   AddTask *addTask = new AddTask();
   SquareResult *addTask2 = new SquareResult(3);
   SquareResult *addTask3 = new SquareResult(10);
+  htgs::Bookkeeper<OutputData> *bk = new htgs::Bookkeeper<OutputData>();
+  SimpleRule *rule = new SimpleRule();
   auto taskGraph = new htgs::TaskGraphConf<InputData, OutputData>();
   taskGraph->setGraphConsumerTask(addTask);
   taskGraph->addEdge(addTask, addTask2);
-  taskGraph->addEdge(addTask2, addTask3);
+  taskGraph->addEdge(addTask2, bk);
+  taskGraph->addRuleEdge(bk, rule, addTask3);
   taskGraph->addGraphProducerTask(addTask3);
 
   auto runtime = new htgs::TaskGraphRuntime(taskGraph);
   runtime->executeRuntime();
-
-  usleep(9000000);
 
   int numData = 1000;
   for (int i = 0; i < numData; i++) {
@@ -85,8 +102,6 @@ int main() {
   }
 
   runtime->waitForRuntime();
-
-  usleep(900000);
 
   delete runtime;
 }

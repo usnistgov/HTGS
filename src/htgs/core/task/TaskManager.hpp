@@ -174,6 +174,10 @@ class TaskManager : public AnyTaskManager {
     else
       data = this->inputConnector->consumeData();
 
+#ifdef WS_PROFILE
+    sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
+#endif
+
     auto finish = std::chrono::high_resolution_clock::now();
 
     this->incWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
@@ -238,8 +242,12 @@ class TaskManager : public AnyTaskManager {
    * @param result the result that is added to the output for this task
    */
   void addResult(std::shared_ptr<U> result) {
-    if (this->outputConnector != nullptr)
+    if (this->outputConnector != nullptr) {
       this->outputConnector->produceData(result);
+#ifdef WS_PROFILE
+      sendWSProfileUpdate(this->outputConnector.get(), StatusCode::PRODUCE_DATA);
+#endif
+    }
   }
 
  private:

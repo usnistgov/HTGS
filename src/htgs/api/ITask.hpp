@@ -205,6 +205,7 @@ class ITask : public AnyITask {
    * @copydoc AnyITask::canTerminate
    */
   virtual bool canTerminate(std::shared_ptr<AnyConnector> inputConnector) override {
+    assert(inputConnector != nullptr);
     return inputConnector->isInputTerminated();
   }
 

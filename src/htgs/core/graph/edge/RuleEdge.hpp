@@ -60,12 +60,17 @@ class RuleEdge : public EdgeDescriptor {
     TaskManager<U, W> *consumerTaskManager = graph->getTaskManager(consumer);
 
     auto connector = consumerTaskManager->getInputConnector();
-
+#ifdef WS_PROFILE
+    bool newConnector = false;
+#endif
     if (connector == nullptr) {
+#ifdef WS_PROFILE
+      newConnector = true;
+#endif
       connector = std::shared_ptr<Connector<U>>(new Connector<U>());
     }
 
-    RuleManager<T, U> *ruleManager = new RuleManager<T, U>(rule);
+    RuleManager<T, U> *ruleManager = new RuleManager<T, U>(rule, graph->getTaskGraphCommunicator());
     ruleManager->setOutputConnector(connector);
 
     connector->incrementInputTaskCount();
@@ -84,10 +89,15 @@ class RuleEdge : public EdgeDescriptor {
     graph->sendProfileData(connectorData);
 
     std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(bookkeeper, connector.get(), rule->getName(), ruleManager));
-    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(connector.get(), consumer, "", nullptr));
-
     graph->sendProfileData(producerConnectorData);
-    graph->sendProfileData(connectorConsumerData);
+
+    if (newConnector) {
+      std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(connector.get(), consumer, "", nullptr));
+      graph->sendProfileData(connectorConsumerData);
+    }
+
+
+
 #endif
 
   }

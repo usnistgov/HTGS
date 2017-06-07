@@ -207,7 +207,7 @@ class ExecutionPipeline : public ITask<T, U> {
 
       for (std::shared_ptr<IRule<T, T>> rule : *this->inputRules) {
 
-        RuleManager<T, T> *ruleManager = new RuleManager<T, T>(rule);
+        RuleManager<T, T> *ruleManager = new RuleManager<T, T>(rule, this->getTaskGraphCommunicator());
         ruleManager->setOutputConnector(graphCopy->getInputConnector());
         ruleManager->initialize(i, this->numPipelinesExec, this->getAddress());
 

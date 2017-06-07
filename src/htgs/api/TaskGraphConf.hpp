@@ -526,6 +526,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
       TaskManagerThread *runtimeThread = new TaskManagerThread(0, this->wsProfileTaskManager, atomicNumThreads);
       this->wsProfileThread = new std::thread(&TaskManagerThread::run, runtimeThread);
     }
+    // TODO: Investigate sleep necessity with visualization
     usleep(300000);
 #endif
 

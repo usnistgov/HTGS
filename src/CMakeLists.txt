@@ -27,14 +27,14 @@ if (BUILD_MAIN)
     include_directories(".")
 
 
-    include_directories(${LIBHTGS_VISUALIZER_INCLUDE_DIRS})
+#    include_directories(${LIBHTGS_VISUALIZER_INCLUDE_DIRS})
 
-    add_definitions(${HTGS_VISUALIZER_DEFINITIONS})
+#    add_definitions(${HTGS_VISUALIZER_DEFINITIONS})
 #    link_directories(/home/tjb3/local/lib)
 
     add_executable(main "main.cpp" ${INC_ALL})
 
-    target_link_libraries(main ${LIBHTGS_VISUALIZER_LIBRARIES})
+#    target_link_libraries(main ${LIBHTGS_VISUALIZER_LIBRARIES})
 
 #    target_link_libraries(main htgsVisualizer)
 #    target_link_libraries(main uWS)

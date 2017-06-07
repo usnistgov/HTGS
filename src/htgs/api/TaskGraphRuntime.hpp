@@ -156,6 +156,7 @@ class TaskGraphRuntime {
 
     // Initialize graph and setup task graph taskGraphCommunicator
     this->graph->initialize();
+    // TODO: Investigate sleep necessity with visualization
 #ifdef WS_PROFILE
     usleep(900000);
 #endif
@@ -210,6 +211,7 @@ class TaskGraphRuntime {
 
 
 #ifdef WS_PROFILE
+    // TODO: Investigate sleep necessity with visualization
     usleep(100000);
 
     std::shared_ptr<ProfileData> graphCreationComplete(new GraphCompleteProfile(graph));

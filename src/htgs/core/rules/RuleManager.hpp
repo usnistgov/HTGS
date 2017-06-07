@@ -13,6 +13,7 @@
 #ifndef HTGS_RULEMANAGER_HPP
 #define HTGS_RULEMANAGER_HPP
 
+#include <htgs/api/Bookkeeper.hpp>
 #include "../../api/IRule.hpp"
 #include "../graph/Connector.hpp"
 #include "AnyRuleManagerInOnly.hpp"
@@ -66,8 +67,8 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
    * @note This function should only be called by the HTGS API
    * @internal
    */
-  RuleManager(std::shared_ptr<htgs::IRule<T, U>> rule)
-      : rule(rule), pipelineId(0), numPipelines(1), terminated(false) {}
+  RuleManager(std::shared_ptr<htgs::IRule<T, U>> rule, TaskGraphCommunicator *communicator)
+      : rule(rule), communicator(communicator), pipelineId(0), numPipelines(1), terminated(false) {}
 
   /**
    * Destructor
@@ -86,6 +87,9 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
 
     if (result != nullptr && result->size() > 0) {
       if (this->connector != nullptr) {
+#ifdef WS_PROFILE
+        sendWSProfileUpdate(this, StatusCode::ACTIVATE_EDGE);
+#endif
         this->connector->produceData(result);
       }
     }
@@ -98,7 +102,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   }
 
   RuleManager<T, U> *copy() override {
-    return new RuleManager<T, U>(this->rule);
+    return new RuleManager<T, U>(this->rule, this->communicator);
   }
 
   std::string getName() override {
@@ -130,6 +134,10 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
       DEBUG("Waking up connector");
       this->connector->producerFinished();
       this->connector->wakeupConsumer();
+
+#ifdef WS_PROFILE
+      sendWSProfileUpdate(this->connector.get(), StatusCode::DECREMENT);
+#endif
     }
 
     // Shutdown the rule's pipeline ID
@@ -149,6 +157,17 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
  private:
 
   //! @cond Doxygen_Suppress
+#ifdef WS_PROFILE
+  void sendWSProfileUpdate(void *addr, StatusCode code)
+  {
+    if (this->getName() == "WebSocketProfiler")
+      return;
+    std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(addr, code));
+    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), "", "WebSocketProfiler", "0", updateStatus));
+    this->communicator->produceDataPacket(dataPacket);
+  }
+#endif
+
   void checkRuleTermination() {
     if (!terminated) {
       // Check if the rule is ready to be terminated before and after processing data
@@ -158,13 +177,16 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
         if (this->connector->isInputTerminated()) {
           this->connector->wakeupConsumer();
         }
+#ifdef WS_PROFILE
+        sendWSProfileUpdate(this->connector.get(), StatusCode::DECREMENT);
+#endif
       }
     }
   }
   //! @endcond
 
-
   std::shared_ptr<IRule<T, U>> rule; //!< The rule associated with the RuleManager
+  TaskGraphCommunicator *communicator; //!< The task graph communicator
   size_t pipelineId; //!< The execution pipeline id
   size_t numPipelines; //!< The number of execution pipelines
   std::string address; //!< The address for the rule manager

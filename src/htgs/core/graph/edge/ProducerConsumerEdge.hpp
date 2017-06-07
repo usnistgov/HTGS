@@ -55,8 +55,14 @@ class ProducerConsumerEdge : public EdgeDescriptor {
 
     auto connector = consumerTaskManager->getInputConnector();
 
+#ifdef WS_PROFILE
+    bool newConnector = false;
+#endif
     if (connector == nullptr) {
-      connector = std::shared_ptr<Connector<U>>(new Connector<U>());
+#ifdef WS_PROFILE
+      newConnector = true;
+#endif
+            connector = std::shared_ptr<Connector<U>>(new Connector<U>());
     }
 
     connector->incrementInputTaskCount();
@@ -74,10 +80,15 @@ class ProducerConsumerEdge : public EdgeDescriptor {
     graph->sendProfileData(connectorData);
 
     std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(producer, connector.get(), "", nullptr));
-    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(connector.get(), consumer, "", nullptr));
-
     graph->sendProfileData(producerConnectorData);
-    graph->sendProfileData(connectorConsumerData);
+
+    if (newConnector) {
+      std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(connector.get(), consumer, "", nullptr));
+      graph->sendProfileData(connectorConsumerData);
+    }
+
+
+
 #endif
   }
 

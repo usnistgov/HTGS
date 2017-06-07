@@ -24,6 +24,12 @@
 #include <htgs/types/MMType.hpp>
 #include <htgs/debug/debug_message.hpp>
 #include <htgs/types/TaskGraphDotGenFlags.hpp>
+
+#ifdef WS_PROFILE
+#include <htgs/core/graph/profile/ProfileData.hpp>
+#include <htgs/core/graph/profile/CustomProfile.hpp>
+#endif
+
 #include "AnyTaskManager.hpp"
 
 namespace htgs {
@@ -537,16 +543,24 @@ class AnyITask {
     return releaseMemoryEdges;
   }
 
- private:
+#ifdef WS_PROFILE
+  void sendWSProfileUpdate(StatusCode code)
+  {
+    if (this->getName() == "WebSocketProfiler")
+      return;
+    std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(this, code));
+    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
+    this->taskGraphCommunicator->produceDataPacket(dataPacket);
+  }
+#endif
 
+ private:
   //! @cond Doxygen_Suppress
   void setMemoryEdges(std::shared_ptr<ConnectorMap> memGetter) { this->memoryEdges = memGetter; }
 
   void setReleaseMemoryEdges(const std::shared_ptr<ConnectorMap> &releaseMemoryEdges) {
     AnyITask::releaseMemoryEdges = releaseMemoryEdges;
   }
-
- private:
 
   template<class V>
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem) {
@@ -555,7 +569,15 @@ class AnyITask {
     auto conn = memoryEdges->find(name)->second;
     auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
 
+#ifdef WS_PROFILE
+    sendWSProfileUpdate(StatusCode::WAITING_FOR_MEM);
+#endif
+
     m_data_t<V> memory = connector->consumeData();
+
+#ifdef WS_PROFILE
+    sendWSProfileUpdate(StatusCode::EXECUTE);
+#endif
 
     memory->setMemoryReleaseRule(releaseRule);
 

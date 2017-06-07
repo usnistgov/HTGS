@@ -17,7 +17,7 @@
 #ifndef HTGS_DATAPACKET_HPP
 #define HTGS_DATAPACKET_HPP
 #include <string>
-#include <bits/shared_ptr.h>
+#include <memory>
 
 #include <htgs/api/IData.hpp>
 

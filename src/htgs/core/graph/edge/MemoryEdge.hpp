@@ -72,6 +72,7 @@ class MemoryEdge : public EdgeDescriptor {
     memTaskManager->setInputConnector(releaseMemoryConnector);
     memTaskManager->setOutputConnector(getMemoryConnector);
 
+    getMemoryConnector->incrementInputTaskCount();
     releaseMemoryConnector->incrementInputTaskCount();
 
     getMemoryTask->attachMemoryEdge(memoryEdgeName,
@@ -88,7 +89,7 @@ class MemoryEdge : public EdgeDescriptor {
     graph->sendProfileData(connectorData);
 
     std::shared_ptr<ProfileData> producerConnectorData(new CreateEdgeProfile(memoryManager, getMemoryConnector.get(), memoryEdgeName, nullptr));
-    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(getMemoryConnector.get(), getMemoryTask, memoryManager->inTypeName(), nullptr));
+    std::shared_ptr<ProfileData> connectorConsumerData(new CreateEdgeProfile(getMemoryConnector.get(), getMemoryTask, memoryManager->typeName(), nullptr));
 
     graph->sendProfileData(producerConnectorData);
     graph->sendProfileData(connectorConsumerData);

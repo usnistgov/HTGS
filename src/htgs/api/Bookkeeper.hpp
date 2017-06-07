@@ -117,6 +117,7 @@ class Bookkeeper : public ITask<T, VoidData> {
    * @note This function should only be called by the HTGS API
    */
   void executeTask(std::shared_ptr<T> data) override {
+
     for (AnyRuleManagerInOnly<T> *ruleManager : *ruleManagers) {
 //      DEBUG_VERBOSE(this->getName() << " executing " + ruleManager->getName());
       ruleManager->executeTask(data);
