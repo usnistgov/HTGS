@@ -1,11 +1,13 @@
 //#define DEBUG_FLAG
-
-#include <future>
+#ifdef DO_SLEEP
+#include <unistd.h>
+#endif
 
 #include <htgs/api/Bookkeeper.hpp>
 #include <htgs/api/TaskGraphConf.hpp>
 #include <htgs/api/TaskGraphRuntime.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
+
 class InputData : public htgs::IData
 {
  public:
@@ -31,6 +33,9 @@ class AddTask : public htgs::ITask<InputData, OutputData>
   virtual AddTask *copy() { return new AddTask(); }
   virtual void executeTask(std::shared_ptr<InputData> data) {
     int sum = data->getX() + data->getY();
+#ifdef DO_SLEEP
+    usleep(90);
+#endif
     this->addResult(new OutputData(sum));
   }
   std::string getName() override {
@@ -46,6 +51,9 @@ class SimpleRule : public htgs::IRule<OutputData, OutputData> {
   virtual void shutdownRule(size_t pipelineId) {  }
 
   virtual void applyRule(std::shared_ptr<OutputData> data, size_t pipelineId) {
+#ifdef DO_SLEEP
+    usleep(100);
+#endif
     if ((data->getResult() % 2) == 0)
       addResult(data);
   }
@@ -62,6 +70,9 @@ class SquareResult : public htgs::ITask<OutputData, OutputData>
   SquareResult(size_t numThreads) : ITask(numThreads) {}
   virtual SquareResult *copy() { return new SquareResult(this->getNumThreads()); }
   virtual void executeTask(std::shared_ptr<OutputData> data) {
+#ifdef DO_SLEEP
+    usleep(45);
+#endif
     int result = data->getResult() * data->getResult();
     this->addResult(new OutputData(result));
   }
@@ -71,6 +82,8 @@ class SquareResult : public htgs::ITask<OutputData, OutputData>
 };
 
 int main() {
+  auto start = std::chrono::high_resolution_clock::now();
+
   AddTask *addTask = new AddTask();
   SquareResult *addTask2 = new SquareResult(3);
   SquareResult *addTask3 = new SquareResult(10);
@@ -102,6 +115,12 @@ int main() {
   }
 
   runtime->waitForRuntime();
+
+  auto end = std::chrono::high_resolution_clock::now();
+  auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+
+  std::cout << "Execution time: " << diff.count() << " ns" << std::endl;
+
 
   delete runtime;
 }

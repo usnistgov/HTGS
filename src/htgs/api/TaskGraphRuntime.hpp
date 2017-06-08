@@ -15,7 +15,7 @@
 #define HTGS_TASKGRAPHRUNTIME_HPP
 
 #include <thread>
-#include "htgs/core/graph/AnyTaskGraphConf.hpp"
+#include "htgs/api/TaskGraphConf.hpp"
 #include "htgs/core/task/AnyTaskManager.hpp"
 
 namespace htgs {
@@ -156,10 +156,6 @@ class TaskGraphRuntime {
 
     // Initialize graph and setup task graph taskGraphCommunicator
     this->graph->initialize();
-    // TODO: Investigate sleep necessity with visualization
-#ifdef WS_PROFILE
-    usleep(900000);
-#endif
 
     std::list<AnyTaskManager *> *vertices = this->graph->getTaskManagers();
     std::list<AnyTaskManager *> newVertices;
@@ -211,9 +207,6 @@ class TaskGraphRuntime {
 
 
 #ifdef WS_PROFILE
-    // TODO: Investigate sleep necessity with visualization
-    usleep(100000);
-
     std::shared_ptr<ProfileData> graphCreationComplete(new GraphCompleteProfile(graph));
     graph->sendProfileData(graphCreationComplete);
 #endif

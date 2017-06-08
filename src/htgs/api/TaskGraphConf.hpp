@@ -236,6 +236,9 @@ class TaskGraphConf : public AnyTaskGraphConf {
       this->wsProfileTaskManager->getInputConnector()->producerFinished();
       this->wsProfileTaskManager->getInputConnector()->wakeupConsumer();
       this->wsProfileThread->join();
+
+      delete wsProfileTaskManager;
+      wsProfileTaskManager = nullptr;
     }
 #endif
 
@@ -525,9 +528,11 @@ class TaskGraphConf : public AnyTaskGraphConf {
           atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(1));
       TaskManagerThread *runtimeThread = new TaskManagerThread(0, this->wsProfileTaskManager, atomicNumThreads);
       this->wsProfileThread = new std::thread(&TaskManagerThread::run, runtimeThread);
+
+      WebSocketProfiler *profileTask = (WebSocketProfiler *)this->wsProfileTaskManager->getTaskFunction();
+      profileTask->waitForConnection();
+
     }
-    // TODO: Investigate sleep necessity with visualization
-    usleep(300000);
 #endif
 
   }

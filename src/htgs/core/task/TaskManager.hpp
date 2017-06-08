@@ -174,10 +174,6 @@ class TaskManager : public AnyTaskManager {
     else
       data = this->inputConnector->consumeData();
 
-#ifdef WS_PROFILE
-    sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
-#endif
-
     auto finish = std::chrono::high_resolution_clock::now();
 
     this->incWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
@@ -187,6 +183,7 @@ class TaskManager : public AnyTaskManager {
     if (data != nullptr || this->isPoll()) {
       start = std::chrono::high_resolution_clock::now();
 #ifdef WS_PROFILE
+      sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
       this->sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
       this->taskFunction->executeTask(data);
@@ -245,7 +242,8 @@ class TaskManager : public AnyTaskManager {
     if (this->outputConnector != nullptr) {
       this->outputConnector->produceData(result);
 #ifdef WS_PROFILE
-      sendWSProfileUpdate(this->outputConnector.get(), StatusCode::PRODUCE_DATA);
+      if (result != nullptr)
+        sendWSProfileUpdate(this->outputConnector.get(), StatusCode::PRODUCE_DATA);
 #endif
     }
   }

@@ -273,8 +273,7 @@ class ICudaTask : public ITask<T, U> {
    * AND must be a pointer
    */
   template<class V>
-  bool autoCopy(V destination, std::shared_ptr<MemoryData<V>> data, long numElems) {
-    static_assert(std::is_pointer<V>::value, "V must be a pointer in order to use autoCopy");
+  bool autoCopy(V *destination, std::shared_ptr<MemoryData<V>> data, long numElems) {
 
     if (requiresCopy(data)) {
       cudaMemcpyPeerAsync((void *) destination,
