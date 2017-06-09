@@ -340,8 +340,9 @@ Example call for OpenBLAS, also found [here](https://github.com/usnistgov/HTGS-T
 
 To enable using OpenBLAS in the HTGS-Tutorials, define the following during cmake (or cmake-gui/ccmake)
 
-1. -DOpenBLAS_INCLUDE_DIR={PATH_TO_OPENBLAS INCLUDE DIR}
-2. -DOpenBLAS_LIB={PATH_TO_OPENBLAS LIB DIR}
+
+1. -DLIBOPENBLAS_INCLUDE_DIR={PATH_TO_OPENBLAS INCLUDE DIR}
+2. -DLIBOPENBLAS_LIBRARY={PATH_TO_OPENBLAS LIB DIR}
 
 Defining these options will enable using OpenBLAS for Tutorial 3. We execute the same command as above with OpenBLAS enabled.
 
