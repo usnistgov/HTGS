@@ -1,6 +1,6 @@
 var classhtgs_1_1_rule_manager =
 [
-    [ "RuleManager", "classhtgs_1_1_rule_manager.html#a3c558c00ea58c369f714947e01126c04", null ],
+    [ "RuleManager", "classhtgs_1_1_rule_manager.html#a6392aac0421a482a8b0ce010bcca1735", null ],
     [ "~RuleManager", "classhtgs_1_1_rule_manager.html#ab43f1795e53d3090eb76b779bcc73f2d", null ],
     [ "copy", "classhtgs_1_1_rule_manager.html#af584dddf82366705698208c5c6979094", null ],
     [ "debug", "classhtgs_1_1_rule_manager.html#a81883c73846c027bf333fd1c43b53b34", null ],
@@ -12,6 +12,7 @@ var classhtgs_1_1_rule_manager =
     [ "setOutputConnector", "classhtgs_1_1_rule_manager.html#a2321a94c82589527a5bb805e7fdb380a", null ],
     [ "shutdown", "classhtgs_1_1_rule_manager.html#ad2f9e711a79802e5fdd3004469f535e5", null ],
     [ "address", "classhtgs_1_1_rule_manager.html#a784cbf51d70d6c3fdfd650a788cf76ab", null ],
+    [ "communicator", "classhtgs_1_1_rule_manager.html#a8de148e17029d174a4fbcea63f3f9d63", null ],
     [ "connector", "classhtgs_1_1_rule_manager.html#a6ffc57db1c2bba7768d1943af3046c08", null ],
     [ "numPipelines", "classhtgs_1_1_rule_manager.html#ac0cc24b7a4ca126c770fe2f0fb0b9f9a", null ],
     [ "pipelineId", "classhtgs_1_1_rule_manager.html#a44289578ab2f7b3f251607eefd996cc0", null ],

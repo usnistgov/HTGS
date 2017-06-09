@@ -12,6 +12,7 @@ var searchData=
   ['addrulemanager',['addRuleManager',['../classhtgs_1_1_bookkeeper.html#a056b705118ba60ffa6f3deb10b1f2e50',1,'htgs::Bookkeeper::addRuleManager(AnyRuleManager *ruleManager)'],['../classhtgs_1_1_bookkeeper.html#abc8027abadb52ef836d9d3f687dab261',1,'htgs::Bookkeeper::addRuleManager(RuleManager&lt; T, U &gt; *ruleManager)']]],
   ['addtaskmanager',['addTaskManager',['../classhtgs_1_1_any_task_graph_conf.html#a1d0eb84a2a9990da8c11f353350bf489',1,'htgs::AnyTaskGraphConf']]],
   ['addtasknameconnectormap',['addTaskNameConnectorMap',['../classhtgs_1_1_task_graph_communicator.html#a5a72607eaa8b546c25867d946ba07c02',1,'htgs::TaskGraphCommunicator']]],
+  ['addtasknameconnectorpair',['addTaskNameConnectorPair',['../classhtgs_1_1_task_graph_communicator.html#a150fea52117fe75690ef75f74c55f742',1,'htgs::TaskGraphCommunicator']]],
   ['allocstatecontainer',['allocStateContainer',['../classhtgs_1_1_i_rule.html#a8baa4e2f1a4126d21fe20ca378a5a72b',1,'htgs::IRule::allocStateContainer(size_t height, size_t width)'],['../classhtgs_1_1_i_rule.html#a1e10944b079f2daf485932f7b5f3e543',1,'htgs::IRule::allocStateContainer(size_t height, size_t width, V defaultValue)'],['../classhtgs_1_1_i_rule.html#a73afffa52923f366895d995f48a10cb4',1,'htgs::IRule::allocStateContainer(size_t size)'],['../classhtgs_1_1_i_rule.html#a3f403fbafa677f71e09c61496b44c7a4',1,'htgs::IRule::allocStateContainer(size_t size, V defaultValue)']]],
   ['anyconnector',['AnyConnector',['../classhtgs_1_1_any_connector.html#a64c866dfc8576ead6058903e4c5c0195',1,'htgs::AnyConnector']]],
   ['anyitask',['AnyITask',['../classhtgs_1_1_any_i_task.html#af2a727eb509772d1f86a91c251a75a32',1,'htgs::AnyITask::AnyITask()'],['../classhtgs_1_1_any_i_task.html#a921ef939941cece4f8f9fad56f5e72a6',1,'htgs::AnyITask::AnyITask(size_t numThreads)'],['../classhtgs_1_1_any_i_task.html#a3ba2ee2bcb1a71594e83d2f81a316262',1,'htgs::AnyITask::AnyITask(size_t numThreads, bool isStartTask, bool poll, size_t microTimeoutTime)']]],
@@ -23,6 +24,6 @@ var searchData=
   ['applyrulefunction',['applyRuleFunction',['../classhtgs_1_1_i_rule.html#ac49f147e7ab890a8a1f3f76db5a9b386',1,'htgs::IRule']]],
   ['assign',['assign',['../classhtgs_1_1_state_container.html#ac22d7b66ec11c0ce3c9a5b6acf924849',1,'htgs::StateContainer::assign(size_t row, size_t col, T value) const '],['../classhtgs_1_1_state_container.html#a358f69f70db8c45bd94dfff2fb779668',1,'htgs::StateContainer::assign(size_t index, T value) const ']]],
   ['attachmemoryedge',['attachMemoryEdge',['../classhtgs_1_1_any_i_task.html#a07b227fd650170a87eb3f15a7c291039',1,'htgs::AnyITask']]],
-  ['autocopy',['autoCopy',['../classhtgs_1_1_i_cuda_task.html#a4a4248e1d7d15fed78692de1f09d09e7',1,'htgs::ICudaTask']]],
+  ['autocopy',['autoCopy',['../classhtgs_1_1_i_cuda_task.html#a87e4ac47eee4f958153ff8b064c6cb60',1,'htgs::ICudaTask']]],
   ['average',['average',['../classhtgs_1_1_task_manager_profile.html#a24c292178ff04f1d37791d38b0ed6226',1,'htgs::TaskManagerProfile']]]
 ];

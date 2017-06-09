@@ -4,6 +4,7 @@ var classhtgs_1_1_task_graph_communicator =
     [ "~TaskGraphCommunicator", "classhtgs_1_1_task_graph_communicator.html#ad738b8118359c5b834629a5b266bee3a", null ],
     [ "addChild", "classhtgs_1_1_task_graph_communicator.html#a2ea46482827c460c7499d198befd9dec", null ],
     [ "addTaskNameConnectorMap", "classhtgs_1_1_task_graph_communicator.html#a5a72607eaa8b546c25867d946ba07c02", null ],
+    [ "addTaskNameConnectorPair", "classhtgs_1_1_task_graph_communicator.html#a150fea52117fe75690ef75f74c55f742", null ],
     [ "checkRootSpawnThreads", "classhtgs_1_1_task_graph_communicator.html#a61bcb15d176dfe295d8238d8a7cc67f8", null ],
     [ "getAddress", "classhtgs_1_1_task_graph_communicator.html#acc7f3534fd7cdcb5b11fe253a3977e75", null ],
     [ "getChildren", "classhtgs_1_1_task_graph_communicator.html#abae4b3a65f50db3eef0dce983df66ae1", null ],

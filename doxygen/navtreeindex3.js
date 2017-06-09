@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classhtgs_1_1_task_manager.html#a7a289634dc4f71a7625229bbbbb5ce61":[9,0,0,35,8],
+"classhtgs_1_1_task_manager.html#a7a31d2eb4ffe1abe4190c4783dedf5fe":[9,0,0,35,11],
+"classhtgs_1_1_task_manager.html#a80e941fce5be320e19e213abfe2b719f":[9,0,0,35,12],
 "classhtgs_1_1_task_manager.html#a86523b19da2edf80ee678ff722407468":[9,0,0,35,7],
 "classhtgs_1_1_task_manager.html#a866285bd20abf0961214245492a83ce7":[9,0,0,35,5],
 "classhtgs_1_1_task_manager.html#aa3841bd4debf28171a4b0319dba5643c":[9,0,0,35,16],
@@ -62,8 +65,8 @@ var NAVTREEINDEX3 =
 "dir_e66be865834cb5c8612ced50101ecfbe.html":[10,0,0,0],
 "dir_f468cc7436369c20dc813e4dc328eda4.html":[10,0,0,0,1,1],
 "files.html":[10,0],
-"functions.html":[9,3,0],
 "functions.html":[9,3,0,0],
+"functions.html":[9,3,0],
 "functions_0x7e.html":[9,3,0,21],
 "functions_a.html":[9,3,0,1],
 "functions_b.html":[9,3,0,2],
@@ -110,8 +113,8 @@ var NAVTREEINDEX3 =
 "globals.html":[10,1,0],
 "globals_defs.html":[10,1,1],
 "hierarchy.html":[9,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "index.html#approach":[0,1],
 "index.html#installation":[0,0],
 "index.html#methodlogy":[0,2],

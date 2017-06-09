@@ -1,3 +1,4 @@
 <map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/TaskGraphConf.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/TaskGraphConf.hpp">
-<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="8,109,205,165"/>
+<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="8,213,205,269"/>
+<area shape="rect" id="node3" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="75,109,277,165"/>
 </map>

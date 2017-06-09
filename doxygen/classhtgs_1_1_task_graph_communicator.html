@@ -181,6 +181,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:affc467f0ab16e5cbc8b58759c102e3f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_task_graph_communicator.html#affc467f0ab16e5cbc8b58759c102e3f5">processFlattenTaskNameConnectorMap</a> (std::shared_ptr&lt; std::unordered_multimap&lt; std::string, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt;&gt;&gt; <a class="el" href="classhtgs_1_1_task_graph_communicator.html#adf0fb6869ea68d39147f205998273ad7">flattenedTaskNameConnectorMap</a>)</td></tr>
 <tr class="memdesc:affc467f0ab16e5cbc8b58759c102e3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flattens the mapping between the addresses and task manager names and their connnectors.  <a href="#affc467f0ab16e5cbc8b58759c102e3f5">More...</a><br /></td></tr>
 <tr class="separator:affc467f0ab16e5cbc8b58759c102e3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a150fea52117fe75690ef75f74c55f742"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_task_graph_communicator.html#a150fea52117fe75690ef75f74c55f742">addTaskNameConnectorPair</a> (std::pair&lt; std::string, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt;&gt; pair)</td></tr>
+<tr class="memdesc:a150fea52117fe75690ef75f74c55f742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a single task name connector pair to the communicator.  <a href="#a150fea52117fe75690ef75f74c55f742">More...</a><br /></td></tr>
+<tr class="separator:a150fea52117fe75690ef75f74c55f742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a72607eaa8b546c25867d946ba07c02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_task_graph_communicator.html#a5a72607eaa8b546c25867d946ba07c02">addTaskNameConnectorMap</a> (std::unordered_multimap&lt; std::string, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt;&gt; *o)</td></tr>
 <tr class="memdesc:a5a72607eaa8b546c25867d946ba07c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the mapping between a task's address and its name to the input connector for that task.  <a href="#a5a72607eaa8b546c25867d946ba07c02">More...</a><br /></td></tr>
 <tr class="separator:a5a72607eaa8b546c25867d946ba07c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -366,6 +369,38 @@ std::thread *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">o</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a150fea52117fe75690ef75f74c55f742"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void htgs::TaskGraphCommunicator::addTaskNameConnectorPair </td>
+          <td>(</td>
+          <td class="paramtype">std::pair&lt; std::string, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt;&gt;&#160;</td>
+          <td class="paramname"><em>pair</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds a single task name connector pair to the communicator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pair</td><td>the task name and connector pair </td></tr>
   </table>
   </dd>
 </dl>

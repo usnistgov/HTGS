@@ -1,6 +1,7 @@
 <map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryManager.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryManager.hpp">
 <area shape="rect" id="node2" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="5,109,184,165"/>
-<area shape="rect" id="node5" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="208,109,403,165"/>
+<area shape="rect" id="node6" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="208,109,403,165"/>
 <area shape="rect" id="node3" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="99,213,301,269"/>
-<area shape="rect" id="node4" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="101,317,299,373"/>
+<area shape="rect" id="node4" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="101,421,299,477"/>
+<area shape="rect" id="node5" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="168,317,371,373"/>
 </map>

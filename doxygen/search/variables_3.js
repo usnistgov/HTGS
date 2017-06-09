@@ -1,6 +1,7 @@
 var searchData=
 [
   ['children',['children',['../classhtgs_1_1_task_graph_communicator.html#a0ab7673355ce07ae2461d8c11bc80f3a',1,'htgs::TaskGraphCommunicator']]],
+  ['communicator',['communicator',['../classhtgs_1_1_rule_manager.html#a8de148e17029d174a4fbcea63f3f9d63',1,'htgs::RuleManager']]],
   ['computetime',['computeTime',['../classhtgs_1_1_task_manager_profile.html#a095c055926db18642391c51046c32efd',1,'htgs::TaskManagerProfile']]],
   ['condition',['condition',['../classhtgs_1_1_blocking_queue.html#aee947907e2057f4a358d432fac87d291',1,'htgs::BlockingQueue::condition()'],['../classhtgs_1_1_priority_blocking_queue.html#acd2ee5b8d28efb3f9c1f105530f5bf63',1,'htgs::PriorityBlockingQueue::condition()']]],
   ['connector',['connector',['../classhtgs_1_1_rule_manager.html#a6ffc57db1c2bba7768d1943af3046c08',1,'htgs::RuleManager']]],

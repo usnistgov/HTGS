@@ -2,7 +2,7 @@ var classhtgs_1_1_i_cuda_task =
 [
     [ "ICudaTask", "classhtgs_1_1_i_cuda_task.html#ac289e6e337e7ad1117d6b488789a7eb7", null ],
     [ "~ICudaTask", "classhtgs_1_1_i_cuda_task.html#a225a9272183190d9328b28e156915906", null ],
-    [ "autoCopy", "classhtgs_1_1_i_cuda_task.html#a4a4248e1d7d15fed78692de1f09d09e7", null ],
+    [ "autoCopy", "classhtgs_1_1_i_cuda_task.html#a87e4ac47eee4f958153ff8b064c6cb60", null ],
     [ "copy", "classhtgs_1_1_i_cuda_task.html#aa23de96615df6b88e3465b7ca98cc9a8", null ],
     [ "debug", "classhtgs_1_1_i_cuda_task.html#a17a3b081acd7f20de7a2759c7120db04", null ],
     [ "executeTask", "classhtgs_1_1_i_cuda_task.html#af5d304db53e1d4ce2572e309bcf987c3", null ],

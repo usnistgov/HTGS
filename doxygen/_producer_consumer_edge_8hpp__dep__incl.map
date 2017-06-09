@@ -1,4 +1,5 @@
 <map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/graph/edge/ProducerConsumerEdge.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/graph/edge/ProducerConsumerEdge.hpp">
 <area shape="rect" id="node2" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="17,109,219,165"/>
-<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="19,213,217,269"/>
+<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="19,317,217,373"/>
+<area shape="rect" id="node4" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="86,213,289,269"/>
 </map>

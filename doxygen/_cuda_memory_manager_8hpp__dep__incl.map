@@ -1,4 +1,5 @@
 <map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/CudaMemoryManager.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/CudaMemoryManager.hpp">
 <area shape="rect" id="node2" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="5,109,208,165"/>
-<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="8,213,205,269"/>
+<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="8,317,205,373"/>
+<area shape="rect" id="node4" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="75,213,277,269"/>
 </map>

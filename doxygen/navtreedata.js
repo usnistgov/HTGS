@@ -155,8 +155,8 @@ var NAVTREEINDEX =
 [
 ".html",
 "classhtgs_1_1_any_task_graph_conf.html#ae86445492fc9421c0c5132bd608e2460",
-"classhtgs_1_1_i_task.html#af5eb7fcf9b6c14e3fe5c6b23b7c0cee0",
-"classhtgs_1_1_task_manager.html#a86523b19da2edf80ee678ff722407468"
+"classhtgs_1_1_i_task.html#af344dfcd8cfa5bab869f09728403e323",
+"classhtgs_1_1_task_manager.html#a7a289634dc4f71a7625229bbbbb5ce61"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,7 +1,8 @@
 <map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/rules/AnyRuleManagerInOnly.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/rules/AnyRuleManagerInOnly.hpp">
-<area shape="rect" id="node2" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="5,213,239,255"/>
-<area shape="rect" id="node6" href="$_rule_manager_8hpp.html" title="Implements a RuleManager, which connects a Bookkeeper to another ITask using an IRule. " alt="" coords="97,109,272,165"/>
-<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="30,511,227,567"/>
-<area shape="rect" id="node4" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="102,303,281,359"/>
-<area shape="rect" id="node5" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="97,407,299,463"/>
+<area shape="rect" id="node2" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="115,109,349,151"/>
+<area shape="rect" id="node7" href="$_rule_manager_8hpp.html" title="Implements a RuleManager, which connects a Bookkeeper to another ITask using an IRule. " alt="" coords="299,199,474,255"/>
+<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="5,511,203,567"/>
+<area shape="rect" id="node4" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="96,199,275,255"/>
+<area shape="rect" id="node5" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="91,303,293,359"/>
+<area shape="rect" id="node6" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="141,407,344,463"/>
 </map>

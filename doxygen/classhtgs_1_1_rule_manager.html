@@ -137,18 +137,22 @@ Collaboration diagram for htgs::RuleManager&lt; T, U &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_rule_manager__coll__graph.png" border="0" usemap="#htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_coll__map" id="htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_coll__map">
-<area shape="rect" id="node2" href="classhtgs_1_1_any_rule_manager_in_only.html" title="Implements the base class for the rule manager, but only provides the input type. ..." alt="" coords="5,249,231,341"/>
-<area shape="rect" id="node3" href="classhtgs_1_1_any_rule_manager.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="39,5,197,200"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="255,257,335,334"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="232,57,359,149"/>
+<area shape="rect" id="node2" href="classhtgs_1_1_any_rule_manager_in_only.html" title="Implements the base class for the rule manager, but only provides the input type. ..." alt="" coords="5,727,231,819"/>
+<area shape="rect" id="node3" href="classhtgs_1_1_any_rule_manager.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="39,338,197,533"/>
+<area shape="rect" id="node4" href="classhtgs_1_1_task_graph_communicator.html" title="Implements the task graph communicator where a task&#39;s address and name are mapped to their input conn..." alt="" coords="507,632,737,915"/>
+<area shape="rect" id="node5" href="classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::DataPacket \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="899,301,1057,569"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="363,154,443,231"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="340,5,467,97"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="525,397,609,474"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="737,389,875,481"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3c558c00ea58c369f714947e01126c04"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#a3c558c00ea58c369f714947e01126c04">RuleManager</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_i_rule.html">htgs::IRule</a>&lt; T, U &gt;&gt; <a class="el" href="classhtgs_1_1_rule_manager.html#adc4b29f5b07512cbce902d29076e66f3">rule</a>)</td></tr>
-<tr class="memdesc:a3c558c00ea58c369f714947e01126c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a rule manager with a rule.  <a href="#a3c558c00ea58c369f714947e01126c04">More...</a><br /></td></tr>
-<tr class="separator:a3c558c00ea58c369f714947e01126c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6392aac0421a482a8b0ce010bcca1735"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#a6392aac0421a482a8b0ce010bcca1735">RuleManager</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_i_rule.html">htgs::IRule</a>&lt; T, U &gt;&gt; <a class="el" href="classhtgs_1_1_rule_manager.html#adc4b29f5b07512cbce902d29076e66f3">rule</a>, <a class="el" href="classhtgs_1_1_task_graph_communicator.html">TaskGraphCommunicator</a> *<a class="el" href="classhtgs_1_1_rule_manager.html#a8de148e17029d174a4fbcea63f3f9d63">communicator</a>)</td></tr>
+<tr class="memdesc:a6392aac0421a482a8b0ce010bcca1735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a rule manager with a rule.  <a href="#a6392aac0421a482a8b0ce010bcca1735">More...</a><br /></td></tr>
+<tr class="separator:a6392aac0421a482a8b0ce010bcca1735"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab43f1795e53d3090eb76b779bcc73f2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab43f1795e53d3090eb76b779bcc73f2d"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#ab43f1795e53d3090eb76b779bcc73f2d">~RuleManager</a> () override</td></tr>
 <tr class="memdesc:ab43f1795e53d3090eb76b779bcc73f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
@@ -197,6 +201,10 @@ Private Attributes</h2></td></tr>
 std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_i_rule.html">IRule</a>&lt; T, U &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#adc4b29f5b07512cbce902d29076e66f3">rule</a></td></tr>
 <tr class="memdesc:adc4b29f5b07512cbce902d29076e66f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rule associated with the <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a>. <br /></td></tr>
 <tr class="separator:adc4b29f5b07512cbce902d29076e66f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8de148e17029d174a4fbcea63f3f9d63"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8de148e17029d174a4fbcea63f3f9d63"></a>
+<a class="el" href="classhtgs_1_1_task_graph_communicator.html">TaskGraphCommunicator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#a8de148e17029d174a4fbcea63f3f9d63">communicator</a></td></tr>
+<tr class="memdesc:a8de148e17029d174a4fbcea63f3f9d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">The task graph communicator. <br /></td></tr>
+<tr class="separator:a8de148e17029d174a4fbcea63f3f9d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44289578ab2f7b3f251607eefd996cc0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44289578ab2f7b3f251607eefd996cc0"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#a44289578ab2f7b3f251607eefd996cc0">pipelineId</a></td></tr>
 <tr class="memdesc:a44289578ab2f7b3f251607eefd996cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The execution pipeline id. <br /></td></tr>
@@ -233,7 +241,7 @@ class htgs::RuleManager&lt; T, U &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a3c558c00ea58c369f714947e01126c04"></a>
+<a class="anchor" id="a6392aac0421a482a8b0ce010bcca1735"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -246,8 +254,18 @@ template&lt;class T, class U&gt; </div>
           <td class="memname"><a class="el" href="classhtgs_1_1_rule_manager.html">htgs::RuleManager</a>&lt; T, U &gt;::<a class="el" href="classhtgs_1_1_rule_manager.html">RuleManager</a> </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_i_rule.html">htgs::IRule</a>&lt; T, U &gt;&gt;&#160;</td>
-          <td class="paramname"><em>rule</em></td><td>)</td>
+          <td class="paramname"><em>rule</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classhtgs_1_1_task_graph_communicator.html">TaskGraphCommunicator</a> *&#160;</td>
+          <td class="paramname"><em>communicator</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>

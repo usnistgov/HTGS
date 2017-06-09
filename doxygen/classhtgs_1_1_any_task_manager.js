@@ -31,6 +31,7 @@ var classhtgs_1_1_any_task_manager =
     [ "isStartTask", "classhtgs_1_1_any_task_manager.html#acc16c9c9455034e0842b9476ab97997b", null ],
     [ "printProfile", "classhtgs_1_1_any_task_manager.html#a93b99695e2206cba562ff05024a67ee6", null ],
     [ "resetProfile", "classhtgs_1_1_any_task_manager.html#ab372bfa036ced52e656014e0fee604bb", null ],
+    [ "sendDataPacket", "classhtgs_1_1_any_task_manager.html#aa8091e1bff400f7bb08d7df901778b76", null ],
     [ "setAlive", "classhtgs_1_1_any_task_manager.html#a0ef00b92ac9a44d73aff4ab57253c505", null ],
     [ "setInputConnector", "classhtgs_1_1_any_task_manager.html#a8efe983bd29b94a479dc89dae8b666f5", null ],
     [ "setNumPipelines", "classhtgs_1_1_any_task_manager.html#aa7d679e535d901023dcca34c9a2e5a7f", null ],
