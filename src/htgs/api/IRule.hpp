@@ -217,7 +217,7 @@ class IRule : public AnyIRule {
    * @return a pointer to the state container allocated
    */
   StateContainer<std::shared_ptr<T>> *allocStateContainer(size_t size) {
-    return new StateContainer<std::shared_ptr<T>>(size, 0, nullptr);
+    return new StateContainer<std::shared_ptr<T>>(size, 1, nullptr);
   }
 
   /**
@@ -229,7 +229,7 @@ class IRule : public AnyIRule {
    */
   template<class V>
   StateContainer<V> *allocStateContainer(size_t size, V defaultValue) {
-    return new StateContainer<V>(size, 0, defaultValue);
+    return new StateContainer<V>(size, 1, defaultValue);
   }
 
  private:

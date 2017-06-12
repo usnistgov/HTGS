@@ -154,21 +154,10 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
                                " to connector " << this->connector);
   }
 
- private:
-
-  //! @cond Doxygen_Suppress
-#ifdef WS_PROFILE
-  void sendWSProfileUpdate(void *addr, StatusCode code)
-  {
-    if (this->getName() == "WebSocketProfiler")
-      return;
-    std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(addr, code));
-    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), "", "WebSocketProfiler", "0", updateStatus));
-    this->communicator->produceDataPacket(dataPacket);
-  }
-#endif
-
-  void checkRuleTermination() {
+  /**
+   * Checks if the rule can be terminated or not
+   */
+  void checkRuleTermination() override {
     if (!terminated) {
       // Check if the rule is ready to be terminated before and after processing data
       if (rule->canTerminateRule(pipelineId)) {
@@ -183,6 +172,20 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
       }
     }
   }
+
+ private:
+
+  //! @cond Doxygen_Suppress
+#ifdef WS_PROFILE
+  void sendWSProfileUpdate(void *addr, StatusCode code)
+  {
+    if (this->getName() == "WebSocketProfiler")
+      return;
+    std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(addr, code));
+    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), "", "WebSocketProfiler", "0", updateStatus));
+    this->communicator->produceDataPacket(dataPacket);
+  }
+#endif
   //! @endcond
 
   std::shared_ptr<IRule<T, U>> rule; //!< The rule associated with the RuleManager

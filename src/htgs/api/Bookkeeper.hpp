@@ -154,6 +154,22 @@ class Bookkeeper : public ITask<T, VoidData> {
 
   }
 
+  bool canTerminate(std::shared_ptr<AnyConnector> inputConnector) override {
+    // check input connector first
+    assert(inputConnector != nullptr);
+    if (inputConnector->isInputTerminated())
+      return true;
+
+    // Loop through each rule, if they can terminate, then initiate termination for that rule
+    // This is used to assist in terminating a cycle
+    for (auto ruleManager : *ruleManagers)
+    {
+      ruleManager->checkRuleTermination();
+    }
+
+    return false;
+  }
+
   /**
    * Initializes the bookkeeper and all RuleManagers.
    * @note This function should only be called by the HTGS API

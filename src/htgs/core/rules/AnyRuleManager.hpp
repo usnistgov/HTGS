@@ -132,6 +132,11 @@ class AnyRuleManager {
    */
   virtual void debug() = 0;
 
+  /**
+   * Checks the rule if termination can be done
+   */
+  virtual void checkRuleTermination() = 0;
+
 };
 }
 #endif //HTGS_ANYRULEMANAGER_HPP

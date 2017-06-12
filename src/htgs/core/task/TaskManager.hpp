@@ -276,7 +276,7 @@ class TaskManager : public AnyTaskManager {
         if (this->getOutputConnector() != nullptr) {
           this->getOutputConnector()->producerFinished();
 
-          if (this->getOutputConnector()->isInputTerminated())
+//          if (this->getOutputConnector()->isInputTerminated())
             this->getOutputConnector()->wakeupConsumer();
         }
 
