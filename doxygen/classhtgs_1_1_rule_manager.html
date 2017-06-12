@@ -128,8 +128,8 @@ Inheritance diagram for htgs::RuleManager&lt; T, U &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_rule_manager__inherit__graph.png" border="0" usemap="#htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_inherit__map" id="htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_inherit__map">
-<area shape="rect" id="node2" href="classhtgs_1_1_any_rule_manager_in_only.html" title="Implements the base class for the rule manager, but only provides the input type. ..." alt="" coords="5,248,231,340"/>
-<area shape="rect" id="node3" href="classhtgs_1_1_any_rule_manager.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="39,5,197,200"/>
+<area shape="rect" id="node2" href="classhtgs_1_1_any_rule_manager_in_only.html" title="Implements the base class for the rule manager, but only provides the input type. ..." alt="" coords="5,263,231,355"/>
+<area shape="rect" id="node3" href="classhtgs_1_1_any_rule_manager.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="32,5,204,215"/>
 </map>
 </div>
 <div class="dynheader">
@@ -138,7 +138,7 @@ Collaboration diagram for htgs::RuleManager&lt; T, U &gt;:</div>
 <div class="center"><img src="classhtgs_1_1_rule_manager__coll__graph.png" border="0" usemap="#htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_coll__map" id="htgs_1_1_rule_manager_3_01_t_00_01_u_01_4_coll__map">
 <area shape="rect" id="node2" href="classhtgs_1_1_any_rule_manager_in_only.html" title="Implements the base class for the rule manager, but only provides the input type. ..." alt="" coords="5,727,231,819"/>
-<area shape="rect" id="node3" href="classhtgs_1_1_any_rule_manager.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="39,338,197,533"/>
+<area shape="rect" id="node3" href="classhtgs_1_1_any_rule_manager.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="32,331,204,540"/>
 <area shape="rect" id="node4" href="classhtgs_1_1_task_graph_communicator.html" title="Implements the task graph communicator where a task&#39;s address and name are mapped to their input conn..." alt="" coords="507,632,737,915"/>
 <area shape="rect" id="node5" href="classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::DataPacket \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="899,301,1057,569"/>
 <area shape="rect" id="node7" title="STL class. " alt="" coords="363,154,443,231"/>
@@ -184,6 +184,10 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a2321a94c82589527a5bb805e7fdb380a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#a2321a94c82589527a5bb805e7fdb380a">setOutputConnector</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; <a class="el" href="classhtgs_1_1_rule_manager.html#a6ffc57db1c2bba7768d1943af3046c08">connector</a>) override</td></tr>
 <tr class="memdesc:a2321a94c82589527a5bb805e7fdb380a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the output connector that the <a class="el" href="classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). ">RuleManager</a> is attached to.  <a href="#a2321a94c82589527a5bb805e7fdb380a">More...</a><br /></td></tr>
 <tr class="separator:a2321a94c82589527a5bb805e7fdb380a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affd511e1a7d63d0fd34632e72169aef0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affd511e1a7d63d0fd34632e72169aef0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_rule_manager.html#affd511e1a7d63d0fd34632e72169aef0">checkRuleTermination</a> () override</td></tr>
+<tr class="memdesc:affd511e1a7d63d0fd34632e72169aef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the rule can be terminated or not. <br /></td></tr>
+<tr class="separator:affd511e1a7d63d0fd34632e72169aef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classhtgs_1_1_any_rule_manager_in_only"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classhtgs_1_1_any_rule_manager_in_only')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classhtgs_1_1_any_rule_manager_in_only.html">htgs::AnyRuleManagerInOnly&lt; T &gt;</a></td></tr>
 <tr class="memitem:a2d55d8e43e4cab0dbe54c8f3602b3637 inherit pub_methods_classhtgs_1_1_any_rule_manager_in_only"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d55d8e43e4cab0dbe54c8f3602b3637"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_rule_manager_in_only.html#a2d55d8e43e4cab0dbe54c8f3602b3637">~AnyRuleManagerInOnly</a> () override</td></tr>

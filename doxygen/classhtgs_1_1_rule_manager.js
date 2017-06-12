@@ -2,6 +2,7 @@ var classhtgs_1_1_rule_manager =
 [
     [ "RuleManager", "classhtgs_1_1_rule_manager.html#a6392aac0421a482a8b0ce010bcca1735", null ],
     [ "~RuleManager", "classhtgs_1_1_rule_manager.html#ab43f1795e53d3090eb76b779bcc73f2d", null ],
+    [ "checkRuleTermination", "classhtgs_1_1_rule_manager.html#affd511e1a7d63d0fd34632e72169aef0", null ],
     [ "copy", "classhtgs_1_1_rule_manager.html#af584dddf82366705698208c5c6979094", null ],
     [ "debug", "classhtgs_1_1_rule_manager.html#a81883c73846c027bf333fd1c43b53b34", null ],
     [ "executeTask", "classhtgs_1_1_rule_manager.html#a88a8dedee973ddff6f187b14f23a52fc", null ],

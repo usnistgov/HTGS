@@ -7,5 +7,5 @@
 <area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,703,383,1030"/>
 <area shape="rect" id="node6" href="$classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="408,696,600,1037"/>
 <area shape="rect" id="node7" href="$classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="397,1100,611,1221"/>
-<area shape="rect" id="node9" href="$classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="629,740,785,993"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="629,733,785,1001"/>
 </map>

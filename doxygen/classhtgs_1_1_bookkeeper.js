@@ -4,6 +4,7 @@ var classhtgs_1_1_bookkeeper =
     [ "~Bookkeeper", "classhtgs_1_1_bookkeeper.html#a5c523d033bf2f195351eadea0028e50a", null ],
     [ "addRuleManager", "classhtgs_1_1_bookkeeper.html#a056b705118ba60ffa6f3deb10b1f2e50", null ],
     [ "addRuleManager", "classhtgs_1_1_bookkeeper.html#abc8027abadb52ef836d9d3f687dab261", null ],
+    [ "canTerminate", "classhtgs_1_1_bookkeeper.html#a2a1ef74065bf27a156682e4c41518559", null ],
     [ "copy", "classhtgs_1_1_bookkeeper.html#ac8b0824190917a7ee8672cacf7103aff", null ],
     [ "debug", "classhtgs_1_1_bookkeeper.html#a5a5c437cbc56c3ec352253b67b1e51b3", null ],
     [ "executeTask", "classhtgs_1_1_bookkeeper.html#a37cb4230ab7e85f0948b8a8986ec66ab", null ],

@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classhtgs_1_1_task_manager.html#a40800564af46581910448370180d9f39":[9,0,0,35,10],
+"classhtgs_1_1_task_manager.html#a49b211d4c25e44e112a329896fabe020":[9,0,0,35,3],
+"classhtgs_1_1_task_manager.html#a631205c3e8a7d68c9fe202cf00db9b6a":[9,0,0,35,6],
 "classhtgs_1_1_task_manager.html#a7a289634dc4f71a7625229bbbbb5ce61":[9,0,0,35,8],
 "classhtgs_1_1_task_manager.html#a7a31d2eb4ffe1abe4190c4783dedf5fe":[9,0,0,35,11],
 "classhtgs_1_1_task_manager.html#a80e941fce5be320e19e213abfe2b719f":[9,0,0,35,12],
@@ -74,8 +77,8 @@ var NAVTREEINDEX3 =
 "functions_d.html":[9,3,0,4],
 "functions_e.html":[9,3,0,5],
 "functions_f.html":[9,3,0,6],
-"functions_func.html":[9,3,1,0],
 "functions_func.html":[9,3,1],
+"functions_func.html":[9,3,1,0],
 "functions_func_0x7e.html":[9,3,1,18],
 "functions_func_b.html":[9,3,1,1],
 "functions_func_c.html":[9,3,1,2],

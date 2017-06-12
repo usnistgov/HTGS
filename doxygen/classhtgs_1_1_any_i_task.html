@@ -136,7 +136,7 @@ Inheritance diagram for htgs::AnyITask:</div>
 <area shape="rect" id="node4" href="classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,703,383,1030"/>
 <area shape="rect" id="node6" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="408,696,600,1037"/>
 <area shape="rect" id="node7" href="classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="397,1100,611,1221"/>
-<area shape="rect" id="node9" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="629,740,785,993"/>
+<area shape="rect" id="node9" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="629,733,785,1001"/>
 </map>
 </div>
 <div class="dynheader">
@@ -537,7 +537,7 @@ std::shared_ptr&lt; <a class="el" href="_types_8hpp.html#a2156f652394ebf22e0f38c
 </dl>
 <dl class="section note"><dt>Note</dt><dd>By default this function checks if the input no longer sending data using inputConnector-&gt;isInputTerminated() </dd></dl>
 
-<p>Implemented in <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; U, W &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; T, VoidData &gt;</a>, and <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; U, W &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; T, VoidData &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>, and <a class="el" href="classhtgs_1_1_bookkeeper.html#a2a1ef74065bf27a156682e4c41518559">htgs::Bookkeeper&lt; T &gt;</a>.</p>
 
 </div>
 </div>
@@ -565,7 +565,7 @@ std::shared_ptr&lt; <a class="el" href="_types_8hpp.html#a2156f652394ebf22e0f38c
 <p>Pure virtual function to copy an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>the copy of the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classhtgs_1_1_execution_pipeline.html#a33b556557bc0a5abf32a4a43fea0a076">htgs::ExecutionPipeline&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; U, W &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; T, VoidData &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>, <a class="el" href="classhtgs_1_1_i_cuda_task.html#aa23de96615df6b88e3465b7ca98cc9a8">htgs::ICudaTask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_bookkeeper.html#ac8b0824190917a7ee8672cacf7103aff">htgs::Bookkeeper&lt; T &gt;</a>, <a class="el" href="classhtgs_1_1_memory_manager.html#a280ffd3f9c47a04dc0f5ae49553043a0">htgs::MemoryManager&lt; T &gt;</a>, and <a class="el" href="classhtgs_1_1_cuda_memory_manager.html#a8f005beff0123f7b85483da3f42ef1c8">htgs::CudaMemoryManager&lt; T &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classhtgs_1_1_execution_pipeline.html#a33b556557bc0a5abf32a4a43fea0a076">htgs::ExecutionPipeline&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; U, W &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; T, VoidData &gt;</a>, <a class="el" href="classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6">htgs::ITask&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;</a>, <a class="el" href="classhtgs_1_1_bookkeeper.html#ac8b0824190917a7ee8672cacf7103aff">htgs::Bookkeeper&lt; T &gt;</a>, <a class="el" href="classhtgs_1_1_i_cuda_task.html#aa23de96615df6b88e3465b7ca98cc9a8">htgs::ICudaTask&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_memory_manager.html#a280ffd3f9c47a04dc0f5ae49553043a0">htgs::MemoryManager&lt; T &gt;</a>, and <a class="el" href="classhtgs_1_1_cuda_memory_manager.html#a8f005beff0123f7b85483da3f42ef1c8">htgs::CudaMemoryManager&lt; T &gt;</a>.</p>
 
 </div>
 </div>

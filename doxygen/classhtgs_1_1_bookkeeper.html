@@ -180,6 +180,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a5a5c437cbc56c3ec352253b67b1e51b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#a5a5c437cbc56c3ec352253b67b1e51b3">debug</a> () override</td></tr>
 <tr class="memdesc:a5a5c437cbc56c3ec352253b67b1e51b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides debug output for the rule manager.  <a href="#a5a5c437cbc56c3ec352253b67b1e51b3">More...</a><br /></td></tr>
 <tr class="separator:a5a5c437cbc56c3ec352253b67b1e51b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a1ef74065bf27a156682e4c41518559"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#a2a1ef74065bf27a156682e4c41518559">canTerminate</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; inputConnector) override</td></tr>
+<tr class="memdesc:a2a1ef74065bf27a156682e4c41518559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is checking if it can be terminated.  <a href="#a2a1ef74065bf27a156682e4c41518559">More...</a><br /></td></tr>
+<tr class="separator:a2a1ef74065bf27a156682e4c41518559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a726c49f962e7402e4161c3fa4c90aa20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_bookkeeper.html#a726c49f962e7402e4161c3fa4c90aa20">initialize</a> () override</td></tr>
 <tr class="memdesc:a726c49f962e7402e4161c3fa4c90aa20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the bookkeeper and all RuleManagers.  <a href="#a726c49f962e7402e4161c3fa4c90aa20">More...</a><br /></td></tr>
 <tr class="separator:a726c49f962e7402e4161c3fa4c90aa20"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,8 +210,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memitem:a4ea247c51fb5da271a55bd948f728a6a inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a4ea247c51fb5da271a55bd948f728a6a">initialize</a> (size_t <a class="el" href="classhtgs_1_1_any_i_task.html#a08622ac16b7f3273702e1f665db9567a">pipelineId</a>, size_t numPipeline, <a class="el" href="classhtgs_1_1_task_manager.html">TaskManager</a>&lt; T, <a class="el" href="classhtgs_1_1_void_data.html">VoidData</a> &gt; *<a class="el" href="classhtgs_1_1_i_task.html#ac8e5df427a5bf216c86d0df3263e2888">ownerTask</a>)</td></tr>
 <tr class="memdesc:a4ea247c51fb5da271a55bd948f728a6a inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that is called when an ITask is being initialized by it's owner thread.  <a href="#a4ea247c51fb5da271a55bd948f728a6a">More...</a><br /></td></tr>
 <tr class="separator:a4ea247c51fb5da271a55bd948f728a6a inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ea8be928ea7e5a1c7dab9dd889cb268 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">canTerminate</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; inputConnector) override</td></tr>
-<tr class="separator:a8ea8be928ea7e5a1c7dab9dd889cb268 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af344dfcd8cfa5bab869f09728403e323 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#af344dfcd8cfa5bab869f09728403e323">getDotShapeColor</a> () override</td></tr>
 <tr class="separator:af344dfcd8cfa5bab869f09728403e323 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0f0972cf9a2a828e2fdc9d21717831a inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ae0f0972cf9a2a828e2fdc9d21717831a">getDotFillColor</a> () override</td></tr>
@@ -451,6 +452,51 @@ template&lt;class U &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a2a1ef74065bf27a156682e4c41518559"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classhtgs_1_1_bookkeeper.html">htgs::Bookkeeper</a>&lt; T &gt;::canTerminate </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt;&#160;</td>
+          <td class="paramname"><em>inputConnector</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Virtual function that is called when an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is checking if it can be terminated. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">inputConnector</td><td>the connector responsible for giving data to this Task </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>whether the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> can be terminated or not </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">TRUE</td><td>if the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is ready to be terminated </td></tr>
+    <tr><td class="paramname">FALSE</td><td>if the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is not ready to be terminated </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>By default this function checks if the input no longer sending data using inputConnector-&gt;isInputTerminated() </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">htgs::ITask&lt; T, VoidData &gt;</a>.</p>
 
 </div>
 </div>
