@@ -304,9 +304,12 @@ int main() {
     {
         auto data = taskGraph->consumeData();
 
-        int result = data->getResult();
-
-        std::cout << "Result: " << result << std::endl;
+        // Good idea to check for nullptr data in case termination makes its way out of consumeData from taskGraph
+        if (data != nullptr)
+        {
+            int result = data->getResult();
+            std::cout << "Result: " << result << std::endl;
+        }
     }
 
     // Release all memory for the graph
