@@ -21,6 +21,19 @@ namespace htgs {
  */
 class AnyIRule {
  public:
+
+  /**
+   * Creates an AnyIRule with locks enabled.
+   */
+  AnyIRule() : useLocks(true) {}
+
+  /**
+   * Creates an AnyIRule with locks specified
+   * @param useLocks whether to use locks on the rule or not to ensure one thread accesses the rule at a time
+   */
+  AnyIRule(bool useLocks) : useLocks(useLocks) {}
+
+
   /**
    * Destructor
    */
@@ -62,9 +75,20 @@ class AnyIRule {
     return mutex;
   }
 
+  /**
+   * Gets whether the rule should use locks or not.
+   * @return TRUE if locks should be used, otherwise false
+   * @retval TRUE the lock will be used to ensure mutual exclusion when accessing this rule across multiple threads
+   * @retval FALSE the lock will not be used, and any thread may access the rule asynchronously
+   */
+  bool canUseLocks() const {
+    return useLocks;
+  }
+
  private:
   std::mutex
       mutex; //!< The mutex associated with this IRule to ensure no more than one thread is processing the rule at a time
+  bool useLocks; //!< Will enable using the mutex to lock the rule to ensure this rule is only accessed by a thread at a time
 };
 }
 

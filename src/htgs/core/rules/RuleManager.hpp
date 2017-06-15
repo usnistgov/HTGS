@@ -77,7 +77,9 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
 
   void executeTask(std::shared_ptr<T> data) override {
 
-    this->rule->getMutex().lock();
+    if (this->rule->canUseLocks()) {
+      this->rule->getMutex().lock();
+    }
 
     // Check if the rule is expecting data or not
     checkRuleTermination();
@@ -98,7 +100,9 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
     // Check if the rule is ready to be terminated after processing data (in case no more data
     checkRuleTermination();
 
-    this->rule->getMutex().unlock();
+    if (this->rule->canUseLocks()) {
+      this->rule->getMutex().unlock();
+    }
   }
 
   RuleManager<T, U> *copy() override {

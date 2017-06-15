@@ -306,7 +306,7 @@ class ICudaTask : public ITask<T, U> {
     CUdevice dev;
     cuDeviceGet(&dev, this->cudaId);
 
-    for (int i = 0; i < this->numGpus; i++) {
+    for (size_t i = 0; i < this->numGpus; i++) {
       CUcontext ctx = this->contexts[i];
       if (ctx != this->context) {
         CUdevice peerDev;

@@ -105,7 +105,17 @@ class IRule : public AnyIRule {
   /**
    * Creates an IRule
    */
-  IRule() {
+  IRule() : AnyIRule() {
+    output = new std::list<std::shared_ptr<U>>();
+  }
+
+  /**
+   * Creates an IRule with locks specified
+   * @param useLocks whether to use locks on the rule or not to ensure one thread accesses the rule at a time
+   * @note If locks are disabled, then caution must be taken to ensure state is not overwritten if multiple threads
+   * are accessing the rule.
+   */
+  IRule(bool useLocks) : AnyIRule(useLocks) {
     output = new std::list<std::shared_ptr<U>>();
   }
 
