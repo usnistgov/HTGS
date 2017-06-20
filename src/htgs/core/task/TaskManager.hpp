@@ -176,6 +176,9 @@ class TaskManager : public AnyTaskManager {
 
     auto finish = std::chrono::high_resolution_clock::now();
 
+#if defined (WS_PROFILE) && defined (VERBOSE_WS_PROFILE)
+    auto waitTime = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
+#endif
     this->incWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
 
     DEBUG_VERBOSE(prefix() << this->getName() << " received data: " << data << " from " << inputConnector);
@@ -183,11 +186,24 @@ class TaskManager : public AnyTaskManager {
     if (data != nullptr || this->isPoll()) {
       start = std::chrono::high_resolution_clock::now();
 #ifdef WS_PROFILE
-      sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
-      this->sendWSProfileUpdate(StatusCode::EXECUTE);
+//      sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
+//      this->sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
       this->taskFunction->executeTask(data);
       finish = std::chrono::high_resolution_clock::now();
+
+#ifdef WS_PROFILE
+      // Produce meta data for task
+      std::string metaDataString = this->taskFunction->profileStr();
+#ifdef VERBOSE_WS_PROFILE
+      // Send compute time and wait time meta
+      metaDataString = metaDataString + ";waitTime:" + std::to_string(waitTime.count()) + ";computeTime:" + std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+#endif
+      if (metaDataString != "")
+      {
+        sendWSMetaProfileUpdate(metaDataString);
+      }
+#endif
 
       this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
     }
@@ -326,6 +342,15 @@ class TaskManager : public AnyTaskManager {
     if (this->getName() == "WebSocketProfiler")
       return;
     std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(addr, code));
+    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
+    this->sendDataPacket(dataPacket);
+  }
+
+  void sendWSMetaProfileUpdate(std::string metaData)
+  {
+    if (this->getName() == "WebSocketProfiler")
+      return;
+    std::shared_ptr<ProfileData> updateStatus(new UpdateMetadataProfile(this->getTaskFunction(), metaData));
     std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
     this->sendDataPacket(dataPacket);
   }

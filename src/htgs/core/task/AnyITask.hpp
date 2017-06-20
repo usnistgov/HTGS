@@ -218,6 +218,17 @@ class AnyITask {
   virtual void profile() {}
 
   /**
+   * Virtual function that is called after executionTask is called. This can be used to provide
+   * detailed profile (or debug) data to be sent for visualization using the HTGS_Visualizer.
+   * The format uses <key>:<value> pairs, separated by semi-colons.
+   *
+   * i.e.: gflops:<#>;bandwidth:<#>;...
+   *
+   * @return the string representation as key value pairs
+   */
+  virtual std::string profileStr() { return ""; }
+
+  /**
   * Gets the demangled input type name of the connector
   * @return the demangled type name for the input
   */
