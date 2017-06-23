@@ -187,7 +187,7 @@ class TaskManager : public AnyTaskManager {
       start = std::chrono::high_resolution_clock::now();
 #ifdef WS_PROFILE
 //      sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
-//      this->sendWSProfileUpdate(StatusCode::EXECUTE);
+      this->sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
       this->taskFunction->executeTask(data);
       finish = std::chrono::high_resolution_clock::now();
