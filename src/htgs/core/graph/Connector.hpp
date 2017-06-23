@@ -24,6 +24,7 @@
 #include <htgs/api/IData.hpp>
 #ifdef USE_PRIORITY_QUEUE
 #include <htgs/core/queue/PriorityBlockingQueue.hpp>
+#include <htgs/debug/debug_message.hpp>
 #else
 #include <htgs/core/queue/BlockingQueue.hpp>
 #include <htgs/debug/debug_message.hpp>
