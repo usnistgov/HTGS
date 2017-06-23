@@ -80,9 +80,8 @@ class AnyConnector {
  */
   std::string getDotId() {
     std::ostringstream inConn;
-    inConn << std::showbase << std::hex << this;
+    inConn << "x" << this;
     std::string inConnStr = inConn.str();
-    inConnStr.erase(0, 1);
 
     return inConnStr;
   }

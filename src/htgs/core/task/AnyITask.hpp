@@ -525,9 +525,8 @@ class AnyITask {
    */
   std::string getDotId() {
     std::ostringstream id;
-    id << std::showbase << std::hex << this;
+    id << "x" << this;
     std::string idStr = id.str();
-    idStr.erase(0, 1);
 
     return idStr;
   }
