@@ -25,6 +25,10 @@
 #include <htgs/core/graph/Connector.hpp>
 #include <htgs/core/task/TaskManager.hpp>
 
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
+#include <cxxabi.h>
+#endif
+
 namespace htgs {
 
 template<class T, class U>
@@ -338,6 +342,7 @@ class ITask : public AnyITask {
    * @copydoc AnyITask::inTypeName
    */
   std::string inTypeName() override final {
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
     int status;
     char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
     std::string ret(realName);
@@ -345,6 +350,9 @@ class ITask : public AnyITask {
     free(realName);
 
     return ret;
+#else
+    return typeid(T).name();
+#endif
 
   }
 

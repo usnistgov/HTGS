@@ -239,6 +239,12 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
       delete wsProfileTaskManager;
       wsProfileTaskManager = nullptr;
+
+      delete wsProfileThread;
+      wsProfileThread = nullptr;
+
+      delete runtimeThread;
+      runtimeThread = nullptr;
     }
 #endif
 
@@ -526,7 +532,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
       // Create thread
       std::shared_ptr<std::atomic_size_t>
           atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(1));
-      TaskManagerThread *runtimeThread = new TaskManagerThread(0, this->wsProfileTaskManager, atomicNumThreads);
+      runtimeThread = new TaskManagerThread(0, this->wsProfileTaskManager, atomicNumThreads);
       this->wsProfileThread = new std::thread(&TaskManagerThread::run, runtimeThread);
 
       WebSocketProfiler *profileTask = (WebSocketProfiler *)this->wsProfileTaskManager->getTaskFunction();
@@ -882,6 +888,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
 #ifdef WS_PROFILE
   TaskManager<ProfileData, VoidData> *wsProfileTaskManager; // !< The task manager for the web socket profiler
   std::thread *wsProfileThread; // !< The thread for the web socket profiler task manager
+  TaskManagerThread *runtimeThread; //!< The task manager runtime thread
 #endif
 
 };

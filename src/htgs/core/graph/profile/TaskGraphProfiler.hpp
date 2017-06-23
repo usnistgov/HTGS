@@ -89,6 +89,7 @@ class TaskGraphProfiler {
    * @note The directive PROFILE must be defined to enable outputting profile data.
    */
   std::string genDotProfile(std::string curDotGraph, int colorFlag) {
+    std::cout << "tmansizes: " << taskManagerProfiles->size() << std::endl;
     std::string ret = "";
 
     // If all threading is disabled, then compute the averages only, based on first thread
@@ -152,10 +153,15 @@ class TaskGraphProfiler {
 
     std::set<std::string> keys;
 
+    // TODO: For gathing data, need to use matching input and output connectors, name is unreliable
     // Gather multimap
     for (auto t : *taskManagerProfiles) {
       auto tMan = t.first;
-      std::string key = tMan->getAddress() + tMan->getName();
+      std::string key =
+          (tMan->getInputConnector() != nullptr ? tMan->getInputConnector()->getDotId() : "")
+          + (tMan->getOutputConnector() != nullptr ? tMan->getOutputConnector()->getDotId() : "")
+          + tMan->getAddress() + tMan->getName();
+
       keys.insert(key);
       averageMap.insert(std::pair<std::string, std::pair<AnyTaskManager *, TaskManagerProfile *>>(key, t));
     }

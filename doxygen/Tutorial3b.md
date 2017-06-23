@@ -387,6 +387,6 @@ Working at a higher level abstractions within HTGS enables analyzing the algorit
 which can be used to identify bottlenecks and make decisions on a per-task basis. More advanced techniques, such as
 changing data representations and traversal patterns can also be used to improve utilization and data reuse. 
 
-In Tutorial3C, we look at the impact of adding disk and a method for including memory mapped files. This
- tutorial is for Linux and Mac systems only. In Tutorial4, we will revisit matrix multiplication and incorporate
-  an NVIDIA GPU into the computation. If you do not have an NVIDIA GPU, then you can move onto Tutorial6.
+An implementation that adds memory mapped files and the disk are also available in the HTGS-Tutorials code-base. 
+Memory mapped files will only work on Linux and OSX systems. Next, Tutorial4 will revisit matrix multiplication and
+incorporate NVIDIA GPUs into the computation. If you do not have an NVIDIA GPU, then skip to Tutorial6.

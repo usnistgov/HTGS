@@ -122,6 +122,7 @@ int main() {
 
   std::cout << "Execution time: " << diff.count() << " ns" << std::endl;
 
+  taskGraph->writeDotToFile("test.dot", DOTGEN_FLAG_SHOW_IN_OUT_TYPES);
 
   delete runtime;
 }

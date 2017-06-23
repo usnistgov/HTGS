@@ -14,8 +14,12 @@
 #define HTGS_CONNECTOR_HPP
 
 #include <atomic>
-#include <cxxabi.h>
+
 #include <list>
+
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
+#include <cxxabi.h>
+#endif
 
 #include <htgs/api/IData.hpp>
 #ifdef USE_PRIORITY_QUEUE
@@ -156,6 +160,7 @@ class Connector : public AnyConnector {
    * @return the demangled type name
    */
   std::string typeName() override {
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
     int status;
     char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
     std::string ret(realName);
@@ -163,6 +168,9 @@ class Connector : public AnyConnector {
     free(realName);
 
     return ret;
+#else
+    return typeid(T).name();
+#endif
 
   }
 

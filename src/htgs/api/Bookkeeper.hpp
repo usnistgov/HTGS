@@ -205,11 +205,11 @@ class Bookkeeper : public ITask<T, VoidData> {
   std::string genDot(int flags, std::string idStr) {
     std::ostringstream oss;
     for (AnyRuleManagerInOnly<T> *ruleMan : *ruleManagers) {
-      std::ostringstream ruleManOss;
-      ruleManOss << ruleMan->getConnector();
+//      std::ostringstream ruleManOss;
+//      ruleManOss <<
 
-      std::string ruleManStr = ruleManOss.str();
-      ruleManStr.erase(0, 1);
+      std::string ruleManStr = ruleMan->getConnector()->getDotId();
+//      ruleManStr.erase(0, 1);
       oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName() << "\"];" << std::endl;
     }
     std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: " + this->inTypeName()) : "");

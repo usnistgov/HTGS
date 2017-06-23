@@ -217,6 +217,10 @@ class TaskManager : public AnyTaskManager {
   ////////////////////////////////////////////////////////////////////////////////
 
   void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) override {
+#ifdef WS_PROFILE
+    if (this->getName() == "WebSocketProfiler")
+      return;
+#endif
     // Create profile data for this task
     TaskManagerProfile
         *profileData = new TaskManagerProfile(this->getComputeTime(), this->getWaitTime(), this->getMaxQueueSize());
