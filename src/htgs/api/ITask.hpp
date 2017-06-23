@@ -360,6 +360,7 @@ class ITask : public AnyITask {
    * @copydoc AnyITask::outTypeName
    */
   std::string outTypeName() override final {
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
     int status;
     char *realName = abi::__cxa_demangle(typeid(U).name(), 0, 0, &status);
     std::string ret(realName);
@@ -367,6 +368,9 @@ class ITask : public AnyITask {
     free(realName);
 
     return ret;
+#else
+    return typeid(U).name();
+#endif
 
   }
 
