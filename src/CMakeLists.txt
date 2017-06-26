@@ -16,7 +16,7 @@ if (BUILD_MAIN)
 
 #    add_definitions(-DPROFILE)
 #    add_definitions(-DWS_PROFILE)
-    add_definitions(-DUSE_PRIORITY_QUEUE)
+#    add_definitions(-DUSE_PRIORITY_QUEUE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -Wall -Wextra -Wno-unused-parameter")
 
     file(GLOB_RECURSE INC_ALL "*.hpp" "*.h")

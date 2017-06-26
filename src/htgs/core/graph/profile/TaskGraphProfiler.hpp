@@ -171,24 +171,21 @@ class TaskGraphProfiler {
       auto valRange = averageMap.equal_range(key);
 
       AnyTaskManager *mainManager = nullptr;
-      TaskManagerProfile *finalProfile = nullptr;
+      TaskManagerProfile *finalProfile = new TaskManagerProfile();
 
       int count = 0;
       for (auto i = valRange.first; i != valRange.second; ++i) {
         auto profilePair = (*i).second;
 
-        if (finalProfile == nullptr) {
-          finalProfile = profilePair.second;
-        } else {
-          finalProfile->sum(profilePair.second);
-        }
+        finalProfile->sum(profilePair.second);
+
+        delete profilePair.second;
+        profilePair.second = nullptr;
 
         if (profilePair.first->getThreadId() == 0) {
           mainManager = profilePair.first;
-        } else {
-          delete profilePair.second;
-          profilePair.second = nullptr;
         }
+        
         count++;
       }
 
