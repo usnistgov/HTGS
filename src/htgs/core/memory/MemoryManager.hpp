@@ -195,6 +195,7 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
     * @return the demangled type name
     */
   std::string typeName() {
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
     int status;
     char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
     std::string ret(realName);
@@ -202,7 +203,9 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
     free(realName);
 
     return ret;
-
+#else
+    return typeid(T).name();
+#endif
   }
 
   /**
