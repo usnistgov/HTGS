@@ -7,7 +7,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 link_libraries(${CMAKE_THREAD_LIBS_INIT})
 #add_definitions(-DDEBUG_FLAG)
-add_definitions(-DPROFILE)
+#add_definitions(-DPROFILE)
 include_directories(/home/tjb3/local/include)
 link_directories(/home/tjb3/local/lib)
 

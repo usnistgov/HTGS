@@ -142,8 +142,9 @@ class TaskManager : public AnyTaskManager {
     if (this->isStartTask()) {
       DEBUG_VERBOSE(prefix() << this->getName() << " is a start task");
       this->setStartTask(false);
+#ifdef PROFILE
       auto start = std::chrono::high_resolution_clock::now();
-
+#endif
 #ifdef WS_PROFILE
       this->sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
@@ -153,9 +154,11 @@ class TaskManager : public AnyTaskManager {
 #ifdef WS_PROFILE
       this->sendWSProfileUpdate(StatusCode::WAITING);
 #endif
-      auto finish = std::chrono::high_resolution_clock::now();
 
+#ifdef PROFILE
+      auto finish = std::chrono::high_resolution_clock::now();
       this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+#endif
       return;
     } else if (this->taskFunction->canTerminate(this->inputConnector)) {
 
@@ -164,7 +167,9 @@ class TaskManager : public AnyTaskManager {
 
       return;
     }
+#ifdef PROFILE
     auto start = std::chrono::high_resolution_clock::now();
+#endif
 
 #ifdef WS_PROFILE
     this->sendWSProfileUpdate(StatusCode::WAITING);
@@ -174,23 +179,32 @@ class TaskManager : public AnyTaskManager {
     else
       data = this->inputConnector->consumeData();
 
+#ifdef PROFILE
     auto finish = std::chrono::high_resolution_clock::now();
+#endif
 
 #if defined (WS_PROFILE) && defined (VERBOSE_WS_PROFILE)
     auto waitTime = std::chrono::duration_cast<std::chrono::microseconds>(finish - start);
 #endif
+#ifdef PROFILE
     this->incWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+#endif
 
     DEBUG_VERBOSE(prefix() << this->getName() << " received data: " << data << " from " << inputConnector);
 
     if (data != nullptr || this->isPoll()) {
+#ifdef PROFILE
       start = std::chrono::high_resolution_clock::now();
+#endif
 #ifdef WS_PROFILE
 //      sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
       this->sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
       this->taskFunction->executeTask(data);
+#ifdef PROFILE
       finish = std::chrono::high_resolution_clock::now();
+      this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+#endif
 
 #ifdef WS_PROFILE
       // Produce meta data for task
@@ -205,7 +219,6 @@ class TaskManager : public AnyTaskManager {
       }
 #endif
 
-      this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
     }
 
   }
