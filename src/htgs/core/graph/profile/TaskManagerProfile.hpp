@@ -130,6 +130,12 @@ class TaskManagerProfile {
   }
 
   /**
+   * Sets the max queue size for the profile
+   * @param maxQueueSize the max queue size
+   */
+  void setMaxQueueSize(size_t maxQueueSize) { this->maxQueueSize = maxQueueSize; }
+
+  /**
    * Computes the average compute and wait time for the profile
    * @param count the number of items to divide by
    */

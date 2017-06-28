@@ -176,6 +176,7 @@ class TaskGraphProfiler {
       for (auto i = valRange.first; i != valRange.second; ++i) {
         auto profilePair = (*i).second;
 
+        finalProfile->setMaxQueueSize(profilePair.second->getMaxQueueSize());
         finalProfile->sum(profilePair.second);
 
         delete profilePair.second;
