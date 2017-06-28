@@ -89,7 +89,6 @@ class TaskGraphProfiler {
    * @note The directive PROFILE must be defined to enable outputting profile data.
    */
   std::string genDotProfile(std::string curDotGraph, int colorFlag) {
-    std::cout << "tmansizes: " << taskManagerProfiles->size() << std::endl;
     std::string ret = "";
 
     // If all threading is disabled, then compute the averages only, based on first thread
