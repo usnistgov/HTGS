@@ -282,9 +282,14 @@ class ExecutionPipeline : public ITask<T, U> {
 
   virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles) override {
     // Gather profile data for each graph
-    for (auto g : *graphs) {
-      g->gatherProfilingData(taskManagerProfiles);
+    if (graphs->size() > 0) {
+      for (auto g : *graphs) {
+        g->gatherProfilingData(taskManagerProfiles);
+      }
+    } else {
+      graph->gatherProfilingData(taskManagerProfiles);
     }
+
   }
 
   void printProfile() override {
@@ -293,29 +298,29 @@ class ExecutionPipeline : public ITask<T, U> {
     }
   }
 
-#ifdef PROFILE
-  std::string getDotProfile(int flags,
-                            std::unordered_map<std::string, double> *mmap, double val,
-                            std::string desc, std::unordered_map<std::string, std::string> *colorMap)
-  {
-    std::ostringstream oss;
-
-    if (graphs->size() > 0)
-    {
-      for (auto g : *graphs)
-      {
-        oss << g->genProfileGraph(flags, mmap, desc, colorMap);
-      }
-    }
-    else
-    {
-      oss << graph->genProfileGraph(flags, mmap, desc, colorMap);
-    }
-
-    return oss.str();
-  }
-
-#endif
+//#ifdef PROFILE
+//  std::string getDotProfile(int flags,
+//                            std::unordered_map<std::string, double> *mmap, double val,
+//                            std::string desc, std::unordered_map<std::string, std::string> *colorMap)
+//  {
+//    std::ostringstream oss;
+//
+//    if (graphs->size() > 0)
+//    {
+//      for (auto g : *graphs)
+//      {
+//        oss << g->genProfileGraph(flags, mmap, desc, colorMap);
+//      }
+//    }
+//    else
+//    {
+//      oss << graph->genProfileGraph(flags, mmap, desc, colorMap);
+//    }
+//
+//    return oss.str();
+//  }
+//
+//#endif
 
   /**
    * @copydoc ITask::genDot

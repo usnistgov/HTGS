@@ -185,7 +185,7 @@ class TaskGraphProfiler {
         if (profilePair.first->getThreadId() == 0) {
           mainManager = profilePair.first;
         }
-        
+
         count++;
       }
 
