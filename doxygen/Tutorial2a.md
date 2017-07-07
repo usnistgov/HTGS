@@ -279,7 +279,8 @@ class GenMatrixTask : public htgs::ITask<MatrixRequestData, MatrixBlockData<doub
     size_t matrixWidth;
     size_t matrixHeight;
 
-    if (col == numBlocksCols - 1 && fullMatrixWidth % blockSize != 0) // adjusts the matrix-block width to the appropriate size if we are block at the very edge
+    // adjusts the matrix-block width to the appropriate size if it is considering the block at the very edge
+    if (col == numBlocksCols - 1 && fullMatrixWidth % blockSize != 0)
       matrixWidth = fullMatrixWidth % blockSize;
     else
       matrixWidth = blockSize;
@@ -382,7 +383,7 @@ class HadamardProductTask : public htgs::ITask<MatrixBlockMulData<double *>, Mat
 - Specify a pool of threads for an ITask using the ITask(numThreads) constructor
 - Typically a htgs::ITask purely handles computation and leaves state maintenance to the htgs::Bookkeeper
 - Separating the matrix generation and computation allows for overlapping I/O with computation, particularly if the I/O comes from disk
--  The body of the copy() function should contain any information neccessary to pass on to another thread. In the case of the HadamardProductTask, it is only numThreads. 
+-  The body of the copy() function should contain any information neccessary to pass on to another thread. In the case of the HadamardProductTask, it is only the number of threads. 
 
 ## Managing Dependencies with the Bookkeeper and IRule {#tut2a-bookkeeper}
 
