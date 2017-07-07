@@ -80,19 +80,18 @@ Getting Started using Eclipse CDT {#tut0-eclipse}
 6. You should be able to build the HTGS-Tutorials
 
 ## Getting Started on Windows with Visual Studio
-===== 
 
 1. Clone HTGS-Tutorials as shown above and store it in a known directory
 2. Download Microsoft Visual Studio Community from  [here](https://www.visualstudio.com/downloads/)
 3. Run Visual Studio and open a new Win32 project
       - Select default options and click *Finish*
 4. Add HTGS source files
-	a. Right-click on Solution in Solution Explorer
-	b. Properties > C/C++ > General > Additional Include Directories
-	c. Write <HTGS source directory>, which denotes where the #include statements will path from
+      - Right-click on Solution in Solution Explorer
+      - Properties > C/C++ > General > Additional Include Directories
+      - Write <HTGS source directory>, which denotes where the #include statements will path from
 5. To compile, go to Build > Build solution to generate the .exe file.
-      - The program will be made in <Visual Studio Location>/Projects/<Project Name>/Debug
-6. To run the .exe, it is advisable to use Windows Powershell, which comes installed on Windows by default or can otherwise be downloaded [here](https://msdn.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell)
+      - The program will be made in \<Visual Studio Location\>/Projects/\<Project Name\>/Debug
+6. To run the .exe, it is advisable to use Windows Powershell, which comes installed on Windows by default or can otherwise be downloaded [here](https://msdn.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell).
 
 Getting Started using CLion {#tut0-clion}
 =====
