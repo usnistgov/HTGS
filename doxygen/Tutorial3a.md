@@ -51,7 +51,7 @@ void GEMM(A, B, C)
     for_each(j : column of B) {
       double sum = C[i][j];
       for_each(k : column of A) {
-          sum = sum + A[i][k] * B[k][j];
+          sum += sum + A[i][k] * B[k][j];
       }
       C[i][j] = sum;
     }
