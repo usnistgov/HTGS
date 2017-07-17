@@ -354,7 +354,7 @@ class TaskManager : public AnyTaskManager {
 #ifdef WS_PROFILE
   void sendWSProfileUpdate(StatusCode code)
   {
-    if (this->getName() == "WebSocketProfiler")
+    if (this->getName() == "WebSocketProfiler" || this->getName() == "Execution Pipeline")
       return;
     std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(this->getTaskFunction(), code));
     std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
@@ -363,7 +363,7 @@ class TaskManager : public AnyTaskManager {
 
   void sendWSProfileUpdate(void * addr, StatusCode code)
   {
-    if (this->getName() == "WebSocketProfiler")
+    if (this->getName() == "WebSocketProfiler" || this->getName() == "Execution Pipeline")
       return;
     std::shared_ptr<ProfileData> updateStatus(new ChangeStatusProfile(addr, code));
     std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
@@ -373,7 +373,7 @@ class TaskManager : public AnyTaskManager {
 
   void sendWSMetaProfileUpdate(std::string metaData)
   {
-    if (this->getName() == "WebSocketProfiler")
+    if (this->getName() == "WebSocketProfiler" || this->getName() == "Execution Pipeline")
       return;
     std::shared_ptr<ProfileData> updateStatus(new UpdateMetadataProfile(this->getTaskFunction(), metaData));
     std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
@@ -383,7 +383,7 @@ class TaskManager : public AnyTaskManager {
 
   void sendWSMetaProfileUpdate(void *addr, std::string metaData)
   {
-    if (this->getName() == "WebSocketProfiler")
+    if (this->getName() == "WebSocketProfiler" || this->getName() == "Execution Pipeline")
       return;
     std::shared_ptr<ProfileData> updateStatus(new UpdateMetadataProfile(addr, metaData));
     std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
