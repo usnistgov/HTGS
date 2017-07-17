@@ -88,6 +88,7 @@ class BlockingQueue {
    * @return the number of elements in the queue
    */
   size_t size() {
+    std::unique_lock<std::mutex> lock(this->mutex);
     return queue.size();
   }
 

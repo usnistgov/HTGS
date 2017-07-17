@@ -216,7 +216,9 @@ class TaskManager : public AnyTaskManager {
       metaDataString = metaDataString + ";waitTime:" + std::to_string(waitTime.count()) + ";computeTime:" + std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
 
       // Send input connector queue size
-      sendWSMetaProfileUpdate(this->inputConnector.get(), "queueSize: " + std::to_string(this->inputConnector->getQueueSize()));
+      sendWSMetaProfileUpdate(this->inputConnector.get(),
+      "queueSize: " + std::to_string(this->inputConnector->getQueueSize()) +
+      ";maxQueueSize: " + std::to_string(this->inputConnector->getMaxQueueSize())));
 #endif
       if (metaDataString != "")
       {
