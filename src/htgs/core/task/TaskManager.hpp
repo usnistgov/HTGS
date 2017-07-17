@@ -218,7 +218,7 @@ class TaskManager : public AnyTaskManager {
       // Send input connector queue size
       sendWSMetaProfileUpdate(this->inputConnector.get(),
       "queueSize: " + std::to_string(this->inputConnector->getQueueSize()) +
-      ";maxQueueSize: " + std::to_string(this->inputConnector->getMaxQueueSize())));
+      ";maxQueueSize: " + std::to_string(this->inputConnector->getMaxQueueSize()));
 #endif
       if (metaDataString != "")
       {
