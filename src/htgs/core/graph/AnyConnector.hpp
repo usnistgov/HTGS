@@ -159,6 +159,12 @@ class AnyConnector {
   virtual size_t getMaxQueueSize() = 0;
 
   /**
+   * Gets the size of the queue that this connector has in its data queue.
+   * @return the size of the queue for the connector
+   */
+  virtual size_t getQueueSize() = 0;
+
+  /**
    * Resets the max queue size profile.
    */
   virtual void resetMaxQueueSize() = 0;

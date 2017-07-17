@@ -87,6 +87,10 @@ class Connector : public AnyConnector {
 #endif
   }
 
+  size_t getQueueSize() override {
+    return this->queue.size();
+  }
+
   size_t getMaxQueueSize() override {
 #ifdef PROFILE
     return queue.getQueueActiveMaxSize();

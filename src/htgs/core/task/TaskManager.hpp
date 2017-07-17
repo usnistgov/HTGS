@@ -206,12 +206,17 @@ class TaskManager : public AnyTaskManager {
       this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
 #endif
 
+
+
 #ifdef WS_PROFILE
       // Produce meta data for task
       std::string metaDataString = this->taskFunction->profileStr();
 #ifdef VERBOSE_WS_PROFILE
       // Send compute time and wait time meta
       metaDataString = metaDataString + ";waitTime:" + std::to_string(waitTime.count()) + ";computeTime:" + std::to_string(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+
+      // Send input connector queue size
+      sendWSMetaProfileUpdate(this->inputConnector.get(), "queueSize: " + std::to_string(this->inputConnector->getQueueSize()));
 #endif
       if (metaDataString != "")
       {
@@ -363,6 +368,7 @@ class TaskManager : public AnyTaskManager {
     this->sendDataPacket(dataPacket);
   }
 
+
   void sendWSMetaProfileUpdate(std::string metaData)
   {
     if (this->getName() == "WebSocketProfiler")
@@ -371,6 +377,17 @@ class TaskManager : public AnyTaskManager {
     std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
     this->sendDataPacket(dataPacket);
   }
+
+
+  void sendWSMetaProfileUpdate(void *addr, std::string metaData)
+  {
+    if (this->getName() == "WebSocketProfiler")
+      return;
+    std::shared_ptr<ProfileData> updateStatus(new UpdateMetadataProfile(addr, metaData));
+    std::shared_ptr<DataPacket> dataPacket(new DataPacket(this->getName(), this->getAddress(), "WebSocketProfiler", "0", updateStatus));
+    this->sendDataPacket(dataPacket);
+  }
+
 #endif
 
   typedef AnyTaskManager super;

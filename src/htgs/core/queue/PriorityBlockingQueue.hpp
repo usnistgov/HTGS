@@ -95,7 +95,7 @@ class PriorityBlockingQueue {
    * @return the number of elements in the priority queue
    */
   size_t size() {
-    std::unique_lock<std::mutex> lock(this->mutex);
+//    std::unique_lock<std::mutex> lock(this->mutex);
     return queue.size();
   }
 
