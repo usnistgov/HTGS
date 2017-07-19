@@ -330,6 +330,15 @@ class ITask : public AnyITask {
   }
 
   /**
+   * Gets the thread ID associated with this task
+   * @return the thread ID
+   */
+  size_t getThreadID()
+  {
+    this->ownerTask->getThreadId();
+  }
+
+  /**
    * Gets the task's compute time.
    * @return the compute time in microseconds.
    */
