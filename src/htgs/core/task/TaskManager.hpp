@@ -296,7 +296,8 @@ class TaskManager : public AnyTaskManager {
     this->setAlive(false);
 
     // Wake up the threads for this task
-    this->getInputConnector()->wakeupConsumer();
+    if (this->getInputConnector() != nullptr)
+      this->getInputConnector()->wakeupConsumer();
 
     // If there is a runtime thread, then begin termination
     if (this->runtimeThread != nullptr) {
