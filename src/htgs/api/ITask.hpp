@@ -335,7 +335,7 @@ class ITask : public AnyITask {
    */
   size_t getThreadID()
   {
-    this->ownerTask->getThreadId();
+    return this->ownerTask->getThreadId();
   }
 
   /**
