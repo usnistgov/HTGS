@@ -98,6 +98,7 @@ Getting Started using Eclipse CDT {#tut0-eclipse}
 ### Notes:
 - Ensure that #include "stdafx.h" is the very first statement in every source file
 - In Visual Studio's Solution Explorer you can make "New Filter"s to categorize task, rules, etc. but this is not the same as a new *folder* and should not be pathed as such in #include statements.
+- When switching from 'Debug' to 'Release' in Visual Studio, you might get some strange errors. These might be fixed by change the 'Precompiled Headers' configuration: Right-click the Solution in the Solution Explorer; Properties > C/C++ > Precompiled Headers > Precompiled Header; change from 'Use (/Yu)' to 'Not Using Precompiled Headers'.
 
 Getting Started using CLion {#tut0-clion}
 =====
