@@ -202,7 +202,7 @@ class AnyTaskGraphConf {
       this->iRuleMap->insert(IRulePair(iRule, iRuleShr));
     }
     return iRuleShr;
-  };
+  }
 
   /**
    * Gets the shared_ptr reference for a particular IMemoryAllocator.
