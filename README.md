@@ -6,6 +6,8 @@ The API is designed to aid in creating task graphs for algorithms to obtain perf
 
 [HTGS Landing Page](https://pages.nist.gov/HTGS/)
 
+[Tutorials](https://github.com/usnistgov/HTGS-Tutorials)
+
 ## Content
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
