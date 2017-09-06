@@ -124,7 +124,8 @@ class TaskGraphRuntime {
    */
   void waitForRuntime() {
     for (std::thread *t : threads) {
-      t->join();
+      if (t->joinable())
+        t->join();
     }
   }
 
