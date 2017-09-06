@@ -21,18 +21,18 @@ if (BUILD_MAIN)
 
     file(GLOB_RECURSE INC_ALL "*.hpp" "*.h")
     find_package(Threads REQUIRED)
-    find_package(HTGSVisualizer QUIET)
+    #find_package(HTGSVisualizer QUIET)
 
     link_libraries(${CMAKE_THREAD_LIBS_INIT})
     include_directories(".")
 
 
-    include_directories(${LIBHTGS_VISUALIZER_INCLUDE_DIRS})
+    #include_directories(${LIBHTGS_VISUALIZER_INCLUDE_DIRS})
 
-    add_definitions(${HTGS_VISUALIZER_DEFINITIONS})
+    #add_definitions(${HTGS_VISUALIZER_DEFINITIONS})
 
     add_executable(main "main.cpp" ${INC_ALL})
 
-    target_link_libraries(main ${LIBHTGS_VISUALIZER_LIBRARIES})
+    #target_link_libraries(main ${LIBHTGS_VISUALIZER_LIBRARIES})
 
 endif(BUILD_MAIN)
