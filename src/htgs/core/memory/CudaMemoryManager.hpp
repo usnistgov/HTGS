@@ -15,7 +15,8 @@
 #ifdef USE_CUDA
 
 #include <cuda.h>
-#include "MemoryManager.hpp"
+#include <htgs/core/memory/MemoryManager.hpp>
+#include <htgs/api/IMemoryAllocator.hpp>
 
 namespace htgs {
 /**

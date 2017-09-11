@@ -19,7 +19,7 @@
 #include <htgs/types/Types.hpp>
 #include <htgs/core/comm/TaskGraphCommunicator.hpp>
 #include <htgs/core/graph/profile/TaskManagerProfile.hpp>
-#include "AnyITask.hpp"
+#include <htgs/core/task/AnyITask.hpp>
 
 #ifdef WS_PROFILE
 #include <htgs/core/graph/profile/ProfileData.hpp>
@@ -325,13 +325,13 @@ class AnyTaskManager {
    * Increments the compute time profile value
    * @param val the value to increment by
    */
-  void incTaskComputeTime(long val) { this->taskComputeTime += val; }
+  void incTaskComputeTime(int64_t val) { this->taskComputeTime += val; }
 
   /**
    * Increments the wait time profile value
    * @param val the value to increment by
    */
-  void incWaitTime(long val) { this->taskWaitTime += val; }
+  void incWaitTime(int64_t val) { this->taskWaitTime += val; }
 
   /**
    * Shuts down the TaskManager

@@ -14,9 +14,9 @@
 #define HTGS_RULEMANAGER_HPP
 
 #include <htgs/api/Bookkeeper.hpp>
-#include "../../api/IRule.hpp"
-#include "../graph/Connector.hpp"
-#include "AnyRuleManagerInOnly.hpp"
+#include <htgs/api/IRule.hpp>
+#include <htgs/core/graph/Connector.hpp>
+#include <htgs/core/rules/AnyRuleManagerInOnly.hpp>
 
 namespace htgs {
 

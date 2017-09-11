@@ -12,7 +12,7 @@
 #ifndef HTGS_ANYRULEMANAGERINONLY_HPP
 #define HTGS_ANYRULEMANAGERINONLY_HPP
 
-#include "AnyRuleManager.hpp"
+#include <htgs/core/rules/AnyRuleManager.hpp>
 namespace htgs {
 /**
  * @class AnyRuleManagerInOnly AnyRuleManagerInOnly.hpp <htgs/core/rules/AnyRuleManagerInOnly.hpp>

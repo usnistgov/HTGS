@@ -85,11 +85,11 @@ class TaskManagerProfile {
    */
   double getValue(int colorFlag) {
     if (colorFlag == DOTGEN_COLOR_COMP_TIME)
-      return computeTime;
+      return (double)computeTime;
     else if (colorFlag == DOTGEN_COLOR_WAIT_TIME)
-      return waitTime;
+      return (double)waitTime;
     else if (colorFlag == DOTGEN_COLOR_MAX_Q_SZ)
-      return maxQueueSize;
+      return (double)maxQueueSize;
     else
       return 0.0;
 

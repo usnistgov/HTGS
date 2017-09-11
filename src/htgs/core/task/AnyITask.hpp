@@ -30,7 +30,7 @@
 #include <htgs/core/graph/profile/CustomProfile.hpp>
 #endif
 
-#include "AnyTaskManager.hpp"
+#include <htgs/core/task/AnyTaskManager.hpp>
 
 namespace htgs {
 

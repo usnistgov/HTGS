@@ -14,7 +14,7 @@
 #ifndef HTGS_ANYRULEMANAGER_HPP
 #define HTGS_ANYRULEMANAGER_HPP
 
-#include "htgs/core/graph/AnyConnector.hpp"
+#include <htgs/core/graph/AnyConnector.hpp>
 
 namespace htgs {
 

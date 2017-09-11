@@ -20,7 +20,7 @@
 #include <mutex>
 #include <htgs/core/rules/AnyIRule.hpp>
 
-#include "IData.hpp"
+#include <htgs/api/IData.hpp>
 
 namespace htgs {
 

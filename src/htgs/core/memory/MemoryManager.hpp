@@ -13,11 +13,11 @@
 #ifndef HTGS_MEMORYMANAGER_H
 #define HTGS_MEMORYMANAGER_H
 
-#include "MemoryPool.hpp"
+#include <htgs/core/memory/MemoryPool.hpp>
 
-#include "../../api/ITask.hpp"
-#include "../../api/IMemoryAllocator.hpp"
-#include "htgs/types/MMType.hpp"
+#include <htgs/api/ITask.hpp>
+#include <htgs/api/IMemoryAllocator.hpp>
+#include <htgs/types/MMType.hpp>
 
 namespace htgs {
 

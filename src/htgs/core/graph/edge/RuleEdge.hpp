@@ -14,7 +14,7 @@
 #ifndef HTGS_RULEEDGE_HPP
 #define HTGS_RULEEDGE_HPP
 
-#include "EdgeDescriptor.hpp"
+#include <htgs/core/graph/edge/EdgeDescriptor.hpp>
 #include <htgs/api/ITask.hpp>
 #include <htgs/core/graph/AnyTaskGraphConf.hpp>
 #include <htgs/api/Bookkeeper.hpp>

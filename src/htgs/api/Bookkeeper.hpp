@@ -15,10 +15,10 @@
 #ifndef HTGS_BOOKKEEPER_HPP
 #define HTGS_BOOKKEEPER_HPP
 
-#include "ITask.hpp"
-#include "VoidData.hpp"
-#include "htgs/core/rules/AnyRuleManagerInOnly.hpp"
-#include "htgs/core/rules/RuleManager.hpp"
+#include <htgs/api/ITask.hpp>
+#include <htgs/api/VoidData.hpp>
+#include <htgs/core/rules/AnyRuleManagerInOnly.hpp>
+#include <htgs/core/rules/RuleManager.hpp>
 
 namespace htgs {
 

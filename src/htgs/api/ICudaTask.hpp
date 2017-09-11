@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <cuda_runtime_api.h>
 
-#include "ITask.hpp"
+#include <htgs/api/ITask.hpp>
 namespace htgs {
 
 template<class T>

@@ -20,11 +20,11 @@
 #include <cstring>
 
 #include <htgs/core/rules/ExecutionPipelineBroadcastRule.hpp>
-#include "ITask.hpp"
-#include "Bookkeeper.hpp"
-#include "TaskGraphConf.hpp"
-#include "TaskGraphRuntime.hpp"
-#include "IData.hpp"
+#include <htgs/api/ITask.hpp>
+#include <htgs/api/Bookkeeper.hpp>
+#include <htgs/api/TaskGraphConf.hpp>
+#include <htgs/api/TaskGraphRuntime.hpp>
+#include <htgs/api/IData.hpp>
 
 namespace htgs {
 template<class V, class W>

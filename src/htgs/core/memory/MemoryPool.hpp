@@ -16,9 +16,9 @@
 #include <list>
 #include <iostream>
 #include <memory>
-#include "../../types/Types.hpp"
-#include "htgs/debug/debug_message.hpp"
-#include "../queue/BlockingQueue.hpp"
+#include <htgs/types/Types.hpp>
+#include <htgs/debug/debug_message.hpp>
+#include <htgs/core/queue/BlockingQueue.hpp>
 
 namespace htgs {
 

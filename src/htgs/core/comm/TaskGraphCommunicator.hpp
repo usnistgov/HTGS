@@ -18,7 +18,7 @@
 #include <htgs/core/graph/AnyConnector.hpp>
 #include <htgs/core/queue/BlockingQueue.hpp>
 #include <thread>
-#include "DataPacket.hpp"
+#include <htgs/core/comm/DataPacket.hpp>
 
 namespace htgs {
 

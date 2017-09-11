@@ -12,7 +12,7 @@
 #ifndef HTGS_PRODUCERCONSUMEREDGE_HPP
 #define HTGS_PRODUCERCONSUMEREDGE_HPP
 
-#include "EdgeDescriptor.hpp"
+#include <htgs/core/graph/edge/EdgeDescriptor.hpp>
 #include <htgs/api/ITask.hpp>
 #include <htgs/core/graph/AnyTaskGraphConf.hpp>
 #ifdef WS_PROFILE

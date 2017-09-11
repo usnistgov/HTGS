@@ -17,9 +17,9 @@
 #include <stddef.h>
 #include <htgs/core/queue/PriorityBlockingQueue.hpp>
 #include <htgs/types/MMType.hpp>
-#include "IMemoryAllocator.hpp"
-#include "IMemoryReleaseRule.hpp"
-#include "IData.hpp"
+#include <htgs/api/IMemoryAllocator.hpp>
+#include <htgs/api/IMemoryReleaseRule.hpp>
+#include <htgs/api/IData.hpp>
 
 namespace htgs {
 /**

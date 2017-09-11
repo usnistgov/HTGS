@@ -30,7 +30,7 @@
 #include <htgs/core/queue/BlockingQueue.hpp>
 #endif
 
-#include "AnyConnector.hpp"
+#include <htgs/core/graph/AnyConnector.hpp>
 
 namespace htgs {
 

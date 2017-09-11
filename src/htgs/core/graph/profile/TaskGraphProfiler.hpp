@@ -17,7 +17,7 @@
 #ifndef HTGS_TASKGRAPHPROFILER_HPP
 #define HTGS_TASKGRAPHPROFILER_HPP
 
-#include "TaskManagerProfile.hpp"
+#include <htgs/core/graph/profile/TaskManagerProfile.hpp>
 #include <htgs/core/graph/AnyTaskGraphConf.hpp>
 #include <set>
 namespace htgs {

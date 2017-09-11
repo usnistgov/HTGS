@@ -15,8 +15,8 @@
 #define HTGS_TASKGRAPHRUNTIME_HPP
 
 #include <thread>
-#include "htgs/api/TaskGraphConf.hpp"
-#include "htgs/core/task/AnyTaskManager.hpp"
+#include <htgs/api/TaskGraphConf.hpp>
+#include <htgs/core/task/AnyTaskManager.hpp>
 
 namespace htgs {
 /**

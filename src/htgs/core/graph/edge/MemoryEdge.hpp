@@ -14,7 +14,7 @@
 #define HTGS_MEMORYEDGE_HPP
 
 #include <htgs/core/memory/MemoryManager.hpp>
-#include "EdgeDescriptor.hpp"
+#include <htgs/core/graph/edge/EdgeDescriptor.hpp>
 
 #ifdef WS_PROFILE
 #include <htgs/core/graph/profile/CustomProfile.hpp>
