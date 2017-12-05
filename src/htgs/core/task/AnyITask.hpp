@@ -52,6 +52,7 @@ class AnyITask {
     this->startTask = false;
     this->poll = false;
     this->microTimeoutTime = 0;
+    this->memoryWaitTime = 0;
 
     memoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
     releaseMemoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
@@ -69,6 +70,7 @@ class AnyITask {
     this->startTask = false;
     this->poll = false;
     this->microTimeoutTime = 0L;
+    this->memoryWaitTime = 0;
 
     memoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
     releaseMemoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
@@ -90,6 +92,7 @@ class AnyITask {
     this->startTask = isStartTask;
     this->poll = poll;
     this->microTimeoutTime = microTimeoutTime;
+    this->memoryWaitTime = 0;
 
     memoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
     releaseMemoryEdges = std::shared_ptr<ConnectorMap>(new ConnectorMap());
@@ -553,6 +556,15 @@ class AnyITask {
     return releaseMemoryEdges;
   }
 
+
+  /**
+   * Gets the amount of time the task was waiting for memory
+   * @return the amount of time the task waited for memory
+   */
+  unsigned long long int getMemoryWaitTime() const {
+    return memoryWaitTime;
+  }
+
 #ifdef WS_PROFILE
   void sendWSProfileUpdate(StatusCode code)
   {
@@ -583,11 +595,20 @@ class AnyITask {
     sendWSProfileUpdate(StatusCode::WAITING_FOR_MEM);
 #endif
 
+#ifdef PROFILE
+    auto start = std::chrono::high_resolution_clock::now();
+#endif
     m_data_t<V> memory = connector->consumeData();
+#ifdef PROFILE
+    auto finish = std::chrono::high_resolution_clock::now();
+    this->incMemoryWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+#endif
 
 #ifdef WS_PROFILE
     sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
+
+
 
     memory->setMemoryReleaseRule(releaseRule);
 
@@ -606,6 +627,12 @@ class AnyITask {
   //! @endcond
 
 
+  /**
+   * Increments memory wait time
+   * @param val the amount of time passed waiting for memory
+   */
+  void incMemoryWaitTime(unsigned long long int val) { this->memoryWaitTime += val; }
+
   size_t
       numThreads; //!< The number of threads to be used with this ITask (forms a thread pool) used when creating a TaskManager
   bool startTask; //!< Whether the ITask will be a start task used when creating a TaskManager
@@ -619,6 +646,8 @@ class AnyITask {
   std::shared_ptr<ConnectorMap>
       releaseMemoryEdges; //!< A mapping from the memory edge name to the memory manager's input connector to shutdown the memory manager
   TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph connector communicator
+
+  unsigned long long int memoryWaitTime; //!< The amount of time this task waited for memory
 
 };
 }

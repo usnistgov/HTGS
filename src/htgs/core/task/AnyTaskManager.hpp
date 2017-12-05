@@ -392,11 +392,24 @@ class AnyTaskManager {
     return this->threadId;
   }
   /**
-   * Gets the compute time for the task manager
+   * Gets the compute time for the task manager, removing the memory wait time.
+   * Use getExecuteTime() to get the entire runtime of the task, including wait time.
    * @return the compute time
    * @note Must define the directive PROFILE to enable profiling
    */
   unsigned long long int getComputeTime() {
+#ifdef PROFILE
+    return taskComputeTime - this->getTaskFunction()->getMemoryWaitTime();
+#else
+    return 0;
+#endif
+  }
+
+  /**
+   * Gets the total execution time for the task manager, including any waiting for memory within the execute function.
+   * @return the total time spent in the execute function.
+   */
+  unsigned long long int getExecuteTime() {
 #ifdef PROFILE
     return taskComputeTime;
 #else

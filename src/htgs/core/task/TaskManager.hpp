@@ -243,7 +243,7 @@ class TaskManager : public AnyTaskManager {
 #endif
     // Create profile data for this task
     TaskManagerProfile
-        *profileData = new TaskManagerProfile(this->getComputeTime(), this->getWaitTime(), this->getMaxQueueSize());
+        *profileData = new TaskManagerProfile(this->getComputeTime(), this->getWaitTime(), this->getMaxQueueSize(), taskFunction->getMemoryWaitTime());
     taskManagerProfiles->insert(std::pair<AnyTaskManager *, TaskManagerProfile *>(this, profileData));
 
     // Pass gatherProfileData to ITask for further processing

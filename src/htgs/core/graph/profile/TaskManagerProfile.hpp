@@ -34,6 +34,7 @@ class TaskManagerProfile {
     computeTime = 0;
     waitTime = 0;
     maxQueueSize = 0;
+    memoryWaitTime = 0;
   }
 
   /**
@@ -42,8 +43,8 @@ class TaskManagerProfile {
    * @param waitTime the wait time
    * @param maxQueueSize the max queue size
    */
-  TaskManagerProfile(unsigned long long int computeTime, unsigned long long int waitTime, size_t maxQueueSize)
-      : computeTime(computeTime), waitTime(waitTime), maxQueueSize(maxQueueSize) {}
+  TaskManagerProfile(unsigned long long int computeTime, unsigned long long int waitTime, size_t maxQueueSize, unsigned long long int memoryWaitTime)
+      : computeTime(computeTime), waitTime(waitTime), maxQueueSize(maxQueueSize), memoryWaitTime(memoryWaitTime) {}
 
   /**
    * Generates the dot contents for the task manager profile. The flags control which
@@ -62,6 +63,9 @@ class TaskManagerProfile {
 
     if ((flags & DOTGEN_FLAG_HIDE_PROFILE_MAX_Q_SZ) == 0)
       ret += "maxQueueSize: " + std::to_string(maxQueueSize) + "\n";
+
+    if ((flags & DOTGEN_FLAG_HIDE_MEMORY_WAIT_TIME) == 0 && memoryWaitTime > 0)
+      ret += "memoryWaitTime: " + std::to_string((double)memoryWaitTime/1000000.0) + "sec\n";
 #endif
     return ret;
   }
@@ -74,7 +78,7 @@ class TaskManagerProfile {
    */
   friend std::ostream &operator<<(std::ostream &os, const TaskManagerProfile &profile) {
     os << "computeTime: " << profile.computeTime << " waitTime: " << profile.waitTime << " maxQueueSize: "
-       << profile.maxQueueSize;
+       << profile.maxQueueSize << (profile.memoryWaitTime == 0 ? "" : " memoryWaitTime: " + profile.memoryWaitTime);
     return os;
   }
 
@@ -90,6 +94,8 @@ class TaskManagerProfile {
       return (double)waitTime;
     else if (colorFlag == DOTGEN_COLOR_MAX_Q_SZ)
       return (double)maxQueueSize;
+    else if (colorFlag == DOTGEN_COLOR_MEMORY_WAIT_TIME)
+      return (double)memoryWaitTime;
     else
       return 0.0;
 
@@ -120,6 +126,14 @@ class TaskManagerProfile {
   }
 
   /**
+   * Gets the memory wait time
+   * @return the amount of time the task is waiting for memory
+   */
+  unsigned long long int getMemoryWaitTime() const {
+    return memoryWaitTime;
+  }
+
+  /**
    * Computes the sum for the compute time and wait time between this profile and some other profile.
    * This is used when computing the average compute/wait time among multiple task managers.
    * @param other the other task manager
@@ -127,6 +141,7 @@ class TaskManagerProfile {
   void sum(TaskManagerProfile *other) {
     this->computeTime += other->getComputeTime();
     this->waitTime += other->getWaitTime();
+    this->memoryWaitTime += other->getMemoryWaitTime();
   }
 
   /**
@@ -142,11 +157,13 @@ class TaskManagerProfile {
   void average(int count) {
     this->computeTime = (unsigned long long int) (this->computeTime / (double) count);
     this->waitTime = (unsigned long long int) (this->waitTime / (double) count);
+    this->memoryWaitTime = (unsigned long long int) (this->memoryWaitTime / (double) count);
   }
 
  private:
   unsigned long long int computeTime; //!< The compute time for the task manager
   unsigned long long int waitTime; //!< The wait time for the task manager
+  unsigned long long int memoryWaitTime; //!< The time spent waiting for memory from the memory manager
   size_t maxQueueSize; //!< The maximum queue size for the task manager
 
 };

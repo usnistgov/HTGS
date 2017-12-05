@@ -67,4 +67,16 @@
  */
 #define DOTGEN_COLOR_WAIT_TIME             1 << 8
 
+/**
+ * @def DOTGEN_FLAG_HIDE_MEMORY_WAIT_TIME
+ * @brief Hides profiling data for waiting for memory
+ */
+#define DOTGEN_FLAG_HIDE_MEMORY_WAIT_TIME 1 << 9
+
+/**
+ * @def DOTGEN_COLOR_MEMORY_WAIT_TIME
+ * @brief Creates color map using memory wait time
+ */
+#define DOTGEN_COLOR_MEMORY_WAIT_TIME 1 << 10
+
 #endif //HTGS_TASKGRAPHDOTGENFLAGS_HPP
