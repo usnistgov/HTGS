@@ -414,6 +414,9 @@ class TaskGraphConf : public AnyTaskGraphConf {
     this->addEdgeDescriptor(memEdge);
   }
 
+
+
+
   /**
  * Adds a CudaMemoryManager edge with the specified name to the TaskGraphConf.
  * This will create a CudaMemoryManager that is bound to some Cuda GPU based on the pipelineId of
@@ -444,6 +447,22 @@ class TaskGraphConf : public AnyTaskGraphConf {
     this->addEdgeDescriptor(memEdge);
   }
 #endif
+
+
+    /**
+     * Adds a custom MemoryManager with the specified name to the TaskGraphConf.
+     * This will create a custom memory manager
+     * @tparam V
+     * @param getMemoryTask
+     * @param memoryManager
+     */
+    template <class V>
+    void addCustomMemoryManagerEdge(AnyITask *getMemoryTask, MemoryManager<V> *memoryManager)
+    {
+      MemoryEdge<V> *memEdge = new MemoryEdge<V>(memoryManager->getMemoryManagerName(), getMemoryTask, memoryManager);
+      memEdge->applyEdge(this);
+      this->addEdgeDescriptor(memEdge);
+    }
 
   /**
    * Adds a MemoryManager edge with the specified name to the TaskGraphConf.

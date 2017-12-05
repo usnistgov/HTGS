@@ -63,7 +63,7 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
       MemoryData<T>>(1, true, false, 0L) {
     this->allocator = memoryAllocator;
     this->memoryPoolSize = memoryPoolSize;
-    this->pool = new MemoryPool<T>(memoryPoolSize);
+    this->pool = nullptr;
     this->name = name;
     this->type = type;
   }
@@ -72,18 +72,20 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
    * Destructor
    */
   ~MemoryManager() override {
-    pool->releaseAllMemory();
+    if (this->pool != nullptr) {
+      pool->releaseAllMemory();
 
-    delete pool;
-    pool = nullptr;
+      delete pool;
+      pool = nullptr;
+    }
   }
 
   /**
-   * Initializes the MemoryManager, filling the memory pool with allocated data.
+   * Initializes the MemoryManager, getting the size of the memory pool, and filling the memory pool with allocated data.
    * All the memory is allocated once a thread has been bound to ITask.
    */
   void initialize() override {
-
+    this->pool = new MemoryPool<T>(this->getMemoryPoolSize());
     MemoryData<T> *memory = new MemoryData<T>(this->allocator, this->getAddress(), this->getName(), this->type);
 
     bool allocate = false;
@@ -168,10 +170,11 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
   }
 
   /**
-   * Gets the size of the MemoryPool
+   * Virtual function to gets the size of the MemoryPool.
+   * This can be overriden to provide custom memory pool sizes during initialization.
    * @return
    */
-  size_t getMemoryPoolSize() {
+  virtual size_t getMemoryPoolSize() {
     return this->memoryPoolSize;
   }
 
