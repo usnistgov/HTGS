@@ -371,6 +371,9 @@ class ExecutionPipeline : public ITask<T, U> {
         oss << g->genDotGraphContent(flags);
         oss << "}" << std::endl;
         pipeline++;
+
+        oss = cleanupVisualization(g, oss.str());
+
       }
     } else {
       oss << "subgraph cluster_" << dotId << " {" << std::endl;
@@ -383,12 +386,47 @@ class ExecutionPipeline : public ITask<T, U> {
       graph->setOutputConnector(output);
       oss << graph->genDotGraphContent(flags);
       oss << "}" << std::endl;
+
+       oss = cleanupVisualization(graph, oss.str());
     }
 
     return oss.str();
+
   }
 
  private:
+
+  std::ostringstream cleanupVisualization(TaskGraphConf<T, U> *graph, std::string str)
+  {
+    std::istringstream iss(str);
+
+
+    std::ostringstream ossFinal;
+
+    auto outputConnectorName = graph->getOutputConnector()->getDotId();
+
+    std::string line;
+    std::vector<std::string> savedLines;
+    while(getline(iss, line))
+    {
+      if (line.find(outputConnectorName) == std::string::npos)
+      {
+        ossFinal << line << std::endl;
+      }
+      else
+      {
+        savedLines.push_back(line);
+      }
+    }
+
+    for(line : savedLines)
+    {
+      ossFinal << line << std::endl;
+    }
+
+    return ossFinal;
+  }
+
   size_t numPipelinesExec; //!< The number of pipelines that will spawn from the ExecutionPipeline
   Bookkeeper<T> *inputBk; //!< The input Bookkeeper for the ExecutionPipeline
   TaskGraphConf<T, U> *graph; //!< The graph that the ExecutionPipeline manages, duplicates, and executes
