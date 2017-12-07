@@ -419,9 +419,9 @@ class ExecutionPipeline : public ITask<T, U> {
       }
     }
 
-    for(line : savedLines)
+    for(std::string line2 : savedLines)
     {
-      ossFinal << line << std::endl;
+      ossFinal << line2 << std::endl;
     }
 
     return ossFinal;
