@@ -63,6 +63,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   /**
    * Creates a rule manager with a rule
    * @param rule the rule
+   * @param communicator the task graph communicator
    *
    * @note This function should only be called by the HTGS API
    * @internal

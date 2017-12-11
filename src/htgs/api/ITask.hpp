@@ -255,6 +255,10 @@ class ITask : public AnyITask {
     return "box";
   }
 
+  /**
+   * Adds the string text to the profiling of this task in the graphviz dot visualization.
+   * @return the extra content to be added to the task during visualization.
+   */
   virtual std::string getDotCustomProfile() override {
     return "";
   }

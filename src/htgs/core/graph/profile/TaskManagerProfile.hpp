@@ -42,6 +42,7 @@ class TaskManagerProfile {
    * @param computeTime the compute time
    * @param waitTime the wait time
    * @param maxQueueSize the max queue size
+   * @param memoryWaitTime the amount of time spent waiting for data from a memory manager
    */
   TaskManagerProfile(unsigned long long int computeTime, unsigned long long int waitTime, size_t maxQueueSize, unsigned long long int memoryWaitTime)
       : computeTime(computeTime), waitTime(waitTime), maxQueueSize(maxQueueSize), memoryWaitTime(memoryWaitTime) {}
