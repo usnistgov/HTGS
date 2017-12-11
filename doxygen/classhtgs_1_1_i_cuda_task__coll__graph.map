@@ -1,6 +1,6 @@
 <map id="htgs::ICudaTask&lt; T, U &gt;" name="htgs::ICudaTask&lt; T, U &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="309,1353,455,1577"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="304,977,460,1304"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="309,1383,455,1607"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="303,977,461,1333"/>
 <area shape="rect" id="node4" href="$classhtgs_1_1_task_graph_communicator.html" title="Implements the task graph communicator where a task&#39;s address and name are mapped to their input conn..." alt="" coords="267,632,497,915"/>
 <area shape="rect" id="node5" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::DataPacket \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="17,301,176,569"/>
 <area shape="rect" id="node7" title="STL class. " alt="" coords="254,154,334,231"/>

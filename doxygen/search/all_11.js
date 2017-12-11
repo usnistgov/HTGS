@@ -5,6 +5,7 @@ var searchData=
   ['setalive',['setAlive',['../classhtgs_1_1_any_task_manager.html#a0ef00b92ac9a44d73aff4ab57253c505',1,'htgs::AnyTaskManager']]],
   ['setgraphconsumertask',['setGraphConsumerTask',['../classhtgs_1_1_task_graph_conf.html#a23520b3b3054e16c59784b0d3a289811',1,'htgs::TaskGraphConf']]],
   ['setinputconnector',['setInputConnector',['../classhtgs_1_1_task_graph_conf.html#a431a592aa2e39914fefef99e99cc2e54',1,'htgs::TaskGraphConf::setInputConnector()'],['../classhtgs_1_1_any_task_manager.html#a8efe983bd29b94a479dc89dae8b666f5',1,'htgs::AnyTaskManager::setInputConnector()'],['../classhtgs_1_1_task_manager.html#a7a31d2eb4ffe1abe4190c4783dedf5fe',1,'htgs::TaskManager::setInputConnector()']]],
+  ['setmaxqueuesize',['setMaxQueueSize',['../classhtgs_1_1_task_manager_profile.html#a4b7b677f812fb05b055a7e13513d84b5',1,'htgs::TaskManagerProfile']]],
   ['setmemoryreleaserule',['setMemoryReleaseRule',['../classhtgs_1_1_memory_data.html#a84e8e694fa8f3cc435166898941a7f71',1,'htgs::MemoryData']]],
   ['setnumgraphsspawned',['setNumGraphsSpawned',['../classhtgs_1_1_task_graph_communicator.html#a3c19610bb5966553a488782801c860f3',1,'htgs::TaskGraphCommunicator']]],
   ['setnumpipelines',['setNumPipelines',['../classhtgs_1_1_any_i_task.html#a256f8715ea4a6128345fdf569effda1d',1,'htgs::AnyITask::setNumPipelines()'],['../classhtgs_1_1_any_task_manager.html#aa7d679e535d901023dcca34c9a2e5a7f',1,'htgs::AnyTaskManager::setNumPipelines()']]],
@@ -22,8 +23,8 @@ var searchData=
   ['spawnchildrenthreads',['spawnChildrenThreads',['../classhtgs_1_1_task_graph_communicator.html#a295fb363dcce12a8911cbfce4eed5425',1,'htgs::TaskGraphCommunicator']]],
   ['spawnthread',['spawnThread',['../classhtgs_1_1_task_graph_communicator.html#ab746a9ae33df0d5a8936515877250e3c',1,'htgs::TaskGraphCommunicator']]],
   ['starttask',['startTask',['../classhtgs_1_1_any_i_task.html#ada677c56c3a896abeb2f7a22f870bc9f',1,'htgs::AnyITask::startTask()'],['../classhtgs_1_1_any_task_manager.html#a326e8b72ac91e3dcac08ccaad3301676',1,'htgs::AnyTaskManager::startTask()']]],
-  ['statecontainer',['StateContainer',['../classhtgs_1_1_state_container.html#a93edffe237050a7da1b5ec3d854d1373',1,'htgs::StateContainer']]],
   ['statecontainer',['StateContainer',['../classhtgs_1_1_state_container.html',1,'htgs']]],
+  ['statecontainer',['StateContainer',['../classhtgs_1_1_state_container.html#a93edffe237050a7da1b5ec3d854d1373',1,'htgs::StateContainer']]],
   ['stream',['stream',['../classhtgs_1_1_i_cuda_task.html#a0e11becef7b34a87934ea336978cf5af',1,'htgs::ICudaTask']]],
   ['sum',['sum',['../classhtgs_1_1_task_manager_profile.html#ac32c6b6b7bd73ecc6721c6ab2683be04',1,'htgs::TaskManagerProfile']]],
   ['syncstream',['syncStream',['../classhtgs_1_1_i_cuda_task.html#aa544d0fc6b744646a2e195a0a0383915',1,'htgs::ICudaTask']]]

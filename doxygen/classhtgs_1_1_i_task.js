@@ -21,6 +21,7 @@ var classhtgs_1_1_i_task =
     [ "getNumGraphsSpawned", "classhtgs_1_1_i_task.html#a46c8d5d1bf48d2f00d1109072244be08", null ],
     [ "getOwnerTaskManager", "classhtgs_1_1_i_task.html#a8c8a37191adfd7750f686f27ed5a1b0c", null ],
     [ "getTaskComputeTime", "classhtgs_1_1_i_task.html#a39bf466da3e1b1080bf569ddd97e05f8", null ],
+    [ "getThreadID", "classhtgs_1_1_i_task.html#a23c821fdca3def653fc5fd911d4cdaa4", null ],
     [ "initialize", "classhtgs_1_1_i_task.html#af897c3050091c42e9afd364ac25c8eb6", null ],
     [ "initialize", "classhtgs_1_1_i_task.html#a4ea247c51fb5da271a55bd948f728a6a", null ],
     [ "inTypeName", "classhtgs_1_1_i_task.html#a5a5b471973ab49fc6a9cfcfbe4dacaa4", null ],

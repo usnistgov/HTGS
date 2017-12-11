@@ -127,6 +127,32 @@ var NAVTREE =
       ] ],
       [ "Summary ", "tutorial3b.html#tut3b-summary", null ]
     ] ],
+    [ "Tutorial 4", "tutorial4.html", [
+      [ "Objectives ", "tutorial4.html#tut4-objectives", null ],
+      [ "API Used ", "tutorial4.html#tut4-api-used", null ],
+      [ "Implementation ", "tutorial4.html#tut4-implementation", [
+        [ "Data", "tutorial4.html#tut4-data", null ],
+        [ "Tasks", "tutorial4.html#tut4-tasks", [
+          [ "LoadMatrixTask", "tutorial4.html#tut4-load-matrix-task", null ],
+          [ "MatMulBlkTask", "tutorial4.html#tut4-matmul-task", null ],
+          [ "MatMulAccumTask", "tutorial4.html#tut4-matmul-accum-task", null ],
+          [ "MatMulOutputTask", "tutorial4.html#tut4-matmul-output-task", null ],
+          [ "Notes", "tutorial4.html#tut4-task-notes", null ]
+        ] ],
+        [ "Managing Dependencies with the Bookkeeper and IRule", "tutorial4.html#tut4-bookkeeper", [
+          [ "MatMulDistributeRule", "tutorial4.html#tut4-distr-rule", null ],
+          [ "MatMulLoadRule", "tutorial4.html#tut4-load-rule", null ],
+          [ "MatMulAccumulateRule", "tutorial4.html#tut4-acc-rule", null ],
+          [ "MatMulOutputRule", "tutorial4.html#tut4-output-rule", null ],
+          [ "Notes", "tutorial4.html#tut4-bookkeeper-notes", null ]
+        ] ],
+        [ "Creating and Executing the htgs::TaskGraphConf", "tutorial4.html#tut4-create-and-execute-taskgraph", [
+          [ "Main function (Matrix Multiplication)", "tutorial4.html#tut4-main-function", null ],
+          [ "Notes", "tutorial4.html#tut4-taskgraph-notes", null ]
+        ] ]
+      ] ],
+      [ "Summary ", "tutorial4.html#tut4-summary", null ]
+    ] ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ]
     ] ],
@@ -154,9 +180,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classhtgs_1_1_any_task_graph_conf.html#ae20f6e3b02e10eb00d5bbd3510bdf9ff",
-"classhtgs_1_1_i_task.html#ae29cf1039ab3b9d9426b67b226a42dcc",
-"classhtgs_1_1_task_manager.html#a40800564af46581910448370180d9f39"
+"classhtgs_1_1_any_task_graph_conf.html#aab64ec2f1dfebbea602daeb0280c5030",
+"classhtgs_1_1_i_task.html#a5a5b471973ab49fc6a9cfcfbe4dacaa4",
+"classhtgs_1_1_task_graph_profiler.html#ab0f6d742dead95967793f90437b3104c",
+"tutorial4.html#tut4-acc-rule"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -192,6 +192,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a806d4e5a57572f548c6682c81b28084e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_task_graph_conf.html#a806d4e5a57572f548c6682c81b28084e">addCudaMemoryManagerEdge</a> (std::string name, <a class="el" href="classhtgs_1_1_any_i_task.html">AnyITask</a> *getMemoryTask, <a class="el" href="classhtgs_1_1_i_memory_allocator.html">IMemoryAllocator</a>&lt; V &gt; *allocator, size_t memoryPoolSize, <a class="el" href="_m_m_type_8hpp.html#a9cb5fbc12b3f2ecede03fd2ae6e3fa0b">MMType</a> type, CUcontext *contexts)</td></tr>
 <tr class="memdesc:a806d4e5a57572f548c6682c81b28084e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <a class="el" href="classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio...">CudaMemoryManager</a> edge with the specified name to the <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">TaskGraphConf</a>.  <a href="#a806d4e5a57572f548c6682c81b28084e">More...</a><br /></td></tr>
 <tr class="separator:a806d4e5a57572f548c6682c81b28084e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e01d687d11fcd4a7c9bd90f8f65a7f3"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:a3e01d687d11fcd4a7c9bd90f8f65a7f3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_task_graph_conf.html#a3e01d687d11fcd4a7c9bd90f8f65a7f3">addCustomMemoryManagerEdge</a> (<a class="el" href="classhtgs_1_1_any_i_task.html">AnyITask</a> *getMemoryTask, <a class="el" href="classhtgs_1_1_memory_manager.html">MemoryManager</a>&lt; V &gt; *memoryManager)</td></tr>
+<tr class="memdesc:a3e01d687d11fcd4a7c9bd90f8f65a7f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a custom <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a> with the specified name to the <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">TaskGraphConf</a>.  <a href="#a3e01d687d11fcd4a7c9bd90f8f65a7f3">More...</a><br /></td></tr>
+<tr class="separator:a3e01d687d11fcd4a7c9bd90f8f65a7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88adcd11f63ba49703f82f1210d0f0eb"><td class="memTemplParams" colspan="2">template&lt;class V , class IMemoryAllocatorType &gt; </td></tr>
 <tr class="memitem:a88adcd11f63ba49703f82f1210d0f0eb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_task_graph_conf.html#a88adcd11f63ba49703f82f1210d0f0eb">addMemoryManagerEdge</a> (std::string name, <a class="el" href="classhtgs_1_1_any_i_task.html">AnyITask</a> *getMemoryTask, std::shared_ptr&lt; IMemoryAllocatorType &gt; allocator, size_t memoryPoolSize, <a class="el" href="_m_m_type_8hpp.html#a9cb5fbc12b3f2ecede03fd2ae6e3fa0b">MMType</a> type)</td></tr>
 <tr class="memdesc:a88adcd11f63ba49703f82f1210d0f0eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a> edge with the specified name to the <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">TaskGraphConf</a>.  <a href="#a88adcd11f63ba49703f82f1210d0f0eb">More...</a><br /></td></tr>
@@ -619,6 +623,59 @@ template&lt;class V &gt; </div>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">V</td><td>the type of memory; i.e. 'cufftDoubleComplex *' </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a3e01d687d11fcd4a7c9bd90f8f65a7f3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class U&gt; </div>
+<div class="memtemplate">
+template&lt;class V &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classhtgs_1_1_task_graph_conf.html">htgs::TaskGraphConf</a>&lt; T, U &gt;::addCustomMemoryManagerEdge </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classhtgs_1_1_any_i_task.html">AnyITask</a> *&#160;</td>
+          <td class="paramname"><em>getMemoryTask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classhtgs_1_1_memory_manager.html">MemoryManager</a>&lt; V &gt; *&#160;</td>
+          <td class="paramname"><em>memoryManager</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds a custom <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">MemoryManager</a> with the specified name to the <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">TaskGraphConf</a>. </p>
+<p>This will create a custom memory manager </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">V</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">getMemoryTask</td><td></td></tr>
+    <tr><td class="paramname">memoryManager</td><td></td></tr>
   </table>
   </dd>
 </dl>

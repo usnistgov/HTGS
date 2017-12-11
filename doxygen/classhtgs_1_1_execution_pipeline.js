@@ -5,6 +5,7 @@ var classhtgs_1_1_execution_pipeline =
     [ "~ExecutionPipeline", "classhtgs_1_1_execution_pipeline.html#acce836fa0b054a549d7bf381ad458640", null ],
     [ "addInputRule", "classhtgs_1_1_execution_pipeline.html#a26f6cd109cbb149b3986a381dfb3cf8f", null ],
     [ "addInputRule", "classhtgs_1_1_execution_pipeline.html#a8ff6abd89f1e26af950cb1997683e7e9", null ],
+    [ "cleanupVisualization", "classhtgs_1_1_execution_pipeline.html#ad4805d86afedc4d6f4fc4d93216b9779", null ],
     [ "copy", "classhtgs_1_1_execution_pipeline.html#a33b556557bc0a5abf32a4a43fea0a076", null ],
     [ "debug", "classhtgs_1_1_execution_pipeline.html#a409fb080726562470ee8599786bc365e", null ],
     [ "executeTask", "classhtgs_1_1_execution_pipeline.html#a3b7453e07af313632fc51521d77bfd93", null ],

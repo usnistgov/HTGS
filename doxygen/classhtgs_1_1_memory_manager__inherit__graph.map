@@ -1,5 +1,5 @@
 <map id="htgs::MemoryManager&lt; T &gt;" name="htgs::MemoryManager&lt; T &gt;">
-<area shape="rect" id="node4" href="$classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="5,1071,220,1192"/>
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ getName()\land 19 more...\l}" alt="" coords="22,395,203,633"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="25,5,200,347"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="5,1100,220,1221"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ getName()\land 20 more...\l}" alt="" coords="22,424,203,663"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="25,5,200,376"/>
 </map>

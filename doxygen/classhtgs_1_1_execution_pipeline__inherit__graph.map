@@ -1,4 +1,4 @@
 <map id="htgs::ExecutionPipeline&lt; T, U &gt;" name="htgs::ExecutionPipeline&lt; T, U &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="24,395,171,619"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="10,5,185,347"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="24,424,171,648"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="10,5,185,376"/>
 </map>

@@ -7,6 +7,7 @@ var classhtgs_1_1_any_connector =
     [ "getDotId", "classhtgs_1_1_any_connector.html#aba4caee5ef2241e3adb1013f3ffed042", null ],
     [ "getMaxQueueSize", "classhtgs_1_1_any_connector.html#a7d5c5c39ab3e8c9753090555254a0c4a", null ],
     [ "getProducerCount", "classhtgs_1_1_any_connector.html#abb6692b7bb33a2db58b5844862a53b36", null ],
+    [ "getQueueSize", "classhtgs_1_1_any_connector.html#a849c1fda79143a9dc8302cf0f2b0a6a5", null ],
     [ "incrementInputTaskCount", "classhtgs_1_1_any_connector.html#abd0ff2dbe1fe8513ef88298708fe7a0a", null ],
     [ "isInputTerminated", "classhtgs_1_1_any_connector.html#ad2996354891ce5a3411af5c45e4a7f3c", null ],
     [ "produceAnyData", "classhtgs_1_1_any_connector.html#a9bd32e243819e2d1f5fe54397bd575d8", null ],

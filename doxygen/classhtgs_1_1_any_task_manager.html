@@ -240,12 +240,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4708daf59fb6a9dc9f7df0b95d5f4df3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#a4708daf59fb6a9dc9f7df0b95d5f4df3">getTimeout</a> ()</td></tr>
 <tr class="memdesc:a4708daf59fb6a9dc9f7df0b95d5f4df3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the timeout period in microseconds for the task when the task is polling for data.  <a href="#a4708daf59fb6a9dc9f7df0b95d5f4df3">More...</a><br /></td></tr>
 <tr class="separator:a4708daf59fb6a9dc9f7df0b95d5f4df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02a4c594efa95ba296844f8638499c8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#a02a4c594efa95ba296844f8638499c8f">incTaskComputeTime</a> (long val)</td></tr>
-<tr class="memdesc:a02a4c594efa95ba296844f8638499c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the compute time profile value.  <a href="#a02a4c594efa95ba296844f8638499c8f">More...</a><br /></td></tr>
-<tr class="separator:a02a4c594efa95ba296844f8638499c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ef40c9ce298265f6a6faaef79b6831b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#a6ef40c9ce298265f6a6faaef79b6831b">incWaitTime</a> (long val)</td></tr>
-<tr class="memdesc:a6ef40c9ce298265f6a6faaef79b6831b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the wait time profile value.  <a href="#a6ef40c9ce298265f6a6faaef79b6831b">More...</a><br /></td></tr>
-<tr class="separator:a6ef40c9ce298265f6a6faaef79b6831b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33fb7bcc786abe17fbc03ddd1b1c2999"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#a33fb7bcc786abe17fbc03ddd1b1c2999">incTaskComputeTime</a> (int64_t val)</td></tr>
+<tr class="memdesc:a33fb7bcc786abe17fbc03ddd1b1c2999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the compute time profile value.  <a href="#a33fb7bcc786abe17fbc03ddd1b1c2999">More...</a><br /></td></tr>
+<tr class="separator:a33fb7bcc786abe17fbc03ddd1b1c2999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd27f37f553b86cc42c0a8de21a48a8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#afd27f37f553b86cc42c0a8de21a48a8d">incWaitTime</a> (int64_t val)</td></tr>
+<tr class="memdesc:afd27f37f553b86cc42c0a8de21a48a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the wait time profile value.  <a href="#afd27f37f553b86cc42c0a8de21a48a8d">More...</a><br /></td></tr>
+<tr class="separator:afd27f37f553b86cc42c0a8de21a48a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebf4e6cd9768f7e4ee66b64dc2490f19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebf4e6cd9768f7e4ee66b64dc2490f19"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#aebf4e6cd9768f7e4ee66b64dc2490f19">shutdown</a> ()</td></tr>
 <tr class="memdesc:aebf4e6cd9768f7e4ee66b64dc2490f19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shuts down the <a class="el" href="classhtgs_1_1_task_manager.html" title="Encapsulates an ITask to interact with an ITask&#39;s functionality. ">TaskManager</a>. <br /></td></tr>
@@ -270,8 +270,11 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memdesc:a4cebd4891fe4b54ebd55c1bb157a5e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the thread id associated with the <a class="el" href="classhtgs_1_1_task_manager.html" title="Encapsulates an ITask to interact with an ITask&#39;s functionality. ">TaskManager</a>.  <a href="#a4cebd4891fe4b54ebd55c1bb157a5e92">More...</a><br /></td></tr>
 <tr class="separator:a4cebd4891fe4b54ebd55c1bb157a5e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a533416138bf03d17e2c32ff1df4ce7e8"><td class="memItemLeft" align="right" valign="top">unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#a533416138bf03d17e2c32ff1df4ce7e8">getComputeTime</a> ()</td></tr>
-<tr class="memdesc:a533416138bf03d17e2c32ff1df4ce7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the compute time for the task manager.  <a href="#a533416138bf03d17e2c32ff1df4ce7e8">More...</a><br /></td></tr>
+<tr class="memdesc:a533416138bf03d17e2c32ff1df4ce7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the compute time for the task manager, removing the memory wait time.  <a href="#a533416138bf03d17e2c32ff1df4ce7e8">More...</a><br /></td></tr>
 <tr class="separator:a533416138bf03d17e2c32ff1df4ce7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a773c41943b04a2631fc36fd0cbdccf23"><td class="memItemLeft" align="right" valign="top">unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#a773c41943b04a2631fc36fd0cbdccf23">getExecuteTime</a> ()</td></tr>
+<tr class="memdesc:a773c41943b04a2631fc36fd0cbdccf23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the total execution time for the task manager, including any waiting for memory within the execute function.  <a href="#a773c41943b04a2631fc36fd0cbdccf23">More...</a><br /></td></tr>
+<tr class="separator:a773c41943b04a2631fc36fd0cbdccf23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7879ecccc13f28432e99efbf90652eb0"><td class="memItemLeft" align="right" valign="top">unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_manager.html#a7879ecccc13f28432e99efbf90652eb0">getWaitTime</a> ()</td></tr>
 <tr class="memdesc:a7879ecccc13f28432e99efbf90652eb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the wait time for the task manager.  <a href="#a7879ecccc13f28432e99efbf90652eb0">More...</a><br /></td></tr>
 <tr class="separator:a7879ecccc13f28432e99efbf90652eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -661,9 +664,35 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 </div><div class="memdoc">
 
-<p>Gets the compute time for the task manager. </p>
-<dl class="section return"><dt>Returns</dt><dd>the compute time </dd></dl>
+<p>Gets the compute time for the task manager, removing the memory wait time. </p>
+<p>Use <a class="el" href="classhtgs_1_1_any_task_manager.html#a773c41943b04a2631fc36fd0cbdccf23" title="Gets the total execution time for the task manager, including any waiting for memory within the execu...">getExecuteTime()</a> to get the entire runtime of the task, including wait time. </p><dl class="section return"><dt>Returns</dt><dd>the compute time </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Must define the directive PROFILE to enable profiling </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a773c41943b04a2631fc36fd0cbdccf23"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long long int htgs::AnyTaskManager::getExecuteTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the total execution time for the task manager, including any waiting for memory within the execute function. </p>
+<dl class="section return"><dt>Returns</dt><dd>the total time spent in the execute function. </dd></dl>
 
 </div>
 </div>
@@ -1013,7 +1042,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a class="anchor" id="a02a4c594efa95ba296844f8638499c8f"></a>
+<a class="anchor" id="a33fb7bcc786abe17fbc03ddd1b1c2999"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1023,7 +1052,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="memname">void htgs::AnyTaskManager::incTaskComputeTime </td>
           <td>(</td>
-          <td class="paramtype">long&#160;</td>
+          <td class="paramtype">int64_t&#160;</td>
           <td class="paramname"><em>val</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1045,7 +1074,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a class="anchor" id="a6ef40c9ce298265f6a6faaef79b6831b"></a>
+<a class="anchor" id="afd27f37f553b86cc42c0a8de21a48a8d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1055,7 +1084,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="memname">void htgs::AnyTaskManager::incWaitTime </td>
           <td>(</td>
-          <td class="paramtype">long&#160;</td>
+          <td class="paramtype">int64_t&#160;</td>
           <td class="paramname"><em>val</em></td><td>)</td>
           <td></td>
         </tr>

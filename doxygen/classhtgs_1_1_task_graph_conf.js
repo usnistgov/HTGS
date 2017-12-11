@@ -5,6 +5,7 @@ var classhtgs_1_1_task_graph_conf =
     [ "~TaskGraphConf", "classhtgs_1_1_task_graph_conf.html#a323f679f264c726a61ea7ae50f02914a", null ],
     [ "addCudaMemoryManagerEdge", "classhtgs_1_1_task_graph_conf.html#a0d42580bc4a385943ae53d22108fdef8", null ],
     [ "addCudaMemoryManagerEdge", "classhtgs_1_1_task_graph_conf.html#a806d4e5a57572f548c6682c81b28084e", null ],
+    [ "addCustomMemoryManagerEdge", "classhtgs_1_1_task_graph_conf.html#a3e01d687d11fcd4a7c9bd90f8f65a7f3", null ],
     [ "addEdge", "classhtgs_1_1_task_graph_conf.html#aeaf80f060f13a40b41579a8678acad01", null ],
     [ "addGraphProducerTask", "classhtgs_1_1_task_graph_conf.html#a0857e5a678b01922a513cd2327114864", null ],
     [ "addMemoryManagerEdge", "classhtgs_1_1_task_graph_conf.html#a88adcd11f63ba49703f82f1210d0f0eb", null ],

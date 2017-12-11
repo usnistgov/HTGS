@@ -5,5 +5,6 @@ var searchData=
   ['tutorial_202a',['Tutorial 2A',['../tutorial2a.html',1,'']]],
   ['tutorial_202b',['Tutorial 2B',['../tutorial2b.html',1,'']]],
   ['tutorial_203a',['Tutorial 3A',['../tutorial3a.html',1,'']]],
-  ['tutorial_203b',['Tutorial 3B',['../tutorial3b.html',1,'']]]
+  ['tutorial_203b',['Tutorial 3B',['../tutorial3b.html',1,'']]],
+  ['tutorial_204',['Tutorial 4',['../tutorial4.html',1,'']]]
 ];

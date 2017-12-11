@@ -5,6 +5,7 @@ var classhtgs_1_1_connector =
     [ "consumeData", "classhtgs_1_1_connector.html#a214201fdc99a49c328fbc00dd0ff74d2", null ],
     [ "copy", "classhtgs_1_1_connector.html#ab3edcb5eafd7493eb3da43ba8e923c5a", null ],
     [ "getMaxQueueSize", "classhtgs_1_1_connector.html#ac8914185b86b4f4529630371db47b50f", null ],
+    [ "getQueueSize", "classhtgs_1_1_connector.html#a9fbf620628524a4a523a07b2d3cd28cc", null ],
     [ "isInputTerminated", "classhtgs_1_1_connector.html#ac57f6cb1a8f74822d3e11d8277d3e696", null ],
     [ "pollConsumeData", "classhtgs_1_1_connector.html#af712356660dfcf9def4aa025da8903d9", null ],
     [ "produceAnyData", "classhtgs_1_1_connector.html#a8a118e27dd5ea9dbd5024101c12f7afa", null ],

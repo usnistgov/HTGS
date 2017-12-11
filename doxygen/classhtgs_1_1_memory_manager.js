@@ -9,7 +9,7 @@ var classhtgs_1_1_memory_manager =
     [ "getAllocator", "classhtgs_1_1_memory_manager.html#afeac13f09f119aa6ffe539e27e0925c7", null ],
     [ "getDotFillColor", "classhtgs_1_1_memory_manager.html#ac5f82025556227fdc81610bb48142ef8", null ],
     [ "getMemoryManagerName", "classhtgs_1_1_memory_manager.html#af64691d20057a62f66489cdb73a56b70", null ],
-    [ "getMemoryPoolSize", "classhtgs_1_1_memory_manager.html#ab7c23c939a63c649f38bb967560255a6", null ],
+    [ "getMemoryPoolSize", "classhtgs_1_1_memory_manager.html#a10a8bcb7d1e1fd9db4a992a4a7b27189", null ],
     [ "getName", "classhtgs_1_1_memory_manager.html#a491ec9545d1a185d9d114b1fedef64f1", null ],
     [ "getType", "classhtgs_1_1_memory_manager.html#a257a303ce6647fe9813f814cdacae8a8", null ],
     [ "initialize", "classhtgs_1_1_memory_manager.html#a39516b53dcd7ea8c978292bb6334d14a", null ],

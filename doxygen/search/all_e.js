@@ -30,5 +30,6 @@ var searchData=
   ['profile',['profile',['../classhtgs_1_1_any_i_task.html#a38960397af48fada4690c7ce35bde1e2',1,'htgs::AnyITask']]],
   ['profileconsume',['profileConsume',['../classhtgs_1_1_any_connector.html#a9dd929f6e9c895f75d0c9fab7164cc80',1,'htgs::AnyConnector::profileConsume()'],['../classhtgs_1_1_connector.html#aaac4532ac40501d0a878853dd9bf7d03',1,'htgs::Connector::profileConsume()']]],
   ['profileitask',['profileITask',['../classhtgs_1_1_any_i_task.html#ab428a1870e69900ba20ffb8285ecc8f1',1,'htgs::AnyITask']]],
-  ['profileproduce',['profileProduce',['../classhtgs_1_1_any_connector.html#a6ef2fc38499dd6b57c701608b4984e64',1,'htgs::AnyConnector::profileProduce()'],['../classhtgs_1_1_connector.html#ac4fe521dd57c572bd9aa0e216879bbf3',1,'htgs::Connector::profileProduce()']]]
+  ['profileproduce',['profileProduce',['../classhtgs_1_1_any_connector.html#a6ef2fc38499dd6b57c701608b4984e64',1,'htgs::AnyConnector::profileProduce()'],['../classhtgs_1_1_connector.html#ac4fe521dd57c572bd9aa0e216879bbf3',1,'htgs::Connector::profileProduce()']]],
+  ['profilestr',['profileStr',['../classhtgs_1_1_any_i_task.html#a3786bebe07dacadc35f71297856092fe',1,'htgs::AnyITask']]]
 ];

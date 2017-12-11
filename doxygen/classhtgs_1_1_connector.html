@@ -166,6 +166,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaac4532ac40501d0a878853dd9bf7d03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#aaac4532ac40501d0a878853dd9bf7d03">profileConsume</a> (size_t numThreads, bool showQueueSize) override</td></tr>
 <tr class="memdesc:aaac4532ac40501d0a878853dd9bf7d03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides profile output for the consume operation.  <a href="#aaac4532ac40501d0a878853dd9bf7d03">More...</a><br /></td></tr>
 <tr class="separator:aaac4532ac40501d0a878853dd9bf7d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fbf620628524a4a523a07b2d3cd28cc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#a9fbf620628524a4a523a07b2d3cd28cc">getQueueSize</a> () override</td></tr>
+<tr class="memdesc:a9fbf620628524a4a523a07b2d3cd28cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size of the queue that this connector has in its data queue.  <a href="#a9fbf620628524a4a523a07b2d3cd28cc">More...</a><br /></td></tr>
+<tr class="separator:a9fbf620628524a4a523a07b2d3cd28cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8914185b86b4f4529630371db47b50f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_connector.html#ac8914185b86b4f4529630371db47b50f">getMaxQueueSize</a> () override</td></tr>
 <tr class="memdesc:ac8914185b86b4f4529630371db47b50f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the maximum queue size that this connector has in its data queue.  <a href="#ac8914185b86b4f4529630371db47b50f">More...</a><br /></td></tr>
 <tr class="separator:ac8914185b86b4f4529630371db47b50f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -329,6 +332,36 @@ template&lt;class T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the maximum queue size for the connector </dd></dl>
 
 <p>Implements <a class="el" href="classhtgs_1_1_any_connector.html#a7d5c5c39ab3e8c9753090555254a0c4a">htgs::AnyConnector</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9fbf620628524a4a523a07b2d3cd28cc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classhtgs_1_1_connector.html">htgs::Connector</a>&lt; T &gt;::getQueueSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the size of the queue that this connector has in its data queue. </p>
+<dl class="section return"><dt>Returns</dt><dd>the size of the queue for the connector </dd></dl>
+
+<p>Implements <a class="el" href="classhtgs_1_1_any_connector.html#a849c1fda79143a9dc8302cf0f2b0a6a5">htgs::AnyConnector</a>.</p>
 
 </div>
 </div>

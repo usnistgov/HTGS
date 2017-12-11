@@ -1,6 +1,7 @@
 var classhtgs_1_1_i_rule =
 [
     [ "IRule", "classhtgs_1_1_i_rule.html#ad320c20c0d1b964983d90565c25bf74d", null ],
+    [ "IRule", "classhtgs_1_1_i_rule.html#abf9232403502dc1248989b72416d2b98", null ],
     [ "~IRule", "classhtgs_1_1_i_rule.html#a07c2d0e1d683892cd9afc13fb73adbdf", null ],
     [ "addResult", "classhtgs_1_1_i_rule.html#ab97407718736e3ee65417aecf9e79cc2", null ],
     [ "addResult", "classhtgs_1_1_i_rule.html#a5b62218b64549272aa6ef19e6b81b1fc", null ],
