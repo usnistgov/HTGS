@@ -194,7 +194,7 @@ Shuvra Bhattacharyya
 
 # How to cite our work
 
-If you are using the HTGS API in your research please use one of the following methods to cite us.
+If you are using the HTGS API in your research please use the following references to cite us.
 
 Blattner T., Keyrouz W., The Hybrid Task Graph Scheduler API, (2017), GitHub repository, https://github.com/usnistgov/HTGS
 
