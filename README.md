@@ -196,17 +196,20 @@ Shuvra Bhattacharyya
 
 If you are using the HTGS API in your research please use one of the following methods to cite us.
 
-1) Cite the github page
+Blattner T., Keyrouz W., The Hybrid Task Graph Scheduler API, (2017), GitHub repository, https://github.com/usnistgov/HTGS
 
-2) T. Blattner, W. Keyrouz, M. Halem, M. Brady and S. S. Bhattacharyya, "A hybrid task graph scheduler for high performance image processing workflows," 2015 IEEE Global Conference on Signal and Information Processing (GlobalSIP), Orlando, FL, 2015, pp. 634-637.
+Blattner, T., Keyrouz, W., Bhattacharyya, S.S. et al. J Sign Process Syst (2017) 89: 457. https://doi.org/10.1007/s11265-017-1262-6 [download pdf](https://pages.nist.gov/HTGS/public/references/Springer-HTGS-ImageProcessing.pdf), [view article](https://link.springer.com/article/10.1007/s11265-017-1262-6)
 
 
-Citations
+Other References
 ------
+
 [1]: [Blattner, T.; Keyrouz, W.; Chalfoun, J.; Stivalet, B.; Brady, M.; Shujia Zhou, "A Hybrid CPU-GPU System for Stitching Large Scale Optical Microscopy Images," in Parallel Processing (ICPP), 2014 43rd International Conference on , vol., no., pp.1-9, 9-12 Sept. 2014
 doi: 10.1109/ICPP.2014.9](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6957209&isnumber=6957198)
 
-[2]: Blattner, T.; "A Hybrid CPU/GPU Pipeline Workflow System". Master's thesis, 2013. University of Maryland Baltimore County
+[2]: Blattner, T., 2013, "A Hybrid CPU/GPU Pipeline Workflow System". (Master's thesis), University of Maryland Baltimore County
+
+[3] Blattner, T.; 2016, "The Hybrid Task Graph Scheduler". (PhD Thesis), 2016, University of Maryland Baltimore County
 
 # Contact Us
 
