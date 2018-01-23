@@ -86,7 +86,7 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
    */
   void initialize() override {
     this->pool = new MemoryPool<T>(this->getMemoryPoolSize());
-    MemoryData<T> *memory = new MemoryData<T>(this->allocator, this->getAddress(), this->getName(), this->type);
+    MemoryData<T> *memory = new MemoryData<T>(this->getAllocator(), this->getAddress(), this->getName(), this->type);
 
     bool allocate = false;
     if (type == MMType::Static)
@@ -182,7 +182,7 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
    * Gets the allocator that is responsible for allocating and freeing memory for the MemoryPool.
    * @return the allocator
    */
-  std::shared_ptr<IMemoryAllocator<T>> getAllocator() {
+  virtual std::shared_ptr<IMemoryAllocator<T>> getAllocator() {
     return this->allocator;
   }
 
