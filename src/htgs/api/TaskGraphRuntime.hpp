@@ -127,6 +127,8 @@ class TaskGraphRuntime {
       if (t->joinable())
         t->join();
     }
+
+    this->graph->shutdown();
   }
 
   /**
@@ -218,6 +220,8 @@ class TaskGraphRuntime {
 
 
     this->executed = true;
+
+    graph->finishedSetup();
   }
 
  private:

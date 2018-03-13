@@ -75,6 +75,10 @@ class AnyTaskGraphConf {
    */
   AnyTaskGraphConf(size_t pipelineId, size_t numPipelines, std::string baseAddress) :
       pipelineId(pipelineId), numPipelines(numPipelines) {
+    this->graphCreationTimestamp = std::chrono::high_resolution_clock::now();
+    this->graphComputeTime = 0;
+    this->graphCreationTime = 0;
+
     if (baseAddress == "")
       this->address = std::to_string(pipelineId);
     else
@@ -225,13 +229,35 @@ class AnyTaskGraphConf {
   }
 
   /**
-   * Initializes the task graph just prior to spawning threads
+   * Initializes the task graph just prior to spawning threads.
    */
   void initialize() {
     this->getTaskGraphCommunicator()->setNumGraphsSpawned(this->getNumberOfSubGraphs());
 
     this->updateTaskManagersAddressingAndPipelines();
     this->updateCommunicator();
+
+    auto endTime = std::chrono::high_resolution_clock::now();
+    this->graphCreationTime =
+      static_cast<unsigned long long int>(std::chrono::duration_cast<std::chrono::microseconds>(endTime - graphCreationTimestamp).count());
+
+    this->graphExecutingTimestamp = std::chrono::high_resolution_clock::now();
+  }
+
+  /**
+   * Called when the task graph has finished setting up its tasks and launched all threads for the graph.
+   */
+  virtual void finishedSetup() { }
+
+  /**
+   * Called when all the threads in this graph have finished executing.
+   */
+  void shutdown() {
+    auto endTime = std::chrono::high_resolution_clock::now();
+
+    graphComputeTime =
+      static_cast<unsigned long long int>(std::chrono::duration_cast<std::chrono::microseconds>(endTime - graphExecutingTimestamp).count());
+
   }
 
   /**
@@ -352,18 +378,6 @@ class AnyTaskGraphConf {
   size_t getNumPipelines() { return this->numPipelines; }
 
   /**
-   * Writes the basic dot representation of the task graph to disk.
-   *
-   * @param file the filename (will not create directories)
-   *
-   * @note Use the directive PROFILE to enable profiling output and call after execution.
-   * @note Calling this function prior to execution show the graph structure.
-   */
-  void writeDotToFile(std::string file) {
-    writeDotToFile(file, 0);
-  }
-
-  /**
    * Writes the dot representation of the task graph to disk with additional options such as
    * profiling.
    *
@@ -378,13 +392,13 @@ class AnyTaskGraphConf {
    * @note See TaskGraphDotGenFlags.hpp for list of bit flags
    * @note Calling this function prior to execution show the graph structure.
    */
-  void writeDotToFile(std::string file, int flags) {
+  void writeDotToFile(std::string file, int flags = 0, std::string graphTitle = "", std::string customTitleText = "") {
     bool graphColored = false;
 #ifdef PROFILE
     if ((flags & DOTGEN_COLOR_COMP_TIME) != 0) {
       std::string name = "color-compute-time-" + file;
       std::ofstream f(name);
-      f << genDotGraph(flags, DOTGEN_COLOR_COMP_TIME);
+      f << genDotGraph(flags, DOTGEN_COLOR_COMP_TIME, graphTitle, customTitleText);
       f.flush();
 
       std::cout << "Writing dot file for task graph with compute time coloring to " << name << std::endl;
@@ -396,7 +410,7 @@ class AnyTaskGraphConf {
       std::string name = "color-wait-time-" + file;
 
       std::ofstream f(name);
-      f << genDotGraph(flags, DOTGEN_COLOR_WAIT_TIME);
+      f << genDotGraph(flags, DOTGEN_COLOR_WAIT_TIME, graphTitle, customTitleText);
       f.flush();
 
       std::cout << "Writing dot file for task graph with wait time coloring to " << name << std::endl;
@@ -408,7 +422,7 @@ class AnyTaskGraphConf {
       std::string name = "color-max-q-sz-" + file;
 
       std::ofstream f(name);
-      f << genDotGraph(flags, DOTGEN_COLOR_MAX_Q_SZ);
+      f << genDotGraph(flags, DOTGEN_COLOR_MAX_Q_SZ, graphTitle, customTitleText);
       f.flush();
 
       std::cout << "Writing dot file for task graph with max Q size coloring to " << name << std::endl;
@@ -419,7 +433,7 @@ class AnyTaskGraphConf {
 
     if (!graphColored) {
       std::ofstream f(file);
-      f << genDotGraph(flags, 0);
+      f << genDotGraph(flags, 0, graphTitle, customTitleText);
       f.flush();
 
       std::cout << "Writing dot file for task graph to " << file << std::endl;
@@ -463,6 +477,21 @@ class AnyTaskGraphConf {
   }
 
   /**
+   * Gets the total time the graph was computing.
+   * @return the total time the graph was computing.
+   */
+  unsigned long long int getGraphComputeTime() const {
+    return graphComputeTime;
+  }
+  /**
+   * Gets the total time the graph was getting created.
+   * @return the total time the graph was getting created.
+   */
+  unsigned long long int getGraphCreationTime() const {
+    return graphCreationTime;
+  }
+
+  /**
    * Generate the content only of the graph (excludes all graph definitions and attributes)
    */
   std::string genDotGraphContent(int flags) {
@@ -484,7 +513,7 @@ class AnyTaskGraphConf {
   /**
    * Generates the dot graph as a string
    */
-  virtual std::string genDotGraph(int flags, int colorFlag) = 0;
+  virtual std::string genDotGraph(int flags, int colorFlag, std::string graphTitle = "", std::string customTitleText = "") = 0;
 
   /**
    * Creates a copy of each task from the list of AnyTaskManagers passed as a parameter.
@@ -559,6 +588,12 @@ class AnyTaskGraphConf {
 
   IRuleMap *iRuleMap; //!< A mapping for each IRule pointer to the shared pointer for that IRule
   MemAllocMap *memAllocMap; //!< A mapping for each IMemoryAllocator to its associated shared_ptr
+
+
+  std::chrono::time_point<std::chrono::system_clock> graphCreationTimestamp; //!<< Timestamp when graph constructor was called
+  std::chrono::time_point<std::chrono::system_clock> graphExecutingTimestamp;
+  unsigned long long int graphComputeTime; //!< The total time to execute the graph
+  unsigned long long int graphCreationTime; //!< The total time to create the graph
 };
 
 }

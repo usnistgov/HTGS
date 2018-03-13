@@ -766,7 +766,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
   /**
    * Generates the dot graph as a string
    */
-  std::string genDotGraph(int flags, int colorFlag) override {
+  std::string genDotGraph(int flags, int colorFlag, std::string graphTitle = "", std::string customTitleText = "") override {
     std::ostringstream oss;
 
     // Create header info for graphViz dot file
@@ -774,7 +774,16 @@ class TaskGraphConf : public AnyTaskGraphConf {
     oss << "forcelabels=true;" << std::endl;
     oss << "node[shape=record, fontsize=10, fontname=\"Verdana\"];" << std::endl;
     oss << "edge[fontsize=10, fontname=\"Verdana\"];" << std::endl;
-    oss << "graph [compound=true];" << std::endl;
+
+    std::string graphTitleStr = graphTitle == "" ? "" : (graphTitle + "\n");
+    std::string computeTimeStr = this->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)this->getGraphComputeTime() / 1000000.0) + " s\n";
+    std::string createTimeStr = this->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)this->getGraphCreationTime() / 1000000.0) + " s\n";
+
+
+
+    oss << "graph [compound=true, labelloc=top, labeljust=left, "
+        << "label=\"" << graphTitleStr << computeTimeStr << createTimeStr <<customTitleText << "\"];" << std::endl;
+
 
     // Gather profile data
     TaskGraphProfiler profiler(flags);
@@ -903,6 +912,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph
 
   TaskGraphCommunicator *taskConnectorCommunicator; //!< The task graph communicator for the task graph.
+
 
 #ifdef WS_PROFILE
   TaskManager<ProfileData, VoidData> *wsProfileTaskManager; // !< The task manager for the web socket profiler
