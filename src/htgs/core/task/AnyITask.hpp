@@ -165,6 +165,14 @@ class AnyITask {
   virtual void initialize() = 0;
 
   /**
+   * Virtual function that is called just before the task has shutdown. This is the last call for executeTask.
+   * This is only called by the very last thread that is bound for this task.
+   *
+   * Example: If you have multiple threads bound to a task, then this function is only called once for the last thread
+   */
+  virtual void executeTaskFinal() = 0;
+
+  /**
  * Virtual function that is called when an ITask is checking if it can be terminated
  * @param inputConnector the connector responsible for giving data to this Task
  * @return whether the ITask can be terminated or not

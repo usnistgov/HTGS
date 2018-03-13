@@ -221,6 +221,12 @@ class ITask : public AnyITask {
   virtual void shutdown() override {}
 
   /**
+   * @copydoc AnyITask::executeTaskFinal
+   */
+  virtual void executeTaskFinal() override {}
+
+
+  /**
    * @copydoc AnyITask::getName
    */
   virtual std::string getName() override {

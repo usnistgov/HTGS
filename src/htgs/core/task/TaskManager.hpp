@@ -310,6 +310,12 @@ class TaskManager : public AnyTaskManager {
       // If this is the last thread for this task then close the output
       if (this->runtimeThread->decrementAndCheckNumThreadsRemaining()) {
 
+        auto start = std::chrono::high_resolution_clock::now();
+        // Final execution for the task
+        this->taskFunction->executeTaskFinal();
+        auto finish = std::chrono::high_resolution_clock::now();
+        this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+
 #ifdef WS_PROFILE
         // Update output connector, this task is no longer producing for it
         this->sendWSProfileUpdate(this->getOutputConnector().get(), StatusCode::DECREMENT);
