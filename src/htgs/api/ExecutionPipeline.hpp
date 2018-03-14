@@ -102,9 +102,9 @@ class ExecutionPipeline : public ITask<T, U> {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
-    this->runtimes = new std::list<TaskGraphRuntime *>();
+    this->runtimes = new std::vector<TaskGraphRuntime *>();
     this->inputRules = std::shared_ptr<IRuleList<T, T>>(new IRuleList<T, T>());
-    this->graphs = new std::list<TaskGraphConf<T, U> *>();
+    this->graphs = new std::vector<TaskGraphConf<T, U> *>();
   }
 
   /**
@@ -117,9 +117,9 @@ class ExecutionPipeline : public ITask<T, U> {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
-    this->runtimes = new std::list<TaskGraphRuntime *>();
+    this->runtimes = new std::vector<TaskGraphRuntime *>();
     this->inputRules = rules;
-    this->graphs = new std::list<TaskGraphConf<T, U> *>();
+    this->graphs = new std::vector<TaskGraphConf<T, U> *>();
   }
 
   /**
@@ -234,9 +234,40 @@ class ExecutionPipeline : public ITask<T, U> {
     DEBUG("Shutting down " << this->getName());
     this->inputBk->shutdown();
 
-    for (TaskGraphRuntime *r : *this->runtimes) {
-      r->waitForRuntime();
+    // Spawn thread for each runtime to properly wait without blocking.
+    std::vector<std::thread *> shutdownThreads;
+
+    for (int i = 0; i < runtimes->size(); i++)
+    {
+      std::thread *t = new std::thread(&ExecutionPipeline<T, U>::shutdownParallel, this, i);
+      shutdownThreads.push_back(t);
     }
+
+    for (std::thread *t : shutdownThreads)
+    {
+      if (t->joinable())
+        t->join();
+
+      delete t;
+    }
+
+//
+//    for (std::vector<TaskGraphRuntime *>::reverse_iterator r = runtimes->rbegin();
+//         r != runtimes->rend(); ++r ) {
+//      (*r)->waitForRuntime();
+//    }
+
+//    for (TaskGraphRuntime *r : *this->runtimes) {
+//      r->waitForRuntime();
+//    }
+  }
+
+  /**
+   * Waits for all runtimes in parallel to update overall runtime of each graph.
+   * @param id the thread ID
+   */
+  void shutdownParallel(int id) {
+    (*runtimes)[id]->waitForRuntime();
   }
 
   /**
@@ -435,9 +466,9 @@ class ExecutionPipeline : public ITask<T, U> {
   Bookkeeper<T> *inputBk; //!< The input Bookkeeper for the ExecutionPipeline
   TaskGraphConf<T, U> *graph; //!< The graph that the ExecutionPipeline manages, duplicates, and executes
   std::shared_ptr<IRuleList<T, T>> inputRules; //!< The rules associated with the input Bookkeeper for decomposition
-  std::list<TaskGraphRuntime *>
+  std::vector<TaskGraphRuntime *>
       *runtimes; //!< The list of Runtimes that will execute the TaskGraphs (one for each duplicate TaskGraph)
-  std::list<TaskGraphConf<T, U> *> *graphs; //!< The list of duplicate TaskGraphs
+  std::vector<TaskGraphConf<T, U> *> *graphs; //!< The list of duplicate TaskGraphs
 };
 }
 

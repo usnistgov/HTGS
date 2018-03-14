@@ -20,6 +20,9 @@ void createCudaTask()
   EXPECT_EQ(1, task.getNumGPUs());
   EXPECT_STREQ("SimpleCudaTask", task.getName().c_str());
   EXPECT_FALSE(task.isStartTask());
+
+  delete [] gpuIds;
+  delete contexts;
 }
 
 
