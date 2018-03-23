@@ -590,8 +590,8 @@ class AnyTaskGraphConf {
   MemAllocMap *memAllocMap; //!< A mapping for each IMemoryAllocator to its associated shared_ptr
 
 
-  std::chrono::time_point<std::chrono::system_clock> graphCreationTimestamp; //!<< Timestamp when graph constructor was called
-  std::chrono::time_point<std::chrono::system_clock> graphExecutingTimestamp;
+  std::chrono::time_point<std::chrono::high_resolution_clock> graphCreationTimestamp; //!<< Timestamp when graph constructor was called
+  std::chrono::time_point<std::chrono::high_resolution_clock> graphExecutingTimestamp;
   unsigned long long int graphComputeTime; //!< The total time to execute the graph
   unsigned long long int graphCreationTime; //!< The total time to create the graph
 };
