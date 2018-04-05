@@ -16,6 +16,7 @@
 #include <sstream>
 
 #include <htgs/api/IData.hpp>
+#include <htgs/types/TaskGraphDotGenFlags.hpp>
 
 namespace htgs {
 
@@ -92,7 +93,9 @@ class AnyConnector {
    * @return the dot representation
    */
   std::string genDot(int flags) {
-    return getDotId() + "[label=\"" + std::to_string(this->getProducerCount())
+    return getDotId() + "[label=\""
+        + ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getProducerCount()) : "Active Producers: " + std::to_string(this->getProducerCount()))
+        + ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\nQueue Size: " + std::to_string(this->getQueueSize()))
         + "\",shape=box,style=rounded,color=black,width=.2,height=.2];\n";
 
   }

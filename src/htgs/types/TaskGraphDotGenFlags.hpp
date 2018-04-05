@@ -79,4 +79,16 @@
  */
 #define DOTGEN_COLOR_MEMORY_WAIT_TIME 1 << 10
 
+/**
+ * @def DOTGEN_FLAG_SHOW_CURRENT_Q_SZ
+ * @brief Displays the current queue size within each connector.
+ */
+#define DOTGEN_FLAG_SHOW_CURRENT_Q_SZ 1 << 11
+
+/**
+ * @def DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE
+ * @brief Shows verbose information within each connector in the graph.
+ */
+#define DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE 1 << 12
+
 #endif //HTGS_TASKGRAPHDOTGENFLAGS_HPP

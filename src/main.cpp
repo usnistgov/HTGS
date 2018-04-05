@@ -8,6 +8,7 @@
 #include <htgs/api/TaskGraphConf.hpp>
 #include <htgs/api/TaskGraphRuntime.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
+#include <htgs/log/TaskGraphSignalHandler.hpp>
 
 class InputData : public htgs::IData
 {
@@ -97,6 +98,17 @@ int main() {
   taskGraph->addRuleEdge(bk, rule, addTask3);
   taskGraph->addGraphProducerTask(addTask3);
 
+  // This causes deadlock
+  taskGraph->incrementGraphProducer();
+
+  htgs::TaskGraphSignalHandler::registerTaskGraph(taskGraph);
+  htgs::TaskGraphSignalHandler::registerSignal(SIGSEGV);
+//  signalHandler.registerSignal(SIGKILL);
+//  signalHandler.registerSignal(SIGTERM);
+
+//  htgs::TaskGraphSignalHandler::registerSignal();
+
+
   auto runtime = new htgs::TaskGraphRuntime(taskGraph);
   runtime->executeRuntime();
 
@@ -110,9 +122,10 @@ int main() {
 
   while(!taskGraph->isOutputTerminated()) {
     auto data = taskGraph->consumeData();
-    if (data != nullptr) {
+    data = nullptr;
+//    if (data != nullptr) {
       std::cout << "Result: " << data->getResult() << std::endl;
-    }
+//    }
   }
 
   runtime->waitForRuntime();

@@ -796,13 +796,15 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
     if (getGraphConsumerTaskManager() != nullptr)
       oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n"
-          << this->getInputConnector()->getProducerCount()
+          << ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getInputConnector()->getProducerCount()) : "Active Producers: " + std::to_string(this->getInputConnector()->getProducerCount()))
+          << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\nQueue Size: " + std::to_string(this->getInputConnector()->getQueueSize()))
           << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n" + this->getInputConnector()->typeName()) : "")
           << "\"];" << std::endl;
 
     if (getGraphProducerTaskManagers()->size() > 0)
       oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\n"
-          << this->getOutputConnector()->getProducerCount()
+        << ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getInputConnector()->getProducerCount()) : "Active Producers: " + std::to_string(this->getOutputConnector()->getProducerCount()))
+        << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\nQueue Size: " + std::to_string(this->getOutputConnector()->getQueueSize()))
           << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n" + this->getOutputConnector()->typeName()) : "")
           << "\"]; }" << std::endl;
 
