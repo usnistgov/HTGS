@@ -36,6 +36,7 @@ var annotated_dup =
       [ "TaskGraphConf", "classhtgs_1_1_task_graph_conf.html", "classhtgs_1_1_task_graph_conf" ],
       [ "TaskGraphProfiler", "classhtgs_1_1_task_graph_profiler.html", "classhtgs_1_1_task_graph_profiler" ],
       [ "TaskGraphRuntime", "classhtgs_1_1_task_graph_runtime.html", "classhtgs_1_1_task_graph_runtime" ],
+      [ "TaskGraphSignalHandler", "classhtgs_1_1_task_graph_signal_handler.html", null ],
       [ "TaskManager", "classhtgs_1_1_task_manager.html", "classhtgs_1_1_task_manager" ],
       [ "TaskManagerProfile", "classhtgs_1_1_task_manager_profile.html", "classhtgs_1_1_task_manager_profile" ],
       [ "TaskManagerThread", "classhtgs_1_1_task_manager_thread.html", "classhtgs_1_1_task_manager_thread" ],

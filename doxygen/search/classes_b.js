@@ -4,6 +4,7 @@ var searchData=
   ['taskgraphconf',['TaskGraphConf',['../classhtgs_1_1_task_graph_conf.html',1,'htgs']]],
   ['taskgraphprofiler',['TaskGraphProfiler',['../classhtgs_1_1_task_graph_profiler.html',1,'htgs']]],
   ['taskgraphruntime',['TaskGraphRuntime',['../classhtgs_1_1_task_graph_runtime.html',1,'htgs']]],
+  ['taskgraphsignalhandler',['TaskGraphSignalHandler',['../classhtgs_1_1_task_graph_signal_handler.html',1,'htgs']]],
   ['taskmanager',['TaskManager',['../classhtgs_1_1_task_manager.html',1,'htgs']]],
   ['taskmanager_3c_20memorydata_3c_20t_20_3e_2c_20memorydata_3c_20t_20_3e_20_3e',['TaskManager&lt; MemoryData&lt; T &gt;, MemoryData&lt; T &gt; &gt;',['../classhtgs_1_1_task_manager.html',1,'htgs']]],
   ['taskmanager_3c_20t_2c_20voiddata_20_3e',['TaskManager&lt; T, VoidData &gt;',['../classhtgs_1_1_task_manager.html',1,'htgs']]],

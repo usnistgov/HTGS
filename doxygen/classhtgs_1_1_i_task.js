@@ -10,6 +10,7 @@ var classhtgs_1_1_i_task =
     [ "copy", "classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6", null ],
     [ "copyITask", "classhtgs_1_1_i_task.html#af5eb7fcf9b6c14e3fe5c6b23b7c0cee0", null ],
     [ "executeTask", "classhtgs_1_1_i_task.html#a78776a659308572e84760e6e36a2520d", null ],
+    [ "executeTaskFinal", "classhtgs_1_1_i_task.html#ab47aba1c189fdbb83dad114bcbbf8e4c", null ],
     [ "gatherProfileData", "classhtgs_1_1_i_task.html#a8a081f373013ed563234b296b99047ba", null ],
     [ "getAddress", "classhtgs_1_1_i_task.html#ae29cf1039ab3b9d9426b67b226a42dcc", null ],
     [ "getDotCustomProfile", "classhtgs_1_1_i_task.html#a20ee37165592d050252488a32fdaf595", null ],

@@ -64,6 +64,7 @@ var hierarchy =
     [ "htgs::TaskGraphCommunicator", "classhtgs_1_1_task_graph_communicator.html", null ],
     [ "htgs::TaskGraphProfiler", "classhtgs_1_1_task_graph_profiler.html", null ],
     [ "htgs::TaskGraphRuntime", "classhtgs_1_1_task_graph_runtime.html", null ],
+    [ "htgs::TaskGraphSignalHandler", "classhtgs_1_1_task_graph_signal_handler.html", null ],
     [ "htgs::TaskManagerProfile", "classhtgs_1_1_task_manager_profile.html", null ],
     [ "htgs::TaskManagerThread", "classhtgs_1_1_task_manager_thread.html", null ]
 ];

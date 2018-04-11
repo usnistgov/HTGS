@@ -1,10 +1,11 @@
 <map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/graph/edge/EdgeDescriptor.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/graph/edge/EdgeDescriptor.hpp">
-<area shape="rect" id="node2" href="$_any_task_graph_conf_8hpp.html" title="Implements the base class used by the TaskGraphConf, which removes the template arguments and impleme..." alt="" coords="274,109,453,165"/>
-<area shape="rect" id="node3" href="$_producer_consumer_edge_8hpp.html" title="Implements a producer consumer edge, which is a type of edge descriptor. " alt="" coords="5,213,231,269"/>
-<area shape="rect" id="node7" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="474,213,653,269"/>
-<area shape="rect" id="node9" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="590,109,769,165"/>
-<area shape="rect" id="node8" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="255,213,450,269"/>
-<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="357,317,559,373"/>
-<area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="359,525,557,581"/>
-<area shape="rect" id="node6" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="426,421,629,477"/>
+<area shape="rect" id="node2" href="$_any_task_graph_conf_8hpp.html" title="Implements the base class used by the TaskGraphConf, which removes the template arguments and impleme..." alt="" coords="439,109,617,165"/>
+<area shape="rect" id="node3" href="$_producer_consumer_edge_8hpp.html" title="Implements a producer consumer edge, which is a type of edge descriptor. " alt="" coords="654,213,879,269"/>
+<area shape="rect" id="node7" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="5,213,184,269"/>
+<area shape="rect" id="node10" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="792,109,971,165"/>
+<area shape="rect" id="node8" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="208,213,403,269"/>
+<area shape="rect" id="node9" href="$_task_graph_signal_handler_8hpp.html" title="Implements a signal handler to catch events such as termination and killing of the process..." alt="" coords="427,213,629,269"/>
+<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="435,317,637,373"/>
+<area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="437,525,635,581"/>
+<area shape="rect" id="node6" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="504,421,707,477"/>
 </map>

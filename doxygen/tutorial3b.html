@@ -146,7 +146,7 @@ Implementation, Data, Tasks, and Dependencies</h2>
 <p>This tutorial uses the same implementation, data, tasks, and dependencies as presented in <a class="el" href="tutorial2a.html#tut2a-data">Tutorial 3A Data</a>.</p>
 <h2><a class="anchor" id="tut3b-debug-taskgraph"></a>
 Debugging and Profiling htgs::TaskGraphConf</h2>
-<p>Building a <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">htgs::TaskGraphConf</a> will create an explicit represenatation of the task graph, which can be visualized using <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a156114f88890284e1ab81b6053616797" title="Writes the basic dot representation of the task graph to disk. ">htgs::TaskGraphConf::writeDotToFile</a>. This function can be called before or after launching the graph using the <a class="el" href="classhtgs_1_1_task_graph_runtime.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. ">htgs::TaskGraphRuntime</a>.</p>
+<p>Building a <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">htgs::TaskGraphConf</a> will create an explicit represenatation of the task graph, which can be visualized using <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#accab4a128de5b389716347a285aa9094" title="Writes the dot representation of the task graph to disk with additional options such as profiling...">htgs::TaskGraphConf::writeDotToFile</a>. This function can be called before or after launching the graph using the <a class="el" href="classhtgs_1_1_task_graph_runtime.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. ">htgs::TaskGraphRuntime</a>.</p>
 <ol type="1">
 <li>If called prior to calling <a class="el" href="classhtgs_1_1_task_graph_runtime.html#a1ebd18efd3e1262e46800f98790368a9" title="Executes the Runtime. ">htgs::TaskGraphRuntime::executeRuntime</a><ul>
 <li>Will visualize the task graph configuration</li>
@@ -213,7 +213,7 @@ Debugging and Profiling htgs::TaskGraphConf</h2>
 </ul>
 </li>
 </ol>
-<p>When profiling a <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">htgs::TaskGraphConf</a>, it is best to call <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a156114f88890284e1ab81b6053616797" title="Writes the basic dot representation of the task graph to disk. ">htgs::TaskGraphConf::writeDotToFile</a> after a call to <a class="el" href="classhtgs_1_1_task_graph_runtime.html#a8f2eaf040695178b6f61db7b0ee16c89" title="Waits for the Runtime to finish executing. ">htgs::TaskGraphRuntime::waitForRuntime</a>. This ensures that the graph has finished executing.</p>
+<p>When profiling a <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">htgs::TaskGraphConf</a>, it is best to call <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#accab4a128de5b389716347a285aa9094" title="Writes the dot representation of the task graph to disk with additional options such as profiling...">htgs::TaskGraphConf::writeDotToFile</a> after a call to <a class="el" href="classhtgs_1_1_task_graph_runtime.html#a8f2eaf040695178b6f61db7b0ee16c89" title="Waits for the Runtime to finish executing. ">htgs::TaskGraphRuntime::waitForRuntime</a>. This ensures that the graph has finished executing.</p>
 <p>Below are examples of visualizing the <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">htgs::TaskGraphConf</a> from <a class="el" href="tutorial3a.html">Tutorial3A</a> before and after executing the graph.</p>
 <h3><a class="anchor" id="tut3b-vis-before"></a>
 Visualizing Before Executing a htgs::TaskGraphConf</h3>
@@ -287,7 +287,7 @@ Improving Utilization of Matrix Multiplication in HTGS</h2>
 <h3><a class="anchor" id="tut3b-taskgraph-notes"></a>
 Notes</h3>
 <ul>
-<li>Using the <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a156114f88890284e1ab81b6053616797" title="Writes the basic dot representation of the task graph to disk. ">htgs::TaskGraphConf::writeDotToFile</a> can provide extremely useful profiling data the maps directly into the analysis<ul>
+<li>Using the <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#accab4a128de5b389716347a285aa9094" title="Writes the dot representation of the task graph to disk with additional options such as profiling...">htgs::TaskGraphConf::writeDotToFile</a> can provide extremely useful profiling data the maps directly into the analysis<ul>
 <li>Can be used for profiling and debugging</li>
 <li>Using DOTGEN flags from &lt;<a class="el" href="_task_graph_dot_gen_flags_8hpp.html" title="Defines DOTGEN flags used for dot file generation. ">htgs/types/TaskGraphDotGenFlags.hpp</a>&gt; can customize the output</li>
 <li>Enable debugging by compiling with -DPROFILE</li>

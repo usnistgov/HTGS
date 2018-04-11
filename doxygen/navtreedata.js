@@ -180,10 +180,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classhtgs_1_1_any_task_graph_conf.html#aab64ec2f1dfebbea602daeb0280c5030",
-"classhtgs_1_1_i_task.html#a5a5b471973ab49fc6a9cfcfbe4dacaa4",
-"classhtgs_1_1_task_graph_profiler.html#ab0f6d742dead95967793f90437b3104c",
-"tutorial4.html#tut4-acc-rule"
+"classhtgs_1_1_any_task_graph_conf.html#a6e6774ff3bdf4bd882b48c9ae3eef3bf",
+"classhtgs_1_1_i_rule.html#ad320c20c0d1b964983d90565c25bf74d",
+"classhtgs_1_1_task_graph_conf.html#abefecdde12a738f08e41f410015afb6e",
+"tutorial3a.html#tut3a-summary"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

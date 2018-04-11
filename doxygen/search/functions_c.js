@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['registersignal',['registerSignal',['../classhtgs_1_1_task_graph_signal_handler.html#ab27d5049f79bd7fb7abea08a243eb314',1,'htgs::TaskGraphSignalHandler']]],
+  ['registertaskgraph',['registerTaskGraph',['../classhtgs_1_1_task_graph_signal_handler.html#ac9da3a62f78f546ccd0358e4d7ce7b6a',1,'htgs::TaskGraphSignalHandler']]],
   ['releaseallmemory',['releaseAllMemory',['../classhtgs_1_1_memory_pool.html#aeddb0276f9a891d0593d27bfbedbcd9e',1,'htgs::MemoryPool']]],
   ['releasememory',['releaseMemory',['../classhtgs_1_1_task_graph_conf.html#a87ea35e80b6f26adaefed94f09598ef7',1,'htgs::TaskGraphConf::releaseMemory()'],['../classhtgs_1_1_any_i_task.html#a1695fa9a8bd1ff5599c1388f648fc9fa',1,'htgs::AnyITask::releaseMemory()']]],
   ['remainingcapacity',['remainingCapacity',['../classhtgs_1_1_blocking_queue.html#ade94bc9cd90addb1c317f9e5a83ad570',1,'htgs::BlockingQueue::remainingCapacity()'],['../classhtgs_1_1_priority_blocking_queue.html#a22471bf2649eb76f66a99b31507f509e',1,'htgs::PriorityBlockingQueue::remainingCapacity()']]],

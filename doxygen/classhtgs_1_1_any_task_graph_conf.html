@@ -129,7 +129,7 @@ Inheritance diagram for htgs::AnyTaskGraphConf:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_any_task_graph_conf__inherit__graph.png" border="0" usemap="#htgs_1_1_any_task_graph_conf_inherit__map" alt="Inheritance graph"/></div>
 <map name="htgs_1_1_any_task_graph_conf_inherit__map" id="htgs_1_1_any_task_graph_conf_inherit__map">
-<area shape="rect" id="node2" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. " alt="" coords="12,409,233,721"/>
+<area shape="rect" id="node2" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. " alt="" coords="12,468,233,780"/>
 </map>
 </div>
 <div class="dynheader">
@@ -195,6 +195,14 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#aa19d20385562125945430fff451b1347">initialize</a> ()</td></tr>
 <tr class="memdesc:aa19d20385562125945430fff451b1347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the task graph just prior to spawning threads. <br /></td></tr>
 <tr class="separator:aa19d20385562125945430fff451b1347"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa46c478f7f1b50b4446ea78a2ded0f1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa46c478f7f1b50b4446ea78a2ded0f1c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#aa46c478f7f1b50b4446ea78a2ded0f1c">finishedSetup</a> ()</td></tr>
+<tr class="memdesc:aa46c478f7f1b50b4446ea78a2ded0f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the task graph has finished setting up its tasks and launched all threads for the graph. <br /></td></tr>
+<tr class="separator:aa46c478f7f1b50b4446ea78a2ded0f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1db4ca040c4aa9119239e63f634e155a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1db4ca040c4aa9119239e63f634e155a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a1db4ca040c4aa9119239e63f634e155a">shutdown</a> ()</td></tr>
+<tr class="memdesc:a1db4ca040c4aa9119239e63f634e155a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when all the threads in this graph have finished executing. <br /></td></tr>
+<tr class="separator:a1db4ca040c4aa9119239e63f634e155a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc85669891f97760a92c7c71d500c318"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_any_task_graph_conf_8hpp.html#a2795477e4638b7ba72e6b6aa585cf325">TaskNameConnectorMap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#acc85669891f97760a92c7c71d500c318">getTaskConnectorNameMap</a> () const </td></tr>
 <tr class="memdesc:acc85669891f97760a92c7c71d500c318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the task name connector map that maps the task name to its input connector.  <a href="#acc85669891f97760a92c7c71d500c318">More...</a><br /></td></tr>
 <tr class="separator:acc85669891f97760a92c7c71d500c318"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,12 +230,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae86445492fc9421c0c5132bd608e2460"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#ae86445492fc9421c0c5132bd608e2460">getNumPipelines</a> ()</td></tr>
 <tr class="memdesc:ae86445492fc9421c0c5132bd608e2460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of pipelines that exist for this task graph.  <a href="#ae86445492fc9421c0c5132bd608e2460">More...</a><br /></td></tr>
 <tr class="separator:ae86445492fc9421c0c5132bd608e2460"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a156114f88890284e1ab81b6053616797"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a156114f88890284e1ab81b6053616797">writeDotToFile</a> (std::string file)</td></tr>
-<tr class="memdesc:a156114f88890284e1ab81b6053616797"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the basic dot representation of the task graph to disk.  <a href="#a156114f88890284e1ab81b6053616797">More...</a><br /></td></tr>
-<tr class="separator:a156114f88890284e1ab81b6053616797"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af036e1aa6ec1fa431d2428c30d896653"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#af036e1aa6ec1fa431d2428c30d896653">writeDotToFile</a> (std::string file, int flags)</td></tr>
-<tr class="memdesc:af036e1aa6ec1fa431d2428c30d896653"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the dot representation of the task graph to disk with additional options such as profiling.  <a href="#af036e1aa6ec1fa431d2428c30d896653">More...</a><br /></td></tr>
-<tr class="separator:af036e1aa6ec1fa431d2428c30d896653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accab4a128de5b389716347a285aa9094"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#accab4a128de5b389716347a285aa9094">writeDotToFile</a> (std::string file, int flags=0, std::string graphTitle=&quot;&quot;, std::string customTitleText=&quot;&quot;)</td></tr>
+<tr class="memdesc:accab4a128de5b389716347a285aa9094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the dot representation of the task graph to disk with additional options such as profiling.  <a href="#accab4a128de5b389716347a285aa9094">More...</a><br /></td></tr>
+<tr class="separator:accab4a128de5b389716347a285aa9094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0266ddf4dcfd6907939ac9418bafc6d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a0266ddf4dcfd6907939ac9418bafc6d2">updateTaskManagersAddressingAndPipelines</a> ()</td></tr>
 <tr class="memdesc:a0266ddf4dcfd6907939ac9418bafc6d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the task managers addresses, pipelineIds and the number of pipelines for all tasks in the TaskGraph.  <a href="#a0266ddf4dcfd6907939ac9418bafc6d2">More...</a><br /></td></tr>
 <tr class="separator:a0266ddf4dcfd6907939ac9418bafc6d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,6 +242,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abc9f2a3f4b34b9f4b36433a66749d3ab"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#abc9f2a3f4b34b9f4b36433a66749d3ab">getNumberOfSubGraphs</a> () const </td></tr>
 <tr class="memdesc:abc9f2a3f4b34b9f4b36433a66749d3ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of sub graphs within this task graph.  <a href="#abc9f2a3f4b34b9f4b36433a66749d3ab">More...</a><br /></td></tr>
 <tr class="separator:abc9f2a3f4b34b9f4b36433a66749d3ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15208b65f998a3a8b0930006b935a3c9"><td class="memItemLeft" align="right" valign="top">unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a15208b65f998a3a8b0930006b935a3c9">getGraphComputeTime</a> () const </td></tr>
+<tr class="memdesc:a15208b65f998a3a8b0930006b935a3c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the total time the graph was computing.  <a href="#a15208b65f998a3a8b0930006b935a3c9">More...</a><br /></td></tr>
+<tr class="separator:a15208b65f998a3a8b0930006b935a3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18e2591471328b2fb473c50dcce4f91b"><td class="memItemLeft" align="right" valign="top">unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a18e2591471328b2fb473c50dcce4f91b">getGraphCreationTime</a> () const </td></tr>
+<tr class="memdesc:a18e2591471328b2fb473c50dcce4f91b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the total time the graph was getting created.  <a href="#a18e2591471328b2fb473c50dcce4f91b">More...</a><br /></td></tr>
+<tr class="separator:a18e2591471328b2fb473c50dcce4f91b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0b405efa32fd885a3b82eca6fe4a42c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af0b405efa32fd885a3b82eca6fe4a42c"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#af0b405efa32fd885a3b82eca6fe4a42c">genDotGraphContent</a> (int flags)</td></tr>
 <tr class="memdesc:af0b405efa32fd885a3b82eca6fe4a42c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the content only of the graph (excludes all graph definitions and attributes) <br /></td></tr>
@@ -244,10 +255,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memitem:aaedf378d624b872042d093017c8ad8ab"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classhtgs_1_1_any_task_graph_conf.html">AnyTaskGraphConf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#aaedf378d624b872042d093017c8ad8ab">copy</a> ()=0</td></tr>
 <tr class="memdesc:aaedf378d624b872042d093017c8ad8ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an exact copy of this task graph.  <a href="#aaedf378d624b872042d093017c8ad8ab">More...</a><br /></td></tr>
 <tr class="separator:aaedf378d624b872042d093017c8ad8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af488985a8b0f3130e0645c0cfad8f51d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af488985a8b0f3130e0645c0cfad8f51d"></a>
-virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#af488985a8b0f3130e0645c0cfad8f51d">genDotGraph</a> (int flags, int colorFlag)=0</td></tr>
-<tr class="memdesc:af488985a8b0f3130e0645c0cfad8f51d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the dot graph as a string. <br /></td></tr>
-<tr class="separator:af488985a8b0f3130e0645c0cfad8f51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f52fabf08ec311f0fedd7fd81d59b82"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f52fabf08ec311f0fedd7fd81d59b82"></a>
+virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a3f52fabf08ec311f0fedd7fd81d59b82">genDotGraph</a> (int flags, int colorFlag, std::string graphTitle=&quot;&quot;, std::string customTitleText=&quot;&quot;)=0</td></tr>
+<tr class="memdesc:a3f52fabf08ec311f0fedd7fd81d59b82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the dot graph as a string. <br /></td></tr>
+<tr class="separator:a3f52fabf08ec311f0fedd7fd81d59b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada2dd0d09a53a9bd9652ea0490d0f1ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#ada2dd0d09a53a9bd9652ea0490d0f1ec">copyTasks</a> (std::list&lt; <a class="el" href="classhtgs_1_1_any_task_manager.html">AnyTaskManager</a> * &gt; *tasks)</td></tr>
 <tr class="memdesc:ada2dd0d09a53a9bd9652ea0490d0f1ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a copy of each task from the list of AnyTaskManagers passed as a parameter.  <a href="#ada2dd0d09a53a9bd9652ea0490d0f1ec">More...</a><br /></td></tr>
 <tr class="separator:ada2dd0d09a53a9bd9652ea0490d0f1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,6 +313,21 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <a class="el" href="_types_8hpp.html#a4d85d2dabae376c19e054fcc15196eb5">MemAllocMap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#ac0b6ccf14b1e592ce1a34f9e3baf4429">memAllocMap</a></td></tr>
 <tr class="memdesc:ac0b6ccf14b1e592ce1a34f9e3baf4429"><td class="mdescLeft">&#160;</td><td class="mdescRight">A mapping for each <a class="el" href="classhtgs_1_1_i_memory_allocator.html" title="Abstract class that describes how memory is allocated and freed. ">IMemoryAllocator</a> to its associated shared_ptr. <br /></td></tr>
 <tr class="separator:ac0b6ccf14b1e592ce1a34f9e3baf4429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a224563b1cd20722ce243b828316adef6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a224563b1cd20722ce243b828316adef6"></a>
+std::chrono::time_point&lt; std::chrono::high_resolution_clock &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a224563b1cd20722ce243b828316adef6">graphCreationTimestamp</a></td></tr>
+<tr class="memdesc:a224563b1cd20722ce243b828316adef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; Timestamp when graph constructor was called <br /></td></tr>
+<tr class="separator:a224563b1cd20722ce243b828316adef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85a641efbd87a05558bef61c418d7249"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85a641efbd87a05558bef61c418d7249"></a>
+std::chrono::time_point&lt; std::chrono::high_resolution_clock &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>graphExecutingTimestamp</b></td></tr>
+<tr class="separator:a85a641efbd87a05558bef61c418d7249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af748bf05133c728c24357c9805420d1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af748bf05133c728c24357c9805420d1c"></a>
+unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#af748bf05133c728c24357c9805420d1c">graphComputeTime</a></td></tr>
+<tr class="memdesc:af748bf05133c728c24357c9805420d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total time to execute the graph. <br /></td></tr>
+<tr class="separator:af748bf05133c728c24357c9805420d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70c9fc40e99a46ae42ad74199694203b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70c9fc40e99a46ae42ad74199694203b"></a>
+unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a70c9fc40e99a46ae42ad74199694203b">graphCreationTime</a></td></tr>
+<tr class="memdesc:a70c9fc40e99a46ae42ad74199694203b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total time to create the graph. <br /></td></tr>
+<tr class="separator:a70c9fc40e99a46ae42ad74199694203b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements the base class for the <a class="el" href="classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. ">TaskGraphConf</a> class, removing the template arguments and providing functionality that is applicable to any task graph configuration. </p>
@@ -615,6 +641,32 @@ template&lt;class T , class U &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a15208b65f998a3a8b0930006b935a3c9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long long int htgs::AnyTaskGraphConf::getGraphComputeTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the total time the graph was computing. </p>
+<dl class="section return"><dt>Returns</dt><dd>the total time the graph was computing. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a6f01c03d02aeac3e0bf351946cb740c9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -640,6 +692,32 @@ template&lt;class T , class U &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the task manager that is consuming data from the graph's input. </dd></dl>
 
 <p>Implemented in <a class="el" href="classhtgs_1_1_task_graph_conf.html#a0e19bcf91fb99751ba47f32bc755ba0a">htgs::TaskGraphConf&lt; T, U &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a18e2591471328b2fb473c50dcce4f91b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long long int htgs::AnyTaskGraphConf::getGraphCreationTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the total time the graph was getting created. </p>
+<dl class="section return"><dt>Returns</dt><dd>the total time the graph was getting created. </dd></dl>
 
 </div>
 </div>
@@ -1110,42 +1188,7 @@ template&lt;class T , class U &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a156114f88890284e1ab81b6053616797"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void htgs::AnyTaskGraphConf::writeDotToFile </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Writes the basic dot representation of the task graph to disk. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>the filename (will not create directories)</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>Use the directive PROFILE to enable profiling output and call after execution. </dd>
-<dd>
-Calling this function prior to execution show the graph structure. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="af036e1aa6ec1fa431d2428c30d896653"></a>
+<a class="anchor" id="accab4a128de5b389716347a285aa9094"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1162,7 +1205,19 @@ Calling this function prior to execution show the graph structure. </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
+          <td class="paramname"><em>flags</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>graphTitle</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>customTitleText</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

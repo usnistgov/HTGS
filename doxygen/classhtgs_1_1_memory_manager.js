@@ -6,7 +6,7 @@ var classhtgs_1_1_memory_manager =
     [ "debug", "classhtgs_1_1_memory_manager.html#a0b7f83115365a52a1835b35fd192d179", null ],
     [ "executeTask", "classhtgs_1_1_memory_manager.html#ada05f66987f1a1714bee73750153aac4", null ],
     [ "genDot", "classhtgs_1_1_memory_manager.html#aa90eb9c3b0432710031e87f5db1e6e1d", null ],
-    [ "getAllocator", "classhtgs_1_1_memory_manager.html#afeac13f09f119aa6ffe539e27e0925c7", null ],
+    [ "getAllocator", "classhtgs_1_1_memory_manager.html#a482370e3118c11f5390567e96ce3b810", null ],
     [ "getDotFillColor", "classhtgs_1_1_memory_manager.html#ac5f82025556227fdc81610bb48142ef8", null ],
     [ "getMemoryManagerName", "classhtgs_1_1_memory_manager.html#af64691d20057a62f66489cdb73a56b70", null ],
     [ "getMemoryPoolSize", "classhtgs_1_1_memory_manager.html#a10a8bcb7d1e1fd9db4a992a4a7b27189", null ],

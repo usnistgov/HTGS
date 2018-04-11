@@ -128,7 +128,7 @@ Inheritance diagram for htgs::ICudaTask&lt; T, U &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_i_cuda_task__inherit__graph.png" border="0" usemap="#htgs_1_1_i_cuda_task_3_01_t_00_01_u_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="htgs_1_1_i_cuda_task_3_01_t_00_01_u_01_4_inherit__map" id="htgs_1_1_i_cuda_task_3_01_t_00_01_u_01_4_inherit__map">
-<area shape="rect" id="node2" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="19,424,166,648"/>
+<area shape="rect" id="node2" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="20,424,165,648"/>
 <area shape="rect" id="node3" href="classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="5,5,180,376"/>
 </map>
 </div>
@@ -235,6 +235,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a8ea8be928ea7e5a1c7dab9dd889cb268 inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a8ea8be928ea7e5a1c7dab9dd889cb268">canTerminate</a> (std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; inputConnector) override</td></tr>
 <tr class="memdesc:a8ea8be928ea7e5a1c7dab9dd889cb268 inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is checking if it can be terminated.  <a href="#a8ea8be928ea7e5a1c7dab9dd889cb268">More...</a><br /></td></tr>
 <tr class="separator:a8ea8be928ea7e5a1c7dab9dd889cb268 inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47aba1c189fdbb83dad114bcbbf8e4c inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ab47aba1c189fdbb83dad114bcbbf8e4c">executeTaskFinal</a> () override</td></tr>
+<tr class="memdesc:ab47aba1c189fdbb83dad114bcbbf8e4c inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called just before the task has shutdown.  <a href="#ab47aba1c189fdbb83dad114bcbbf8e4c">More...</a><br /></td></tr>
+<tr class="separator:ab47aba1c189fdbb83dad114bcbbf8e4c inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b0e7491b70a486b2317d7b1cf61757c inherit pub_methods_classhtgs_1_1_i_task"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#a4b0e7491b70a486b2317d7b1cf61757c">getDotLabelName</a> () override</td></tr>
 <tr class="memdesc:a4b0e7491b70a486b2317d7b1cf61757c inherit pub_methods_classhtgs_1_1_i_task"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function to get the label name used for dot graph viz.  <a href="#a4b0e7491b70a486b2317d7b1cf61757c">More...</a><br /></td></tr>
 <tr class="separator:a4b0e7491b70a486b2317d7b1cf61757c inherit pub_methods_classhtgs_1_1_i_task"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -16,10 +16,11 @@ var classhtgs_1_1_execution_pipeline =
     [ "initialize", "classhtgs_1_1_execution_pipeline.html#a7686f04ad5f6e5d4408c3570a4493012", null ],
     [ "printProfile", "classhtgs_1_1_execution_pipeline.html#a4fb520b4e1c3c0d096c8da48a4cbab7c", null ],
     [ "shutdown", "classhtgs_1_1_execution_pipeline.html#a8a825f63eff36782c46b265dd2dc5851", null ],
+    [ "shutdownParallel", "classhtgs_1_1_execution_pipeline.html#a734c1ef089bab778c805faad89db41dc", null ],
     [ "graph", "classhtgs_1_1_execution_pipeline.html#a04be16ffd8330dcc80bcb31fc0f21511", null ],
-    [ "graphs", "classhtgs_1_1_execution_pipeline.html#a9173702a36a35b76db4575518b1db6cb", null ],
+    [ "graphs", "classhtgs_1_1_execution_pipeline.html#a90bbaaec42c51cb11bf3fa18e8610091", null ],
     [ "inputBk", "classhtgs_1_1_execution_pipeline.html#a824b24a0b62df0ab79a7598c73cd359f", null ],
     [ "inputRules", "classhtgs_1_1_execution_pipeline.html#a80d477d497eb60c200d9b6210864fa9e", null ],
     [ "numPipelinesExec", "classhtgs_1_1_execution_pipeline.html#aafb0a1943af1c4539be8b6d52673b762", null ],
-    [ "runtimes", "classhtgs_1_1_execution_pipeline.html#a1b460e30226764107f89a652c85700c7", null ]
+    [ "runtimes", "classhtgs_1_1_execution_pipeline.html#ad371eb13738dd7b7fc594af635f6211d", null ]
 ];

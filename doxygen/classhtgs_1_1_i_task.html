@@ -128,8 +128,8 @@ Inheritance diagram for htgs::ITask&lt; T, U &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_i_task__inherit__graph.png" border="0" usemap="#htgs_1_1_i_task_3_01_t_00_01_u_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="htgs_1_1_i_task_3_01_t_00_01_u_01_4_inherit__map" id="htgs_1_1_i_task_3_01_t_00_01_u_01_4_inherit__map">
-<area shape="rect" id="node3" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="5,696,189,1081"/>
-<area shape="rect" id="node4" href="classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,725,383,1052"/>
+<area shape="rect" id="node3" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="5,696,189,1023"/>
+<area shape="rect" id="node4" href="classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,696,383,1023"/>
 <area shape="rect" id="node2" href="classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="110,5,285,376"/>
 </map>
 </div>
@@ -173,6 +173,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:acad9dd61bff4a2d2f96bbb4532a3bb82"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#acad9dd61bff4a2d2f96bbb4532a3bb82">shutdown</a> () override</td></tr>
 <tr class="memdesc:acad9dd61bff4a2d2f96bbb4532a3bb82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called when an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is being shutdown by it's owner thread.  <a href="#acad9dd61bff4a2d2f96bbb4532a3bb82">More...</a><br /></td></tr>
 <tr class="separator:acad9dd61bff4a2d2f96bbb4532a3bb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab47aba1c189fdbb83dad114bcbbf8e4c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#ab47aba1c189fdbb83dad114bcbbf8e4c">executeTaskFinal</a> () override</td></tr>
+<tr class="memdesc:ab47aba1c189fdbb83dad114bcbbf8e4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function that is called just before the task has shutdown.  <a href="#ab47aba1c189fdbb83dad114bcbbf8e4c">More...</a><br /></td></tr>
+<tr class="separator:ab47aba1c189fdbb83dad114bcbbf8e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe473a9b204654d331f622d1e62af5f2"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_i_task.html#afe473a9b204654d331f622d1e62af5f2">getName</a> () override</td></tr>
 <tr class="memdesc:afe473a9b204654d331f622d1e62af5f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual function to get the name of an <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a>.  <a href="#afe473a9b204654d331f622d1e62af5f2">More...</a><br /></td></tr>
 <tr class="separator:afe473a9b204654d331f622d1e62af5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -693,6 +696,37 @@ template&lt;class T, class U&gt; </div>
 If the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> is a start task or is polling, data might be nullptr </dd></dl>
 
 <p>Implemented in <a class="el" href="classhtgs_1_1_execution_pipeline.html#a3b7453e07af313632fc51521d77bfd93">htgs::ExecutionPipeline&lt; T, U &gt;</a>, <a class="el" href="classhtgs_1_1_i_cuda_task.html#af5d304db53e1d4ce2572e309bcf987c3">htgs::ICudaTask&lt; T, U &gt;</a>, and <a class="el" href="classhtgs_1_1_bookkeeper.html#a37cb4230ab7e85f0948b8a8986ec66ab">htgs::Bookkeeper&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab47aba1c189fdbb83dad114bcbbf8e4c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, class U&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classhtgs_1_1_i_task.html">htgs::ITask</a>&lt; T, U &gt;::executeTaskFinal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Virtual function that is called just before the task has shutdown. </p>
+<p>This is the last call for executeTask. This is only called by the very last thread that is bound for this task.</p>
+<p>Example: If you have multiple threads bound to a task, then this function is only called once for the last thread </p>
+
+<p>Implements <a class="el" href="classhtgs_1_1_any_i_task.html#a8478aa8c68361fe7f855e0521ab9e37e">htgs::AnyITask</a>.</p>
 
 </div>
 </div>

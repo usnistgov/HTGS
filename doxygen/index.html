@@ -167,7 +167,7 @@ HTGS Design Methodology </h1>
 </ul>
 </li>
 <li>Connect each task using the <a class="el" href="classhtgs_1_1_task_graph_conf.html#aeaf80f060f13a40b41579a8678acad01" title="Adds an edge to the graph, where one task produces data for a consumer task. ">htgs::TaskGraphConf::addEdge</a> or <a class="el" href="classhtgs_1_1_task_graph_conf.html#aedfc932815a7b264da00c35d274f5274" title="Creates a rule edge that is managed by a bookkeeper. ">htgs::TaskGraphConf::addRuleEdge</a></li>
-<li>Debug using dot file generation with <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a156114f88890284e1ab81b6053616797" title="Writes the basic dot representation of the task graph to disk. ">htgs::TaskGraphConf::writeDotToFile</a><ul>
+<li>Debug using dot file generation with <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#accab4a128de5b389716347a285aa9094" title="Writes the dot representation of the task graph to disk with additional options such as profiling...">htgs::TaskGraphConf::writeDotToFile</a><ul>
 <li>Real-time visualization (coming soon)</li>
 </ul>
 </li>
@@ -184,7 +184,7 @@ HTGS Design Methodology </h1>
 </li>
 <li>Scale to multiple GPUs with <a class="el" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu...">htgs::ExecutionPipeline</a></li>
 <li>Use HTGS profiling (add the directive "-DPROFILE" in compilation)<ul>
-<li>Output the graph after execution using <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a156114f88890284e1ab81b6053616797" title="Writes the basic dot representation of the task graph to disk. ">htgs::TaskGraphConf::writeDotToFile</a></li>
+<li>Output the graph after execution using <a class="el" href="classhtgs_1_1_any_task_graph_conf.html#accab4a128de5b389716347a285aa9094" title="Writes the dot representation of the task graph to disk with additional options such as profiling...">htgs::TaskGraphConf::writeDotToFile</a></li>
 <li>Visually identify bottlenecks</li>
 </ul>
 </li>

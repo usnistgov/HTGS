@@ -10,5 +10,7 @@ var _task_graph_dot_gen_flags_8hpp =
     [ "DOTGEN_FLAG_HIDE_PROFILE_MAX_Q_SZ", "_task_graph_dot_gen_flags_8hpp.html#ab84e6137cd526094d5add464420c4568", null ],
     [ "DOTGEN_FLAG_HIDE_PROFILE_WAIT_TIME", "_task_graph_dot_gen_flags_8hpp.html#a9b1acf4ee94dbbb57146d1cee011bd1e", null ],
     [ "DOTGEN_FLAG_SHOW_ALL_THREADING", "_task_graph_dot_gen_flags_8hpp.html#ad40fb64b87d99f44df0b2bf8f639fa22", null ],
+    [ "DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE", "_task_graph_dot_gen_flags_8hpp.html#ae29bb313270abfa7b458dc4359279fab", null ],
+    [ "DOTGEN_FLAG_SHOW_CURRENT_Q_SZ", "_task_graph_dot_gen_flags_8hpp.html#ab3bbaa0b128696cbfd8263d19054bbe1", null ],
     [ "DOTGEN_FLAG_SHOW_IN_OUT_TYPES", "_task_graph_dot_gen_flags_8hpp.html#a2e6ff8669b15dd1ebaefed15503207fc", null ]
 ];
