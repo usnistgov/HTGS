@@ -179,7 +179,7 @@ class ExecutionPipeline : public ITask<T, U> {
    * @note This function should only be called by the HTGS API
    */
   void initialize() {
-    DEBUG("Initializing Execution pipeline with " << this->numPipelinesExec << " pipelines");
+    HTGS_DEBUG("Initializing Execution pipeline with " << this->numPipelinesExec << " pipelines");
 
     // Add a default broadcast rule if the pipeline has no rules
     if (this->inputRules->size() == 0) {
@@ -195,7 +195,7 @@ class ExecutionPipeline : public ITask<T, U> {
         outputConnector = std::static_pointer_cast<Connector<U>>(this->getOwnerTaskManager()->getOutputConnector());
 
     for (size_t i = 0; i < numPipelinesExec; i++) {
-      DEBUG("Adding pipeline " << i);
+      HTGS_DEBUG("Adding pipeline " << i);
       TaskGraphConf<T, U>
           *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(),
                                          this->getTaskGraphCommunicator());
@@ -203,7 +203,7 @@ class ExecutionPipeline : public ITask<T, U> {
 #ifdef WS_PROFILE
       // TODO: Update parent for graphCopy to point to the execution pipeline
 #endif
-      DEBUG("Setting up input and output of pipeline " << i);
+      HTGS_DEBUG("Setting up input and output of pipeline " << i);
 
       for (std::shared_ptr<IRule<T, T>> rule : *this->inputRules) {
 
@@ -231,7 +231,7 @@ class ExecutionPipeline : public ITask<T, U> {
    * @note This function should only be called by the HTGS API
    */
   void shutdown() {
-    DEBUG("Shutting down " << this->getName());
+    HTGS_DEBUG("Shutting down " << this->getName());
     this->inputBk->shutdown();
 
     // Spawn thread for each runtime to properly wait without blocking.
@@ -307,7 +307,7 @@ class ExecutionPipeline : public ITask<T, U> {
    * @note \#define DEBUG_FLAG to enable debugging
    */
   void debug() {
-    DEBUG(this->getName() << " " << numPipelinesExec << " pipelines; details:");
+    HTGS_DEBUG(this->getName() << " " << numPipelinesExec << " pipelines; details:");
     inputBk->debug();
   }
 

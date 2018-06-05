@@ -25,6 +25,10 @@
 #include <htgs/core/graph/Connector.hpp>
 #include <htgs/core/task/TaskManager.hpp>
 
+#ifdef USE_NVTX
+#include <nvToolsExt.h>
+#endif
+
 #if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
 #include <cxxabi.h>
 #endif
@@ -333,6 +337,66 @@ class ITask : public AnyITask {
     super::initialize(pipelineId, numPipeline);
   }
 
+
+  /**
+   * Retrieves memory from a memory edge
+   * @param name the name of the memory edge
+   * @param releaseRule the release rule to be associated with the newly acquired memory
+   * @return the MemoryData
+   * @tparam V the MemoryData type
+   * @note The name specified must have been attached to this ITask as a memGetter using
+   * the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()
+   *
+   * @note This function will block if no memory is available, ensure the
+   * memory pool size is sufficient based on memory release rules and data flow.
+   * @note Memory edge must be defined as MMType::Static
+   * @internal
+   */
+  template<class V>
+  m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule) {
+    return getMemory<V>(name, releaseRule, MMType::Static, 0);
+  }
+
+  /**
+   * Retrieves memory from a memory edge
+   * @param name the name of the memory edge
+   * @param releaseRule the release rule to be associated with the newly acquired memory
+   * @param numElems the number of elements to allocate (uses internal allocator defined from the memory edge)
+   * @return the MemoryData
+   * @tparam V the MemoryData type
+   * @note The name specified must have been attached to this ITask as a memGetter using
+   * the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()
+   *
+   * @note This function will block if no memory is available, ensure the
+   * memory pool size is sufficient based on memory release rules and data flow.
+   * @note Memory edge must be defined as MMType::Dynamic
+   * @internal
+   */
+  template<class V>
+  m_data_t<V> getDynamicMemory(std::string name, IMemoryReleaseRule *releaseRule, size_t numElems) {
+    return getMemory<V>(name, releaseRule, MMType::Dynamic, numElems);
+  }
+
+  /**
+   * Releases memory onto a memory edge, which is transferred by the graph communicator
+   * @param memory the memory to be released
+   * @tparam V the MemoryData type
+   * @note the m_data_t should be acquired from a task using the getMemory function. A reference to this data can be passed along within IData.
+   */
+  template<class V>
+  void releaseMemory(m_data_t<V> memory) {
+    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket(this->getName(),
+                                                                                        this->getAddress(),
+                                                                                        memory->getMemoryManagerName(),
+                                                                                        memory->getAddress(),
+                                                                                        memory));
+#ifdef USE_NVTX
+    this->getOwnerTaskManager()->getProfiler()->addReleaseMarker();
+#endif
+    this->getTaskGraphCommunicator()->produceDataPacket(dataPacket);
+  }
+
+
   /**
    * Resets profile data
    */
@@ -427,6 +491,58 @@ class ITask : public AnyITask {
  private:
   //! @cond Doxygen_Suppress
   typedef AnyITask super;
+
+
+  template<class V>
+  m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem) {
+    assert(("Unable to find memory edge 'name' for task", this->getMemoryEdges()->find(name) != this->getMemoryEdges()->end()));
+
+    auto conn = getMemoryEdges()->find(name)->second;
+    auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
+
+#ifdef WS_PROFILE
+    sendWSProfileUpdate(StatusCode::WAITING_FOR_MEM);
+#endif
+
+#ifdef USE_NVTX
+    nvtxRangeId_t rangeId = this->getOwnerTaskManager()->getProfiler()->startRangeWaitingForMemory();
+#endif
+
+#ifdef PROFILE
+    auto start = std::chrono::high_resolution_clock::now();
+#endif
+    m_data_t<V> memory = connector->consumeData();
+
+#ifdef USE_NVTX
+    this->getOwnerTaskManager()->getProfiler()->endRangeWaitingForMem(rangeId);
+#endif
+
+#ifdef PROFILE
+    auto finish = std::chrono::high_resolution_clock::now();
+    this->incMemoryWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
+#endif
+
+#ifdef WS_PROFILE
+    sendWSProfileUpdate(StatusCode::EXECUTE);
+#endif
+
+
+
+    memory->setMemoryReleaseRule(releaseRule);
+
+    if (memory->getType() != type) {
+      std::cerr
+        << "Error: Incorrect usage of getMemory. Dynamic memory managers use 'getDynamicMemory', Static memory managers use 'getMemory' for task "
+        << this->getName() << " on memory edge " << name << std::endl;
+      exit(-1);
+    }
+
+    if (type == MMType::Dynamic)
+      memory->memAlloc(nElem);
+
+    return memory;
+  }
+
   //! @endcond
 
   TaskManager<T, U> *ownerTask; //!< The owner task for this ITask

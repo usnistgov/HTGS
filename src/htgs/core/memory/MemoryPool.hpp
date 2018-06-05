@@ -80,12 +80,12 @@ class MemoryPool {
   void fillPool(MemoryData<T> *memory, size_t pipelineId, bool allocate) const {
     size_t remainingSize = this->memoryQueue->remainingCapacity();
 
-    DEBUG("Inserting " << remainingSize << " elements to memory pool");
+    HTGS_DEBUG("Inserting " << remainingSize << " elements to memory pool");
 
     for (size_t i = 0; i < remainingSize; i++) {
 
       MemoryData<T> *newMemory = memory->copy();
-      DEBUG_VERBOSE("Adding memory " << newMemory);
+      HTGS_DEBUG_VERBOSE("Adding memory " << newMemory);
 
       newMemory->setPipelineId(pipelineId);
 

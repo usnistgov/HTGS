@@ -98,8 +98,6 @@ int main() {
   taskGraph->addRuleEdge(bk, rule, addTask3);
   taskGraph->addGraphProducerTask(addTask3);
 
-  // This causes deadlock
-  taskGraph->incrementGraphProducer();
 
   htgs::TaskGraphSignalHandler::registerTaskGraph(taskGraph);
   htgs::TaskGraphSignalHandler::registerSignal(SIGSEGV);
@@ -123,9 +121,9 @@ int main() {
   while(!taskGraph->isOutputTerminated()) {
     auto data = taskGraph->consumeData();
     data = nullptr;
-//    if (data != nullptr) {
+    if (data != nullptr) {
       std::cout << "Result: " << data->getResult() << std::endl;
-//    }
+    }
   }
 
   runtime->waitForRuntime();

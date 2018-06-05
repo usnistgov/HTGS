@@ -6,7 +6,6 @@
 //
 // Created by tjb3 on 4/18/16.
 //
-
 #include <gtest/gtest.h>
 
 #include "simpleGraphTests.h"

@@ -85,7 +85,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
     // Check if the rule is expecting data or not
     checkRuleTermination();
 
-    DEBUG_VERBOSE("Rule: " << rule->getName() << " consuming data: " << data);
+    HTGS_DEBUG_VERBOSE("Rule: " << rule->getName() << " consuming data: " << data);
     auto result = rule->applyRuleFunction(data, pipelineId);
 
     if (result != nullptr && result->size() > 0) {
@@ -115,7 +115,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   }
 
   void debug() override {
-    DEBUG(this->getName() << " output connector: " << this->connector);
+    HTGS_DEBUG(this->getName() << " output connector: " << this->connector);
   }
 
   std::shared_ptr<AnyConnector> getConnector() override {
@@ -123,20 +123,20 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   }
 
   void initialize(size_t pipelineId, size_t numPipelines, std::string address) override {
-    DEBUG_VERBOSE("Initialized " << this->getName() << " pipeline id: " << pipelineId);
+    HTGS_DEBUG_VERBOSE("Initialized " << this->getName() << " pipeline id: " << pipelineId);
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->address = address;
   }
 
   void shutdown() override {
-    DEBUG("Shutting down " << this->getName() << " pipeline id: " << pipelineId);
+    HTGS_DEBUG("Shutting down " << this->getName() << " pipeline id: " << pipelineId);
 
     // Check if the rule manager was terminated by it's rule
     if (!this->terminated) {
 
       // Close any active connections
-      DEBUG("Waking up connector");
+      HTGS_DEBUG("Waking up connector");
       this->connector->producerFinished();
       this->connector->wakeupConsumer();
 
@@ -155,7 +155,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
 
   void setOutputConnector(std::shared_ptr<AnyConnector> connector) override {
     this->connector = std::static_pointer_cast<Connector<U>>(connector);
-    DEBUG_VERBOSE("Connector " << this->connector << " adding producer: " << this->getName() << " " << this <<
+    HTGS_DEBUG_VERBOSE("Connector " << this->connector << " adding producer: " << this->getName() << " " << this <<
                                " to connector " << this->connector);
   }
 

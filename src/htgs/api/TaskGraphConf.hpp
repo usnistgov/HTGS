@@ -822,13 +822,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @note \#define DEBUG_FLAG to enable debugging
    */
   void debug() {
-    DEBUG("-----------------------------------------------");
-    DEBUG("TaskGraphConf -- num vertices: " << this->getTaskManagers()->size() << " -- DETAILS:");
+    HTGS_DEBUG("-----------------------------------------------");
+    HTGS_DEBUG("TaskGraphConf -- num vertices: " << this->getTaskManagers()->size() << " -- DETAILS:");
 
     for (AnyTaskManager *t : *this->getTaskManagers()) {
       t->debug();
     }
-    DEBUG("-----------------------------------------------");
+    HTGS_DEBUG("-----------------------------------------------");
   }
 
 #ifdef WS_PROFILE

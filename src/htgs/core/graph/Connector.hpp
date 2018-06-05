@@ -106,7 +106,7 @@ class Connector : public AnyConnector {
   }
 
   void produceAnyData(std::shared_ptr<IData> data) override {
-    DEBUG_VERBOSE("Connector " << this << " producing any data: " << data);
+    HTGS_DEBUG_VERBOSE("Connector " << this << " producing any data: " << data);
     std::shared_ptr<T> dataCast = std::dynamic_pointer_cast<T>(data);
     this->queue.Enqueue(dataCast);
 
@@ -144,7 +144,7 @@ class Connector : public AnyConnector {
    * @param data the data to be added
    */
   void produceData(std::shared_ptr<T> data) {
-    DEBUG_VERBOSE("Connector " << this << " producing data: " << data);
+    HTGS_DEBUG_VERBOSE("Connector " << this << " producing data: " << data);
     this->queue.Enqueue(data);
   }
 
@@ -154,7 +154,7 @@ class Connector : public AnyConnector {
    */
   void produceData(std::list<std::shared_ptr<T>> *data) {
     for (std::shared_ptr<T> v : *data) {
-      DEBUG_VERBOSE("Connector " << this << " producing list data: " << v);
+      HTGS_DEBUG_VERBOSE("Connector " << this << " producing list data: " << v);
 
       this->queue.Enqueue(v);
     }

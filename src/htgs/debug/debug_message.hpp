@@ -20,7 +20,7 @@
  * @def VERBOSE
  * Defines verbose mode
  */
-#define VERBOSE 1
+#define HTGS_VERBOSE 1
 
 
 /**
@@ -33,8 +33,8 @@
  * @note \#define DEBUG_FLAG to enable debug messages
  *
  */
-#define DEBUG_MSG_LEVEL(msg, level) if (!DEBUG_ENABLED || DEBUG_LEVEL < level) {} \
-        else dbglog() << __FILE__ << ":" << __LINE__ << " " << msg
+#define HTGS_DEBUG_MSG_LEVEL(msg, level) if (!HTGS_DEBUG_ENABLED || HTGS_DEBUG_LEVEL < level) {} \
+        else htgs_dbglog() << __FILE__ << ":" << __LINE__ << " " << msg
 
 /**
  * Prints a debug message to std::cerr with standard level
@@ -44,7 +44,7 @@
  * @note \#define DEBUG_FLAG to enable debug messages
  *
  */
-#define DEBUG(msg) DEBUG_MSG_LEVEL(msg, 0)
+#define HTGS_DEBUG(msg) HTGS_DEBUG_MSG_LEVEL(msg, 0)
 
 /**
  * Prints a debug message to std:cerr with VERBOSE level.
@@ -54,37 +54,37 @@
  * @note \#define DEBUG_FLAG to enable debug messages
  * @note \#define DEBUG_LEVEL_VERBOSE to enable VERBOSE debugging
  */
-#define DEBUG_VERBOSE(msg) DEBUG_MSG_LEVEL(msg, VERBOSE)
+#define HTGS_DEBUG_VERBOSE(msg) HTGS_DEBUG_MSG_LEVEL(msg, HTGS_VERBOSE)
 
 /**
  * @def DEBUG_LEVEL
  * Defines the debug level for printing debug messages
  */
-#ifdef DEBUG_LEVEL_VERBOSE
-#define DEBUG_LEVEL VERBOSE
+#ifdef HTGS_DEBUG_LEVEL_VERBOSE
+#define HTGS_DEBUG_LEVEL HTGS_VERBOSE
 #else
-#define DEBUG_LEVEL 0
+#define HTGS_DEBUG_LEVEL 0
 #endif
 
 /**
  * @def DEBUG_ENABLED
  * Defines whether debug is enabled or disabled
  */
-#ifdef DEBUG_FLAG
-#define DEBUG_ENABLED 1
+#ifdef HTGS_DEBUG_FLAG
+#define HTGS_DEBUG_ENABLED 1
 #else
-#define DEBUG_ENABLED 0
+#define HTGS_DEBUG_ENABLED 0
 #endif
 
 /**
  * Debug logging structure for processing various types of arguments for std::cerr
  */
-struct dbglog {
+struct htgs_dbglog {
   //! @cond Doxygen_Suppress
   std::ostream &os_;
   mutable bool has_endl_;
-  dbglog(std::ostream &os = std::cerr) : os_(os), has_endl_(false) {}
-  ~dbglog() { if (!has_endl_) os_ << std::endl; }
+  htgs_dbglog(std::ostream &os = std::cerr) : os_(os), has_endl_(false) {}
+  ~htgs_dbglog() { if (!has_endl_) os_ << std::endl; }
   template<typename T>
   static bool has_endl(const T &) { return false; }
   static bool has_endl(char c) { return (c == '\n'); }
@@ -92,13 +92,13 @@ struct dbglog {
   static bool has_endl(const char *s) { return has_endl(std::string(s)); }
   template<typename T>
   static bool same_manip(T &(*m)(T &), T &(*e)(T &)) { return (m == e); }
-  const dbglog &operator<<(std::ostream &(*m)(std::ostream &)) const {
+  const htgs_dbglog &operator<<(std::ostream &(*m)(std::ostream &)) const {
     has_endl_ = same_manip(m, std::endl);
     os_ << m;
     return *this;
   }
   template<typename T>
-  const dbglog &operator<<(const T &v) const {
+  const htgs_dbglog &operator<<(const T &v) const {
     has_endl_ = has_endl(v);
     os_ << v;
     return *this;

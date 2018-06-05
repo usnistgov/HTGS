@@ -23,6 +23,10 @@
 #include <htgs/core/task/AnyTaskManager.hpp>
 #include <htgs/api/ITask.hpp>
 
+#ifdef USE_NVTX
+#include <nvToolsExt.h>
+#endif
+
 namespace htgs {
 
 template<class T, class U>
@@ -109,7 +113,12 @@ class TaskManager : public AnyTaskManager {
   std::shared_ptr<AnyConnector> getOutputConnector() override { return this->outputConnector; }
 
   void initialize() override {
-    DEBUG("initializing: " << this->prefix() << " " << this->getName() << std::endl);
+    HTGS_DEBUG("initializing: " << this->prefix() << " " << this->getName() << std::endl);
+#ifdef USE_NVTX
+    nvtxThreadName = this->getName() + " (" + std::to_string(this->getThreadId()) + ")";
+    nvtxNameOsThread(pthread_self(), nvtxThreadName.c_str());
+#endif
+
     this->taskFunction->initialize(this->getPipelineId(), this->getNumPipelines(), this);
   }
 
@@ -134,13 +143,15 @@ class TaskManager : public AnyTaskManager {
   }
 
   void executeTask() override {
-
+#ifdef USE_NVTX
+    nvtxRangeId_t rangeId;
+#endif
     std::shared_ptr<T> data = nullptr;
 
-    DEBUG_VERBOSE(prefix() << "Running task: " << this->getName());
+    HTGS_DEBUG_VERBOSE(prefix() << "Running task: " << this->getName());
 
     if (this->isStartTask()) {
-      DEBUG_VERBOSE(prefix() << this->getName() << " is a start task");
+      HTGS_DEBUG_VERBOSE(prefix() << this->getName() << " is a start task");
       this->setStartTask(false);
 #ifdef PROFILE
       auto start = std::chrono::high_resolution_clock::now();
@@ -148,8 +159,14 @@ class TaskManager : public AnyTaskManager {
 #ifdef WS_PROFILE
       this->sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
-
+#ifdef USE_NVTX
+      rangeId = this->getProfiler()->startRangeExecuting();
+#endif
       this->taskFunction->executeTask(nullptr);
+
+#ifdef USE_NVTX
+      this->getProfiler()->endRangeExecute(rangeId);
+#endif
 
 #ifdef WS_PROFILE
       this->sendWSProfileUpdate(StatusCode::WAITING);
@@ -162,7 +179,7 @@ class TaskManager : public AnyTaskManager {
       return;
     } else if (this->taskFunction->canTerminate(this->inputConnector)) {
 
-      DEBUG(prefix() << this->getName() << " task function is terminated");
+      HTGS_DEBUG(prefix() << this->getName() << " task function is terminated");
       this->processTaskFunctionTerminated();
 
       return;
@@ -174,10 +191,20 @@ class TaskManager : public AnyTaskManager {
 #ifdef WS_PROFILE
     this->sendWSProfileUpdate(StatusCode::WAITING);
 #endif
+
+#ifdef USE_NVTX
+    rangeId = this->getProfiler()->startRangeWaiting(this->inputConnector->getQueueSize());
+#endif
+
     if (this->isPoll())
       data = this->inputConnector->pollConsumeData(this->getTimeout());
     else
       data = this->inputConnector->consumeData();
+
+#ifdef USE_NVTX
+    this->getProfiler()->endRangeWaiting(rangeId);
+#endif
+
 
 #ifdef PROFILE
     auto finish = std::chrono::high_resolution_clock::now();
@@ -190,7 +217,7 @@ class TaskManager : public AnyTaskManager {
     this->incWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
 #endif
 
-    DEBUG_VERBOSE(prefix() << this->getName() << " received data: " << data << " from " << inputConnector);
+    HTGS_DEBUG_VERBOSE(prefix() << this->getName() << " received data: " << data << " from " << inputConnector);
 
     if (data != nullptr || this->isPoll()) {
 #ifdef PROFILE
@@ -200,7 +227,16 @@ class TaskManager : public AnyTaskManager {
 //      sendWSProfileUpdate(this->inputConnector.get(), StatusCode::CONSUME_DATA);
       this->sendWSProfileUpdate(StatusCode::EXECUTE);
 #endif
+#ifdef USE_NVTX
+      rangeId = this->getProfiler()->startRangeExecuting();
+#endif
+
       this->taskFunction->executeTask(data);
+
+#ifdef USE_NVTX
+      this->getProfiler()->endRangeExecute(rangeId);
+#endif
+
 #ifdef PROFILE
       finish = std::chrono::high_resolution_clock::now();
       this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
@@ -312,7 +348,14 @@ class TaskManager : public AnyTaskManager {
 
         auto start = std::chrono::high_resolution_clock::now();
         // Final execution for the task
+#ifdef USE_NVTX
+        nvtxRangeId_t rangeId = this->getProfiler()->startRangeExecuting();
+#endif
         this->taskFunction->executeTaskFinal();
+
+#ifdef USE_NVTX
+        this->getProfiler()->endRangeExecute(rangeId);
+#endif
         auto finish = std::chrono::high_resolution_clock::now();
         this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
 
@@ -329,10 +372,10 @@ class TaskManager : public AnyTaskManager {
 
         auto memManagerConnectorMap = this->getTaskFunction()->getReleaseMemoryEdges();
 
-        DEBUG(prefix() << " " << this->getName() << " Shutting down " << memManagerConnectorMap->size()
+        HTGS_DEBUG(prefix() << " " << this->getName() << " Shutting down " << memManagerConnectorMap->size()
                        << " memory releasers");
         for (auto nameManagerPair : *memManagerConnectorMap) {
-          DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
+          HTGS_DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
 
 
           std::shared_ptr<AnyConnector> connector = nameManagerPair.second;
@@ -346,6 +389,11 @@ class TaskManager : public AnyTaskManager {
           if (connector->isInputTerminated())
             connector->wakeupConsumer();
         }
+
+#ifdef USE_NVTX
+        this->releaseProfiler();
+#endif
+
       }
     } else {
       if (this->getOutputConnector() != nullptr) {
@@ -398,6 +446,11 @@ class TaskManager : public AnyTaskManager {
   }
 
 #endif
+
+#ifdef USE_NVTX
+  std::string nvtxThreadName;
+#endif
+
 
   typedef AnyTaskManager super;
   //! @endcond

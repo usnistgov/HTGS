@@ -14,6 +14,17 @@ install(DIRECTORY htgs
 
 if (BUILD_MAIN)
 
+#    set(NVTX_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../nvtx/include/nvtx3)
+    find_package(NVTX QUIET)
+    if(NVTX_FOUND)
+        message(STATUS "FOUND IT")
+        add_definitions(-DUSE_NVTX)
+        include_directories(${NVTX_INCLUDE_DIR})
+#        link_libraries(${NVTX_LIBRARY})
+#        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NVTX_CXX_FLAGS}")
+        link_libraries(${NVTX_LIBRARY})
+    endif()
+
     add_definitions(-DPROFILE)
 #    add_definitions(-DWS_PROFILE)
 #    add_definitions(-DUSE_PRIORITY_QUEUE)

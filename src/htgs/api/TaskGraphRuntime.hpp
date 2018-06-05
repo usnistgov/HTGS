@@ -162,11 +162,14 @@ class TaskGraphRuntime {
 
     std::list<AnyTaskManager *> *vertices = this->graph->getTaskManagers();
     std::list<AnyTaskManager *> newVertices;
-    DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
+    HTGS_DEBUG_VERBOSE("Launching runtime for " << vertices->size() << " vertices");
+
+
     for (AnyTaskManager *task : *vertices) {
+
       size_t numThreads = task->getNumThreads();
 
-      DEBUG_VERBOSE("Spawning " << numThreads << " threads for task " << task->getName());
+      HTGS_DEBUG_VERBOSE("Spawning " << numThreads << " threads for task " << task->getName());
 
       if (numThreads > 0) {
         std::list<AnyTaskManager *> taskList;
@@ -196,6 +199,7 @@ class TaskGraphRuntime {
         }
         size_t threadId = 0;
         for (AnyTaskManager *taskItem : taskList) {
+
           TaskManagerThread *runtimeThread = new TaskManagerThread(threadId, taskItem, atomicNumThreads);
           std::thread *thread = new std::thread(&TaskManagerThread::run, runtimeThread);
           this->threads.push_back(thread);
@@ -204,7 +208,7 @@ class TaskGraphRuntime {
         }
 
       } else {
-        std::cerr << task->getName() << "Has no threads specified." << std::endl;
+        std::cerr << task->getName() << " has no threads specified." << std::endl;
       }
     }
 

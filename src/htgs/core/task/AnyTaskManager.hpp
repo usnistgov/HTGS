@@ -20,6 +20,10 @@
 #include <htgs/core/comm/TaskGraphCommunicator.hpp>
 #include <htgs/core/graph/profile/TaskManagerProfile.hpp>
 #include <htgs/core/task/AnyITask.hpp>
+#include <htgs/core/graph/profile/NVTXProfiler.hpp>
+#ifdef USE_NVTX
+#include <nvToolsExt.h>
+#endif
 
 #ifdef WS_PROFILE
 #include <htgs/core/graph/profile/ProfileData.hpp>
@@ -337,7 +341,7 @@ class AnyTaskManager {
    * Shuts down the TaskManager
    */
   void shutdown() {
-    DEBUG("shutting down: " << this->prefix() << " " << this->getName() << std::endl);
+    HTGS_DEBUG("shutting down: " << this->prefix() << " " << this->getName() << std::endl);
     this->getTaskFunction()->shutdown();
   }
 
@@ -352,7 +356,7 @@ class AnyTaskManager {
    * @note \#define DEBUG_FLAG to enable debugging.
    */
   void debug() {
-    DEBUG(prefix() << this->getName() << " input connector: " << getInputConnector() << " output connector: " <<
+    HTGS_DEBUG(prefix() << this->getName() << " input connector: " << getInputConnector() << " output connector: " <<
                    getOutputConnector() << " Details: " << std::endl);
     this->getTaskFunction()->debug();
   }
@@ -472,6 +476,21 @@ class AnyTaskManager {
             + "); Pipeline id " + std::to_string(this->pipelineId) + " (out of " + std::to_string(this->numPipelines) +
             ") Address: " + this->getAddress());
   }
+
+
+#ifdef USE_NVTX
+  void setProfiler(NVTXProfiler *profiler) {
+    this->nvtxProfiler = profiler;
+  }
+  NVTXProfiler *getProfiler() const {
+    return nvtxProfiler;
+  }
+
+  void releaseProfiler() {
+    delete nvtxProfiler;
+    nvtxProfiler = nullptr;
+  }
+#endif
   //! @endcond
 
 
@@ -494,7 +513,9 @@ class AnyTaskManager {
   std::string address; //!< The address of the task graph this manager belongs too
 
   TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph communicator
-
+#ifdef USE_NVTX
+  NVTXProfiler *nvtxProfiler;
+#endif
 };
 
 /**
@@ -537,7 +558,12 @@ class TaskManagerThread {
    * @retval 0 Completed successfully
    */
   int run(void) {
-    DEBUG("Starting Thread for task : " << task->getName());
+#ifdef USE_NVTX
+    NVTXProfiler *profiler = new NVTXProfiler();
+    task->setProfiler(profiler);
+#endif
+
+    HTGS_DEBUG("Starting Thread for task : " << task->getName());
     this->task->initialize();
     while (!this->terminated) {
       this->task->executeTask();

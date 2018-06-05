@@ -89,7 +89,7 @@ class Bookkeeper : public ITask<T, VoidData> {
   void addRuleManager(AnyRuleManager *ruleManager) {
     AnyRuleManagerInOnly<T> *baseRuleMan = (AnyRuleManagerInOnly<T> *) ruleManager;
 
-    DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << baseRuleMan->getName());
+    HTGS_DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << baseRuleMan->getName());
 
     ruleManagers->push_back(baseRuleMan);
     ruleManagerInfo = ruleManagerInfo + " " + baseRuleMan->getName();
@@ -103,7 +103,7 @@ class Bookkeeper : public ITask<T, VoidData> {
   template<class U>
   void addRuleManager(RuleManager<T, U> *ruleManager) {
 
-    DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << ruleManager->getName());
+    HTGS_DEBUG_VERBOSE(this << "----" << this->getName() << " adding rule manager " << ruleManager->getName());
 
     ruleManagers->push_back(ruleManager);
 
@@ -119,7 +119,7 @@ class Bookkeeper : public ITask<T, VoidData> {
   void executeTask(std::shared_ptr<T> data) override {
 
     for (AnyRuleManagerInOnly<T> *ruleManager : *ruleManagers) {
-//      DEBUG_VERBOSE(this->getName() << " executing " + ruleManager->getName());
+//      HTGS_DEBUG_VERBOSE(this->getName() << " executing " + ruleManager->getName());
       ruleManager->executeTask(data);
     }
   }
@@ -146,9 +146,9 @@ class Bookkeeper : public ITask<T, VoidData> {
    * @note \#define DEBUG_FLAG to enable debugging
    */
   void debug() override {
-    DEBUG(this->getName() << " Details:");
+    HTGS_DEBUG(this->getName() << " Details:");
     for (AnyRuleManagerInOnly<T> *ruleManager : *ruleManagers) {
-      DEBUG("Executing rule manager: " << ruleManager->getName());
+      HTGS_DEBUG("Executing rule manager: " << ruleManager->getName());
       ruleManager->debug();
     }
 
@@ -186,7 +186,7 @@ class Bookkeeper : public ITask<T, VoidData> {
    */
   void shutdown() {
 
-    DEBUG("Shutting down " << this->getName());
+    HTGS_DEBUG("Shutting down " << this->getName());
     for (AnyRuleManagerInOnly<T> *ruleManager : *ruleManagers) {
       ruleManager->shutdown();
     }

@@ -30,7 +30,6 @@
 #include <htgs/core/graph/profile/CustomProfile.hpp>
 #endif
 
-#include <htgs/core/task/AnyTaskManager.hpp>
 
 namespace htgs {
 
@@ -348,6 +347,7 @@ class AnyITask {
     return taskGraphCommunicator;
   }
 
+
   /**
    * Gets the number of pipelines for the task's execution pipeline
    * @return the number of pipelines
@@ -399,95 +399,6 @@ class AnyITask {
   void copyMemoryEdges(AnyITask *iTaskCopy) {
     iTaskCopy->setMemoryEdges(this->memoryEdges);
     iTaskCopy->setReleaseMemoryEdges(this->releaseMemoryEdges);
-  }
-
-  /**
-   * Retrieves memory from a memory edge
-   * @param name the name of the memory edge
-   * @param releaseRule the release rule to be associated with the newly acquired memory
-   * @return the MemoryData
-   * @tparam V the MemoryData type
-   * @note The name specified must have been attached to this ITask as a memGetter using
-   * the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()
-   *
-   * @note This function will block if no memory is available, ensure the
-   * memory pool size is sufficient based on memory release rules and data flow.
-   * @note Memory edge must be defined as MMType::Static
-   * @internal
-   */
-  template<class V>
-  m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule) {
-    return getMemory<V>(name, releaseRule, MMType::Static, 0);
-  }
-
-  /**
-   * Retrieves memory from a memory edge
-   * @param name the name of the memory edge
-   * @param releaseRule the release rule to be associated with the newly acquired memory
-   * @param numElems the number of elements to allocate (uses internal allocator defined from the memory edge)
-   * @return the MemoryData
-   * @tparam V the MemoryData type
-   * @note The name specified must have been attached to this ITask as a memGetter using
-   * the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()
-   *
-   * @note This function will block if no memory is available, ensure the
-   * memory pool size is sufficient based on memory release rules and data flow.
-   * @note Memory edge must be defined as MMType::Dynamic
-   * @internal
-   */
-  template<class V>
-  m_data_t<V> getDynamicMemory(std::string name, IMemoryReleaseRule *releaseRule, size_t numElems) {
-    return getMemory<V>(name, releaseRule, MMType::Dynamic, numElems);
-  }
-
-  /**
-   * Releases memory onto a memory edge, which is transferred by the graph communicator
-   * @param memory the memory to be released
-   * @tparam V the MemoryData type
-   * @note the m_data_t should be acquired from a task using the getMemory function. A reference to this data can be passed along within IData.
-   */
-  template<class V>
-  void releaseMemory(m_data_t<V> memory) {
-    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket(this->getName(),
-                                                                                        this->getAddress(),
-                                                                                        memory->getMemoryManagerName(),
-                                                                                        memory->getAddress(),
-                                                                                        memory));
-    this->taskGraphCommunicator->produceDataPacket(dataPacket);
-  }
-
-  /**
-   * Checks whether this ITask contains a memory edge for a specified name
-   * @param name the name of the memGetter edge
-   * @return whether this ITask has a memGetter with the specified name
-   * @retval TRUE if the ITask has a memGetter with the specified name
-   * @retval FALSE if the ITask does not have a memGetter with the specified name
-   * @note To add a memGetter to this ITask use TaskGraph::addMemoryManagerEdge
-   */
-  bool hasMemoryEdge(std::string name) {
-    return memoryEdges->find(name) != memoryEdges->end();
-  }
-
-  /**
-   * Attaches a memory edge to this ITask to get memory
-   * @param name the name of the memory edge
-   * @param getMemoryConnector the connector for getting memory for the MemoryManager
-   * @param releaseMemoryConnector the connector for releasing memory for the MemoryManager
-   * @param type the memory manager type
-   *
-   * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
-   * @internal
-   */
-  void attachMemoryEdge(std::string name, std::shared_ptr<AnyConnector> getMemoryConnector,
-                        std::shared_ptr<AnyConnector> releaseMemoryConnector, MMType type) {
-    if (hasMemoryEdge(name)) {
-      std::cerr << "ERROR: " << this->getName() << " already has a memory edge named " << name << std::endl;
-    } else {
-      memoryEdges->insert(ConnectorPair(name, getMemoryConnector));
-      releaseMemoryEdges->insert(ConnectorPair(name, releaseMemoryConnector));
-    }
-
-    DEBUG("Num memory getters " << memoryEdges->size());
   }
 
   /**
@@ -564,6 +475,40 @@ class AnyITask {
     return releaseMemoryEdges;
   }
 
+  /**
+ * Checks whether this ITask contains a memory edge for a specified name
+ * @param name the name of the memGetter edge
+ * @return whether this ITask has a memGetter with the specified name
+ * @retval TRUE if the ITask has a memGetter with the specified name
+ * @retval FALSE if the ITask does not have a memGetter with the specified name
+ * @note To add a memGetter to this ITask use TaskGraph::addMemoryManagerEdge
+ */
+  bool hasMemoryEdge(std::string name) {
+    return memoryEdges->find(name) != memoryEdges->end();
+  }
+
+  /**
+   * Attaches a memory edge to this ITask to get memory
+   * @param name the name of the memory edge
+   * @param getMemoryConnector the connector for getting memory for the MemoryManager
+   * @param releaseMemoryConnector the connector for releasing memory for the MemoryManager
+   * @param type the memory manager type
+   *
+   * @note This function should only be called by the HTGS API, use TaskGraph::addMemoryManagerEdge instead.
+   * @internal
+   */
+  void attachMemoryEdge(std::string name, std::shared_ptr<AnyConnector> getMemoryConnector,
+                        std::shared_ptr<AnyConnector> releaseMemoryConnector, MMType type) {
+    if (hasMemoryEdge(name)) {
+      std::cerr << "ERROR: " << this->getName() << " already has a memory edge named " << name << std::endl;
+    } else {
+      memoryEdges->insert(ConnectorPair(name, getMemoryConnector));
+      releaseMemoryEdges->insert(ConnectorPair(name, releaseMemoryConnector));
+    }
+
+    HTGS_DEBUG("Num memory getters " << memoryEdges->size());
+  }
+
 
   /**
    * Gets the amount of time the task was waiting for memory
@@ -572,6 +517,12 @@ class AnyITask {
   unsigned long long int getMemoryWaitTime() const {
     return memoryWaitTime;
   }
+
+  /**
+   * Increments memory wait time
+   * @param val the amount of time passed waiting for memory
+   */
+  void incMemoryWaitTime(unsigned long long int val) { this->memoryWaitTime += val; }
 
 #ifdef WS_PROFILE
   void sendWSProfileUpdate(StatusCode code)
@@ -591,55 +542,10 @@ class AnyITask {
   void setReleaseMemoryEdges(const std::shared_ptr<ConnectorMap> &releaseMemoryEdges) {
     AnyITask::releaseMemoryEdges = releaseMemoryEdges;
   }
-
-  template<class V>
-  m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem) {
-    assert(("Unable to find memory edge 'name' for task", this->memoryEdges->find(name) != this->memoryEdges->end()));
-
-    auto conn = memoryEdges->find(name)->second;
-    auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
-
-#ifdef WS_PROFILE
-    sendWSProfileUpdate(StatusCode::WAITING_FOR_MEM);
-#endif
-
-#ifdef PROFILE
-    auto start = std::chrono::high_resolution_clock::now();
-#endif
-    m_data_t<V> memory = connector->consumeData();
-#ifdef PROFILE
-    auto finish = std::chrono::high_resolution_clock::now();
-    this->incMemoryWaitTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
-#endif
-
-#ifdef WS_PROFILE
-    sendWSProfileUpdate(StatusCode::EXECUTE);
-#endif
-
-
-
-    memory->setMemoryReleaseRule(releaseRule);
-
-    if (memory->getType() != type) {
-      std::cerr
-          << "Error: Incorrect usage of getMemory. Dynamic memory managers use 'getDynamicMemory', Static memory managers use 'getMemory' for task "
-          << this->getName() << " on memory edge " << name << std::endl;
-      exit(-1);
-    }
-
-    if (type == MMType::Dynamic)
-      memory->memAlloc(nElem);
-
-    return memory;
-  }
   //! @endcond
 
 
-  /**
-   * Increments memory wait time
-   * @param val the amount of time passed waiting for memory
-   */
-  void incMemoryWaitTime(unsigned long long int val) { this->memoryWaitTime += val; }
+
 
   size_t
       numThreads; //!< The number of threads to be used with this ITask (forms a thread pool) used when creating a TaskManager

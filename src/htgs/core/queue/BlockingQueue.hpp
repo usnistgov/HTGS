@@ -13,6 +13,7 @@
 #ifndef HTGS_BLOCKINGQUEUE_HPP
 #define HTGS_BLOCKINGQUEUE_HPP
 
+#include <iostream>
 #include <condition_variable>
 #include <deque>
 #include <queue>

@@ -142,7 +142,7 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
    * Provides debug output for MemoryManager
    */
   void debug() override {
-    DEBUG(this->getName() << " max pool size: " << this->memoryPoolSize << " isEmpty? " << this->pool->isPoolEmpty());
+    HTGS_DEBUG(this->getName() << " max pool size: " << this->memoryPoolSize << " isEmpty? " << this->pool->isPoolEmpty());
   }
 
   /**

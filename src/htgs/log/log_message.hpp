@@ -20,7 +20,7 @@
  * @def VERBOSE
  * Defines verbose mode
  */
-#define VERBOSE 1
+#define HTGS_VERBOSE 1
 
 /**
  * Prints a log message to std::cout with the specified level.
@@ -31,8 +31,8 @@
  * @note \#define LOG_FLAG to enable log messages
  *
  */
-#define LG_MSG_LEVEL(msg, level) if (!LOG_ENABLED || LOG_LEVEL < level) {} \
-        else lglog() << " "  << msg
+#define HTGS_LG_MSG_LEVEL(msg, level) if (!HTGS_LOG_ENABLED || HTGS_LOG_LEVEL < level) {} \
+        else htgs_lglog() << " "  << msg
 
 /**
  * Prints a log message to std::cout with standard level
@@ -41,7 +41,7 @@
  * @note \#define LOG_FLAG to enable log messages
  *
  */
-#define LG(msg) LG_MSG_LEVEL(msg, 0)
+#define HTGS_LG(msg) HTGS_LG_MSG_LEVEL(msg, 0)
 
 /**
  * Prints a log message to std::cout with VERBOSE level.
@@ -50,37 +50,37 @@
  * @note \#define LOG_FLAG to enable log messages
  * @note \#define LOG_LEVEL_VERBOSE to enable VERBOSE debugging
  */
-#define LG_VERBOSE(msg) LG_MSG_LEVEL(msg, VERBOSE)
+#define HTGS_LG_VERBOSE(msg) HTGS_LG_MSG_LEVEL(msg, HTGS_VERBOSE)
 
 /**
  * @def LOG_LEVEL
  * Defines the debug level for printing debug messages
  */
-#ifdef LOG_LEVEL_VERBOSE
-#define LOG_LEVEL VERBOSE
+#ifdef HTGS_LOG_LEVEL_VERBOSE
+#define HTGS_LOG_LEVEL HTGS_VERBOSE
 #else
-#define LOG_LEVEL 0
+#define HTGS_LOG_LEVEL 0
 #endif
 
 /**
  * @def LOG_ENABLED
  * Defines whether debug is enabled or disabled
  */
-#ifdef LOG_FLAG
-#define LOG_ENABLED 1
+#ifdef HTGS_LOG_FLAG
+#define HTGS_LOG_ENABLED 1
 #else
-#define LOG_ENABLED 0
+#define HTGS_LOG_ENABLED 0
 #endif
 
 /**
  * Log structure for processing various types of arguments for std::cout
  */
-struct lglog {
+struct htgs_lglog {
   //! @cond Doxygen_Suppress
   std::ostream &os_;
   mutable bool has_endl_;
-  lglog(std::ostream &os = std::cout) : os_(os), has_endl_(false) {}
-  ~lglog() { if (!has_endl_) os_ << std::endl; }
+  htgs_lglog(std::ostream &os = std::cout) : os_(os), has_endl_(false) {}
+  ~htgs_lglog() { if (!has_endl_) os_ << std::endl; }
   template<typename T>
   static bool has_endl(const T &) { return false; }
   static bool has_endl(char c) { return (c == '\n'); }
@@ -88,13 +88,13 @@ struct lglog {
   static bool has_endl(const char *s) { return has_endl(std::string(s)); }
   template<typename T>
   static bool same_manip(T &(*m)(T &), T &(*e)(T &)) { return (m == e); }
-  const lglog &operator<<(std::ostream &(*m)(std::ostream &)) const {
+  const htgs_lglog &operator<<(std::ostream &(*m)(std::ostream &)) const {
     has_endl_ = same_manip(m, std::endl);
     os_ << m;
     return *this;
   }
   template<typename T>
-  const lglog &operator<<(const T &v) const {
+  const htgs_lglog &operator<<(const T &v) const {
     has_endl_ = has_endl(v);
     os_ << v;
     return *this;
