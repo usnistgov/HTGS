@@ -771,7 +771,7 @@ WARN_LOGFILE =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-#INPUT = @CMAKE_CURRENT_SOURCE_DIR@/src/htgs @CMAKE_CURRENT_SOURCE_DIR@/doxygen/MAINPAGE.dox @CMAKE_CURRENT_SOURCE_DIR@/doxygen/Tutorial1.md @CMAKE_CURRENT_SOURCE_DIR@/doxygen/Tutorial2.md
+#INPUT = @CMAKE_CURRENT_SOURCE_DIR@/src/htgs @CMAKE_CURRENT_SOURCE_DIR@/doxygen/MAINPAGE.dox @CMAKE_CURRENT_SOURCE_DIR@/doxygen/Tutorial1.md @CMAKE_CURRENT_SOURCE_DIR@/doxygen/Tutorial2.md @CMAKE_CURRENT_SOURCE_DIR@/doxygen/NsightSystemsVisualization.md
 INPUT = @CMAKE_CURRENT_SOURCE_DIR@/src/htgs @CMAKE_CURRENT_SOURCE_DIR@/doxygen
 
 # This tag can be used to specify the character encoding of the source files
