@@ -219,17 +219,6 @@ class Bookkeeper : public ITask<T, VoidData> {
     return oss.str();
   }
 
-//#ifdef PROFILE
-// TODO: Remove
-//  std::string getDotProfile(int flags,
-//                                    std::unordered_map<std::string, double> *mmap, double val,
-//                                    std::string desc, std::unordered_map<std::string, std::string> *colorMap)
-//  {
-//    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName()) : "");
-//    return this->getDotId() + "[label=\"" + "Bookkeeper" + inOutLabel + "\n" + desc + "\n" + std::to_string(val) + "\",shape=box,style=filled,fillcolor=white,penwidth=5,color=\""+colorMap->at(this->getNameWithPipID()) + "\",width=.2,height=.2];\n";
-//  }
-//#endif
-
  private:
   std::list<AnyRuleManagerInOnly<T> *> *ruleManagers; //!< The list of ruleManagers (one per consumer)
   std::string ruleManagerInfo; //!< A string representation of all rule managers

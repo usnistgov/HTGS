@@ -388,6 +388,8 @@ class AnyTaskGraphConf {
    *
    * @param file the filename (will not create directories)
    * @param flags the flags for DOTGEN
+   * @param graphTitle the title of the graph that is inserted into a graph title section in the visualization
+   * @param customTitleText custom text that can be inserted into the graph title section in the visualization
    * @note Use the directive PROFILE to enable profiling output and call after execution.
    * @note See TaskGraphDotGenFlags.hpp for list of bit flags
    * @note Calling this function prior to execution show the graph structure.
@@ -590,8 +592,8 @@ class AnyTaskGraphConf {
   MemAllocMap *memAllocMap; //!< A mapping for each IMemoryAllocator to its associated shared_ptr
 
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> graphCreationTimestamp; //!<< Timestamp when graph constructor was called
-  std::chrono::time_point<std::chrono::high_resolution_clock> graphExecutingTimestamp;
+  std::chrono::time_point<std::chrono::high_resolution_clock> graphCreationTimestamp; //!< Timestamp when graph constructor was called
+  std::chrono::time_point<std::chrono::high_resolution_clock> graphExecutingTimestamp; //!< Timestamp for how long the graph executed
   unsigned long long int graphComputeTime; //!< The total time to execute the graph
   unsigned long long int graphCreationTime; //!< The total time to create the graph
 };

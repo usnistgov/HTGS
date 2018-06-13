@@ -79,7 +79,7 @@ class SquareResult : public htgs::ITask<OutputData, OutputData>
     this->addResult(new OutputData(result));
   }
   std::string getName() override {
-    return "X^2 = Z";
+    return "X^2 = Z(" + std::to_string(this->getNumThreads()) +")";
   }
 };
 
@@ -106,10 +106,6 @@ int main() {
 
 //  htgs::TaskGraphSignalHandler::registerSignal();
 
-
-  auto runtime = new htgs::TaskGraphRuntime(taskGraph);
-  runtime->executeRuntime();
-
   int numData = 1000;
   for (int i = 0; i < numData; i++) {
     auto inputData = new InputData(i, i);
@@ -117,6 +113,11 @@ int main() {
   }
 
   taskGraph->finishedProducingData();
+
+
+  auto runtime = new htgs::TaskGraphRuntime(taskGraph);
+  runtime->executeRuntime();
+
 
   while(!taskGraph->isOutputTerminated()) {
     auto data = taskGraph->consumeData();

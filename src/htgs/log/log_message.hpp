@@ -17,7 +17,7 @@
 #include <iostream>
 
 /**
- * @def VERBOSE
+ * @def HTGS_VERBOSE
  * Defines verbose mode
  */
 #define HTGS_VERBOSE 1
@@ -53,7 +53,7 @@
 #define HTGS_LG_VERBOSE(msg) HTGS_LG_MSG_LEVEL(msg, HTGS_VERBOSE)
 
 /**
- * @def LOG_LEVEL
+ * @def HTGS_LOG_LEVEL
  * Defines the debug level for printing debug messages
  */
 #ifdef HTGS_LOG_LEVEL_VERBOSE
@@ -63,7 +63,7 @@
 #endif
 
 /**
- * @def LOG_ENABLED
+ * @def HTGS_LOG_ENABLED
  * Defines whether debug is enabled or disabled
  */
 #ifdef HTGS_LOG_FLAG

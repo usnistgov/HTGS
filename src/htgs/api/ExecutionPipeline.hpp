@@ -237,7 +237,7 @@ class ExecutionPipeline : public ITask<T, U> {
     // Spawn thread for each runtime to properly wait without blocking.
     std::vector<std::thread *> shutdownThreads;
 
-    for (int i = 0; i < runtimes->size(); i++)
+    for (size_t i = 0; i < runtimes->size(); i++)
     {
       std::thread *t = new std::thread(&ExecutionPipeline<T, U>::shutdownParallel, this, i);
       shutdownThreads.push_back(t);
@@ -431,6 +431,12 @@ class ExecutionPipeline : public ITask<T, U> {
 
  private:
 
+  /**
+   * Moves the output connector outside of the execution pipeline graphs to cleanup how the graph looks during graph visualization.
+   * @param graph the graph
+   * @param str the dot file string to be cleaned up
+   * @return the improved dot file text
+   */
   std::ostringstream cleanupVisualization(TaskGraphConf<T, U> *graph, std::string str)
   {
     std::istringstream iss(str);

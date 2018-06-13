@@ -92,6 +92,21 @@ class TaskGraphRuntime {
   TaskGraphRuntime(AnyTaskGraphConf *graph) {
     this->graph = graph;
     this->executed = false;
+#if defined (USE_NVTX) && defined (USE_MINIMAL_NVTX)
+    domainInitialize = nvtxDomainCreateA("Initialize");
+    domainExecute = nvtxDomainCreateA("Execute");
+    domainWait = nvtxDomainCreateA("Wait");
+    domainWaitForMem = nvtxDomainCreateA("Wait for Memory");
+    domainReleaseMem = nvtxDomainCreateA("Release Memory");
+    domainShutdown = nvtxDomainCreateA("Shutdown");
+#elif defined (USE_NVTX)
+    domainInitialize = nullptr;
+    domainExecute = nullptr;
+    domainWait = nullptr;
+    domainWaitForMem = nullptr;
+    domainReleaseMem = nullptr;
+    domainShutdown = nullptr;
+#endif
   }
 
   /**
@@ -116,6 +131,14 @@ class TaskGraphRuntime {
       delete graph;
       graph = nullptr;
     }
+#if defined (USE_NVTX) && (USE_MINIMAL_NVTX)
+    nvtxDomainDestroy(domainInitialize);
+    nvtxDomainDestroy(domainExecute);
+    nvtxDomainDestroy(domainWait);
+    nvtxDomainDestroy(domainWaitForMem);
+    nvtxDomainDestroy(domainReleaseMem);
+    nvtxDomainDestroy(domainShutdown);
+#endif
   }
 
   /**
@@ -198,7 +221,23 @@ class TaskGraphRuntime {
           newVertices.push_back(taskCopy);
         }
         size_t threadId = 0;
+
+#if defined (USE_NVTX) && defined (USE_MINIMAL_NVTX)
+        nvtxDomainHandle_t taskDomain = nullptr;
+#elif defined (USE_NVTX)
+        nvtxDomainHandle_t taskDomain = nvtxDomainCreateA(task->getName().c_str());
+#endif
+
         for (AnyTaskManager *taskItem : taskList) {
+#if defined (USE_NVTX) && defined (USE_MINIMAL_NVTX)
+          NVTXProfiler *profiler = new NVTXProfiler(std::to_string(threadId) + ":" + taskItem->getName(), taskDomain, domainInitialize, domainExecute, domainWait, domainWaitForMem, domainReleaseMem, domainShutdown);
+          taskItem->setProfiler(profiler);
+#elif defined (USE_NVTX)
+          NVTXProfiler *profiler = new NVTXProfiler(std::to_string(threadId), taskDomain, domainInitialize, domainExecute, domainWait, domainWaitForMem, domainReleaseMem, domainShutdown);
+          taskItem->setProfiler(profiler);
+#endif
+
+
 
           TaskManagerThread *runtimeThread = new TaskManagerThread(threadId, taskItem, atomicNumThreads);
           std::thread *thread = new std::thread(&TaskManagerThread::run, runtimeThread);
@@ -233,6 +272,15 @@ class TaskGraphRuntime {
   AnyTaskGraphConf *graph; //!< The TaskGraph associated with the Runtime
   std::list<TaskManagerThread *> runtimeThreads; //!< The list of TaskManagers bound to each thread
   bool executed; //!< Whether the Runtime has been executed
+
+#ifdef USE_NVTX
+  nvtxDomainHandle_t domainInitialize;
+  nvtxDomainHandle_t domainExecute;
+  nvtxDomainHandle_t domainWait;
+  nvtxDomainHandle_t domainWaitForMem;
+  nvtxDomainHandle_t domainReleaseMem;
+  nvtxDomainHandle_t domainShutdown;
+#endif
 
 };
 }

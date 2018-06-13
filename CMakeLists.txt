@@ -55,8 +55,15 @@ if (BUILD_DOXYGEN)
     find_package(Doxygen)
 
     if (DOXYGEN_FOUND)
+        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+        find_package(NVTX QUIET)
+
+
         add_definitions(-DUSE_CUDA)
         add_definitions(-DPROFILE)
+        if (NVTX_FOUND)
+            add_definitions(-DUSE_NVTX)
+        endif()
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doxygen/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
 	add_custom_target(doc ALL
 		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile

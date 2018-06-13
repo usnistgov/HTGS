@@ -22,7 +22,7 @@
 #include <htgs/core/task/AnyITask.hpp>
 #include <htgs/core/graph/profile/NVTXProfiler.hpp>
 #ifdef USE_NVTX
-#include <nvToolsExt.h>
+#include <nvtx3/nvToolsExt.h>
 #endif
 
 #ifdef WS_PROFILE
@@ -104,7 +104,7 @@ class AnyTaskManager {
   /**
    * Destructor
    */
-  virtual ~AnyTaskManager() {};
+  virtual ~AnyTaskManager() {  };
 
   /**
    * Gets the ITask function associated with the TaskManager
@@ -342,7 +342,14 @@ class AnyTaskManager {
    */
   void shutdown() {
     HTGS_DEBUG("shutting down: " << this->prefix() << " " << this->getName() << std::endl);
+#ifdef USE_NVTX
+    nvtxRangeId_t rangeId = this->nvtxProfiler->startRangeShuttingDown();
+#endif
     this->getTaskFunction()->shutdown();
+
+#ifdef USE_NVTX
+    this->nvtxProfiler->endRangeShuttingDown(rangeId);
+#endif
   }
 
   /**
@@ -558,10 +565,11 @@ class TaskManagerThread {
    * @retval 0 Completed successfully
    */
   int run(void) {
-#ifdef USE_NVTX
-    NVTXProfiler *profiler = new NVTXProfiler();
-    task->setProfiler(profiler);
-#endif
+    // TODO: Remove?
+//#ifdef USE_NVTX
+//    NVTXProfiler *profiler = new NVTXProfiler();
+//    task->setProfiler(profiler);
+//#endif
 
     HTGS_DEBUG("Starting Thread for task : " << task->getName());
     this->task->initialize();
@@ -569,6 +577,13 @@ class TaskManagerThread {
       this->task->executeTask();
     }
     this->task->shutdown();
+
+#ifdef USE_NVTX
+    if(hasNoThreadsRemaining())
+    {
+      this->task->releaseProfiler();
+    }
+#endif
 
     return 0;
   }

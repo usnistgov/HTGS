@@ -230,7 +230,7 @@ class AnyITask {
   /**
    * Virtual function that is called after executionTask is called. This can be used to provide
    * detailed profile (or debug) data to be sent for visualization using the HTGS_Visualizer.
-   * The format uses <key>:<value> pairs, separated by semi-colons.
+   * The format uses \<key\>:\<value\> pairs, separated by semi-colons.
    *
    * i.e.: gflops:<#>;bandwidth:<#>;...
    *

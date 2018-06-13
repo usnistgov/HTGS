@@ -26,7 +26,7 @@
 #include <htgs/core/task/TaskManager.hpp>
 
 #ifdef USE_NVTX
-#include <nvToolsExt.h>
+#include <nvtx3/nvToolsExt.h>
 #endif
 
 #if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )

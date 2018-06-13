@@ -24,7 +24,14 @@
 #include <htgs/api/ITask.hpp>
 
 #ifdef USE_NVTX
-#include <nvToolsExt.h>
+#include <nvtx3/nvToolsExt.h>
+#ifdef __linux__
+#include <syscall.h>
+#elif __APPLE__
+#include <sys/syscall.h>
+#elif _WIN32
+#include <windows.h>
+#endif
 #endif
 
 namespace htgs {
@@ -116,10 +123,21 @@ class TaskManager : public AnyTaskManager {
     HTGS_DEBUG("initializing: " << this->prefix() << " " << this->getName() << std::endl);
 #ifdef USE_NVTX
     nvtxThreadName = this->getName() + " (" + std::to_string(this->getThreadId()) + ")";
-    nvtxNameOsThread(pthread_self(), nvtxThreadName.c_str());
+#ifdef __linux__
+    nvtxNameOsThreadA(static_cast<uint32_t>(syscall(SYS_gettid)), nvtxThreadName.c_str());
+#elif __APPLE__
+    nvtxNameOsThreadA(syscall(SYS_thread_selfid), nvtxThreadName.c_str());
+#elif _WIN32
+    nvtxNameOsThread(GetCurrentThreadId(), nvtxThreadName.c_str());
+#endif
+    nvtxRangeId_t rangeId = this->getProfiler()->startRangeInitializing();
 #endif
 
     this->taskFunction->initialize(this->getPipelineId(), this->getNumPipelines(), this);
+
+#ifdef USE_NVTX
+    this->getProfiler()->endRangeInitializing(rangeId);
+#endif
   }
 
   void setRuntimeThread(TaskManagerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }
@@ -165,7 +183,7 @@ class TaskManager : public AnyTaskManager {
       this->taskFunction->executeTask(nullptr);
 
 #ifdef USE_NVTX
-      this->getProfiler()->endRangeExecute(rangeId);
+      this->getProfiler()->endRangeExecuting(rangeId);
 #endif
 
 #ifdef WS_PROFILE
@@ -234,7 +252,7 @@ class TaskManager : public AnyTaskManager {
       this->taskFunction->executeTask(data);
 
 #ifdef USE_NVTX
-      this->getProfiler()->endRangeExecute(rangeId);
+      this->getProfiler()->endRangeExecuting(rangeId);
 #endif
 
 #ifdef PROFILE
@@ -354,7 +372,7 @@ class TaskManager : public AnyTaskManager {
         this->taskFunction->executeTaskFinal();
 
 #ifdef USE_NVTX
-        this->getProfiler()->endRangeExecute(rangeId);
+        this->getProfiler()->endRangeExecuting(rangeId);
 #endif
         auto finish = std::chrono::high_resolution_clock::now();
         this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
@@ -390,9 +408,10 @@ class TaskManager : public AnyTaskManager {
             connector->wakeupConsumer();
         }
 
-#ifdef USE_NVTX
-        this->releaseProfiler();
-#endif
+        // TODO: Delete?
+//#ifdef USE_NVTX
+//        this->releaseProfiler();
+//#endif
 
       }
     } else {

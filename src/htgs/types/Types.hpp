@@ -26,6 +26,12 @@
  */
 namespace htgs {
 
+/**
+ * @typedef IRuleList
+ * Stores a list of rules with the specified types
+ * @tparam T the input type for the rule
+ * @tparam U the output type for the rule
+ */
 template<class T, class U>
 using IRuleList = std::list<std::shared_ptr<IRule<T, U>>>;
 

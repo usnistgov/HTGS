@@ -248,6 +248,14 @@ class TaskGraphConf : public AnyTaskGraphConf {
     }
 #endif
 
+#ifdef USE_NVTX
+    if (this->getAddress() == "0")
+    {
+      delete profiler;
+      profiler = nullptr;
+    }
+#endif
+
     if (taskConnectorCommunicator != nullptr)
       taskConnectorCommunicator->terminateGracefully();
 
@@ -560,6 +568,17 @@ class TaskGraphConf : public AnyTaskGraphConf {
     }
 #endif
 
+#ifdef USE_NVTX
+    if (this->getAddress() == "0") {
+      nvtxDomainHandle_t graphDomain = nvtxDomainCreateA(TASK_GRAPH_PREFIX_NAME);
+#ifdef USE_MINIMAL_NVTX
+      profiler = new NVTXProfiler(TASK_GRAPH_PREFIX_NAME, nullptr, graphDomain, graphDomain, graphDomain, graphDomain, graphDomain, graphDomain);
+#else
+      profiler = new NVTXProfiler(TASK_GRAPH_PREFIX_NAME, graphDomain, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+#endif
+    }
+#endif
+
   }
 
   /**
@@ -711,7 +730,14 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * should check for nullptr prior to processing the data.
    */
   std::shared_ptr<U> consumeData() {
-    return this->output->consumeData();
+#ifdef USE_NVTX
+    nvtxRangeId_t id = profiler->startRangeWaiting(this->output->getQueueSize());
+#endif
+    std::shared_ptr<U> data = this->output->consumeData();
+#ifdef USE_NVTX
+    profiler->endRangeWaiting(id);
+#endif
+    return data;
   }
 
   /**
@@ -720,7 +746,14 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @return the data or nullptr if the timeout period expires.
    */
   std::shared_ptr<U> pollData(size_t microTimeout) {
-    return this->output->pollConsumeData(microTimeout);
+#ifdef USE_NVTX
+    nvtxRangeId_t id = profiler->startRangeWaiting(this->output->getQueueSize());
+#endif
+    std::shared_ptr<U> data = this->output->pollConsumeData(microTimeout);
+#ifdef USE_NVTX
+    profiler->endRangeWaiting(id);
+#endif
+    return data;
   }
 
   /**
@@ -760,7 +793,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
                                                                                         memory->getMemoryManagerName(),
                                                                                         memory->getAddress(),
                                                                                         memory));
+#ifdef USE_NVTX
+    profiler->addReleaseMarker();
+#endif
+
     this->taskConnectorCommunicator->produceDataPacket(dataPacket);
+
+
   }
 
   /**
@@ -920,6 +959,10 @@ class TaskGraphConf : public AnyTaskGraphConf {
   TaskManager<ProfileData, VoidData> *wsProfileTaskManager; // !< The task manager for the web socket profiler
   std::thread *wsProfileThread; // !< The thread for the web socket profiler task manager
   TaskManagerThread *runtimeThread; //!< The task manager runtime thread
+#endif
+
+#ifdef USE_NVTX
+  NVTXProfiler *profiler;
 #endif
 
 };
