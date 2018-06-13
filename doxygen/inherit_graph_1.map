@@ -1,4 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="5,5,144,32"/>
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. " alt="" coords="192,5,339,32"/>
+<area shape="rect" id="node1" href="$classhtgs_1_1_any_i_rule.html" title="Base class for an htgs::IRule. " alt="" coords="5,31,115,57"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_rule.html" title="Provides an interface to send data along RuleManager edges for processing state and dependencies..." alt="" coords="163,5,299,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_rule.html" title="htgs::IRule\&lt; T, T \&gt;" alt="" coords="163,56,298,83"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_execution_pipeline_broadcast_rule.html" title="the default execution pipeline rule that is used if no other rule is specified for an execution pipel..." alt="" coords="347,49,565,90"/>
 </map>

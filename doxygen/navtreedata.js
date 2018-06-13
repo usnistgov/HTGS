@@ -9,6 +9,7 @@ var NAVTREE =
       [ "Tutorials ", "index.html#tutorials", null ]
     ] ],
     [ "Getting Started", "install-instructions.html", null ],
+    [ "Using Nsight Systems with HTGS", "using-nsight-systems.html", null ],
     [ "Tutorial 0", "tutorial0.html", [
       [ "Downloading the Tutorials ", "tutorial0.html#tut0-download", null ],
       [ "Getting Started using the Command-Line ", "tutorial0.html#tut0-cmd", null ],
@@ -180,10 +181,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classhtgs_1_1_any_task_graph_conf.html#a6e6774ff3bdf4bd882b48c9ae3eef3bf",
-"classhtgs_1_1_i_rule.html#ad320c20c0d1b964983d90565c25bf74d",
-"classhtgs_1_1_task_graph_conf.html#abefecdde12a738f08e41f410015afb6e",
-"tutorial3a.html#tut3a-summary"
+"classhtgs_1_1_any_task_graph_conf.html#a6f01c03d02aeac3e0bf351946cb740c9",
+"classhtgs_1_1_i_rule.html#ae57587d08bbf4cf1110279e1683cfbcb",
+"classhtgs_1_1_task_graph_conf.html#aa359ab69ff6f839d233f2486e32d0605",
+"tutorial3a.html#tut3a-objectives"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

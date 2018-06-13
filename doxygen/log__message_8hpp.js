@@ -1,10 +1,10 @@
 var log__message_8hpp =
 [
-    [ "lglog", "structlglog.html", null ],
-    [ "LG", "log__message_8hpp.html#addd36387b482d681b8b9daa8f871a612", null ],
-    [ "LG_MSG_LEVEL", "log__message_8hpp.html#a541508a63b6ca598a887728ca7dea342", null ],
-    [ "LG_VERBOSE", "log__message_8hpp.html#ad41d33a8705c7a2d01d31162e8d59c7b", null ],
-    [ "LOG_ENABLED", "log__message_8hpp.html#a370d64f5c8688d8cbe9f87acc0273e9f", null ],
-    [ "LOG_LEVEL", "log__message_8hpp.html#a0b87e0d3bf5853bcbb0b66a7c48fdc05", null ],
-    [ "VERBOSE", "log__message_8hpp.html#a42f8c497a1968074f38bf5055c650dca", null ]
+    [ "htgs_lglog", "structhtgs__lglog.html", null ],
+    [ "HTGS_LG", "log__message_8hpp.html#a42e079086e6e26597993554e55a7c10c", null ],
+    [ "HTGS_LG_MSG_LEVEL", "log__message_8hpp.html#a5a8278c5d7570bd74f7d73b02a8f9113", null ],
+    [ "HTGS_LG_VERBOSE", "log__message_8hpp.html#a406be4b8bdd1bef29b6d4a85483fc9b0", null ],
+    [ "HTGS_LOG_ENABLED", "log__message_8hpp.html#a86539eea7de25efe4ed9d83c1afe0c3c", null ],
+    [ "HTGS_LOG_LEVEL", "log__message_8hpp.html#aaabef02e3e32b209b39e8a1123d62653", null ],
+    [ "HTGS_VERBOSE", "log__message_8hpp.html#a8f1005855ba1e990c4632933fd696f08", null ]
 ];

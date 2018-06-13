@@ -46,18 +46,18 @@ var hierarchy =
     [ "htgs::BlockingQueue< std::shared_ptr< htgs::DataPacket > >", "classhtgs_1_1_blocking_queue.html", null ],
     [ "htgs::BlockingQueue< std::shared_ptr< T > >", "classhtgs_1_1_blocking_queue.html", null ],
     [ "htgs::DataPacket", "classhtgs_1_1_data_packet.html", null ],
-    [ "dbglog", "structdbglog.html", null ],
     [ "htgs::EdgeDescriptor", "classhtgs_1_1_edge_descriptor.html", [
       [ "htgs::MemoryEdge< T >", "classhtgs_1_1_memory_edge.html", null ],
       [ "htgs::ProducerConsumerEdge< T, U, W >", "classhtgs_1_1_producer_consumer_edge.html", null ],
       [ "htgs::RuleEdge< T, U, W >", "classhtgs_1_1_rule_edge.html", null ]
     ] ],
+    [ "htgs_dbglog", "structhtgs__dbglog.html", null ],
+    [ "htgs_lglog", "structhtgs__lglog.html", null ],
     [ "htgs::IData", "classhtgs_1_1_i_data.html", [
       [ "htgs::MemoryData< T >", "classhtgs_1_1_memory_data.html", null ],
       [ "htgs::VoidData", "classhtgs_1_1_void_data.html", null ]
     ] ],
     [ "htgs::IMemoryReleaseRule", "classhtgs_1_1_i_memory_release_rule.html", null ],
-    [ "lglog", "structlglog.html", null ],
     [ "htgs::MemoryPool< T >", "classhtgs_1_1_memory_pool.html", null ],
     [ "htgs::PriorityBlockingQueue< T >", "classhtgs_1_1_priority_blocking_queue.html", null ],
     [ "htgs::StateContainer< T >", "classhtgs_1_1_state_container.html", null ],

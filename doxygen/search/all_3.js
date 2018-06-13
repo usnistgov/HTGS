@@ -7,6 +7,7 @@ var searchData=
   ['checkrootspawnthreads',['checkRootSpawnThreads',['../classhtgs_1_1_task_graph_communicator.html#a61bcb15d176dfe295d8238d8a7cc67f8',1,'htgs::TaskGraphCommunicator']]],
   ['checkruletermination',['checkRuleTermination',['../classhtgs_1_1_any_rule_manager.html#a47654d244294f0a2a088b5dd124c2a4e',1,'htgs::AnyRuleManager::checkRuleTermination()'],['../classhtgs_1_1_rule_manager.html#affd511e1a7d63d0fd34632e72169aef0',1,'htgs::RuleManager::checkRuleTermination()']]],
   ['children',['children',['../classhtgs_1_1_task_graph_communicator.html#a0ab7673355ce07ae2461d8c11bc80f3a',1,'htgs::TaskGraphCommunicator']]],
+  ['cleanupvisualization',['cleanupVisualization',['../classhtgs_1_1_execution_pipeline.html#ad4805d86afedc4d6f4fc4d93216b9779',1,'htgs::ExecutionPipeline']]],
   ['communicator',['communicator',['../classhtgs_1_1_rule_manager.html#a8de148e17029d174a4fbcea63f3f9d63',1,'htgs::RuleManager']]],
   ['compare',['compare',['../classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0',1,'htgs::IData']]],
   ['computeaverages',['computeAverages',['../classhtgs_1_1_task_graph_profiler.html#ac5ed174f350b5d0a13f8b7fec3007e43',1,'htgs::TaskGraphProfiler']]],

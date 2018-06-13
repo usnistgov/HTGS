@@ -42,6 +42,6 @@ var annotated_dup =
       [ "TaskManagerThread", "classhtgs_1_1_task_manager_thread.html", "classhtgs_1_1_task_manager_thread" ],
       [ "VoidData", "classhtgs_1_1_void_data.html", "classhtgs_1_1_void_data" ]
     ] ],
-    [ "dbglog", "structdbglog.html", null ],
-    [ "lglog", "structlglog.html", null ]
+    [ "htgs_dbglog", "structhtgs__dbglog.html", null ],
+    [ "htgs_lglog", "structhtgs__lglog.html", null ]
 ];

@@ -112,7 +112,6 @@ $(document).ready(function(){initNavTree('classhtgs_1_1_any_i_task.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classhtgs_1_1_any_i_task-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -129,15 +128,15 @@ Inheritance diagram for htgs::AnyITask:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhtgs_1_1_any_i_task__inherit__graph.png" border="0" usemap="#htgs_1_1_any_i_task_inherit__map" alt="Inheritance graph"/></div>
 <map name="htgs_1_1_any_i_task_inherit__map" id="htgs_1_1_any_i_task_inherit__map">
-<area shape="rect" id="node2" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="226,431,371,655"/>
-<area shape="rect" id="node5" href="classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 21 more...\l}" alt="" coords="409,424,591,663"/>
-<area shape="rect" id="node8" href="classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; T, VoidData \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 21 more...\l}" alt="" coords="615,431,798,655"/>
-<area shape="rect" id="node10" href="classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; U, W \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 21 more...\l}" alt="" coords="822,431,967,655"/>
-<area shape="rect" id="node3" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="5,718,189,1045"/>
-<area shape="rect" id="node4" href="classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,718,383,1045"/>
-<area shape="rect" id="node6" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="408,711,600,1052"/>
-<area shape="rect" id="node7" href="classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="397,1100,611,1221"/>
-<area shape="rect" id="node9" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="629,747,785,1015"/>
+<area shape="rect" id="node2" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="226,417,371,641"/>
+<area shape="rect" id="node5" href="classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 24 more...\l}" alt="" coords="409,409,591,648"/>
+<area shape="rect" id="node8" href="classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; T, VoidData \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 24 more...\l}" alt="" coords="615,417,798,641"/>
+<area shape="rect" id="node10" href="classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; U, W \&gt;\n|&#45; ownerTask\l|+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 24 more...\l}" alt="" coords="822,417,967,641"/>
+<area shape="rect" id="node3" href="classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="5,703,189,1030"/>
+<area shape="rect" id="node4" href="classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,703,383,1030"/>
+<area shape="rect" id="node6" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="408,696,600,1037"/>
+<area shape="rect" id="node7" href="classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="397,1085,611,1207"/>
+<area shape="rect" id="node9" href="classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="629,733,785,1001"/>
 </map>
 </div>
 <div class="dynheader">
@@ -276,24 +275,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a8151861566f3566b2bfbeb4c61db8d5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a8151861566f3566b2bfbeb4c61db8d5d">copyMemoryEdges</a> (<a class="el" href="classhtgs_1_1_any_i_task.html">AnyITask</a> *iTaskCopy)</td></tr>
 <tr class="memdesc:a8151861566f3566b2bfbeb4c61db8d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the memory edges from this <a class="el" href="classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. ">AnyITask</a> to another <a class="el" href="classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. ">AnyITask</a>.  <a href="#a8151861566f3566b2bfbeb4c61db8d5d">More...</a><br /></td></tr>
 <tr class="separator:a8151861566f3566b2bfbeb4c61db8d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af29719d6760e609023ffcb8e966ed3ab"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:af29719d6760e609023ffcb8e966ed3ab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_types_8hpp.html#a3b26154a91264a0136c960befa0818e5">m_data_t</a>&lt; V &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#af29719d6760e609023ffcb8e966ed3ab">getMemory</a> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule)</td></tr>
-<tr class="memdesc:af29719d6760e609023ffcb8e966ed3ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge.  <a href="#af29719d6760e609023ffcb8e966ed3ab">More...</a><br /></td></tr>
-<tr class="separator:af29719d6760e609023ffcb8e966ed3ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9b186c6fa6774524f5fcb5d339fb7e6"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:ad9b186c6fa6774524f5fcb5d339fb7e6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_types_8hpp.html#a3b26154a91264a0136c960befa0818e5">m_data_t</a>&lt; V &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#ad9b186c6fa6774524f5fcb5d339fb7e6">getDynamicMemory</a> (std::string name, <a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *releaseRule, size_t numElems)</td></tr>
-<tr class="memdesc:ad9b186c6fa6774524f5fcb5d339fb7e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves memory from a memory edge.  <a href="#ad9b186c6fa6774524f5fcb5d339fb7e6">More...</a><br /></td></tr>
-<tr class="separator:ad9b186c6fa6774524f5fcb5d339fb7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1695fa9a8bd1ff5599c1388f648fc9fa"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:a1695fa9a8bd1ff5599c1388f648fc9fa"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a1695fa9a8bd1ff5599c1388f648fc9fa">releaseMemory</a> (<a class="el" href="_types_8hpp.html#a3b26154a91264a0136c960befa0818e5">m_data_t</a>&lt; V &gt; memory)</td></tr>
-<tr class="memdesc:a1695fa9a8bd1ff5599c1388f648fc9fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases memory onto a memory edge, which is transferred by the graph communicator.  <a href="#a1695fa9a8bd1ff5599c1388f648fc9fa">More...</a><br /></td></tr>
-<tr class="separator:a1695fa9a8bd1ff5599c1388f648fc9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a2a3413aba1c422531a94a1177c7477"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a7a2a3413aba1c422531a94a1177c7477">hasMemoryEdge</a> (std::string name)</td></tr>
-<tr class="memdesc:a7a2a3413aba1c422531a94a1177c7477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> contains a memory edge for a specified name.  <a href="#a7a2a3413aba1c422531a94a1177c7477">More...</a><br /></td></tr>
-<tr class="separator:a7a2a3413aba1c422531a94a1177c7477"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07b227fd650170a87eb3f15a7c291039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a07b227fd650170a87eb3f15a7c291039">attachMemoryEdge</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; getMemoryConnector, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; releaseMemoryConnector, <a class="el" href="_m_m_type_8hpp.html#a9cb5fbc12b3f2ecede03fd2ae6e3fa0b">MMType</a> type)</td></tr>
-<tr class="memdesc:a07b227fd650170a87eb3f15a7c291039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a memory edge to this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> to get memory.  <a href="#a07b227fd650170a87eb3f15a7c291039">More...</a><br /></td></tr>
-<tr class="separator:a07b227fd650170a87eb3f15a7c291039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21c2f4b6a35e07f87420e28af48d115a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a21c2f4b6a35e07f87420e28af48d115a">genDot</a> (int flags, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; input, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; output)</td></tr>
 <tr class="memdesc:a21c2f4b6a35e07f87420e28af48d115a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a dot notation representation for this task.  <a href="#a21c2f4b6a35e07f87420e28af48d115a">More...</a><br /></td></tr>
 <tr class="separator:a21c2f4b6a35e07f87420e28af48d115a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -312,12 +293,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a182cb05b805dd9862364cffb4d9f4404"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr&lt; <a class="el" href="_types_8hpp.html#a2156f652394ebf22e0f38ce08fd9e50a">ConnectorMap</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a182cb05b805dd9862364cffb4d9f4404">getReleaseMemoryEdges</a> () const </td></tr>
 <tr class="memdesc:a182cb05b805dd9862364cffb4d9f4404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the memory edges for releasing memory for the memory manager, used to shutdown the memory manager.  <a href="#a182cb05b805dd9862364cffb4d9f4404">More...</a><br /></td></tr>
 <tr class="separator:a182cb05b805dd9862364cffb4d9f4404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a2a3413aba1c422531a94a1177c7477"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a7a2a3413aba1c422531a94a1177c7477">hasMemoryEdge</a> (std::string name)</td></tr>
+<tr class="memdesc:a7a2a3413aba1c422531a94a1177c7477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> contains a memory edge for a specified name.  <a href="#a7a2a3413aba1c422531a94a1177c7477">More...</a><br /></td></tr>
+<tr class="separator:a7a2a3413aba1c422531a94a1177c7477"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07b227fd650170a87eb3f15a7c291039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a07b227fd650170a87eb3f15a7c291039">attachMemoryEdge</a> (std::string name, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; getMemoryConnector, std::shared_ptr&lt; <a class="el" href="classhtgs_1_1_any_connector.html">AnyConnector</a> &gt; releaseMemoryConnector, <a class="el" href="_m_m_type_8hpp.html#a9cb5fbc12b3f2ecede03fd2ae6e3fa0b">MMType</a> type)</td></tr>
+<tr class="memdesc:a07b227fd650170a87eb3f15a7c291039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches a memory edge to this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> to get memory.  <a href="#a07b227fd650170a87eb3f15a7c291039">More...</a><br /></td></tr>
+<tr class="separator:a07b227fd650170a87eb3f15a7c291039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f5a30df3cf4ac4a26c38fe8c9421e5d"><td class="memItemLeft" align="right" valign="top">unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a5f5a30df3cf4ac4a26c38fe8c9421e5d">getMemoryWaitTime</a> () const </td></tr>
 <tr class="memdesc:a5f5a30df3cf4ac4a26c38fe8c9421e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the amount of time the task was waiting for memory.  <a href="#a5f5a30df3cf4ac4a26c38fe8c9421e5d">More...</a><br /></td></tr>
 <tr class="separator:a5f5a30df3cf4ac4a26c38fe8c9421e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
 <tr class="memitem:a6961e8c5a346bb7f162b6dbce0204c48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_i_task.html#a6961e8c5a346bb7f162b6dbce0204c48">incMemoryWaitTime</a> (unsigned long long int val)</td></tr>
 <tr class="memdesc:a6961e8c5a346bb7f162b6dbce0204c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments memory wait time.  <a href="#a6961e8c5a346bb7f162b6dbce0204c48">More...</a><br /></td></tr>
 <tr class="separator:a6961e8c5a346bb7f162b6dbce0204c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1056,127 +1040,6 @@ unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a cla
 
 </div>
 </div>
-<a class="anchor" id="ad9b186c6fa6774524f5fcb5d339fb7e6"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="_types_8hpp.html#a3b26154a91264a0136c960befa0818e5">m_data_t</a>&lt;V&gt; htgs::AnyITask::getDynamicMemory </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *&#160;</td>
-          <td class="paramname"><em>releaseRule</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>numElems</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Retrieves memory from a memory edge. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the memory edge </td></tr>
-    <tr><td class="paramname">releaseRule</td><td>the release rule to be associated with the newly acquired memory </td></tr>
-    <tr><td class="paramname">numElems</td><td>the number of elements to allocate (uses internal allocator defined from the memory edge) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classhtgs_1_1_memory_data.html" title="Describes memory allocated by a MemoryManager to manage shared memory across multiple ITask...">MemoryData</a> </dd></dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">V</td><td>the <a class="el" href="classhtgs_1_1_memory_data.html" title="Describes memory allocated by a MemoryManager to manage shared memory across multiple ITask...">MemoryData</a> type </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>The name specified must have been attached to this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> as a memGetter using the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()</dd>
-<dd>
-This function will block if no memory is available, ensure the memory pool size is sufficient based on memory release rules and data flow. </dd>
-<dd>
-Memory edge must be defined as MMType::Dynamic </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="af29719d6760e609023ffcb8e966ed3ab"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="_types_8hpp.html#a3b26154a91264a0136c960befa0818e5">m_data_t</a>&lt;V&gt; htgs::AnyITask::getMemory </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classhtgs_1_1_i_memory_release_rule.html">IMemoryReleaseRule</a> *&#160;</td>
-          <td class="paramname"><em>releaseRule</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Retrieves memory from a memory edge. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the memory edge </td></tr>
-    <tr><td class="paramname">releaseRule</td><td>the release rule to be associated with the newly acquired memory </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classhtgs_1_1_memory_data.html" title="Describes memory allocated by a MemoryManager to manage shared memory across multiple ITask...">MemoryData</a> </dd></dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">V</td><td>the <a class="el" href="classhtgs_1_1_memory_data.html" title="Describes memory allocated by a MemoryManager to manage shared memory across multiple ITask...">MemoryData</a> type </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>The name specified must have been attached to this <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> as a memGetter using the TaskGraph::addMemoryManagerEdge routine, which can be verified using hasMemGetter()</dd>
-<dd>
-This function will block if no memory is available, ensure the memory pool size is sufficient based on memory release rules and data flow. </dd>
-<dd>
-Memory edge must be defined as MMType::Static </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="ae95a54ad4c11cad54e072ec5c98a60e3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1497,7 +1360,7 @@ Memory edge must be defined as MMType::Static </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1751,51 +1614,9 @@ Memory edge must be defined as MMType::Static </dd></dl>
 </div><div class="memdoc">
 
 <p>Virtual function that is called after executionTask is called. </p>
-<p>This can be used to provide detailed profile (or debug) data to be sent for visualization using the HTGS_Visualizer. The format uses &lt;key&gt;:</p>
-<p>pairs, separated by semi-colons.</p>
+<p>This can be used to provide detailed profile (or debug) data to be sent for visualization using the HTGS_Visualizer. The format uses &lt;key&gt;:&lt;value&gt; pairs, separated by semi-colons.</p>
 <p>i.e.: gflops:&lt;#&gt;;bandwidth:&lt;#&gt;;...</p>
 <dl class="section return"><dt>Returns</dt><dd>the string representation as key value pairs </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a1695fa9a8bd1ff5599c1388f648fc9fa"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class V &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void htgs::AnyITask::releaseMemory </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="_types_8hpp.html#a3b26154a91264a0136c960befa0818e5">m_data_t</a>&lt; V &gt;&#160;</td>
-          <td class="paramname"><em>memory</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Releases memory onto a memory edge, which is transferred by the graph communicator. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">memory</td><td>the memory to be released </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">V</td><td>the <a class="el" href="classhtgs_1_1_memory_data.html" title="Describes memory allocated by a MemoryManager to manage shared memory across multiple ITask...">MemoryData</a> type </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>the m_data_t should be acquired from a task using the getMemory function. A reference to this data can be passed along within <a class="el" href="classhtgs_1_1_i_data.html" title="Class to hold any type of data. ">IData</a>. </dd></dl>
 
 </div>
 </div>

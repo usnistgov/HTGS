@@ -130,8 +130,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="_types_8hpp__dep__incl.png" border="0" usemap="#_2home_2tjb3_2phd-research_2_h_t_g_s_2src_2htgs_2types_2_types_8hppdep" alt=""/></div>
 <map name="_2home_2tjb3_2phd-research_2_h_t_g_s_2src_2htgs_2types_2_types_8hppdep" id="_2home_2tjb3_2phd-research_2_h_t_g_s_2src_2htgs_2types_2_types_8hppdep">
 <area shape="rect" id="node2" href="_any_task_graph_conf_8hpp.html" title="Implements the base class used by the TaskGraphConf, which removes the template arguments and impleme..." alt="" coords="604,496,783,552"/>
-<area shape="rect" id="node12" href="_memory_pool_8hpp.html" title="Implements the MemoryPool class. " alt="" coords="368,199,563,255"/>
-<area shape="rect" id="node15" href="_any_i_task_8hpp.html" title="Implements parent ITask, removing template arguments. " alt="" coords="695,95,867,151"/>
+<area shape="rect" id="node12" href="_memory_pool_8hpp.html" title="Implements the MemoryPool class. " alt="" coords="367,199,561,255"/>
+<area shape="rect" id="node15" href="_any_i_task_8hpp.html" title="Implements parent ITask, removing template arguments. " alt="" coords="694,95,866,151"/>
 <area shape="rect" id="node16" href="_any_task_manager_8hpp.html" title="Implements the parent class for a Task to remove the template arguments and the TaskManagerThread to ..." alt="" coords="818,199,990,255"/>
 <area shape="rect" id="node3" href="_edge_descriptor_8hpp.html" title="Implements the edge descriptor interface to build edges for a task graph. " alt="" coords="604,600,783,656"/>
 <area shape="rect" id="node8" href="_producer_consumer_edge_8hpp.html" title="Implements a producer consumer edge, which is a type of edge descriptor. " alt="" coords="559,704,785,760"/>
@@ -162,10 +162,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a18756247ae2a32eebeab56f00e567fcc"><td class="memTemplParams" colspan="2"><a class="anchor" id="a18756247ae2a32eebeab56f00e567fcc"></a>
-template&lt;class T , class U &gt; </td></tr>
-<tr class="memitem:a18756247ae2a32eebeab56f00e567fcc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>htgs::IRuleList</b> = std::list&lt; std::shared_ptr&lt; IRule&lt; T, U &gt;&gt;&gt;</td></tr>
-<tr class="separator:a18756247ae2a32eebeab56f00e567fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b860ff59b263bb710409ee408e28f6"><td class="memTemplParams" colspan="2">template&lt;class T , class U &gt; </td></tr>
+<tr class="memitem:ac2b860ff59b263bb710409ee408e28f6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_types_8hpp.html#ac2b860ff59b263bb710409ee408e28f6">htgs::IRuleList</a> = std::list&lt; std::shared_ptr&lt; IRule&lt; T, U &gt;&gt;&gt;</td></tr>
+<tr class="memdesc:ac2b860ff59b263bb710409ee408e28f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores a list of rules with the specified types.  <a href="_types_8hpp.html#ac2b860ff59b263bb710409ee408e28f6">More...</a><br /></td></tr>
+<tr class="separator:ac2b860ff59b263bb710409ee408e28f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2156f652394ebf22e0f38ce08fd9e50a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2156f652394ebf22e0f38ce08fd9e50a"></a>
 typedef std::unordered_map&lt; std::string, std::shared_ptr&lt; AnyConnector &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_types_8hpp.html#a2156f652394ebf22e0f38ce08fd9e50a">htgs::ConnectorMap</a></td></tr>
 <tr class="memdesc:a2156f652394ebf22e0f38ce08fd9e50a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A mapping between the name of a task and its connector. <br /></td></tr>
@@ -223,6 +223,29 @@ typedef std::pair&lt; AnyMemoryAllocator *, std::shared_ptr&lt; AnyMemoryAllocat
 
 <p>An unordered mapping of string names mapping to a pointer to ConnectorVectors. </p>
 <p>This data structure is used for execution pipelines and memory edges. Each <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">ITask</a> can only have up to 1 ConnectorVector with a given name. The vector of connectors represents one per execution pipeline. </p>
+
+</div>
+</div>
+<a class="anchor" id="file_ac2b860ff59b263bb710409ee408e28f6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class U &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_types_8hpp.html#ac2b860ff59b263bb710409ee408e28f6">htgs::IRuleList</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stores a list of rules with the specified types. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the input type for the rule </td></tr>
+    <tr><td class="paramname">U</td><td>the output type for the rule </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

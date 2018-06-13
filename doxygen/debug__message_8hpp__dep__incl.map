@@ -1,8 +1,8 @@
 <map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/debug/debug_message.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/debug/debug_message.hpp">
-<area shape="rect" id="node2" href="$_connector_8hpp.html" title="Provides the Connector class for managing input/output of AbsData between Tasks. " alt="" coords="579,109,757,165"/>
+<area shape="rect" id="node2" href="$_connector_8hpp.html" title="Provides the Connector class for managing input/output of AbsData between Tasks. " alt="" coords="545,109,724,165"/>
 <area shape="rect" id="node20" href="$_any_i_task_8hpp.html" title="Implements parent ITask, removing template arguments. " alt="" coords="750,213,922,269"/>
 <area shape="rect" id="node22" href="$_memory_pool_8hpp.html" title="Implements the MemoryPool class. " alt="" coords="987,213,1181,269"/>
-<area shape="rect" id="node3" href="$_i_task_8hpp.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="495,325,692,366"/>
+<area shape="rect" id="node3" href="$_i_task_8hpp.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="480,325,677,366"/>
 <area shape="rect" id="node9" href="$_rule_manager_8hpp.html" title="Implements a RuleManager, which connects a Bookkeeper to another ITask using an IRule. " alt="" coords="43,525,218,581"/>
 <area shape="rect" id="node4" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="86,429,319,470"/>
 <area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="261,1045,459,1101"/>

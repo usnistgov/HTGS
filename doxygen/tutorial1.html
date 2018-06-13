@@ -259,10 +259,10 @@ Creating and Executing the htgs::TaskGraphConf</h2>
 </li>
 </ul>
 <p>5) <a class="el" href="classhtgs_1_1_task_graph_conf.html#a88adcd11f63ba49703f82f1210d0f0eb" title="Adds a MemoryManager edge with the specified name to the TaskGraphConf. ">htgs::TaskGraphConf::addMemoryManagerEdge</a> (Demonstrated in future tutorials)</p><ul>
-<li>Attaches a <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">htgs::MemoryManager</a> to a <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">htgs::ITask</a>, so the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">htgs::ITask</a> can use <a class="el" href="classhtgs_1_1_any_i_task.html#af29719d6760e609023ffcb8e966ed3ab" title="Retrieves memory from a memory edge. ">htgs::ITask::getMemory</a></li>
+<li>Attaches a <a class="el" href="classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. ">htgs::MemoryManager</a> to a <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">htgs::ITask</a>, so the <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">htgs::ITask</a> can use <a class="el" href="classhtgs_1_1_i_task.html#a2d56ec21ba0130165ca35b5770bd5235" title="Retrieves memory from a memory edge. ">htgs::ITask::getMemory</a></li>
 <li>Acts as a mechanism for sharing memory among multiple <a class="el" href="classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. ">htgs::ITask</a></li>
 <li>Limited resource based on memory pool size</li>
-<li>Specifies htgs::m_data_t, which can be released using <a class="el" href="classhtgs_1_1_any_i_task.html#a1695fa9a8bd1ff5599c1388f648fc9fa" title="Releases memory onto a memory edge, which is transferred by the graph communicator. ">htgs::ITask::releaseMemory</a></li>
+<li>Specifies htgs::m_data_t, which can be released using <a class="el" href="classhtgs_1_1_i_task.html#ae791a014f6160e122b871891b60aafba" title="Releases memory onto a memory edge, which is transferred by the graph communicator. ">htgs::ITask::releaseMemory</a></li>
 </ul>
 <p>There are two steps necessary for adding data to a graph and ensuring the graph will finish executing.</p>
 <ol type="1">

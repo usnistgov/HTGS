@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['priorityblockingqueue_2ehpp',['PriorityBlockingQueue.hpp',['../_priority_blocking_queue_8hpp.html',1,'']]],
-  ['producerconsumeredge_2ehpp',['ProducerConsumerEdge.hpp',['../_producer_consumer_edge_8hpp.html',1,'']]]
+  ['nvtxprofiler_2ehpp',['NVTXProfiler.hpp',['../_n_v_t_x_profiler_8hpp.html',1,'']]]
 ];

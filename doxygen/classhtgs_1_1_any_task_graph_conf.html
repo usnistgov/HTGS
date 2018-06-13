@@ -315,10 +315,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="separator:ac0b6ccf14b1e592ce1a34f9e3baf4429"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a224563b1cd20722ce243b828316adef6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a224563b1cd20722ce243b828316adef6"></a>
 std::chrono::time_point&lt; std::chrono::high_resolution_clock &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a224563b1cd20722ce243b828316adef6">graphCreationTimestamp</a></td></tr>
-<tr class="memdesc:a224563b1cd20722ce243b828316adef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; Timestamp when graph constructor was called <br /></td></tr>
+<tr class="memdesc:a224563b1cd20722ce243b828316adef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp when graph constructor was called. <br /></td></tr>
 <tr class="separator:a224563b1cd20722ce243b828316adef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85a641efbd87a05558bef61c418d7249"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85a641efbd87a05558bef61c418d7249"></a>
-std::chrono::time_point&lt; std::chrono::high_resolution_clock &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>graphExecutingTimestamp</b></td></tr>
+std::chrono::time_point&lt; std::chrono::high_resolution_clock &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#a85a641efbd87a05558bef61c418d7249">graphExecutingTimestamp</a></td></tr>
+<tr class="memdesc:a85a641efbd87a05558bef61c418d7249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timestamp for how long the graph executed. <br /></td></tr>
 <tr class="separator:a85a641efbd87a05558bef61c418d7249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af748bf05133c728c24357c9805420d1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af748bf05133c728c24357c9805420d1c"></a>
 unsigned long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhtgs_1_1_any_task_graph_conf.html#af748bf05133c728c24357c9805420d1c">graphComputeTime</a></td></tr>
@@ -1239,6 +1240,8 @@ template&lt;class T , class U &gt; </div>
   <table class="params">
     <tr><td class="paramname">file</td><td>the filename (will not create directories) </td></tr>
     <tr><td class="paramname">flags</td><td>the flags for DOTGEN </td></tr>
+    <tr><td class="paramname">graphTitle</td><td>the title of the graph that is inserted into a graph title section in the visualization </td></tr>
+    <tr><td class="paramname">customTitleText</td><td>custom text that can be inserted into the graph title section in the visualization </td></tr>
   </table>
   </dd>
 </dl>

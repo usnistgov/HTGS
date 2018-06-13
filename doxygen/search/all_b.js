@@ -15,7 +15,7 @@ var searchData=
   ['memoryedge_2ehpp',['MemoryEdge.hpp',['../_memory_edge_8hpp.html',1,'']]],
   ['memoryedgename',['memoryEdgeName',['../classhtgs_1_1_memory_edge.html#a06c8abd25bccbed19fa50fa4b08606aa',1,'htgs::MemoryEdge']]],
   ['memoryedges',['memoryEdges',['../classhtgs_1_1_any_i_task.html#a293134e1dbbf940fda74030b1c70d1b5',1,'htgs::AnyITask']]],
-  ['memorymanager',['memoryManager',['../classhtgs_1_1_memory_edge.html#a38a7c6a01b9a9c457436c1446e18941c',1,'htgs::MemoryEdge::memoryManager()'],['../classhtgs_1_1_memory_manager.html#a59ccaef8e99cb0256193905aa15b751d',1,'htgs::MemoryManager::MemoryManager()']]],
+  ['memorymanager',['MemoryManager',['../classhtgs_1_1_memory_manager.html#a59ccaef8e99cb0256193905aa15b751d',1,'htgs::MemoryManager::MemoryManager()'],['../classhtgs_1_1_memory_edge.html#a38a7c6a01b9a9c457436c1446e18941c',1,'htgs::MemoryEdge::memoryManager()']]],
   ['memorymanager',['MemoryManager',['../classhtgs_1_1_memory_manager.html',1,'htgs']]],
   ['memorymanager_2ehpp',['MemoryManager.hpp',['../_memory_manager_8hpp.html',1,'']]],
   ['memorymanagername',['memoryManagerName',['../classhtgs_1_1_memory_data.html#a57af6b39b105c55f0e72581028e33338',1,'htgs::MemoryData']]],

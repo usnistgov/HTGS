@@ -6,6 +6,7 @@ var searchData=
   ['canuselocks',['canUseLocks',['../classhtgs_1_1_any_i_rule.html#a5280818063e5bf1257909067f73f0c26',1,'htgs::AnyIRule']]],
   ['checkrootspawnthreads',['checkRootSpawnThreads',['../classhtgs_1_1_task_graph_communicator.html#a61bcb15d176dfe295d8238d8a7cc67f8',1,'htgs::TaskGraphCommunicator']]],
   ['checkruletermination',['checkRuleTermination',['../classhtgs_1_1_any_rule_manager.html#a47654d244294f0a2a088b5dd124c2a4e',1,'htgs::AnyRuleManager::checkRuleTermination()'],['../classhtgs_1_1_rule_manager.html#affd511e1a7d63d0fd34632e72169aef0',1,'htgs::RuleManager::checkRuleTermination()']]],
+  ['cleanupvisualization',['cleanupVisualization',['../classhtgs_1_1_execution_pipeline.html#ad4805d86afedc4d6f4fc4d93216b9779',1,'htgs::ExecutionPipeline']]],
   ['compare',['compare',['../classhtgs_1_1_i_data.html#ac87beac9eae940d991735615274007e0',1,'htgs::IData']]],
   ['computeaverages',['computeAverages',['../classhtgs_1_1_task_graph_profiler.html#ac5ed174f350b5d0a13f8b7fec3007e43',1,'htgs::TaskGraphProfiler']]],
   ['computeindex',['computeIndex',['../classhtgs_1_1_state_container.html#ae43eb351cadec37c2fa43ef3f794568b',1,'htgs::StateContainer']]],
