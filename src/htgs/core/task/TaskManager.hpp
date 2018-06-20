@@ -342,6 +342,44 @@ class TaskManager : public AnyTaskManager {
     }
   }
 
+  /**
+   * Terminates all Connector edges.
+   * This is called after all threads have shutdown.
+   */
+  void terminateConnections() override
+  {
+#ifdef WS_PROFILE
+    // Update output connector, this task is no longer producing for it
+        this->sendWSProfileUpdate(this->getOutputConnector().get(), StatusCode::DECREMENT);
+#endif
+    if (this->getOutputConnector() != nullptr) {
+      this->getOutputConnector()->producerFinished();
+
+//          if (this->getOutputConnector()->isInputTerminated())
+      this->getOutputConnector()->wakeupConsumer();
+    }
+
+    auto memManagerConnectorMap = this->getTaskFunction()->getReleaseMemoryEdges();
+
+    HTGS_DEBUG(prefix() << " " << this->getName() << " Shutting down " << memManagerConnectorMap->size()
+                        << " memory releasers");
+    for (auto nameManagerPair : *memManagerConnectorMap) {
+      HTGS_DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
+
+
+      std::shared_ptr<AnyConnector> connector = nameManagerPair.second;
+#ifdef WS_PROFILE
+      // TODO: This might not be necessary
+          // Update memory manager connector, this task is no longer producing for it
+          this->sendWSProfileUpdate(connector.get(), StatusCode::DECREMENT);
+#endif
+      connector->producerFinished();
+
+      if (connector->isInputTerminated())
+        connector->wakeupConsumer();
+    }
+  }
+
  private:
 
   //! @cond Doxygen_Suppress
@@ -361,7 +399,7 @@ class TaskManager : public AnyTaskManager {
       this->sendWSProfileUpdate(StatusCode::SHUTDOWN);
 #endif
 
-      // If this is the last thread for this task then close the output
+      // If this is the last thread for this task then execute the task a final time (only the last thread will call this)
       if (this->runtimeThread->decrementAndCheckNumThreadsRemaining()) {
 
         auto start = std::chrono::high_resolution_clock::now();
@@ -376,43 +414,6 @@ class TaskManager : public AnyTaskManager {
 #endif
         auto finish = std::chrono::high_resolution_clock::now();
         this->incTaskComputeTime(std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count());
-
-#ifdef WS_PROFILE
-        // Update output connector, this task is no longer producing for it
-        this->sendWSProfileUpdate(this->getOutputConnector().get(), StatusCode::DECREMENT);
-#endif
-        if (this->getOutputConnector() != nullptr) {
-          this->getOutputConnector()->producerFinished();
-
-//          if (this->getOutputConnector()->isInputTerminated())
-            this->getOutputConnector()->wakeupConsumer();
-        }
-
-        auto memManagerConnectorMap = this->getTaskFunction()->getReleaseMemoryEdges();
-
-        HTGS_DEBUG(prefix() << " " << this->getName() << " Shutting down " << memManagerConnectorMap->size()
-                       << " memory releasers");
-        for (auto nameManagerPair : *memManagerConnectorMap) {
-          HTGS_DEBUG(prefix() << " " << this->getName() << " Shutting down memory manager: " << nameManagerPair.first);
-
-
-          std::shared_ptr<AnyConnector> connector = nameManagerPair.second;
-#ifdef WS_PROFILE
-          // TODO: This might not be necessary
-          // Update memory manager connector, this task is no longer producing for it
-          this->sendWSProfileUpdate(connector.get(), StatusCode::DECREMENT);
-#endif
-          connector->producerFinished();
-
-          if (connector->isInputTerminated())
-            connector->wakeupConsumer();
-        }
-
-        // TODO: Delete?
-//#ifdef USE_NVTX
-//        this->releaseProfiler();
-//#endif
-
       }
     } else {
       if (this->getOutputConnector() != nullptr) {

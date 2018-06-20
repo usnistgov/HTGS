@@ -174,6 +174,12 @@ class AnyTaskManager {
   virtual void setOutputConnector(std::shared_ptr<AnyConnector> connector) = 0;
 
   /**
+   * Terminates all Connector edges.
+   * This is called after all threads have shutdown.
+   */
+  virtual void terminateConnections() = 0;
+
+  /**
    * Gathers profiling data for the TaskProfiler
    * @param taskManagerProfiles the mapping of the task manager to its TaskManagerProfile
    */
@@ -577,6 +583,11 @@ class TaskManagerThread {
       this->task->executeTask();
     }
     this->task->shutdown();
+
+    if (hasNoThreadsRemaining())
+    {
+      this->task->terminateConnections();
+    }
 
 #ifdef USE_NVTX
     if(hasNoThreadsRemaining())

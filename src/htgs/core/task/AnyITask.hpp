@@ -155,6 +155,11 @@ class AnyITask {
 
   /**
  * Virtual function that is called when an ITask is being shutdown by it's owner thread.
+   * This is done once per thread for the task. The output connectors/edges are still active,
+   * so it is okay to call ITask::addResult from within this function safely. This is useful
+   * for flushing any final remaining data from the thread to the next task.
+   *
+   * @note If you want to do a parallel reduction such that only the last thread produces data, then override the AnyITask::executeTaskFinal function.
  */
   virtual void shutdown() = 0;
 
