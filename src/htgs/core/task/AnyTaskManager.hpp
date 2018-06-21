@@ -557,6 +557,7 @@ class TaskManagerThread {
     this->numThreads = numThreads;
     this->task->setRuntimeThread(this);
     this->task->setThreadId(threadId);
+    this->numThreadsAfterDecrement = *this->numThreads;
   }
 
   /**
@@ -584,7 +585,8 @@ class TaskManagerThread {
     }
     this->task->shutdown();
 
-    if (hasNoThreadsRemaining())
+
+    if (numThreadsAfterDecrement == 0)
     {
       this->task->terminateConnections();
     }
@@ -619,6 +621,7 @@ class TaskManagerThread {
   bool decrementAndCheckNumThreadsRemaining() {
     // Performs pre-decrement
     size_t current = this->numThreads->fetch_sub(1) - 1;
+    numThreadsAfterDecrement = current;
     return current == 0;
   }
 
@@ -641,6 +644,7 @@ class TaskManagerThread {
   volatile bool terminated; //!< Whether the thread is ready to be terminated or not
   std::shared_ptr<std::atomic_size_t> numThreads; //!< The number of total threads managing the TaskManager
   AnyTaskManager *task; //!< The TaskManager that is called from the thread
+  size_t numThreadsAfterDecrement;
 };
 
 }

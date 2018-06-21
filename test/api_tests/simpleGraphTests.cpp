@@ -114,6 +114,7 @@ void launchGraph(htgs::TaskGraphConf<SimpleData, SimpleData> *graph, int numData
 {
   htgs::TaskGraphRuntime *rt = new htgs::TaskGraphRuntime(graph);
 
+
   for (int i = 0; i < numDataGenerated; i++) {
     for (int pid = 0; pid < numPipelines; pid++) {
       graph->produceData(new SimpleData(i, pid));
@@ -137,6 +138,7 @@ void launchGraph(htgs::TaskGraphConf<SimpleData, SimpleData> *graph, int numData
 
 
   rt->waitForRuntime();
+
   EXPECT_EQ(numDataGenerated*numPipelines, count);
   EXPECT_NO_FATAL_FAILURE(delete rt);
 }
@@ -177,6 +179,7 @@ void simpleGraphCreation()
 
 void simpleGraphExecution(size_t numPipelines)
 {
+
   auto graph1 = createGraph(10, numPipelines, 2, false);
   EXPECT_NO_FATAL_FAILURE(launchGraph(graph1, 1, numPipelines));
 

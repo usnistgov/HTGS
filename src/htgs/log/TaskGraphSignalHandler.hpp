@@ -63,6 +63,7 @@ class TaskGraphSignalHandler {
 #else
     std::string signalString(strsignal(signum));
 #endif
+
     for (size_t i = 0; i < instances.size(); i++)
     {
       instances[i]->writeDotToFile(signalString + "-" + std::to_string(i) + "-graph-output.dot", DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE);

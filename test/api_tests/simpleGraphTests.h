@@ -12,10 +12,13 @@
 
 #include <htgs/api/TaskGraphConf.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
+#include "simple/data/SimpleData.h"
 
 void createData();
 void memoryAllocAndFreeCheck();
 void createTask();
+void launchGraph(htgs::TaskGraphConf<SimpleData, SimpleData> *graph, int numDataGenerated, int numPipelines);
+htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t numPipelines, size_t numThreads, bool useMemoryManager);
 void simpleGraphCreation();
 void simpleGraphExecution(size_t numPipelines);
 

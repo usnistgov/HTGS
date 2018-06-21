@@ -20,6 +20,8 @@
 
 namespace htgs {
 
+class AnyTaskGraphConf;
+
 /**
  * @class EdgeDescriptor EdgeDescriptor.hpp <htgs/core/graph/edge/EdgeDescriptor.hpp>
  * @brief The edge descriptor is an interface used to describe how an edge is applied and copied

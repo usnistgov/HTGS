@@ -7,6 +7,7 @@
 // Created by tjb3 on 4/18/16.
 //
 #include <gtest/gtest.h>
+#include <htgs/log/TaskGraphSignalHandler.hpp>
 
 #include "simpleGraphTests.h"
 #include "matrixMulGraphTests.h"
@@ -232,6 +233,5 @@ int main(int argc, char **argv) {
   int ret = RUN_ALL_TESTS();
 
   return ret;
-
 }
 
