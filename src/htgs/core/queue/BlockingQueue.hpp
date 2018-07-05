@@ -35,12 +35,15 @@ class BlockingQueue {
    */
   BlockingQueue() {
     this->queueSize = 0;
+#ifdef PROFILE_QUEUE
+    enqueueLockTime = 0;
+    dequeueLockTime = 0;
+    enqueueWaitTime = 0;
+    dequeueWaitTime = 0;
+#endif
 #ifdef PROFILE
-    //    enqueueLockTime = 0;
-    //    dequeueLockTime = 0;
-    //    enqueueWaitTime = 0;
-    //    dequeueWaitTime = 0;
-        queueActiveMaxSize = 0;
+
+    queueActiveMaxSize = 0;
 #endif
   }
 
@@ -50,6 +53,12 @@ class BlockingQueue {
    */
   BlockingQueue(size_t qSize) {
     this->queueSize = qSize;
+#ifdef PROFILE_QUEUE
+    enqueueLockTime = 0;
+    dequeueLockTime = 0;
+    enqueueWaitTime = 0;
+    dequeueWaitTime = 0;
+#endif
 #ifdef PROFILE
     queueActiveMaxSize = 0;
 #endif
@@ -115,23 +124,23 @@ class BlockingQueue {
    */
   void Enqueue(T const &value) {
 
-//#ifdef PROFILE
-//            auto start = std::chrono::high_resolution_clock::now();
-//#endif
+#ifdef PROFILE_QUEUE
+            auto start = std::chrono::high_resolution_clock::now();
+#endif
     std::unique_lock<std::mutex> lock(this->mutex);
-//#ifdef PROFILE
-//    auto end = std::chrono::high_resolution_clock::now();
-//    this->enqueueLockTime += std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-//#endif
+#ifdef PROFILE_QUEUE
+    auto end = std::chrono::high_resolution_clock::now();
+    this->enqueueLockTime += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+#endif
     if (this->queueSize > 0) {
-//#ifdef PROFILE
-//        start = std::chrono::high_resolution_clock::now();
-//#endif
+#ifdef PROFILE_QUEUE
+        start = std::chrono::high_resolution_clock::now();
+#endif
       this->condition.wait(lock, [=] { return this->queue.size() != queueSize; });
-//#ifdef PROFILE
-//        end = std::chrono::high_resolution_clock::now();
-//      this->enqueueWaitTime += std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-//#endif
+#ifdef PROFILE_QUEUE
+        end = std::chrono::high_resolution_clock::now();
+      this->enqueueWaitTime += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+#endif
     }
     queue.push(value);
 
@@ -150,20 +159,20 @@ class BlockingQueue {
    * @note Will block if the queue is empty.
    */
   T Dequeue() {
-//#ifdef PROFILE
-//    auto start = std::chrono::high_resolution_clock::now();
-//#endif
+#ifdef PROFILE_QUEUE
+    auto start = std::chrono::high_resolution_clock::now();
+#endif
     std::unique_lock<std::mutex> lock(this->mutex);
-//#ifdef PROFILE
-//    auto end = std::chrono::high_resolution_clock::now();
-//    this->dequeueLockTime += std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-//    start = std::chrono::high_resolution_clock::now();
-//#endif
+#ifdef PROFILE_QUEUE
+    auto end = std::chrono::high_resolution_clock::now();
+    this->dequeueLockTime += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+    start = std::chrono::high_resolution_clock::now();
+#endif
     this->condition.wait(lock, [=] { return !this->queue.empty(); });
-//#ifdef PROFILE
-//    end = std::chrono::high_resolution_clock::now();
-//    this->dequeueWaitTime += std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
-//#endif
+#ifdef PROFILE_QUEUE
+    end = std::chrono::high_resolution_clock::now();
+    this->dequeueWaitTime += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+#endif
     T res = this->queue.front();
     this->queue.pop();
     return res;
@@ -189,23 +198,25 @@ class BlockingQueue {
 
 
 
-#ifdef PROFILE
-  //  unsigned long long int getEnqueueLockTime() const {
-  //      return enqueueLockTime;
-  //  }
-  //  unsigned long long int getDequeueLockTime() const {
-  //      return dequeueLockTime;
-  //  }
-  //  unsigned long long int getEnqueueWaitTime() const {
-  //      return enqueueWaitTime;
-  //  }
-  //  unsigned long long int getDequeueWaitTime() const {
-  //      return dequeueWaitTime;
-  //  }
-
-    size_t getQueueActiveMaxSize() const {
-        return queueActiveMaxSize;
+#ifdef PROFILE_QUEUE
+    unsigned long long int getEnqueueLockTime() const {
+        return enqueueLockTime;
     }
+    unsigned long long int getDequeueLockTime() const {
+        return dequeueLockTime;
+    }
+    unsigned long long int getEnqueueWaitTime() const {
+        return enqueueWaitTime;
+    }
+    unsigned long long int getDequeueWaitTime() const {
+        return dequeueWaitTime;
+    }
+#endif
+
+#ifdef PROFILE
+  size_t getQueueActiveMaxSize() const {
+    return queueActiveMaxSize;
+  }
 
   void resetMaxQueueSize() {
     queueActiveMaxSize = 0;
@@ -213,12 +224,15 @@ class BlockingQueue {
 #endif
 
  private:
+#ifdef PROFILE_QUEUE
+    unsigned long long int enqueueLockTime; //!< The time to lock before enqueue
+    unsigned long long int dequeueLockTime; //!< The time to lock before dequeue
+    unsigned long long int enqueueWaitTime; //!< The time waiting to enqueue
+    unsigned long long int dequeueWaitTime; //!< The time waiting to dequeue
+#endif
+
 #ifdef PROFILE
-  //  unsigned long long int enqueueLockTime; //!< The time to lock before enqueue
-  //  unsigned long long int dequeueLockTime; //!< The time to lock before dequeue
-  //  unsigned long long int enqueueWaitTime; //!< The time waiting to enqueue
-  //  unsigned long long int dequeueWaitTime; //!< The time waiting to dequeue
-    size_t queueActiveMaxSize; //!< The maximum size the queue reached in its lifetime
+  size_t queueActiveMaxSize; //!< The maximum size the queue reached in its lifetime
 #endif
   size_t queueSize; //!< The maximum size of the queue, set to -1 for infinite size
   std::queue<T> queue; //!< The FIFO queue

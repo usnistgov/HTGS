@@ -87,8 +87,8 @@ int main() {
   auto start = std::chrono::high_resolution_clock::now();
 
   AddTask *addTask = new AddTask();
-  SquareResult *addTask2 = new SquareResult(3);
-  SquareResult *addTask3 = new SquareResult(10);
+  SquareResult *addTask2 = new SquareResult(20);
+  SquareResult *addTask3 = new SquareResult(20);
   htgs::Bookkeeper<OutputData> *bk = new htgs::Bookkeeper<OutputData>();
   SimpleRule *rule = new SimpleRule();
   auto taskGraph = new htgs::TaskGraphConf<InputData, OutputData>();
@@ -106,7 +106,7 @@ int main() {
 
 //  htgs::TaskGraphSignalHandler::registerSignal();
 
-  int numData = 1000;
+  int numData = 100000;
   for (int i = 0; i < numData; i++) {
     auto inputData = new InputData(i, i);
     taskGraph->produceData(inputData);

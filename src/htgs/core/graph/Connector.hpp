@@ -160,6 +160,15 @@ class Connector : public AnyConnector {
     }
   }
 
+#ifdef PROFILE_QUEUE
+  std::string getQueueTiming() override {
+    return std::to_string(queue.getEnqueueLockTime()) + ", "
+      + std::to_string(queue.getDequeueLockTime()) + ", "
+      + std::to_string(queue.getEnqueueWaitTime()) + ", "
+      + std::to_string(queue.getDequeueWaitTime());
+  }
+#endif
+
   /**
    * Gets the demangled type name of the connector
    * @return the demangled type name

@@ -49,6 +49,15 @@ class AnyConnector {
    */
   virtual ~AnyConnector() {}
 
+#ifdef PROFILE_QUEUE
+  /**
+   * Gets the lock-specific timing for a queue
+   * @return The queue timing string
+   * @note to enable use directive PROFILE_QUEUE
+   */
+  virtual std::string getQueueTiming() = 0;
+#endif
+
   /**
   * Indicates to the Connector that the producer has finished producing data for the Connector.
   *
@@ -96,6 +105,9 @@ class AnyConnector {
     return getDotId() + "[label=\""
         + ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getProducerCount()) : "Active Producers: " + std::to_string(this->getProducerCount()))
         + ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : ", Queue Size: " + std::to_string(this->getQueueSize()))
+#ifdef PROFILE_QUEUE
+        + ", enqLock, deqLock, enqWait, deqWait::" + getQueueTiming()
+#endif
         + "\",shape=box,style=rounded,color=black,width=.2,height=.2];\n";
 
   }
