@@ -16,6 +16,19 @@
 #include <iosfwd>
 #include <iostream>
 
+#ifndef NDEBUG
+#define HTGS_ASSERT(condition, message) \
+    do { \
+        if (! (condition)) { \
+            std::cerr << message << ": Assertion `" #condition "` failed in " << __FILE__ \
+                      << " line " << __LINE__ << ": " << std::endl; \
+            std::terminate(); \
+        } \
+    } while (false)
+#else
+#define HTGS_ASSERT(condition, message) do { } while (false)
+#endif
+
 /**
  * @def HTGS_VERBOSE
  * Defines verbose mode

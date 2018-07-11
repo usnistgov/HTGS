@@ -495,7 +495,7 @@ class ITask : public AnyITask {
 
   template<class V>
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem) {
-    assert(("Unable to find memory edge 'name' for task", this->getMemoryEdges()->find(name) != this->getMemoryEdges()->end()));
+    HTGS_ASSERT(this->getMemoryEdges()->find(name) != this->getMemoryEdges()->end(), "Task " << this->getName() << " cannot getMemory as it does not have the memory edge '" << name << "'"  );
 
     auto conn = getMemoryEdges()->find(name)->second;
     auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
