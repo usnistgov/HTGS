@@ -210,7 +210,7 @@ class Bookkeeper : public ITask<T, VoidData> {
 
       std::string ruleManStr = ruleMan->getConnector()->getDotId();
 //      ruleManStr.erase(0, 1);
-      oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName() << "\"];" << std::endl;
+      oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName(flags) << "\"];" << std::endl;
     }
     std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: " + this->inTypeName()) : "");
 

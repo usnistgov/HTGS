@@ -110,8 +110,10 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
     return new RuleManager<T, U>(this->rule, this->communicator);
   }
 
-  std::string getName() override {
-    return this->rule->getName();
+  std::string getName(int flags = 0) override {
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nout: " + this->outTypeName()) : "");
+
+    return this->rule->getName() + inOutLabel;
   }
 
   void debug() override {
@@ -191,6 +193,44 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
     this->communicator->produceDataPacket(dataPacket);
   }
 #endif
+
+
+  /**
+   * @copydoc AnyITask::inTypeName
+   */
+  std::string inTypeName() {
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
+    int status;
+    char *realName = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
+    std::string ret(realName);
+
+    free(realName);
+
+    return ret;
+#else
+    return typeid(T).name();
+#endif
+
+  }
+
+  /**
+   * @copydoc AnyITask::outTypeName
+   */
+  std::string outTypeName() {
+#if defined( __GLIBCXX__ ) || defined( __GLIBCPP__ )
+    int status;
+    char *realName = abi::__cxa_demangle(typeid(U).name(), 0, 0, &status);
+    std::string ret(realName);
+
+    free(realName);
+
+    return ret;
+#else
+    return typeid(U).name();
+#endif
+
+  }
+
   //! @endcond
 
   std::shared_ptr<IRule<T, U>> rule; //!< The rule associated with the RuleManager

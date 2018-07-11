@@ -216,6 +216,21 @@ class AnyITask {
   }
 
   /**
+* Virtual function that adds additional dot attributes to this node.
+* @param flags the dot gen flags
+* @param dotId the for the node in dot
+* @return the additiona dota attributes for the dot graph representation
+*/
+  virtual std::string genDot(int flags, std::string dotId) {
+    return dotId + ";\n";
+//    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
+//    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
+//    return dotId + "[label=\"" + this->getName() +
+//        (this->debugDotNode() != "" ? ("\n"+this->debugDotNode()+"\n") : "") +
+//        threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
+  }
+
+  /**
   * Virtual function that is called to debug the ITask
   */
   virtual void debug() {}
@@ -276,20 +291,6 @@ class AnyITask {
    */
   virtual void printProfile() = 0;
 
-  /**
- * Virtual function that adds additional dot attributes to this node.
- * @param flags the dot gen flags
- * @param dotId the for the node in dot
- * @return the additiona dota attributes for the dot graph representation
- */
-  virtual std::string genDot(int flags, std::string dotId) {
-    return dotId + ";\n";
-//    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: "+ this->inTypeName() + "\nout: " + this->outTypeName()) : "");
-//    std::string threadLabel = (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(this->getNumThreads())));
-//    return dotId + "[label=\"" + this->getName() +
-//        (this->debugDotNode() != "" ? ("\n"+this->debugDotNode()+"\n") : "") +
-//        threadLabel + inOutLabel + "\",shape=box,color=black,width=.2,height=.2];\n";
-  }
 
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////

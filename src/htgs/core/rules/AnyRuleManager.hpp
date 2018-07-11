@@ -124,7 +124,7 @@ class AnyRuleManager {
    * Gets the name of the RuleManager and the names of all IRules that it manages.
    * @return the name
    */
-  virtual std::string getName() = 0;
+  virtual std::string getName(int flags = 0) = 0;
 
   /**
    * Provides debug output
