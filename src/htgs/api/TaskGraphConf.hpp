@@ -148,7 +148,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
     this->edges = new std::list<EdgeDescriptor *>();
 
-    this->taskConnectorCommunicator = new TaskGraphCommunicator(nullptr, this->getAddress());
+    // TODO: Delete or Add #ifdef
+//    this->taskConnectorCommunicator = new TaskGraphCommunicator(nullptr, this->getAddress());
 
 #ifdef WS_PROFILE
     // Create web socket profiler task
@@ -188,12 +189,12 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @param pipelineId the pipelineId for this graph
    * @param numPipelines the number of pipelines for the graph
    * @param baseAddress the base address for the task graph to build upon for multiple levels of execution pipelines
-   * @param parentCommunicator the parent task graph communicator
    */
   TaskGraphConf(size_t pipelineId,
                 size_t numPipelines,
-                std::string baseAddress,
-                TaskGraphCommunicator *parentCommunicator
+                std::string baseAddress
+  // TODO: Delete or Add #ifdef
+//                TaskGraphCommunicator *parentCommunicator
 #ifdef WS_PROFILE
                 , TaskManager<ProfileData, VoidData> *wsProfileTaskManager
 #endif
@@ -208,7 +209,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
     edges = new std::list<EdgeDescriptor *>();
 
-    taskConnectorCommunicator = new TaskGraphCommunicator(parentCommunicator, this->getAddress());
+    // TODO: Delete or Add #ifdef
+//    taskConnectorCommunicator = new TaskGraphCommunicator(parentCommunicator, this->getAddress());
 
 #ifdef WS_PROFILE
     this->wsProfileTaskManager = wsProfileTaskManager;
@@ -256,11 +258,12 @@ class TaskGraphConf : public AnyTaskGraphConf {
     }
 #endif
 
-    if (taskConnectorCommunicator != nullptr)
-      taskConnectorCommunicator->terminateGracefully();
-
-    delete taskConnectorCommunicator;
-    taskConnectorCommunicator = nullptr;
+    // TODO: Delete or Add #ifdef
+//    if (taskConnectorCommunicator != nullptr)
+//      taskConnectorCommunicator->terminateGracefully();
+//
+//    delete taskConnectorCommunicator;
+//    taskConnectorCommunicator = nullptr;
 
     delete graphProducerTaskManagers;
     graphProducerTaskManagers = nullptr;
@@ -277,7 +280,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @return the copy of the task graph
    */
   TaskGraphConf<T, U> *copy(size_t pipelineId, size_t numPipelines) {
-    return copy(pipelineId, numPipelines, nullptr, nullptr, this->getAddress(), nullptr);
+    return copy(pipelineId, numPipelines, nullptr, nullptr, this->getAddress());
   }
 
   /**
@@ -288,15 +291,15 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @param input the input connector to be used for the graph's input
    * @param output the output connector to be used for the graph's output
    * @param baseAddress the base address for the task graph to build upon for multiple levels of execution pipelines
-   * @param parentCommunicator the parent task graph communicator
    * @return the copy of the task graph
    */
   TaskGraphConf<T, U> *copy(size_t pipelineId,
                             size_t numPipelines,
                             std::shared_ptr<Connector<T>> input,
                             std::shared_ptr<Connector<U>> output,
-                            std::string baseAddress,
-                            TaskGraphCommunicator *parentCommunicator) {
+                            std::string baseAddress) {
+                            // TODO: Delete or Add #ifdef
+                            //TaskGraphCommunicator *parentCommunicator) {
 #ifdef WS_PROFILE
     TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator, this->wsProfileTaskManager);
 
@@ -304,7 +307,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
     std::shared_ptr<ProfileData> createGraphData(new CreateNodeProfile(graphCopy, this, ""));
     this->sendProfileData(createGraphData);
 #else
-    TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress, parentCommunicator);
+    TaskGraphConf<T, U> *graphCopy = new TaskGraphConf<T, U>(pipelineId, numPipelines, baseAddress/*TODO: Delete or Add #ifdef , parentCommunicator*/);
 #endif
 
     // Copy the tasks to form lookup between old ITasks and new copies
@@ -540,46 +543,59 @@ class TaskGraphConf : public AnyTaskGraphConf {
     return this->output;
   }
 
-  TaskGraphCommunicator *getTaskGraphCommunicator() const { return this->taskConnectorCommunicator; }
-
-  void updateCommunicator() override {
-
-    auto taskNameConnectorMap = this->getTaskConnectorNameMap();
-
-    // Send the map to the taskGraphCommunicator
-    this->taskConnectorCommunicator->addTaskNameConnectorMap(taskNameConnectorMap);
-
+  // TODO: rename virtual function to capture functionality with initializing the profiler
+  void updateTaskManagersAddressingAndPipelines() {
     for (auto t : *this->getTaskManagers()) {
-      t->setTaskGraphCommunicator(this->taskConnectorCommunicator);
-    }
+      t->updateAddressAndPipelines(this->getAddress(), this->getPipelineId(), this->getNumPipelines());
 
-#ifdef WS_PROFILE
-    if (this->getAddress() == "0") {
-      std::cout << "Launching threaed" << std::endl;
-      // Create thread
-      std::shared_ptr<std::atomic_size_t>
-          atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(1));
-      runtimeThread = new TaskManagerThread(0, this->wsProfileTaskManager, atomicNumThreads);
-      this->wsProfileThread = new std::thread(&TaskManagerThread::run, runtimeThread);
-
-      WebSocketProfiler *profileTask = (WebSocketProfiler *)this->wsProfileTaskManager->getTaskFunction();
-      profileTask->waitForConnection();
-
-    }
-#endif
 
 #ifdef USE_NVTX
-    if (this->getAddress() == "0") {
-      nvtxDomainHandle_t graphDomain = nvtxDomainCreateA(TASK_GRAPH_PREFIX_NAME);
+      if (this->getAddress() == "0") {
+        nvtxDomainHandle_t graphDomain = nvtxDomainCreateA(TASK_GRAPH_PREFIX_NAME);
 #ifdef USE_MINIMAL_NVTX
-      profiler = new NVTXProfiler(TASK_GRAPH_PREFIX_NAME, nullptr, graphDomain, graphDomain, graphDomain, graphDomain, graphDomain, graphDomain);
+        profiler = new NVTXProfiler(TASK_GRAPH_PREFIX_NAME, nullptr, graphDomain, graphDomain, graphDomain, graphDomain, graphDomain, graphDomain);
 #else
-      profiler = new NVTXProfiler(TASK_GRAPH_PREFIX_NAME, graphDomain, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+        profiler = new NVTXProfiler(TASK_GRAPH_PREFIX_NAME, graphDomain, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 #endif
-    }
+      }
 #endif
 
+//      std::string taskAddressName = this->address + ":" + t->getName();
+//      this->taskConnectorNameMap->insert(TaskNameConnectorPair(taskAddressName, t->getInputConnector()));
+    }
   }
+
+  // TODO: Delete or Add #ifdef
+//  TaskGraphCommunicator *getTaskGraphCommunicator() const { return this->taskConnectorCommunicator; }
+
+//  void updateCommunicator() override {
+//
+//    auto taskNameConnectorMap = this->getTaskConnectorNameMap();
+//
+//    // Send the map to the taskGraphCommunicator
+//    this->taskConnectorCommunicator->addTaskNameConnectorMap(taskNameConnectorMap);
+//
+//    for (auto t : *this->getTaskManagers()) {
+//      t->setTaskGraphCommunicator(this->taskConnectorCommunicator);
+//    }
+//
+//#ifdef WS_PROFILE
+//    if (this->getAddress() == "0") {
+//      std::cout << "Launching threaed" << std::endl;
+//      // Create thread
+//      std::shared_ptr<std::atomic_size_t>
+//          atomicNumThreads = std::shared_ptr<std::atomic_size_t>(new std::atomic_size_t(1));
+//      runtimeThread = new TaskManagerThread(0, this->wsProfileTaskManager, atomicNumThreads);
+//      this->wsProfileThread = new std::thread(&TaskManagerThread::run, runtimeThread);
+//
+//      WebSocketProfiler *profileTask = (WebSocketProfiler *)this->wsProfileTaskManager->getTaskFunction();
+//      profileTask->waitForConnection();
+//
+//    }
+//#endif
+//
+//
+//  }
 
   /**
    * Sets the input connector for the task graph
@@ -787,17 +803,20 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @note The m_data_t must have originated within this task graph.
    */
   template<class V>
+  [[deprecated("Replaced by calling 'releaseMemory' directory with htgs::MemoryData (or m_data_t)")]]
   void releaseMemory(m_data_t<V> memory) {
-    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket("TaskGraph",
-                                                                                        this->getAddress(),
-                                                                                        memory->getMemoryManagerName(),
-                                                                                        memory->getAddress(),
-                                                                                        memory));
+    memory->releaseMemory();
+    // TODO: Delete or Add #ifdef
+//    std::shared_ptr<DataPacket> dataPacket = std::shared_ptr<DataPacket>(new DataPacket("TaskGraph",
+//                                                                                        this->getAddress(),
+//                                                                                        memory->getMemoryManagerName(),
+//                                                                                        memory->getAddress(),
+//                                                                                        memory));
 #ifdef USE_NVTX
     profiler->addReleaseMarker();
 #endif
 
-    this->taskConnectorCommunicator->produceDataPacket(dataPacket);
+//    this->taskConnectorCommunicator->produceDataPacket(dataPacket);
 
 
   }
@@ -952,7 +971,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
   std::shared_ptr<Connector<T>> input; //!< The input connector for the TaskGraph
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph
 
-  TaskGraphCommunicator *taskConnectorCommunicator; //!< The task graph communicator for the task graph.
+  // TODO: Delete or Add #ifdef
+//  TaskGraphCommunicator *taskConnectorCommunicator; //!< The task graph communicator for the task graph.
 
 
 #ifdef WS_PROFILE

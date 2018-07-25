@@ -63,13 +63,12 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   /**
    * Creates a rule manager with a rule
    * @param rule the rule
-   * @param communicator the task graph communicator
    *
    * @note This function should only be called by the HTGS API
    * @internal
    */
-  RuleManager(std::shared_ptr<htgs::IRule<T, U>> rule, TaskGraphCommunicator *communicator)
-      : rule(rule), communicator(communicator), pipelineId(0), numPipelines(1), terminated(false) {}
+  RuleManager(std::shared_ptr<htgs::IRule<T, U>> rule)// TODO: Delete or Add #ifdef, TaskGraphCommunicator *communicator)
+      : rule(rule), /*TODO: Delete or Add #ifdef communicator(communicator),*/ pipelineId(0), numPipelines(1), terminated(false) {}
 
   /**
    * Destructor
@@ -107,7 +106,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   }
 
   RuleManager<T, U> *copy() override {
-    return new RuleManager<T, U>(this->rule, this->communicator);
+    return new RuleManager<T, U>(this->rule); // TODO: Delete or Add #ifdef , this->communicator);
   }
 
   std::string getName(int flags = 0) override {
@@ -234,7 +233,8 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   //! @endcond
 
   std::shared_ptr<IRule<T, U>> rule; //!< The rule associated with the RuleManager
-  TaskGraphCommunicator *communicator; //!< The task graph communicator
+  // TODO: Delete or Add #ifdef
+  // TaskGraphCommunicator *communicator; //!< The task graph communicator
   size_t pipelineId; //!< The execution pipeline id
   size_t numPipelines; //!< The number of execution pipelines
   std::string address; //!< The address for the rule manager

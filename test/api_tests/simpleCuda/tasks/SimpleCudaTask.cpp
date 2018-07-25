@@ -16,7 +16,7 @@ void SimpleCudaTask::executeTask(std::shared_ptr<SimpleCudaData> data) {
   }
 
   if (doReleaseMemory) {
-    this->releaseMemory(data->getCudaData());
+    data->getCudaData()->releaseMemory();
   }
 
   addResult(data);

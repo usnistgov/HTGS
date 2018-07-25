@@ -96,7 +96,7 @@ void launchGraph(htgs::TaskGraphConf<InputData, ProcessedData> *mainGraph,
     {
       if (useGraphMemReleaser)
       {
-        mainGraph->releaseMemory(data->getMem2());
+        data->getMem2()->releaseMemory();
       }
       count++;
     }

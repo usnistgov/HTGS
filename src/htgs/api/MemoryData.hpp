@@ -20,6 +20,7 @@
 #include <htgs/api/IMemoryAllocator.hpp>
 #include <htgs/api/IMemoryReleaseRule.hpp>
 #include <htgs/api/IData.hpp>
+#include <htgs/core/graph/Connector.hpp>
 
 namespace htgs {
 /**
@@ -64,21 +65,23 @@ namespace htgs {
  * @tparam T the type of memory to be held by the MemoryData, this will automatically be converted to a pointer type
  */
 template<class T>
-class MemoryData : public IData {
+class MemoryData : public IData, public std::enable_shared_from_this<MemoryData<T>> {
  public:
   /**
    * Creates MemoryData with the specified IMemoryAllocator
    * @param allocator the memory allocator
-   * @param address the address of the memory manager that allocates the memory data
+   * @param memoryManagerConnector the pointer to the connector that owns this memory
    * @param memoryManagerName the name of the memory manager that allocated this memory
    * @param type the type of the memory manager that allocated this memory
    */
   MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator,
-             std::string address,
+             std::shared_ptr<Connector<MemoryData<T>>> memoryManagerConnector,
              std::string memoryManagerName,
              MMType type) {
     this->type = type;
-    this->address = address;
+    this->memoryManagerConnector = memoryManagerConnector;
+    // TODO: Delete or Add #ifdef
+//    this->address = address;
     this->memoryManagerName = memoryManagerName;
     this->allocator = allocator;
     if (allocator != nullptr)
@@ -100,12 +103,22 @@ class MemoryData : public IData {
     }
   }
 
+  // TODO: Delete or Add #ifdef
+//  /**
+//   * Gets the address of the memory manager that allocated this memory data
+//   * @return the address of the memory manager that allocated the memory data
+//   */
+//  const std::string &getAddress() const {
+//    return address;
+//  }
+
   /**
-   * Gets the address of the memory manager that allocated this memory data
-   * @return the address of the memory manager that allocated the memory data
+   * Releases the MemoryData and returns it to the htgs::MemoryManager that allocated it.
+   * The memory will be recycled based on the specified htgs::IMemoryReleaseRule.
    */
-  const std::string &getAddress() const {
-    return address;
+  void releaseMemory() {
+    std::shared_ptr<MemoryData<T>> mPtr = std::enable_shared_from_this<MemoryData<T>>::shared_from_this();
+    this->memoryManagerConnector->produceData(mPtr);
   }
 
   /**
@@ -252,7 +265,9 @@ class MemoryData : public IData {
    */
   MemoryData<T> *copy() {
     return new MemoryData<T>(this->allocator,
-                             this->address,
+                             this->memoryManagerConnector,
+      // TODO: Delete or Add #ifdef
+//                             this->address,
                              this->memoryManagerName,
                              this->type);
   }
@@ -277,7 +292,9 @@ class MemoryData : public IData {
  private:
   MMType type; //!< The type of memory manager
   std::string memoryManagerName; //!< The name of the memory manager that allocated the memory
-  std::string address; //!< The address of the memory manager, used to release back
+  std::shared_ptr<Connector<MemoryData<T>>> memoryManagerConnector; //!< The pointer to the connector that owns this memory
+  // TODO: Delete or Add #ifdef
+//  std::string address; //!< The address of the memory manager, used to release back
   size_t pipelineId; //!< The pipelineId associated with where this memory was managed
   T *memory; //!< The memory
   size_t size; //!< The size of the memory (in elements)

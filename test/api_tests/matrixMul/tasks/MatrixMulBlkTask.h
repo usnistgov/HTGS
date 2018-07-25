@@ -56,8 +56,8 @@ class MatrixMulBlkTask : public htgs::ITask<MatrixBlockMulData<MatrixMemoryData_
 
     addResult(new MatrixBlockData<double *>(matReq, result, width, height));
 
-    this->releaseMemory(matrixA);
-    this->releaseMemory(matrixB);
+    matrixA->releaseMemory();
+    matrixB->releaseMemory();
   }
   virtual std::string getName() {
     return "MatrixMulBlkTask";

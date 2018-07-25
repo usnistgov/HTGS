@@ -22,7 +22,7 @@ class MemReleaseTask : public htgs::ITask<MultiMemData, htgs::VoidData> {
     int count = 0;
     for (auto mem : memVector)
     {
-      this->releaseMemory(mem);
+      mem->releaseMemory();
       count++;
     }
   }

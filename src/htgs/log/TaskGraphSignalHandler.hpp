@@ -62,14 +62,19 @@ class TaskGraphSignalHandler {
     std::string signalString(std::to_string(signum));
 #else
     std::string signalString(strsignal(signum));
+
 #endif
+    if (!signalHandled) {
 
-    for (size_t i = 0; i < instances.size(); i++)
-    {
-      instances[i]->writeDotToFile(signalString + "-" + std::to_string(i) + "-graph-output.dot", DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE);
+      signalHandled = true;
+
+      for (size_t i = 0; i < instances.size(); i++) {
+        instances[i]->writeDotToFile(signalString + "-" + std::to_string(i) + "-graph-output.dot",
+                                     DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE);
+      }
+
+      exit(signum);
     }
-
-    exit(signum);
   }
 
   /**
@@ -92,9 +97,11 @@ class TaskGraphSignalHandler {
 
  private:
   static std::vector<AnyTaskGraphConf *> instances; //!<< The task graph instances
+  static bool signalHandled;  // !< Flag to indicate if a signal has been fired or not
 };
 }
 
+bool htgs::TaskGraphSignalHandler::signalHandled = false;
 std::vector<htgs::AnyTaskGraphConf *> htgs::TaskGraphSignalHandler::instances;
 
 #endif //HTGS_TASKGRAPHSIGNALHANDLER_HPP

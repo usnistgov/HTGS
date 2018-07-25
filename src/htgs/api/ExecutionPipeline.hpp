@@ -197,8 +197,9 @@ class ExecutionPipeline : public ITask<T, U> {
     for (size_t i = 0; i < numPipelinesExec; i++) {
       HTGS_DEBUG("Adding pipeline " << i);
       TaskGraphConf<T, U>
-          *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress(),
-                                         this->getTaskGraphCommunicator());
+          *graphCopy = this->graph->copy(i, this->numPipelinesExec, nullptr, outputConnector, this->getAddress());
+      // TODO: Remove or Add #ifdef this->getTaskGraphCommunicator());
+
 
 #ifdef WS_PROFILE
       // TODO: Update parent for graphCopy to point to the execution pipeline
@@ -207,7 +208,7 @@ class ExecutionPipeline : public ITask<T, U> {
 
       for (std::shared_ptr<IRule<T, T>> rule : *this->inputRules) {
 
-        RuleManager<T, T> *ruleManager = new RuleManager<T, T>(rule, this->getTaskGraphCommunicator());
+        RuleManager<T, T> *ruleManager = new RuleManager<T, T>(rule /* TODO: Remove or Add #ifdef , this->getTaskGraphCommunicator()*/);
         ruleManager->setOutputConnector(graphCopy->getInputConnector());
         ruleManager->initialize(i, this->numPipelinesExec, this->getAddress());
 

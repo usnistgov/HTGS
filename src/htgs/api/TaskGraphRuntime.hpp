@@ -216,7 +216,8 @@ class TaskGraphRuntime {
 #endif
 
           // Add communicator to task copy to enable communication
-          taskCopy->setTaskGraphCommunicator(graph->getTaskGraphCommunicator());
+          // TODO: Delete or Add #ifdef
+//          taskCopy->setTaskGraphCommunicator(graph->getTaskGraphCommunicator());
           taskList.push_back(taskCopy);
           newVertices.push_back(taskCopy);
         }

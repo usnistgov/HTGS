@@ -70,7 +70,7 @@ class RuleEdge : public EdgeDescriptor {
       connector = std::shared_ptr<Connector<U>>(new Connector<U>());
     }
 
-    RuleManager<T, U> *ruleManager = new RuleManager<T, U>(rule, graph->getTaskGraphCommunicator());
+    RuleManager<T, U> *ruleManager = new RuleManager<T, U>(rule); // TODO: Delete or Add #ifdef , graph->getTaskGraphCommunicator());
     ruleManager->setOutputConnector(connector);
 
     connector->incrementInputTaskCount();

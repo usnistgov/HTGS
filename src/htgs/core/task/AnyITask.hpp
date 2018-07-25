@@ -337,21 +337,22 @@ class AnyITask {
     this->numPipelines = numPipelines;
   }
 
-  /**
-   * Sets the task graph communicator.
-   * @param communicator
-   */
-  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator) {
-    this->taskGraphCommunicator = communicator;
-  }
-
-  /**
-   * Gets the task graph communicator
-   * @return the task graph communicator
-   */
-  TaskGraphCommunicator *getTaskGraphCommunicator() const {
-    return taskGraphCommunicator;
-  }
+  // TODO: Delete or Add #ifdef
+//  /**
+//   * Sets the task graph communicator.
+//   * @param communicator
+//   */
+//  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator) {
+//    this->taskGraphCommunicator = communicator;
+//  }
+//
+//  /**
+//   * Gets the task graph communicator
+//   * @return the task graph communicator
+//   */
+//  TaskGraphCommunicator *getTaskGraphCommunicator() const {
+//    return taskGraphCommunicator;
+//  }
 
 
   /**
@@ -565,7 +566,9 @@ class AnyITask {
       memoryEdges; //!< A mapping from memory edge name to memory manager connector for getting memory
   std::shared_ptr<ConnectorMap>
       releaseMemoryEdges; //!< A mapping from the memory edge name to the memory manager's input connector to shutdown the memory manager
-  TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph connector communicator
+
+  // TODO: Delete or Add #ifdef
+//  TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph connector communicator
 
   unsigned long long int memoryWaitTime; //!< The amount of time this task waited for memory
 

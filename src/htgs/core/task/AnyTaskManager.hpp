@@ -212,23 +212,25 @@ class AnyTaskManager {
 
   }
 
-  /**
-   * Sets the task graph communicator
-   * @param communicator the task graph communicator
-   */
-  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator) {
-    this->taskGraphCommunicator = communicator;
-    this->getTaskFunction()->setTaskGraphCommunicator(this->taskGraphCommunicator);
-  }
 
-  /**
-   * Sends data packet along task graph communicator
-   * @param packet the data packet to communicate
-   */
-  void sendDataPacket(std::shared_ptr<DataPacket> packet)
-  {
-    this->taskGraphCommunicator->produceDataPacket(packet);
-  }
+  // TODO: Delete or Add #ifdef
+//  /**
+//   * Sets the task graph communicator
+//   * @param communicator the task graph communicator
+//   */
+//  void setTaskGraphCommunicator(TaskGraphCommunicator *communicator) {
+//    this->taskGraphCommunicator = communicator;
+//    this->getTaskFunction()->setTaskGraphCommunicator(this->taskGraphCommunicator);
+//  }
+//
+//  /**
+//   * Sends data packet along task graph communicator
+//   * @param packet the data packet to communicate
+//   */
+//  void sendDataPacket(std::shared_ptr<DataPacket> packet)
+//  {
+//    this->taskGraphCommunicator->produceDataPacket(packet);
+//  }
 
   /**
    * Updates the address, pipelineID, and number of pipelines for the task manager.
@@ -486,8 +488,9 @@ class AnyTaskManager {
   std::string prefix() {
     return std::string(
         "Thread id: " + std::to_string(this->threadId) + " (out of " + std::to_string(this->numThreads)
-            + "); Pipeline id " + std::to_string(this->pipelineId) + " (out of " + std::to_string(this->numPipelines) +
-            ") Address: " + this->getAddress());
+            + "); Pipeline id " + std::to_string(this->pipelineId) + " (out of " + std::to_string(this->numPipelines));
+    // TODO: Delete or Add #ifdef
+//            ") Address: " + this->getAddress());
   }
 
 
@@ -525,7 +528,8 @@ class AnyTaskManager {
   size_t numPipelines; //!< The number of execution pipelines
   std::string address; //!< The address of the task graph this manager belongs too
 
-  TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph communicator
+  // TODO: Delete or Add #ifdef
+//  TaskGraphCommunicator *taskGraphCommunicator; //!< Task graph communicator
 #ifdef USE_NVTX
   NVTXProfiler *nvtxProfiler;
 #endif
@@ -644,7 +648,7 @@ class TaskManagerThread {
   volatile bool terminated; //!< Whether the thread is ready to be terminated or not
   std::shared_ptr<std::atomic_size_t> numThreads; //!< The number of total threads managing the TaskManager
   AnyTaskManager *task; //!< The TaskManager that is called from the thread
-  size_t numThreadsAfterDecrement;
+  size_t numThreadsAfterDecrement; // !< The number of threads after being decremented
 };
 
 }

@@ -44,7 +44,7 @@ void SimpleTask::executeTask(std::shared_ptr<SimpleData> data) {
       }
 
       if (this->releaseMem) {
-        this->releaseMemory(data->getMem());
+        data->getMem()->releaseMemory();
       }
     }
     addResult(data);

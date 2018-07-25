@@ -20,7 +20,7 @@ class OutputMemReleaseTask : public htgs::ITask<ProcessedData, ProcessedData> {
 
   virtual void executeTask(std::shared_ptr<ProcessedData> data) override {
 
-    this->releaseMemory(data->getMem());
+    data->getMem()->releaseMemory();
     addResult(data);
   }
 

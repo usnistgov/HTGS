@@ -17,6 +17,11 @@
 #include <iostream>
 
 #ifndef NDEBUG
+/**
+ * Prints a more meaningful assertion message and terminates if the condition fails
+ * @param condition the condition to check
+ * @message the message to output
+ */
 #define HTGS_ASSERT(condition, message) \
     do { \
         if (! (condition)) { \

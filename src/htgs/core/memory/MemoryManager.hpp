@@ -86,7 +86,10 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
    */
   void initialize() override {
     this->pool = new MemoryPool<T>(this->getMemoryPoolSize());
-    MemoryData<T> *memory = new MemoryData<T>(this->getAllocator(), this->getAddress(), this->getName(), this->type);
+    std::shared_ptr<AnyConnector> anyInputConnector = this->getOwnerTaskManager()->getInputConnector();
+    std::shared_ptr<Connector<MemoryData<T>>> inputConnector = std::static_pointer_cast<Connector<MemoryData<T>>>(anyInputConnector);
+
+    MemoryData<T> *memory = new MemoryData<T>(this->getAllocator(), inputConnector, this->getName(), this->type);
 
     bool allocate = false;
     if (type == MMType::Static)

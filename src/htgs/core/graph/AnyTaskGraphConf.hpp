@@ -79,10 +79,11 @@ class AnyTaskGraphConf {
     this->graphComputeTime = 0;
     this->graphCreationTime = 0;
 
-    if (baseAddress == "")
-      this->address = std::to_string(pipelineId);
-    else
-      this->address = baseAddress + ":" + std::to_string(this->pipelineId);
+    // TODO: Delete or Add #ifdef
+//    if (baseAddress == "")
+//      this->address = std::to_string(pipelineId);
+//    else
+//      this->address = baseAddress + ":" + std::to_string(this->pipelineId);
     this->taskManagers = new std::list<AnyTaskManager *>();
     this->taskCopyMap = new ITaskMap();
     this->taskConnectorNameMap = new TaskNameConnectorMap();
@@ -144,16 +145,18 @@ class AnyTaskGraphConf {
    */
   virtual std::shared_ptr<AnyConnector> getOutputConnector() = 0;
 
-  /**
-   * Virtual function that initiates updating the task graph communicator.
-   */
-  virtual void updateCommunicator() = 0;
+  // TODO: Delete or Add #ifdef
+//  /**
+//   * Virtual function that initiates updating the task graph communicator.
+//   */
+//  virtual void updateCommunicator() = 0;
 
-  /**
-   * Virtual function that gets the task graph communicator.
-   * @return
-   */
-  virtual TaskGraphCommunicator *getTaskGraphCommunicator() const = 0;
+  // TODO: Delete or Add #ifdef
+//  /**
+//   * Virtual function that gets the task graph communicator.
+//   * @return
+//   */
+//  virtual TaskGraphCommunicator *getTaskGraphCommunicator() const = 0;
 
 #ifdef WS_PROFILE
   /**
@@ -232,10 +235,13 @@ class AnyTaskGraphConf {
    * Initializes the task graph just prior to spawning threads.
    */
   void initialize() {
-    this->getTaskGraphCommunicator()->setNumGraphsSpawned(this->getNumberOfSubGraphs());
+    // TODO: Delete or Add #ifdef
+//    this->getTaskGraphCommunicator()->setNumGraphsSpawned(this->getNumberOfSubGraphs());
 
     this->updateTaskManagersAddressingAndPipelines();
-    this->updateCommunicator();
+//    this->updateCommunicator();
+
+
 
     auto endTime = std::chrono::high_resolution_clock::now();
     this->graphCreationTime =
@@ -448,14 +454,7 @@ class AnyTaskGraphConf {
    * @note This function should only be called by the HTGS API
    * @internal
    */
-  void updateTaskManagersAddressingAndPipelines() {
-    for (auto t : *this->taskManagers) {
-      t->updateAddressAndPipelines(address, this->pipelineId, this->numPipelines);
-
-      std::string taskAddressName = this->address + ":" + t->getName();
-      this->taskConnectorNameMap->insert(TaskNameConnectorPair(taskAddressName, t->getInputConnector()));
-    }
-  }
+  virtual void updateTaskManagersAddressingAndPipelines() = 0;
 
   /**
    * Gets the address for the task graph.
