@@ -384,7 +384,7 @@ class ITask : public AnyITask {
    * @note the m_data_t should be acquired from a task using the getMemory function. A reference to this data can be passed along within IData.
    */
   template<class V>
-  [[deprecated("Replaced by calling 'releaseMemory' directory with htgs::MemoryData (or m_data_t)")]]
+  [[gnu::deprecated("Replaced by calling 'releaseMemory' directory with htgs::MemoryData (or m_data_t)")]]
   void releaseMemory(m_data_t<V> memory) {
     memory->releaseMemory();
     // TODO: Delete or Add #ifdef

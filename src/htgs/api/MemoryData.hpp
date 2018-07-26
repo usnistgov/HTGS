@@ -75,7 +75,7 @@ class MemoryData : public IData, public std::enable_shared_from_this<MemoryData<
    * @param type the type of the memory manager that allocated this memory
    */
   MemoryData(std::shared_ptr<IMemoryAllocator<T>> allocator,
-             std::shared_ptr<Connector<MemoryData<T>>> memoryManagerConnector,
+             std::weak_ptr<Connector<MemoryData<T>>> memoryManagerConnector,
              std::string memoryManagerName,
              MMType type) {
     this->type = type;
@@ -118,7 +118,8 @@ class MemoryData : public IData, public std::enable_shared_from_this<MemoryData<
    */
   void releaseMemory() {
     std::shared_ptr<MemoryData<T>> mPtr = std::enable_shared_from_this<MemoryData<T>>::shared_from_this();
-    this->memoryManagerConnector->produceData(mPtr);
+    std::shared_ptr<Connector<MemoryData<T>>> mConn = memoryManagerConnector.lock();
+    mConn->produceData(mPtr);
   }
 
   /**
@@ -292,7 +293,7 @@ class MemoryData : public IData, public std::enable_shared_from_this<MemoryData<
  private:
   MMType type; //!< The type of memory manager
   std::string memoryManagerName; //!< The name of the memory manager that allocated the memory
-  std::shared_ptr<Connector<MemoryData<T>>> memoryManagerConnector; //!< The pointer to the connector that owns this memory
+  std::weak_ptr<Connector<MemoryData<T>>> memoryManagerConnector; //!< The pointer to the connector that owns this memory
   // TODO: Delete or Add #ifdef
 //  std::string address; //!< The address of the memory manager, used to release back
   size_t pipelineId; //!< The pipelineId associated with where this memory was managed

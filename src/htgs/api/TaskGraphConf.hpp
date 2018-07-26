@@ -803,7 +803,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @note The m_data_t must have originated within this task graph.
    */
   template<class V>
-  [[deprecated("Replaced by calling 'releaseMemory' directory with htgs::MemoryData (or m_data_t)")]]
+  [[gnu::deprecated("Replaced by calling 'releaseMemory' directory with htgs::MemoryData (or m_data_t)")]]
   void releaseMemory(m_data_t<V> memory) {
     memory->releaseMemory();
     // TODO: Delete or Add #ifdef
