@@ -130,8 +130,9 @@ class ICudaTask : public ITask<T, U> {
    *
    * @param cudaIds the array of cudaIds
    * @param numGpus the number of GPUs
+   * @param autoEnablePeerAccess Flag to automatically enables peer access between multiple GPUs (default true)
    */
-  ICudaTask(int *cudaIds, size_t numGpus) {
+  ICudaTask(int *cudaIds, size_t numGpus, bool autoEnablePeerAccess = true) {
     this->cudaIds = cudaIds;
     this->numGpus = numGpus;
   }
@@ -208,8 +209,8 @@ class ICudaTask : public ITask<T, U> {
    * @retval FALSE if copy is not required
    */
   bool requiresCopy(size_t pipelineId) {
-    return std::find(this->nonPeerDevIds.begin(), this->nonPeerDevIds.end(), this->cudaIds[pipelineId])
-        != this->nonPeerDevIds.end();
+    return std::find(this->nonPeerDevIds.begin(), this->nonPeerDevIds.end(),
+      this->cudaIds[pipelineId]) != this->nonPeerDevIds.end();
   }
 
   /**
@@ -280,19 +281,19 @@ class ICudaTask : public ITask<T, U> {
     cudaSetDevice(this->cudaId);
     cudaStreamCreate(&stream);
 
+    if (autoEnablePeerAccess) {
 
-    for (size_t i = 0; i < this->numGpus; i++) {
-      int peerId = this->cudaIds[i];
-      if (peerId != this->cudaId)
-      {
-        int canAccess;
-        cudaDeviceCanAccessPeer(&canAccess, this->cudaId, peerId);
+      for (size_t i = 0; i < this->numGpus; i++) {
+        int peerId = this->cudaIds[i];
+        if (peerId != this->cudaId) {
+          int canAccess;
+          cudaDeviceCanAccessPeer(&canAccess, this->cudaId, peerId);
 
-        if (canAccess)
-        {
-          cudaDeviceEnablePeerAccess(peerId, 0);
-        } else {
-          this->nonPeerDevIds.push_back(peerId);
+          if (canAccess) {
+            cudaDeviceEnablePeerAccess(peerId, 0);
+          } else {
+            this->nonPeerDevIds.push_back(peerId);
+          }
         }
       }
     }
@@ -349,6 +350,7 @@ class ICudaTask : public ITask<T, U> {
   size_t numGpus; //!< The number of GPUs
   int cudaId; //!< The CudaID for the ICudaTask (set after initialize)
   std::vector<int> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
+  bool autoEnablePeerAccess; //!< Flag to automatically enables peer access between multiple GPUs
 };
 
 }
