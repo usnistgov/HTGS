@@ -9,7 +9,7 @@
 #include "../data/SimpleCudaData.h"
 class SimpleCudaTask : public htgs::ICudaTask<SimpleCudaData, SimpleCudaData> {
  public:
-  SimpleCudaTask(CUcontext *contexts, int *cudaIds, size_t numGpus);
+  SimpleCudaTask(int *cudaIds, size_t numGpus);
 
   void executeTask(std::shared_ptr<SimpleCudaData> data) override;
   htgs::ITask<SimpleCudaData, SimpleCudaData> *copy() override;

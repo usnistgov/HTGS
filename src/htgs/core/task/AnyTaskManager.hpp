@@ -185,6 +185,12 @@ class AnyTaskManager {
    */
   virtual void gatherProfileData(std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles)  = 0;
 
+  /**
+   * Gets the number of threads that are still running for the task
+   * @return the number of threads remaining
+   */
+  virtual size_t getThreadsRemaining() = 0;
+
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////

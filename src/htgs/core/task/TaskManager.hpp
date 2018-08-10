@@ -284,6 +284,9 @@ class TaskManager : public AnyTaskManager {
 
   }
 
+  size_t getThreadsRemaining() override {
+    return this->runtimeThread->getThreadsRemaining();
+  }
 
 
   ////////////////////////////////////////////////////////////////////////////////

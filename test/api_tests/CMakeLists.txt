@@ -82,9 +82,7 @@ set(SIMPLECUDA_SRC
 		simpleCuda/data/SimpleCudaData.h
 		simpleCuda/tasks/SimpleCudaTask.cpp
 		simpleCuda/tasks/SimpleCudaTask.h
-		simpleCuda/util-cuda.cpp
-		simpleCuda/util-cuda.h
-		simpleCuda/memory/SimpleCudaReleaseRule.h
+        simpleCuda/memory/SimpleCudaReleaseRule.h
 		simpleCuda/memory/SimpleCudaAllocator.h
 		)
 

@@ -91,4 +91,10 @@
  */
 #define DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE 1 << 12
 
+/**
+ * @def DOTGEN_FLAG_SHOW_TASK_LIVING_STATUS
+ * @brief Shows the number of threads that are alive running the task.
+ */
+#define DOTGEN_FLAG_SHOW_TASK_LIVING_STATUS 1 << 13
+
 #endif //HTGS_TASKGRAPHDOTGENFLAGS_HPP

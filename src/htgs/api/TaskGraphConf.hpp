@@ -20,7 +20,6 @@
 #include <htgs/core/graph/profile/TaskGraphProfiler.hpp>
 
 #ifdef USE_CUDA
-#include <cuda.h>
 #include <htgs/core/memory/CudaMemoryManager.hpp>
 #endif
 
@@ -402,7 +401,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
    * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
    * @param type the type of memory manager
-   * @param contexts the array of all Cuda contexts
+   * @param gpuIds the array Cuda GPU Ids
    * @note the memoryPoolSize can cause out of memory errors for the GPU if the allocator->size() * memoryPoolSize exceeds the total GPU memory
    * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
    */
@@ -412,13 +411,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
                                 std::shared_ptr<IMemoryAllocatorType> allocator,
                                 size_t memoryPoolSize,
                                 MMType type,
-                                CUcontext *contexts) {
+                                int *gpuIds) {
     static_assert(std::is_base_of<IMemoryAllocator<V>, IMemoryAllocatorType>::value,
                   "Type mismatch for allocator, allocator must be a MemoryAllocator!");
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = std::static_pointer_cast<IMemoryAllocator<V>>(allocator);
 
-    MemoryManager<V> *memoryManager = new CudaMemoryManager<V>(name, contexts, memoryPoolSize, memAllocator, type);
+    MemoryManager<V> *memoryManager = new CudaMemoryManager<V>(name, gpuIds, memoryPoolSize, memAllocator, type);
 
     MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, memoryManager);
     memEdge->applyEdge(this);
@@ -437,7 +436,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
  * @param allocator the allocator describing how memory is allocated (should allocate Cuda memory)
  * @param memoryPoolSize the size of the memory pool that is allocated by the CudaMemoryManager
  * @param type the type of memory manager
- *e @param contexts the array of all Cuda contexts
+ *e @param gpuIdsthe array of requested GPU Ids
  * @note the memoryPoolSize can cause out of memory errors for the GPU if the allocator->size() * memoryPoolSize exceeds the total GPU memory
  * @tparam V the type of memory; i.e. 'cufftDoubleComplex *'
  */
@@ -447,11 +446,11 @@ class TaskGraphConf : public AnyTaskGraphConf {
                                 IMemoryAllocator<V> *allocator,
                                 size_t memoryPoolSize,
                                 MMType type,
-                                CUcontext *contexts) {
+                                int *gpuIds) {
 
     std::shared_ptr<IMemoryAllocator<V>> memAllocator = this->getMemoryAllocator(allocator);
 
-    MemoryManager<V> *memoryManager = new CudaMemoryManager<V>(name, contexts, memoryPoolSize, memAllocator, type);
+    MemoryManager<V> *memoryManager = new CudaMemoryManager<V>(name, gpuIds, memoryPoolSize, memAllocator, type);
 
     MemoryEdge<V> *memEdge = new MemoryEdge<V>(name, getMemoryTask, memoryManager);
     memEdge->applyEdge(this);

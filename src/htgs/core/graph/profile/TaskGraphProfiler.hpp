@@ -113,16 +113,19 @@ class TaskGraphProfiler {
 
       if (curDotGraph.find(dotId + ";") != std::string::npos) {
 
+        std::string aliveLabel =
+          ((flags & DOTGEN_FLAG_SHOW_TASK_LIVING_STATUS) != 0) ? ("\nLiving threads: " + std::to_string(tMan->getThreadsRemaining())) : "";
         std::string inOutLabel =
             (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: " + tFun->inTypeName() + "\nout: "
                 + tFun->outTypeName()) : "");
         std::string threadLabel =
             (((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) ? "" : (" x" + std::to_string(tFun->getNumThreads())));
         ret += dotId + "[label=\"" + tFun->getDotLabelName();
-        ret += (tFun->debugDotNode() != "" ? ("\n" + tFun->debugDotNode() + "\n") : "");
         ret += threadLabel + inOutLabel + "\n";
         ret += tProfile->genDot(flags);
-        ret += (tFun->getDotCustomProfile() != "" ? (tFun->getDotCustomProfile() + "\n") : "");
+        ret += (tFun->debugDotNode() != "" ? ("\n" + tFun->debugDotNode() + "\n") : "");
+        ret += aliveLabel;
+        ret += (tFun->getDotCustomProfile() != "" ? ("\n" + tFun->getDotCustomProfile() + "\n") : "");
         ret += "\",shape=" + tFun->getDotShape();
         ret += ",style=filled";
         ret += ",fillcolor=" + tFun->getDotFillColor();

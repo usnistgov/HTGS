@@ -14,9 +14,9 @@
 #define HTGS_CUDAMEMORYMANAGER_HPP
 #ifdef USE_CUDA
 
-#include <cuda.h>
 #include <htgs/core/memory/MemoryManager.hpp>
 #include <htgs/api/IMemoryAllocator.hpp>
+#include <cuda_runtime_api.h>
 
 namespace htgs {
 /**
@@ -25,9 +25,9 @@ namespace htgs {
  * prior to allocating memory.
  * @details
  * Once a TaskGraphRuntime binds a thread to the CudaMemoryManager and calls its initialize function, the CUDA GPU specified
- * by the pipelineId of the CudaMemoryManager is bound to the thread. This pipelineId accesses a CUcontext, so the number of
- * pipelines spawned for the ExecutionPipeline task should match the number of CUcontexts passed to the CudaMemoryManager
- * If the Task is not associated with an ExecutionPipeline, then there only needs to be one CUcontext.
+ * by the pipelineId of the CudaMemoryManager is bound to the thread. This pipelineId accesses a Cuda ID, so the number of
+ * pipelines spawned for the ExecutionPipeline task should match the number of Cuda IDs passed to the CudaMemoryManager
+ * If the Task is not associated with an ExecutionPipeline, then there only needs to be one Cuda ID.
  * @tparam T the input/output MemoryData type for the CudaMemoryManager; i.e.; cufftDoubleComplex
  */
 template<class T>
@@ -40,18 +40,18 @@ class CudaMemoryManager : public MemoryManager<T> {
    * added into an ExecutionPipeline.
    *
    * @param name the name of the memory manager edge
-   * @param contexts the Cuda contexts
+   * @param cudaIds the Cuda Ids
    * @param memoryPoolSize the size of the memory pool
    * @param memoryAllocator the memory allocator describing how memory is allocated for the GPU.
    * @param type the memory manager type
    */
   CudaMemoryManager(std::string name,
-                    CUcontext *contexts,
+                    int *cudaIds,
                     size_t memoryPoolSize,
                     std::shared_ptr<IMemoryAllocator < T>> memoryAllocator,
                     MMType type) :
       MemoryManager<T>(name, memoryPoolSize, memoryAllocator, type) {
-    this->contexts = contexts;
+    this->cudaIds = cudaIds;
     if (type != MMType::Static)
     {
       std::cerr << "WARNING: The CudaMemoryManagers " << name << " should use Static memory allocation to avoid "
@@ -66,7 +66,7 @@ class CudaMemoryManager : public MemoryManager<T> {
    * CudaMemoryManager.
    */
   void initialize() override {
-    cuCtxSetCurrent(this->contexts[this->getPipelineId()]);
+    cudaSetDevice(this->cudaIds[this->getPipelineId()]);
     MemoryManager<T>::initialize();
   }
 
@@ -84,14 +84,14 @@ class CudaMemoryManager : public MemoryManager<T> {
    */
   MemoryManager <T> *copy() override {
     return new CudaMemoryManager(this->getMemoryManagerName(),
-                                 this->contexts,
+                                 this->cudaIds,
                                  this->getMemoryPoolSize(),
                                  this->getAllocator(),
                                  this->getType());
   }
 
  private:
-  CUcontext *contexts; //!< The array of CUDA contexts
+  int *cudaIds; //!< The array of CUDA contexts
 };
 
 }

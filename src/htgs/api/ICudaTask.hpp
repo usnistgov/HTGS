@@ -15,11 +15,11 @@
 #ifndef HTGS_CUDATASK_HPP
 #define HTGS_CUDATASK_HPP
 
-#include <cuda.h>
+#include <cuda_runtime_api.h>
+
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
-#include <cuda_runtime_api.h>
 
 #include <htgs/api/ITask.hpp>
 namespace htgs {
@@ -60,7 +60,7 @@ class MemoryData;
  *
  * class SimpleCudaTask : public htgs::ICudaTask<MatrixData, VoidData> {
  * public:
- * SimpleCudaTask(CUcontext *contexts, int *cudaIds, int numGpus) : ICudaTask(contexts, cudaIds, numGpus) { }
+ * SimpleCudaTask(int *cudaIds, int numGpus) : ICudaTask(contexts, cudaIds, numGpus) { }
  * ~SimpleCudaTask() {}
  * virtual void initializeCudaGPU()
  * {
@@ -125,15 +125,13 @@ class ICudaTask : public ITask<T, U> {
 
   /**
    * Creates an ICudaTask.
-   * If this task is added into an ExecutionPipeline, then the number of CUcontexts and cudaIds
+   * If this task is added into an ExecutionPipeline, then the number of cudaIds
    * should match the number of pipelines
    *
-   * @param contexts the array of CUcontexts
    * @param cudaIds the array of cudaIds
    * @param numGpus the number of GPUs
    */
-  ICudaTask(CUcontext *contexts, int *cudaIds, size_t numGpus) {
-    this->contexts = contexts;
+  ICudaTask(int *cudaIds, size_t numGpus) {
     this->cudaIds = cudaIds;
     this->numGpus = numGpus;
   }
@@ -169,7 +167,7 @@ class ICudaTask : public ITask<T, U> {
   }
 
   std::string getDotFillColor() override {
-    return "forestgreen";
+    return "green3";
   }
 
 //  virtual std::string genDot(int flags, std::string dotId) override {
@@ -200,27 +198,6 @@ class ICudaTask : public ITask<T, U> {
    */
   int getCudaId() {
     return this->cudaId;
-  }
-
-  /**
-   * Gets the CudaContext associated with this task.
-   * Set only after this task has been bound to a thread during initialization.
-   * @return the Cuda Context
-   */
-  CUcontext getTaskCudaContext() {
-    return this->context;
-  }
-
-  /**
-   * Gets the cuda Context for the given cudaId.
-   *
-   * This can be used to copy between two Cuda GPUs by using cudaMemcpyPeerAsync
-   *
-   * @param index the index
-   * @return the CudaContext at the given cudaId
-   */
-  CUcontext getGPUIdContext(int index) {
-    return this->peerContexts.at(index);
   }
 
   /**
@@ -294,32 +271,28 @@ class ICudaTask : public ITask<T, U> {
    */
   void initialize() override final {
     this->cudaId = this->cudaIds[this->getPipelineId()];
-    this->context = this->contexts[this->getPipelineId()];
 
-    cuCtxSetCurrent(this->context);
+    int numGpus;
+    cudaGetDeviceCount(&numGpus);
 
-    CUstream stream;
-    cuStreamCreate(&stream, CU_STREAM_DEFAULT);
+    HTGS_ASSERT(this->cudaId < numGpus, "Error: Cuda ID: " << std::to_string(this->cudaId) << " is larger than the number of GPUs: " << std::to_string(numGpus));
 
-    this->stream = stream;
+    cudaSetDevice(this->cudaId);
+    cudaStreamCreate(&stream);
 
-    CUdevice dev;
-    cuDeviceGet(&dev, this->cudaId);
 
     for (size_t i = 0; i < this->numGpus; i++) {
-      CUcontext ctx = this->contexts[i];
-      if (ctx != this->context) {
-        CUdevice peerDev;
-        cuDeviceGet(&peerDev, this->cudaIds[i]);
+      int peerId = this->cudaIds[i];
+      if (peerId != this->cudaId)
+      {
+        int canAccess;
+        cudaDeviceCanAccessPeer(&canAccess, this->cudaId, peerId);
 
-        int canAccessPeer;
-        cuDeviceCanAccessPeer(&canAccessPeer, dev, peerDev);
-
-        if (canAccessPeer == 0) {
-          this->nonPeerDevIds.push_back(this->cudaIds[i]);
-          this->peerContexts.insert(std::pair<int, CUcontext>(this->cudaIds[i], ctx));
+        if (canAccess)
+        {
+          cudaDeviceEnablePeerAccess(peerId, 0);
         } else {
-          cuCtxEnablePeerAccess(ctx, 0);
+          this->nonPeerDevIds.push_back(peerId);
         }
       }
     }
@@ -333,21 +306,14 @@ class ICudaTask : public ITask<T, U> {
    */
   void shutdown() override final {
     this->shutdownCuda();
-  }
-
-  /**
-   * Gets the cudaContexts specified during ICudaTask construction
-   * @return the cudaContexts
-   */
-  CUcontext *getContexts() {
-    return this->contexts;
+    cudaStreamDestroy(stream);
   }
 
   /**
    * Gets the CUDA stream for this CUDA task
    * @return the CUDA stream
    */
-  const CUstream &getStream() const {
+  const cudaStream_t &getStream() const {
     return stream;
   }
 
@@ -377,15 +343,12 @@ class ICudaTask : public ITask<T, U> {
   }
 
  private:
-  CUcontext context; //!< The CUDA GPU context for the ICudaTask (set after initialize)
-  CUstream stream; //!< The CUDA stream for the ICudaTask (set after initialize)
-  CUcontext *contexts; //!< The array of CUDA contexts (one per GPU)
+  cudaStream_t stream; //!< The CUDA stream for the ICudaTask (set after initialize)
   int *cudaIds; //!< The array of cuda Ids (one per GPU)
 
   size_t numGpus; //!< The number of GPUs
   int cudaId; //!< The CudaID for the ICudaTask (set after initialize)
   std::vector<int> nonPeerDevIds; //!< The list of CudaIds that do not have peer-to-peer access
-  std::unordered_map<int, CUcontext> peerContexts; //!< The mapping of CudaId to CUDA Context that has peer-to-peer
 };
 
 }
