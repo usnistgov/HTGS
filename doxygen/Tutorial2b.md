@@ -86,6 +86,8 @@ the enums folder in tutorial-utils.
 #include <htgs/api/ITask.hpp>
 #include <cmath>
 #include <fstream>
+#include "../data/MatrixBlockData.h"
+#include "../data/MatrixRequestData.h"
 #include "../rules/MatrixMemoryRule.h"
 #include "../../enums/MatrixType.h"
 
@@ -246,6 +248,7 @@ class HadamardProductTaskWithReleaseMem : public htgs::ITask<MatrixBlockMulData<
   + Uses the htgs::m_data_t to provide meta data to return the memory to the htgs::MemoryManager that allocated the memory
   + The htgs::MemoryData is forwarded to the htgs::MemoryManager using the htgs::TaskGraphCommunicator
       - Functionality with the htgs::TaskGraphCommunicator is mostly restricted to memory management
+- Even though it is a bottle-neck, the ReadDiskMatrixTask cannot significantly be sped up with multi-threading because it is limited by the speed of the computer's disk.
 
 ## Managing Dependencies with a Bookkeeper and IRules {#tut2b-bookkeeper}
 
@@ -438,6 +441,9 @@ htgs::TaskGraphConf::releaseMemory function to return the memory to its htgs::Me
 #include "tasks/HadamardProductTaskWithReleaseMem.h"
 #include "../../tutorial-utils/SimpleClock.h"
 #include "../../tutorial-utils/util-matrix.h"
+#include "../../tutorial-utils/util-matrix.cpp"
+#include "../../tutorial-utils/util-filesystem.h"
+#include "../../tutorial-utils/util-filesystem.cpp"
 
 int main(int argc, char *argv[]) {
   size_t width = 1024;

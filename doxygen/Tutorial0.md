@@ -79,6 +79,27 @@ Getting Started using Eclipse CDT {#tut0-eclipse}
       - Current builder: **CMake Make Builder**
 6. You should be able to build the HTGS-Tutorials
 
+## Getting Started on Windows with Visual Studio
+
+1. Clone HTGS-Tutorials as shown above and store it in a known directory (see step 6 for git bash)
+2. Download Microsoft Visual Studio Community from  [here](https://www.visualstudio.com/downloads/)
+3. Run Visual Studio and open a new Win32 project
+      - Select default options and click *Finish*
+4. Add HTGS source files
+      - Right-click on Solution in Solution Explorer
+      - Properties > C/C++ > General > Additional Include Directories
+      - Write <HTGS source directory>, which denotes where the #include statements will path from
+5. To compile, go to Build > Build solution to generate the .exe file.
+      - The program will be made in \<VISUAL STUDIO LOCATION\>/Projects/\<PROJECT NAME\>/Debug
+6. Optional programs for Windows
+      - **Windows Powershell** is useful for easily running .exe's and for navigating directories with bash. It sometimes comes installed on Windows by default or can otherwise be downloaded [here](https://msdn.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell).
+      - A command-line version of **git** can be found [here](https://git-scm.com/downloads).
+
+### Notes:
+- Ensure that #include "stdafx.h" is the very first statement in every source file
+- In Visual Studio's Solution Explorer you can make "New Filter"s to categorize task, rules, etc. but this is not the same as a new *folder* and should not be pathed as such in #include statements.
+- When switching from 'Debug' to 'Release' in Visual Studio, you might get some strange errors. These might be fixed by change the 'Precompiled Headers' configuration: Right-click the Solution in the Solution Explorer; Properties > C/C++ > Precompiled Headers > Precompiled Header; change from 'Use (/Yu)' to 'Not Using Precompiled Headers'.
+
 Getting Started using CLion {#tut0-clion}
 =====
 
