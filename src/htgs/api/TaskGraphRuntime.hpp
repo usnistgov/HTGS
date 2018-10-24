@@ -122,6 +122,11 @@ class TaskGraphRuntime {
 
     for (std::thread *t : threads) {
       if (t) {
+
+
+        HTGS_ASSERT(!t->joinable(), "Trying to delete thread that has not been joined. You must call 'waitForRuntime' prior to deleting the TaskGraphRuntime. (see https://pages.nist.gov/HTGS/doxygen/classhtgs_1_1_task_graph_runtime.html#a8f2eaf040695178b6f61db7b0ee16c89)");
+
+
         delete t;
         t = nullptr;
       }

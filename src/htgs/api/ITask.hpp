@@ -301,6 +301,9 @@ class ITask : public AnyITask {
   ITask<T, U> *copyITask(bool deep) override {
     ITask<T, U> *iTaskCopy = copy();
 
+    HTGS_ASSERT(iTaskCopy != nullptr, "Copying Task '" << this->getName() << "' resulted in nullptr. Make sure you have the 'copy' function implemented (see https://pages.nist.gov/HTGS/doxygen/classhtgs_1_1_i_task.html#acaedf1466b238036d880efcbf1feafe6)");
+
+
     if (deep)
       copyMemoryEdges(iTaskCopy);
 
@@ -498,7 +501,7 @@ class ITask : public AnyITask {
 
   template<class V>
   m_data_t<V> getMemory(std::string name, IMemoryReleaseRule *releaseRule, MMType type, size_t nElem) {
-    HTGS_ASSERT(this->getMemoryEdges()->find(name) != this->getMemoryEdges()->end(), "Task " << this->getName() << " cannot getMemory as it does not have the memory edge '" << name << "'"  );
+    HTGS_ASSERT(this->getMemoryEdges()->find(name) != this->getMemoryEdges()->end(), "Task '" << this->getName() << "' cannot getMemory as it does not have the memory edge '" << name << "'"  );
 
     auto conn = getMemoryEdges()->find(name)->second;
     auto connector = std::dynamic_pointer_cast<Connector<MemoryData<V>>>(conn);
@@ -535,8 +538,8 @@ class ITask : public AnyITask {
 
     if (memory->getType() != type) {
       std::cerr
-        << "Error: Incorrect usage of getMemory. Dynamic memory managers use 'getDynamicMemory', Static memory managers use 'getMemory' for task "
-        << this->getName() << " on memory edge " << name << std::endl;
+        << "Error: Incorrect usage of getMemory. Dynamic memory managers use 'getDynamicMemory', Static memory managers use 'getMemory' for task '"
+        << this->getName() << "' on memory edge " << name << std::endl;
       exit(-1);
     }
 
