@@ -267,6 +267,45 @@ class AnyTaskGraphConf {
   }
 
   /**
+   *  Waits for all task managers to finish initializing. When this returns it is safe to assume that
+   *  all tasks have been initialized from the graph.
+   *  @note Only call this function after htgs::TaskGraphRuntime::executeRuntime has been called for the graph.
+   */
+    void waitForInitialization() {
+      std::unique_lock<std::mutex> lock(this->initializeMutex);
+      this->initializeCondition.wait(lock, [=]
+      {
+        bool ret = true;
+        for (AnyTaskManager *tm : *taskManagers)
+        {
+          if(!tm->isInitialized()) {
+            ret = false;
+            break;
+          }
+        }
+
+        return ret;
+      });
+
+    }
+
+    /**
+     * Notifies the task graph to check if all task managers have been initialized or not.
+     * @note
+     */
+    std::condition_variable *getInitializationCondition() {
+      return &this->initializeCondition;
+    }
+
+    /**
+     * Gets the initialization mutex, used for signaling when initialization is done.
+     * @return the initialization mutex
+     */
+    std::mutex *getInitializationMutex() {
+      return &this->initializeMutex;
+    }
+
+  /**
    * Gets the task name connector map that maps the task name to its input connector.
    * @return the task name connector map that namps the task name to its input connector.
    */
@@ -595,7 +634,11 @@ class AnyTaskGraphConf {
   std::chrono::time_point<std::chrono::high_resolution_clock> graphExecutingTimestamp; //!< Timestamp for how long the graph executed
   unsigned long long int graphComputeTime; //!< The total time to execute the graph
   unsigned long long int graphCreationTime; //!< The total time to create the graph
-};
+
+    std::condition_variable initializeCondition; //!< The condition variable to signal to check if initialization has finished.
+    std::mutex initializeMutex; //!< Mutex used to signal initializational.
+
+  };
 
 }
 

@@ -10,7 +10,7 @@ link_libraries(${CMAKE_THREAD_LIBS_INIT})
 #add_definitions(-DHTGS_LOG_FLAG)
 #add_definitions(-DHTGS_DEBUG_LEVEL_VERBOSE)
 #add_definitions(-DHTGS_LOG_LEVEL_VERBOSE)
-#add_definitions(-DPROFILE)
+add_definitions(-DPROFILE)
 include_directories(/home/tjb3/local/include)
 link_directories(/home/tjb3/local/lib)
 
@@ -73,6 +73,10 @@ set(MEMRELEASEOUTSIDE_SRC
 		memTaskOutsideRelease/rules/MemAllocDistributeRule.h
 		)
 
+set(TGTASK_SRC
+		recursiveGraphsTests.cpp
+		recursiveGraphsTests.h)
+
 
 if (CUDA_FOUND)
 
@@ -86,13 +90,13 @@ set(SIMPLECUDA_SRC
 		simpleCuda/memory/SimpleCudaAllocator.h
 		)
 
-	cuda_add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} ${SIMPLECUDA_SRC} api_check.cpp)
+	cuda_add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} ${SIMPLECUDA_SRC} ${TGTASK_SRC} api_check.cpp)
 	target_link_libraries(runAPITests ${CUDA_LIBRARIES})
 	target_link_libraries(runAPITests cuda)
 	target_compile_definitions(runAPITests PUBLIC -DUSE_CUDA)
 
 else()
-	add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} api_check.cpp)
+	add_executable(runAPITests ${SIMPLE_SRC} ${MATRIXMUL_SRC} ${MEMMULTIRELEASE_SRC} ${MEMRELEASEOUTSIDE_SRC} ${TGTASK_SRC} api_check.cpp)
 endif(CUDA_FOUND)
 
 # TODO: REMOVE

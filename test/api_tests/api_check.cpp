@@ -13,6 +13,7 @@
 #include "matrixMulGraphTests.h"
 #include "memMultiReleaseGraphTests.h"
 #include "memReleaseOutsideGraphTests.h"
+#include "recursiveGraphsTests.h"
 
 
 #ifdef USE_CUDA
@@ -226,6 +227,59 @@ TEST(MemReleaseOutsideGraph, GraphExecution) {
   EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(1, 1, 5));
   EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 2, 5));
   EXPECT_NO_FATAL_FAILURE(memReleaseOutsideGraphExecution(100, 10, 5));
+}
+
+TEST(RecursiveGraphs, TGTask) {
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, false, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, true, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, false, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, true, 1, 1));
+
+
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, false, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, true, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, false, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, true, 2, 2));
+
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, false, 5, 5));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, true, 5, 5));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, false, 5, 5));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, true, 5, 5));
+
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, false, 10, 10));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(false, true, 10, 10));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, false, 10, 10));
+  EXPECT_NO_FATAL_FAILURE(testTGTasks(true, true, 10, 10));
+
+}
+
+TEST(RecursiveGraph, RecursiveTGTask) {
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(1, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(2, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(5, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(10, 1, 1));
+
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(2, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(5, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(10, 2, 2));
+
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(5, 5, 5));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(10, 5, 5));
+
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(10, 10, 10));
+}
+
+TEST(RecursiveGraph, RecursiveTGTaskWithExecPipeline) {
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(1, 1, 1, true, 1));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(2, 2, 2, true, 2));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(5, 5, 5, true, 5));
+}
+
+TEST(RecursiveGraph, TGTaskWithExecPipeline) {
+  EXPECT_NO_FATAL_FAILURE(testTGTaskWithExecPipeline(1, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testTGTaskWithExecPipeline(2, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(testTGTaskWithExecPipeline(5, 5, 5));
+  EXPECT_NO_FATAL_FAILURE(testTGTaskWithExecPipeline(10, 10, 10));
 }
 
 int main(int argc, char **argv) {

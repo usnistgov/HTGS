@@ -64,6 +64,7 @@ class AnyTaskManager {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
+    this->initialized = false;
     this->address = address;
   }
 
@@ -94,6 +95,7 @@ class AnyTaskManager {
     this->pipelineId = pipelineId;
     this->numPipelines = numPipelines;
     this->alive = true;
+    this->initialized = false;
     this->address = address;
   }
 
@@ -308,6 +310,21 @@ class AnyTaskManager {
    * @retval FALSE if the TaskManager is not alive
    */
   bool isAlive() { return this->alive; }
+
+
+  /**
+   * Sets the initialized state for the task manager
+   * @param val the value to set, true = initialize has been called an thread is bound to the task waiting for data, false = thread is not ready
+   */
+  void setInitialized(bool val) {this->initialized = val; }
+
+  /**
+   * Gets whether the TaskManager has initialized or not
+   * @return whether the TaskManager is initialized
+   * @retval TRUE if the TaskManager has finished initializing
+   * @retval FALSE if the TaskManager has not been initialized
+   */
+  bool isInitialized() { return this->initialized; }
 
   /**
    * Sets whether this task manager is a start task or not, which will immediately begin executing
@@ -526,6 +543,7 @@ class AnyTaskManager {
 
   bool startTask; //!< Whether the task should start immediately
   bool alive; //!< Whether the task is still alive
+  bool initialized; //!< Whether the task has been intitialized or not (called initialize function)
 
   size_t threadId; //!< The thread id for the task (set after initialization)
   size_t numThreads; //!< The number of threads spawned for the manager
@@ -560,14 +578,18 @@ class TaskManagerThread {
    * @param threadId the thread Id for the task
    * @param task the task the thread is associated with
    * @param numThreads the number of threads that a task contains
+   * @param taskGraphInitializeCond The initialization condition variable used to indicate that the task has initialized
+   * @param taskGraphInitializeMutex The mutex used to notify the task has been initialized
    */
-  TaskManagerThread(size_t threadId, AnyTaskManager *task, std::shared_ptr<std::atomic_size_t> numThreads) {
+  TaskManagerThread(size_t threadId, AnyTaskManager *task, std::shared_ptr<std::atomic_size_t> numThreads, std::condition_variable *taskGraphInitializeCond, std::mutex *taskGraphInitializeMutex) {
     this->task = task;
     this->terminated = false;
     this->numThreads = numThreads;
     this->task->setRuntimeThread(this);
     this->task->setThreadId(threadId);
     this->numThreadsAfterDecrement = *this->numThreads;
+    this->taskGraphInitializeCond = taskGraphInitializeCond;
+    this->taskGraphInitializeMutex = taskGraphInitializeMutex;
   }
 
   /**
@@ -581,7 +603,7 @@ class TaskManagerThread {
    * @return status code
    * @retval 0 Completed successfully
    */
-  int run(void) {
+  int run() {
     // TODO: Remove?
 //#ifdef USE_NVTX
 //    NVTXProfiler *profiler = new NVTXProfiler();
@@ -590,6 +612,12 @@ class TaskManagerThread {
 
     HTGS_DEBUG("Starting Thread for task : " << task->getName());
     this->task->initialize();
+
+    {
+      std::unique_lock<std::mutex> lock(*this->taskGraphInitializeMutex);
+      this->taskGraphInitializeCond->notify_all();
+    }
+
     while (!this->terminated) {
       this->task->executeTask();
     }
@@ -655,6 +683,8 @@ class TaskManagerThread {
   std::shared_ptr<std::atomic_size_t> numThreads; //!< The number of total threads managing the TaskManager
   AnyTaskManager *task; //!< The TaskManager that is called from the thread
   size_t numThreadsAfterDecrement; // !< The number of threads after being decremented
+  std::condition_variable *taskGraphInitializeCond; //!< The condition variable that is used by the owner task graph for checking if all tasks have been initialized
+  std::mutex *taskGraphInitializeMutex; //!< The mutex used to notify the task has been initialized
 };
 
 }

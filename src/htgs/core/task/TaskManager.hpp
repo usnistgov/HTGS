@@ -138,6 +138,8 @@ class TaskManager : public AnyTaskManager {
 #ifdef USE_NVTX
     this->getProfiler()->endRangeInitializing(rangeId);
 #endif
+
+    this->setInitialized(true);
   }
 
   void setRuntimeThread(TaskManagerThread *runtimeThread) override { this->runtimeThread = runtimeThread; }

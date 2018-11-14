@@ -45,7 +45,7 @@ class TaskManagerProfile {
    * @param memoryWaitTime the amount of time spent waiting for data from a memory manager
    */
   TaskManagerProfile(unsigned long long int computeTime, unsigned long long int waitTime, size_t maxQueueSize, unsigned long long int memoryWaitTime)
-      : computeTime(computeTime), waitTime(waitTime), maxQueueSize(maxQueueSize), memoryWaitTime(memoryWaitTime) {}
+      : computeTime(computeTime), waitTime(waitTime), memoryWaitTime(memoryWaitTime), maxQueueSize(maxQueueSize) {}
 
   /**
    * Generates the dot contents for the task manager profile. The flags control which

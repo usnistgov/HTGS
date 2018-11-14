@@ -245,7 +245,7 @@ class TaskGraphRuntime {
 
 
 
-          TaskManagerThread *runtimeThread = new TaskManagerThread(threadId, taskItem, atomicNumThreads);
+          TaskManagerThread *runtimeThread = new TaskManagerThread(threadId, taskItem, atomicNumThreads, graph->getInitializationCondition(), graph->getInitializationMutex());
           std::thread *thread = new std::thread(&TaskManagerThread::run, runtimeThread);
           this->threads.push_back(thread);
           runtimeThreads.push_back(runtimeThread);

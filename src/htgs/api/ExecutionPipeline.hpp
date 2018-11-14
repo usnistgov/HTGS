@@ -97,14 +97,16 @@ class ExecutionPipeline : public ITask<T, U> {
    * Creates an execution pipeline, which encapsulates a graph and duplicates it numPipelines times
    * @param numPipelines the number of times to duplicate the graph
    * @param graph the graph that the execution pipeline manages
+   * @param waitForInit Indicates that the execution pipeline will wait for its underlying graphs to initialize prior to marking that it is initialized.
    */
-  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph) {
+  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, bool waitForInit = true) {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
     this->runtimes = new std::vector<TaskGraphRuntime *>();
     this->inputRules = std::shared_ptr<IRuleList<T, T>>(new IRuleList<T, T>());
     this->graphs = new std::vector<TaskGraphConf<T, U> *>();
+    this->waitForInit = waitForInit;
   }
 
   /**
@@ -112,14 +114,16 @@ class ExecutionPipeline : public ITask<T, U> {
    * @param numPipelines the number of times to duplicate the graph
    * @param graph the graph that the execution pipeline manages
    * @param rules the list of decomposition rules that will be used for this pipeline
+   * @param waitForInit Indicates that the execution pipeline will wait for its underlying graphs to initialize prior to marking that it is initialized.
    */
-  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, std::shared_ptr<IRuleList<T, T>> rules) {
+  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, std::shared_ptr<IRuleList<T, T>> rules, bool waitForInit = true) {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
     this->runtimes = new std::vector<TaskGraphRuntime *>();
     this->inputRules = rules;
     this->graphs = new std::vector<TaskGraphConf<T, U> *>();
+    this->waitForInit = waitForInit;
   }
 
   /**
@@ -225,6 +229,11 @@ class ExecutionPipeline : public ITask<T, U> {
       this->runtimes->push_back(runtime);
     }
 
+    if (waitForInit) {
+      for (TaskGraphConf <T, U> *g : *graphs) {
+        g->waitForInitialization();
+      }
+    }
   }
 
   /**
@@ -300,7 +309,7 @@ class ExecutionPipeline : public ITask<T, U> {
   ITask<T, U> *copy() {
     return new ExecutionPipeline<T, U>(this->numPipelinesExec,
                                        this->graph->copy(this->getPipelineId(), this->getNumPipelines()),
-                                       this->inputRules);
+                                       this->inputRules, this->waitForInit);
   }
 
   /**
@@ -476,6 +485,7 @@ class ExecutionPipeline : public ITask<T, U> {
   std::vector<TaskGraphRuntime *>
       *runtimes; //!< The list of Runtimes that will execute the TaskGraphs (one for each duplicate TaskGraph)
   std::vector<TaskGraphConf<T, U> *> *graphs; //!< The list of duplicate TaskGraphs
+  bool waitForInit;
 };
 }
 

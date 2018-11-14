@@ -1,4 +1,4 @@
-//#define DEBUG_FLAG
+//#define HTGS_DEBUG_FLAG
 //#define DO_SLEEP
 #ifdef DO_SLEEP
 #include <unistd.h>
@@ -9,6 +9,7 @@
 #include <htgs/api/TaskGraphRuntime.hpp>
 #include <htgs/api/ExecutionPipeline.hpp>
 #include <htgs/log/TaskGraphSignalHandler.hpp>
+#include <htgs/api/TGTask.hpp>
 
 class InputData : public htgs::IData
 {
@@ -98,30 +99,44 @@ int main() {
   taskGraph->addRuleEdge(bk, rule, addTask3);
   taskGraph->addGraphProducerTask(addTask3);
 
+  auto tgTask = new htgs::TGTask<InputData, OutputData>(taskGraph);
 
-  htgs::TaskGraphSignalHandler::registerTaskGraph(taskGraph);
-  htgs::TaskGraphSignalHandler::registerSignal(SIGSEGV);
+  SquareResult *squareTask = new SquareResult(10);
+
+  auto taskGraphMain = new htgs::TaskGraphConf<InputData, OutputData>();
+
+  taskGraphMain->setGraphConsumerTask(tgTask);
+  taskGraphMain->addEdge(tgTask, squareTask);
+  taskGraphMain->addGraphProducerTask(squareTask);
+
+
+
+  htgs::TaskGraphSignalHandler::registerTaskGraph(taskGraphMain);
+  htgs::TaskGraphSignalHandler::registerSignal(SIGTERM);
 //  signalHandler.registerSignal(SIGKILL);
 //  signalHandler.registerSignal(SIGTERM);
 
 //  htgs::TaskGraphSignalHandler::registerSignal();
 
-  int numData = 100000;
-  for (int i = 0; i < numData; i++) {
-    auto inputData = new InputData(i, i);
-    taskGraph->produceData(inputData);
-  }
+  taskGraphMain->writeDotToFile("pre-exec.dot");
 
-  taskGraph->finishedProducingData();
-
-
-  auto runtime = new htgs::TaskGraphRuntime(taskGraph);
+  auto runtime = new htgs::TaskGraphRuntime(taskGraphMain);
   runtime->executeRuntime();
 
 
-  while(!taskGraph->isOutputTerminated()) {
-    auto data = taskGraph->consumeData();
-    data = nullptr;
+  int numData = 100000;
+  for (int i = 0; i < numData; i++) {
+    auto inputData = new InputData(i, i);
+    taskGraphMain->produceData(inputData);
+  }
+
+  taskGraphMain->finishedProducingData();
+
+
+  taskGraphMain->waitForInitialization();
+
+  while(!taskGraphMain->isOutputTerminated()) {
+    auto data = taskGraphMain->consumeData();
     if (data != nullptr) {
       std::cout << "Result: " << data->getResult() << std::endl;
     }
@@ -134,7 +149,7 @@ int main() {
 
   std::cout << "Execution time: " << diff.count() << " ns" << std::endl;
 
-  taskGraph->writeDotToFile("test.dot", DOTGEN_FLAG_SHOW_IN_OUT_TYPES);
+  taskGraphMain->writeDotToFile("test.dot", DOTGEN_FLAG_SHOW_IN_OUT_TYPES);
 
   delete runtime;
 }

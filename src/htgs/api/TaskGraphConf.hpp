@@ -19,6 +19,9 @@
 #include <htgs/core/comm/TaskGraphCommunicator.hpp>
 #include <htgs/core/graph/profile/TaskGraphProfiler.hpp>
 
+#include <htgs/api/ExecutionPipeline.hpp>
+#include <htgs/api/TGTask.hpp>
+
 #ifdef USE_CUDA
 #include <htgs/core/memory/CudaMemoryManager.hpp>
 #endif
@@ -608,7 +611,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * Sets the output connector for the task graph
    * @param output the output connector
    */
-  void setOutputConnector(std::shared_ptr<Connector<T>> output) {
+  void setOutputConnector(std::shared_ptr<Connector<U>> output) {
     this->output = output;
   }
 
@@ -795,7 +798,21 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
   }
 
-  /**
+    /**
+     * Sets the input connector for the task graph configuration
+     * @param connector the input connector
+     */
+    void setInputConnector(std::shared_ptr<AnyConnector> connector) {
+      if (graphConsumerTaskManager != nullptr) {
+        graphConsumerTaskManager->setInputConnector(connector);
+      }
+
+      this->input = std::dynamic_pointer_cast<Connector<T>>(connector);
+
+    }
+
+
+    /**
    * Releases memory back to its memory manager.
    * @tparam V the type of memory data
    * @param memory the memory
@@ -894,6 +911,34 @@ class TaskGraphConf : public AnyTaskGraphConf {
     this->wsProfileTaskManager->getInputConnector()->produceAnyData(profileData);
   }
 #endif
+
+  /**
+   * Wraps this task graph into an execution pipeline task, which will then be used to duplicate and execute across
+   * multiple GPUs.
+   * @param numPipelines the number of pipeline to spawn
+   * @param waitForInit Waits for all tasks in the graphs to finish initializing before the ExecutionPipeline returns from its initialize
+   * @return the execution pipeline task
+   * @note In order to decompose data to each pipeline, you must add rules to the execution pipeline task.
+   * @note Do not interact with or alter this TaskGraphConf after the ExecutionPipeline has been launched using a TaskGraphRuntime.
+   */
+  ExecutionPipeline<T, U> *createExecutionPipeline(size_t numPipelines, bool waitForInit = true)
+  {
+    return new ExecutionPipeline<T, U>(numPipelines, this);
+  }
+
+  /**
+   * Wraps this task graph into a TGTask. This will improve visualization of multiple graphs that interact with eachother.
+   * In addition the input/outputs of the TGTask, as connected in a new graph, will be incorporated into the
+   * task graph you use with the TGTask.
+   * @param waitForInit Waits for all tasks in the graph to finish initializing before the TGTask returns from its initialize
+   * @return the task graph task
+   * @note Do not interact with or alter this TaskGraphConf after the TGTask has been launched.
+   * @note Do not produce data into the TaskGraphConf that was used with the TGTask.
+   */
+  TGTask<T, U> *createTaskGraphTask(bool waitForInit = true)
+  {
+    return new TGTask<T, U>(this, waitForInit);
+  }
 
  private:
 
