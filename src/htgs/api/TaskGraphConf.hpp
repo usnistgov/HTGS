@@ -921,9 +921,9 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @note In order to decompose data to each pipeline, you must add rules to the execution pipeline task.
    * @note Do not interact with or alter this TaskGraphConf after the ExecutionPipeline has been launched using a TaskGraphRuntime.
    */
-  ExecutionPipeline<T, U> *createExecutionPipeline(size_t numPipelines, bool waitForInit = true)
+  ExecutionPipeline<T, U> *createExecutionPipeline(size_t numPipelines, std::string name = "Execution Pipeline", bool waitForInit = true)
   {
-    return new ExecutionPipeline<T, U>(numPipelines, this);
+    return new ExecutionPipeline<T, U>(numPipelines, this, name, waitForInit);
   }
 
   /**
@@ -935,9 +935,9 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @note Do not interact with or alter this TaskGraphConf after the TGTask has been launched.
    * @note Do not produce data into the TaskGraphConf that was used with the TGTask.
    */
-  TGTask<T, U> *createTaskGraphTask(bool waitForInit = true)
+  TGTask<T, U> *createTaskGraphTask(std::string name = "TGTask", bool waitForInit = true)
   {
-    return new TGTask<T, U>(this, waitForInit);
+    return new TGTask<T, U>(this, name, waitForInit);
   }
 
  private:

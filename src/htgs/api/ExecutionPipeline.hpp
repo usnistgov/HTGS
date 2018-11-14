@@ -97,9 +97,10 @@ class ExecutionPipeline : public ITask<T, U> {
    * Creates an execution pipeline, which encapsulates a graph and duplicates it numPipelines times
    * @param numPipelines the number of times to duplicate the graph
    * @param graph the graph that the execution pipeline manages
+   * @param name the name of the execution pipeline
    * @param waitForInit Indicates that the execution pipeline will wait for its underlying graphs to initialize prior to marking that it is initialized.
    */
-  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, bool waitForInit = true) {
+  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, std::string name = "Execution Pipeline", bool waitForInit = true) {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
@@ -114,9 +115,10 @@ class ExecutionPipeline : public ITask<T, U> {
    * @param numPipelines the number of times to duplicate the graph
    * @param graph the graph that the execution pipeline manages
    * @param rules the list of decomposition rules that will be used for this pipeline
+   * @param name the name of the execution pipeline
    * @param waitForInit Indicates that the execution pipeline will wait for its underlying graphs to initialize prior to marking that it is initialized.
    */
-  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, std::shared_ptr<IRuleList<T, T>> rules, bool waitForInit = true) {
+  ExecutionPipeline(size_t numPipelines, TaskGraphConf<T, U> *graph, std::shared_ptr<IRuleList<T, T>> rules, std::string name = "Execution Pipeline", bool waitForInit = true) {
     this->numPipelinesExec = numPipelines;
     this->graph = graph;
     this->inputBk = new Bookkeeper<T>();
@@ -178,7 +180,9 @@ class ExecutionPipeline : public ITask<T, U> {
   }
 
   /**
-   * Initializes the execution pipeline and duplicates the task graph based on the number of pipelines.
+   * Initializes the execution pipeline and duplicates the task graph based on the number of pipelines. If wait for initialization
+   * is set to true, then this function will only return once all threads from all sub-graphs have been spawned and
+   * initialized.
    *
    * @note This function should only be called by the HTGS API
    */
@@ -297,7 +301,7 @@ class ExecutionPipeline : public ITask<T, U> {
    * @return the name of the execution pipeline
    */
   std::string getName() {
-    return "Execution Pipeline";
+    return name;
   }
 
   /**
@@ -309,7 +313,7 @@ class ExecutionPipeline : public ITask<T, U> {
   ITask<T, U> *copy() {
     return new ExecutionPipeline<T, U>(this->numPipelinesExec,
                                        this->graph->copy(this->getPipelineId(), this->getNumPipelines()),
-                                       this->inputRules, this->waitForInit);
+                                       this->inputRules, this->name, this->waitForInit);
   }
 
   /**
@@ -485,7 +489,8 @@ class ExecutionPipeline : public ITask<T, U> {
   std::vector<TaskGraphRuntime *>
       *runtimes; //!< The list of Runtimes that will execute the TaskGraphs (one for each duplicate TaskGraph)
   std::vector<TaskGraphConf<T, U> *> *graphs; //!< The list of duplicate TaskGraphs
-  bool waitForInit;
+  bool waitForInit; //!< Flag whether to wait for initialization of sub-graphs to complete or not
+  std::string name; //!< The name given to the execution pipeline task
 };
 }
 
