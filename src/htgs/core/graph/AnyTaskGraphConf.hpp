@@ -102,6 +102,8 @@ class AnyTaskGraphConf {
   virtual ~AnyTaskGraphConf() {
     for (auto task : *taskManagers) {
       if (task != nullptr) {
+        HTGS_DEBUG_VERBOSE("AnyTaskGraphConf: " << this << " Freeing memory for TaskManager: " << task);
+
         delete task;
         task = nullptr;
       }

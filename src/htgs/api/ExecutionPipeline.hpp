@@ -108,6 +108,7 @@ class ExecutionPipeline : public ITask<T, U> {
     this->inputRules = std::shared_ptr<IRuleList<T, T>>(new IRuleList<T, T>());
     this->graphs = new std::vector<TaskGraphConf<T, U> *>();
     this->waitForInit = waitForInit;
+    this->name = name;
   }
 
   /**
@@ -126,6 +127,7 @@ class ExecutionPipeline : public ITask<T, U> {
     this->inputRules = rules;
     this->graphs = new std::vector<TaskGraphConf<T, U> *>();
     this->waitForInit = waitForInit;
+    this->name = name;
   }
 
   /**
@@ -133,10 +135,13 @@ class ExecutionPipeline : public ITask<T, U> {
    */
   ~ExecutionPipeline() {
     for (TaskGraphRuntime *runtime : *runtimes) {
+      HTGS_DEBUG_VERBOSE("Execution pipeline: " << this << " Freeing memory for runtime: " << runtime);
       delete runtime;
       runtime = nullptr;
     }
 
+
+    HTGS_DEBUG_VERBOSE("Execution pipeline: " << this << " Freeing memory for graph: " << graph);
     delete graph;
     graph = nullptr;
 

@@ -52,7 +52,7 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraphWithExecPipeline(int num
   htgs::TaskGraphConf<SimpleData, SimpleData> *mainGraph = new htgs::TaskGraphConf<SimpleData, SimpleData>();
 
 
-  htgs::ExecutionPipeline<SimpleData, SimpleData> *execPipeline = new htgs::ExecutionPipeline<SimpleData, SimpleData>(numPipelines, tg, true);
+  htgs::ExecutionPipeline<SimpleData, SimpleData> *execPipeline = new htgs::ExecutionPipeline<SimpleData, SimpleData>(numPipelines, tg);
   SimpleDecompRule *decompRule = new SimpleDecompRule(numPipelines);
 
   execPipeline->addInputRule(decompRule);
@@ -78,7 +78,6 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t nu
 
   htgs::ITask<SimpleData, SimpleData> *t;
   htgs::ITask<SimpleData, SimpleData> *startTask = nullptr;
-  htgs::ITask<SimpleData, SimpleData> *endTask = nullptr;
 
   htgs::ITask<SimpleData, SimpleData> *prevTask = nullptr;
   for (int chain = 0; chain < numChain; chain++) {
@@ -114,7 +113,7 @@ void testTGTasks(bool graphIsConsumer, bool graphIsProducer, int numChain, size_
 {
   auto graph = createGraph(numChain, numThreads, nullptr);
 
-  auto tgTask = graph->createTaskGraphTask(true);
+  auto tgTask = graph->createTaskGraphTask();
 
   auto mainGraph = new htgs::TaskGraphConf<SimpleData, SimpleData>();
 
@@ -236,13 +235,14 @@ void testGraphsWithinGraphs(int numGraphs, int numChain, size_t numThreads, bool
   EXPECT_EQ(count, numData * numPipelines);
 
   delete runtime;
+  runtime = nullptr;
 
 }
 
 
 void testTGTaskWithExecPipeline(int numPipelines, int numChain, size_t numThreads)
 {
-  auto graph = createGraphWithExecPipeline(numChain, numPipelines, numThreads);
+  auto graph = createGraphWithExecPipeline(numChain, numPipelines, 1);
 
   auto mainGraph = new htgs::TaskGraphConf<SimpleData, SimpleData>();
 
@@ -284,5 +284,5 @@ void testTGTaskWithExecPipeline(int numPipelines, int numChain, size_t numThread
   EXPECT_EQ(count, numData);
 
   delete runtime;
-
+  runtime = nullptr;
 }

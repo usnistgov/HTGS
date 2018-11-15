@@ -596,6 +596,7 @@ class TaskManagerThread {
    * Destructor
    */
   ~TaskManagerThread() {
+    HTGS_DEBUG_VERBOSE("TaskManagerThread: " << this << " is deleted");
   }
 
   /**

@@ -115,6 +115,8 @@ class TaskGraphRuntime {
   ~TaskGraphRuntime() {
     for (TaskManagerThread *t : runtimeThreads) {
       if (t) {
+        HTGS_DEBUG_VERBOSE("TaskGraphRuntime: " << this << " Freeing memory for TaskManagerThread: " << t);
+
         delete t;
         t = nullptr;
       }
@@ -133,6 +135,8 @@ class TaskGraphRuntime {
     }
 
     if (graph) {
+      HTGS_DEBUG_VERBOSE("TaskGraphRuntime: " << this << " Freeing memory for graph: " << graph);
+
       delete graph;
       graph = nullptr;
     }

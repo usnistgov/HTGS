@@ -57,15 +57,23 @@ namespace htgs {
      * @param waitForInitialization whether to wait for initialization or not, default = true
      */
     TGTask(TaskGraphConf<T, U> *taskGraphConf, std::string name = "TGTask", bool waitForInitialization = true) :
-        taskGraphConf(taskGraphConf), waitForInitialization(waitForInitialization), name(name) { }
+        taskGraphConf(taskGraphConf), runtime(nullptr), waitForInitialization(waitForInitialization), name(name) { }
 
         /**
          *  Deconstructs the TGTask
          */
     ~TGTask()
     {
-      delete runtime;
-      runtime = nullptr;
+      if (runtime) {
+        delete runtime;
+        runtime = nullptr;
+      } else{
+        if(taskGraphConf)
+        {
+          delete taskGraphConf;
+          taskGraphConf = nullptr;
+        }
+      }
     }
 
     /**
@@ -190,9 +198,48 @@ namespace htgs {
       oss << taskGraphConf->genDotGraphContent(flags);
       oss << "}" << std::endl;
 
+      oss = cleanupVisualization(taskGraphConf, oss.str());
 
       return oss.str();
     }
+
+    /**
+     * Moves the output connector outside of the execution pipeline graphs to cleanup how the graph looks during graph visualization.
+     * @param graph the graph
+     * @param str the dot file string to be cleaned up
+     * @return the improved dot file text
+     */
+    std::ostringstream cleanupVisualization(TaskGraphConf<T, U> *graph, std::string str)
+    {
+      std::istringstream iss(str);
+
+
+      std::ostringstream ossFinal;
+
+      auto outputConnectorName = graph->getOutputConnector()->getDotId();
+
+      std::string line;
+      std::vector<std::string> savedLines;
+      while(getline(iss, line))
+      {
+        if (line.find(outputConnectorName) == std::string::npos)
+        {
+          ossFinal << line << std::endl;
+        }
+        else
+        {
+          savedLines.push_back(line);
+        }
+      }
+
+      for(std::string line2 : savedLines)
+      {
+        ossFinal << line2 << std::endl;
+      }
+
+      return ossFinal;
+    }
+
 
 
    private:

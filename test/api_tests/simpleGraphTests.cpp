@@ -89,7 +89,7 @@ htgs::TaskGraphConf<SimpleData, SimpleData> *createGraph(int numChain, size_t nu
   htgs::TaskGraphConf<SimpleData, SimpleData> *mainGraph = new htgs::TaskGraphConf<SimpleData, SimpleData>();
 
 
-  htgs::ExecutionPipeline<SimpleData, SimpleData> *execPipeline = new htgs::ExecutionPipeline<SimpleData, SimpleData>(numPipelines, tg, true);
+  htgs::ExecutionPipeline<SimpleData, SimpleData> *execPipeline = new htgs::ExecutionPipeline<SimpleData, SimpleData>(numPipelines, tg);
 
   SimpleDecompRule *decompRule = new SimpleDecompRule(numPipelines);
 

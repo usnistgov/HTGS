@@ -111,6 +111,7 @@ class TaskManager : public AnyTaskManager {
   ////////////////////////////////////////////////////////////////////////////////
 
   ~TaskManager() override {
+    HTGS_DEBUG_VERBOSE("TaskManager: " << this << " is deleting task function " << taskFunction);
     delete taskFunction;
     taskFunction = nullptr;
   }
