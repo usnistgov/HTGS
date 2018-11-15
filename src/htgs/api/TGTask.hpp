@@ -59,9 +59,9 @@ namespace htgs {
     TGTask(TaskGraphConf<T, U> *taskGraphConf, std::string name = "TGTask", bool waitForInitialization = true) :
         taskGraphConf(taskGraphConf), runtime(nullptr), waitForInitialization(waitForInitialization), name(name) { }
 
-        /**
-         *  Deconstructs the TGTask
-         */
+    /**
+     *  Deconstructs the TGTask
+     */
     ~TGTask()
     {
       if (runtime) {
@@ -199,8 +199,12 @@ namespace htgs {
       oss << "fillcolor=cornsilk;" << std::endl;
       oss << "color=forestgreen;" << std::endl;
 
-      taskGraphConf->setInputConnector(input);
-      taskGraphConf->setOutputConnector(output);
+      if (input != nullptr)
+        taskGraphConf->setInputConnector(input);
+
+      if (output != nullptr)
+        taskGraphConf->setOutputConnector(output);
+
       oss << taskGraphConf->genDotGraphContent(flags);
       oss << "}" << std::endl;
 
