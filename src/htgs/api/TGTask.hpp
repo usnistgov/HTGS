@@ -85,18 +85,24 @@ namespace htgs {
     void initialize() override {
       HTGS_DEBUG("Initializing TGTask with graph " << taskGraphConf);
 
-      // Increment output to account for the updated output connector
-      this->getOwnerTaskManager()->getOutputConnector()->incrementInputTaskCount();
+      if (this->getOwnerTaskManager()->getOutputConnector() != nullptr) {
 
-      HTGS_ASSERT(taskGraphConf->getInputConnector()->getQueueSize() == 0,
-          "The TGTask " << this->getName()
-          << " has " << taskGraphConf->getInputConnector()->getQueueSize() << " items in its queue, which are going to be "
-          << "lost. Do not produce data into the task graph that the TGTask is wrapped.");
+        // Increment output to account for the updated output connector
+        this->getOwnerTaskManager()->getOutputConnector()->incrementInputTaskCount();
+        taskGraphConf->setOutputConnector(this->getOwnerTaskManager()->getOutputConnector());
 
-      // redirect input/output connectors and attach to the task graph
-      taskGraphConf->setInputConnector(this->getOwnerTaskManager()->getInputConnector());
-      taskGraphConf->setOutputConnector(this->getOwnerTaskManager()->getOutputConnector());
+      }
 
+      if (this->getOwnerTaskManager()->getInputConnector() != nullptr) {
+        HTGS_ASSERT(taskGraphConf->getInputConnector()->getQueueSize() == 0,
+                    "The TGTask " << this->getName()
+                                  << " has " << taskGraphConf->getInputConnector()->getQueueSize()
+                                  << " items in its queue, which are going to be "
+                                  << "lost. Do not produce data into the task graph that the TGTask is wrapped.");
+
+        // redirect input connectors and attach to the task graph
+        taskGraphConf->setInputConnector(this->getOwnerTaskManager()->getInputConnector());
+      }
 
       // Launch the graph
       runtime = new TaskGraphRuntime(taskGraphConf);
