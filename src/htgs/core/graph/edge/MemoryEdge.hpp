@@ -69,6 +69,14 @@ class MemoryEdge : public EdgeDescriptor {
     auto getMemoryConnector = std::shared_ptr<Connector<MemoryData<T>>>(new Connector<MemoryData<T>>());
     auto releaseMemoryConnector = std::shared_ptr<Connector<MemoryData<T>>>(new Connector<MemoryData<T>>());
 
+    if (memTaskManager->getInputConnector() != nullptr)
+      throw std::runtime_error(
+          "Error memory manager: " + getMemoryTask->getName() + " is already connected to the graph! Are you trying to reuse the same memory manager instance?");
+
+    if (memTaskManager->getOutputConnector() != nullptr)
+      throw std::runtime_error(
+          "Error memory manager: " + getMemoryTask->getName() + " is already connected to the graph! Are you trying to reuse the same memory manager instance?");
+
     memTaskManager->setInputConnector(releaseMemoryConnector);
     memTaskManager->setOutputConnector(getMemoryConnector);
 

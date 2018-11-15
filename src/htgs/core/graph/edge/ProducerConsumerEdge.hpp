@@ -65,6 +65,12 @@ class ProducerConsumerEdge : public EdgeDescriptor {
             connector = std::shared_ptr<Connector<U>>(new Connector<U>());
     }
 
+    if (producerTaskManager->getOutputConnector() != nullptr)
+      throw std::runtime_error(
+          "Error Producer Task: " + producerTaskManager->getName() + " for " + consumerTaskManager->getName()
+          + " is already connected to the graph! Are you trying to reuse the same instance and have "
+          + producerTaskManager->getName() + " produce to mutiple tasks?");
+
     connector->incrementInputTaskCount();
 
     consumerTaskManager->setInputConnector(connector);
