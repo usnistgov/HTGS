@@ -122,9 +122,10 @@ int main() {
 
   auto runtime = new htgs::TaskGraphRuntime(taskGraphMain);
   runtime->executeRuntime();
+  taskGraphMain->waitForInitialization();
 
 
-  int numData = 100000;
+  int numData = 10000000;
   for (int i = 0; i < numData; i++) {
     auto inputData = new InputData(i, i);
     taskGraphMain->produceData(inputData);
@@ -133,7 +134,7 @@ int main() {
   taskGraphMain->finishedProducingData();
 
 
-  taskGraphMain->waitForInitialization();
+
 
   while(!taskGraphMain->isOutputTerminated()) {
     auto data = taskGraphMain->consumeData();

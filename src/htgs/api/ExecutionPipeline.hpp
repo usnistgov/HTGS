@@ -426,7 +426,7 @@ class ExecutionPipeline : public ITask<T, U> {
         oss << "}" << std::endl;
         pipeline++;
 
-        oss = cleanupVisualization(g, oss.str());
+        oss.str(cleanupVisualization(g, oss.str()));
 
       }
     } else {
@@ -441,7 +441,7 @@ class ExecutionPipeline : public ITask<T, U> {
       oss << graph->genDotGraphContent(flags);
       oss << "}" << std::endl;
 
-       oss = cleanupVisualization(graph, oss.str());
+       oss.str(cleanupVisualization(graph, oss.str()));
     }
 
     return oss.str();
@@ -456,7 +456,7 @@ class ExecutionPipeline : public ITask<T, U> {
    * @param str the dot file string to be cleaned up
    * @return the improved dot file text
    */
-  std::ostringstream cleanupVisualization(TaskGraphConf<T, U> *graph, std::string str)
+  std::string cleanupVisualization(TaskGraphConf<T, U> *graph, std::string str)
   {
     std::istringstream iss(str);
 
@@ -484,7 +484,7 @@ class ExecutionPipeline : public ITask<T, U> {
       ossFinal << line2 << std::endl;
     }
 
-    return ossFinal;
+    return ossFinal.str();
   }
 
   size_t numPipelinesExec; //!< The number of pipelines that will spawn from the ExecutionPipeline

@@ -208,9 +208,7 @@ namespace htgs {
       oss << taskGraphConf->genDotGraphContent(flags);
       oss << "}" << std::endl;
 
-      oss = cleanupVisualization(taskGraphConf, oss.str());
-
-      return oss.str();
+      return cleanupVisualization(taskGraphConf, oss.str());
     }
 
     /**
@@ -219,7 +217,7 @@ namespace htgs {
      * @param str the dot file string to be cleaned up
      * @return the improved dot file text
      */
-    std::ostringstream cleanupVisualization(TaskGraphConf<T, U> *graph, std::string str)
+    std::string cleanupVisualization(TaskGraphConf<T, U> *graph, std::string str)
     {
       std::istringstream iss(str);
 
@@ -247,7 +245,7 @@ namespace htgs {
         ossFinal << line2 << std::endl;
       }
 
-      return ossFinal;
+      return ossFinal.str();
     }
 
 
