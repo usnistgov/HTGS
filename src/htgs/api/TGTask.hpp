@@ -19,6 +19,8 @@
 
 namespace htgs {
 
+  class TaskGraphRuntime;
+
   /**
    * @class TGTask TGTask.hpp <htgs/api/TGTask.hpp>
    * @brief TGTask is the task graph task, which is used to bundle a graph as a task, which can then be connected to other graphs.

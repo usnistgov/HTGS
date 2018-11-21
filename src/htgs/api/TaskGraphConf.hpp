@@ -33,6 +33,12 @@
 
 namespace htgs {
 
+  template <class T, class U>
+  class ExecutionPipeline;
+
+  template <class T, class U>
+  class TGTask;
+
 /**
  * @class TaskGraphConf TaskGraphConf.hpp <htgs/api/TaskGraphConf.hpp>
  * @brief Manages a group of connected ITasks and their connections.

@@ -27,11 +27,16 @@
 #include <htgs/api/IData.hpp>
 
 namespace htgs {
-template<class V, class W>
-class IRule;
 
-template<class V, class W>
-class TaskGraphConf;
+  class TaskGraphRuntime;
+
+  template<class V, class W>
+  class IRule;
+
+  template<class V, class W>
+  class TaskGraphConf;
+
+
 
 /**
  * @class ExecutionPipeline ExecutionPipeline.hpp <htgs/api/ExecutionPipeline.hpp>
