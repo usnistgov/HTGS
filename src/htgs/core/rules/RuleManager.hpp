@@ -110,7 +110,7 @@ class RuleManager : public AnyRuleManagerInOnly<T> {
   }
 
   std::string getName(int flags = 0) override {
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nout: " + this->outTypeName()) : "");
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\\nout: " + this->outTypeName()) : "");
 
     return this->rule->getName() + inOutLabel;
   }

@@ -191,11 +191,11 @@ namespace htgs {
                        std::shared_ptr<AnyConnector> output) override {
       std::ostringstream oss;
 
-      std::string computeTimeStr = taskGraphConf->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)taskGraphConf->getGraphComputeTime() / 1000000.0) + " s\n";
-      std::string createTimeStr = taskGraphConf->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)taskGraphConf->getGraphCreationTime() / 1000000.0) + " s\n";
+      std::string computeTimeStr = taskGraphConf->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)taskGraphConf->getGraphComputeTime() / 1000000.0) + " s\\n";
+      std::string createTimeStr = taskGraphConf->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)taskGraphConf->getGraphCreationTime() / 1000000.0) + " s\\n";
 
       oss << "subgraph cluster_" << dotId << " {" << std::endl;
-      oss << "label=\"" << getName() << "\n" << computeTimeStr << createTimeStr << "\";" << std::endl;
+      oss << "label=\"" << getName() << "\\n" << computeTimeStr << createTimeStr << "\";" << std::endl;
       oss << "style=\"dashed\";" << std::endl;
       oss << "style =\"filled\";" << std::endl;
       oss << "fillcolor=cornsilk;" << std::endl;

@@ -855,9 +855,9 @@ class TaskGraphConf : public AnyTaskGraphConf {
     oss << "node[shape=record, fontsize=10, fontname=\"Verdana\"];" << std::endl;
     oss << "edge[fontsize=10, fontname=\"Verdana\"];" << std::endl;
 
-    std::string graphTitleStr = graphTitle == "" ? "" : (graphTitle + "\n");
-    std::string computeTimeStr = this->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)this->getGraphComputeTime() / 1000000.0) + " s\n";
-    std::string createTimeStr = this->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)this->getGraphCreationTime() / 1000000.0) + " s\n";
+    std::string graphTitleStr = graphTitle == "" ? "" : (graphTitle + "\\n");
+    std::string computeTimeStr = this->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)this->getGraphComputeTime() / 1000000.0) + " s\\n";
+    std::string createTimeStr = this->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)this->getGraphCreationTime() / 1000000.0) + " s\\n";
 
 
 
@@ -875,21 +875,21 @@ class TaskGraphConf : public AnyTaskGraphConf {
     oss << profiler.genDotProfile(oss.str(), colorFlag);
 
     if (getGraphConsumerTaskManager() != nullptr)
-      oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\n"
+      oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\\n"
           << ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getInputConnector()->getProducerCount()) : "Active Producers: " + std::to_string(this->getInputConnector()->getProducerCount()))
-          << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\nQueue Size: " + std::to_string(this->getInputConnector()->getQueueSize()))
-          << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n" + this->getInputConnector()->typeName()) : "")
+          << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\\nQueue Size: " + std::to_string(this->getInputConnector()->getQueueSize()))
+          << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\\n" + this->getInputConnector()->typeName()) : "")
           << "\"];" << std::endl;
 
     if (getGraphProducerTaskManagers()->size() > 0)
-      oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\n"
+      oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\\n"
         << ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getInputConnector()->getProducerCount()) : "Active Producers: " + std::to_string(this->getOutputConnector()->getProducerCount()))
-        << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\nQueue Size: " + std::to_string(this->getOutputConnector()->getQueueSize()))
-          << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\n" + this->getOutputConnector()->typeName()) : "")
+        << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\\nQueue Size: " + std::to_string(this->getOutputConnector()->getQueueSize()))
+          << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\\n" + this->getOutputConnector()->typeName()) : "")
           << "\"]; }" << std::endl;
 
     if (oss.str().find("mainThread") != std::string::npos) {
-      oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = aquamarine4]; }\n";
+      oss << "{ rank = sink; mainThread[label=\"Main Thread\", fillcolor = aquamarine4]; }" << std::endl;
     }
 
     oss << "}" << std::endl;

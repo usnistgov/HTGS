@@ -104,7 +104,7 @@ class AnyConnector {
   std::string genDot(int flags) {
     return getDotId() + "[label=\""
         + ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getProducerCount()) : "Active Producers: " + std::to_string(this->getProducerCount()))
-        + ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : ", Queue Size: " + std::to_string(this->getQueueSize()))
+        + ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\\n Queue Size: " + std::to_string(this->getQueueSize()))
 #ifdef PROFILE_QUEUE
         + ", enqLock, deqLock, enqWait, deqWait::" + getQueueTiming()
 #endif

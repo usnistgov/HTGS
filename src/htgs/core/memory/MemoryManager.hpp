@@ -239,11 +239,11 @@ class MemoryManager : public ITask<MemoryData<T>, MemoryData<T>> {
 
     if (output != nullptr) {
       oss << dotId << " -> " << output->getDotId() << "[color=sienna];" << std::endl;
-      oss << output->getDotId() + "[label=\"" + this->typeName()
-          + "\",style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];\n";
+      oss << output->getDotId() << "[label=\"" + this->typeName()
+          << "\",style=filled,shape=oval,width=.2,height=.2, fillcolor=sienna, color=sienna];" << std::endl;
     }
 
-    oss << dotId + ";\n";
+    oss << dotId + ";" << std::endl;
 
     return oss.str();
 

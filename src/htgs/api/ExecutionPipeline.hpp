@@ -417,12 +417,12 @@ class ExecutionPipeline : public ITask<T, U> {
     if (this->graphs->size() > 0) {
       int pipeline = 0;
       for (auto g : *graphs) {
-        std::string computeTimeStr = g->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)g->getGraphComputeTime() / 1000000.0) + " s\n";
-        std::string createTimeStr = g->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)g->getGraphCreationTime() / 1000000.0) + " s\n";
+        std::string computeTimeStr = g->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)g->getGraphComputeTime() / 1000000.0) + " s\\n";
+        std::string createTimeStr = g->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)g->getGraphCreationTime() / 1000000.0) + " s\\n";
 
 
         oss << "subgraph cluster_" << dotId << std::to_string(pipeline) << " {" << std::endl;
-        oss << "label=\"" << getName() << std::to_string(pipeline) << "\n" << computeTimeStr << createTimeStr << "\";" << std::endl;
+        oss << "label=\"" << getName() << std::to_string(pipeline) << "\\n" << computeTimeStr << createTimeStr << "\";" << std::endl;
         oss << "style=\"dashed\";" << std::endl;
         oss << "style =\"filled\";" << std::endl;
         oss << "fillcolor=lightgrey;" << std::endl;
@@ -431,8 +431,11 @@ class ExecutionPipeline : public ITask<T, U> {
         oss << "}" << std::endl;
         pipeline++;
 
-        oss.str(cleanupVisualization(g, oss.str()));
+        std::string clean = cleanupVisualization(g, oss.str());
 
+        oss.str("");
+        oss.clear();
+        oss << clean;
       }
     } else {
       oss << "subgraph cluster_" << dotId << " {" << std::endl;
@@ -446,7 +449,11 @@ class ExecutionPipeline : public ITask<T, U> {
       oss << graph->genDotGraphContent(flags);
       oss << "}" << std::endl;
 
-       oss.str(cleanupVisualization(graph, oss.str()));
+      std::string clean = cleanupVisualization(graph, oss.str());
+
+      oss.str("");
+      oss.clear();
+      oss << clean;
     }
 
     return oss.str();

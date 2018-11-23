@@ -212,9 +212,9 @@ class Bookkeeper : public ITask<T, VoidData> {
 //      ruleManStr.erase(0, 1);
       oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName(flags) << "\"];" << std::endl;
     }
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\nin: " + this->inTypeName()) : "");
+    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\\nin: " + this->inTypeName()) : "");
 
-    oss << idStr + "[label=\"Bookkeeper" + inOutLabel + "\"];\n";
+    oss << idStr + "[label=\"Bookkeeper" + inOutLabel + "\"];" << std::endl;
 
     return oss.str();
   }

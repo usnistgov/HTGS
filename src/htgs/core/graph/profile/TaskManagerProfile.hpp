@@ -57,16 +57,16 @@ class TaskManagerProfile {
     std::string ret = "";
 #ifdef PROFILE
     if ((flags & DOTGEN_FLAG_HIDE_PROFILE_COMP_TIME) == 0)
-      ret += "computeTime: " + std::to_string((double)computeTime/1000000.0) + " s\n";
+      ret += "computeTime: " + std::to_string((double)computeTime/1000000.0) + " s\\n";
 
     if ((flags & DOTGEN_FLAG_HIDE_PROFILE_WAIT_TIME) == 0)
-      ret += "waitTime: " + std::to_string((double)waitTime/1000000.0) + " s\n";
+      ret += "waitTime: " + std::to_string((double)waitTime/1000000.0) + " s\\n";
 
     if ((flags & DOTGEN_FLAG_HIDE_PROFILE_MAX_Q_SZ) == 0)
-      ret += "maxQueueSize: " + std::to_string(maxQueueSize) + "\n";
+      ret += "maxQueueSize: " + std::to_string(maxQueueSize) + "\\n";
 
     if ((flags & DOTGEN_FLAG_HIDE_MEMORY_WAIT_TIME) == 0 && memoryWaitTime > 0)
-      ret += "memoryWaitTime: " + std::to_string((double)memoryWaitTime/1000000.0) + " sec\n";
+      ret += "memoryWaitTime: " + std::to_string((double)memoryWaitTime/1000000.0) + " sec\\n";
 #endif
     return ret;
   }
