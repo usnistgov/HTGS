@@ -862,7 +862,7 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
 
     oss << "graph [compound=true, labelloc=top, labeljust=left, "
-        << "label=\"" << graphTitleStr << computeTimeStr << createTimeStr <<customTitleText << "\"];" << std::endl;
+        << "label=\"" << graphTitleStr << computeTimeStr << createTimeStr <<customTitleText << "\",pad=\"0.5\", nodesep=\"0.5\", ranksep=\"0\"];" << std::endl;
 
 
     // Gather profile data

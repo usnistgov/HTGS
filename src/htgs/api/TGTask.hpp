@@ -227,27 +227,43 @@ namespace htgs {
       std::ostringstream ossFinal;
 
       auto outputConnectorName = graph->getOutputConnector()->getDotId();
+      auto inputConnectorName = graph->getInputConnector()->getDotId();
+
 
       std::string line;
-      std::vector<std::string> savedLines;
+      std::vector<std::string> endSavedLines;
+      std::vector<std::string> begSavedLines;
       while(getline(iss, line))
       {
-        if (line.find(outputConnectorName) == std::string::npos)
+        if (line.find(inputConnectorName) != std::string::npos)
         {
-          ossFinal << line << std::endl;
+          begSavedLines.push_back(line);
+        }
+        else if (line.find(outputConnectorName) != std::string::npos)
+        {
+          endSavedLines.push_back(line);
         }
         else
         {
-          savedLines.push_back(line);
+          ossFinal << line << std::endl;
         }
       }
 
-      for(std::string line2 : savedLines)
+      for(std::string line2 : endSavedLines)
       {
         ossFinal << line2 << std::endl;
       }
 
-      return ossFinal.str();
+      std::ostringstream ret;
+      for (std::string line2 : begSavedLines)
+      {
+        ret << line2 << std::endl;
+      }
+
+      ret << ossFinal.str();
+
+
+      return ret.str();
     }
 
 
