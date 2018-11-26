@@ -844,6 +844,22 @@ class TaskGraphConf : public AnyTaskGraphConf {
   }
 
   /**
+   * Generates the custom dot profiles for all tasks in this graph
+   * @param profileUtils the profile utils for color coding tasks
+   * @param colorFlag the color flag that was specified
+   * @return the additional custom dot file content
+   */
+  std::string genCustomDotForTasks(ProfileUtils *profileUtils, int colorFlag)
+  {
+    std::ostringstream oss;
+
+    for (AnyTaskManager *bTask : *this->getTaskManagers()) {
+      oss << bTask->getTaskFunction()->genCustomDot(profileUtils, colorFlag);
+    }
+    return oss.str();
+  }
+
+  /**
    * Generates the dot graph as a string
    */
   std::string genDotGraph(int flags, int colorFlag, std::string graphTitle = "", std::string customTitleText = "") override {
@@ -873,6 +889,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
       oss << bTask->getDot(flags);
     }
     oss << profiler.genDotProfile(oss.str(), colorFlag);
+
+    oss << genCustomDotForTasks(profiler.getProfileUtils(), colorFlag);
 
     if (getGraphConsumerTaskManager() != nullptr)
       oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\\n"

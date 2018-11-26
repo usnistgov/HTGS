@@ -377,6 +377,37 @@ class ExecutionPipeline : public ITask<T, U> {
 //
 //#endif
 
+  std::string genCustomDot(ProfileUtils *profileUtils, int colorFlag) override {
+    if (profileUtils == nullptr)
+      return "";
+
+    std::ostringstream oss;
+    int pipeline = 0;
+    for (auto g : *graphs) {
+      double time = 0.0;
+      if (colorFlag == DOTGEN_COLOR_COMP_TIME)
+        time = (double) g->getGraphComputeTime();
+      else if (colorFlag == DOTGEN_COLOR_WAIT_TIME)
+        time = (double) this->getOwnerTaskManager()->getWaitTime();
+      else if (colorFlag == DOTGEN_COLOR_MAX_Q_SZ)
+        time = (double) this->getOwnerTaskManager()->getMaxQueueSize();
+
+      oss << "subgraph cluster_" << this->getDotId() << std::to_string(pipeline) << " {" << std::endl;
+
+      std::string color = profileUtils->getColorForTime(time);
+
+      oss << (colorFlag != 0 ? "penwidth=5\ncolor=\"" + color + "\"" : "color=orange");
+      oss << std::endl;
+      pipeline++;
+
+      oss << g->genCustomDotForTasks(profileUtils, colorFlag);
+
+      oss << "}" << std::endl;
+    }
+
+    return oss.str();
+  }
+
   /**
    * @copydoc ITask::genDot
    * @note This function will generate the dot notation for all sub-graphs within the execution pipeline.
@@ -419,7 +450,6 @@ class ExecutionPipeline : public ITask<T, U> {
       for (auto g : *graphs) {
         std::string computeTimeStr = g->getGraphComputeTime() == 0 ? "" : "Compute time: " + std::to_string((double)g->getGraphComputeTime() / 1000000.0) + " s\\n";
         std::string createTimeStr = g->getGraphCreationTime() == 0 ? "" : "Creation time: " + std::to_string((double)g->getGraphCreationTime() / 1000000.0) + " s\\n";
-
 
         oss << "subgraph cluster_" << dotId << std::to_string(pipeline) << " {" << std::endl;
         oss << "label=\"" << getName() << std::to_string(pipeline) << "\\n" << computeTimeStr << createTimeStr << "\";" << std::endl;

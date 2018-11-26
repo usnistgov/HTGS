@@ -24,6 +24,8 @@
 #include <htgs/types/MMType.hpp>
 #include <htgs/debug/debug_message.hpp>
 #include <htgs/types/TaskGraphDotGenFlags.hpp>
+#include <htgs/utils/ProfileUtils.hpp>
+
 
 #ifdef WS_PROFILE
 #include <htgs/core/graph/profile/ProfileData.hpp>
@@ -231,6 +233,14 @@ class AnyITask {
   }
 
   /**
+   * Virtual function to generate customized dot file
+   * @param profiler the profiler that contains color maps
+   * @return the dot file text that will be added near the end of the dot file
+   */
+  virtual std::string genCustomDot(ProfileUtils *profileUtils, int colorFlag)
+  { return ""; }
+
+  /**
   * Virtual function that is called to debug the ITask
   */
   virtual void debug() {}
@@ -240,6 +250,8 @@ class AnyITask {
    * @return a string representation of the debug output that is added to the dot graph.
    */
   virtual std::string debugDotNode() { return ""; }
+
+
 
   /**
    * Virtual function that is called to provide profile output for the ITask

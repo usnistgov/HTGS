@@ -19,8 +19,13 @@
 
 #include <htgs/core/graph/profile/TaskManagerProfile.hpp>
 #include <htgs/core/graph/AnyTaskGraphConf.hpp>
+#include <htgs/api/ExecutionPipeline.hpp>
+#include <htgs/api/TGTask.hpp>
+#include <htgs/utils/ProfileUtils.hpp>
 #include <set>
 namespace htgs {
+
+  class TaskManagerProfile;
 
 /**
  * @class TaskGraphProfiler TaskGraphProfiler.hpp <htgs/core/graph/profile/TaskGraphProfiler.hpp>
@@ -56,6 +61,11 @@ class TaskGraphProfiler {
 
     delete taskManagerProfiles;
     taskManagerProfiles = nullptr;
+
+    if (profileUtils) {
+      delete profileUtils;
+      profileUtils = nullptr;
+    }
   }
 
   /**
@@ -132,12 +142,27 @@ class TaskGraphProfiler {
         ret +=(useColorMap ? ",penwidth=5,color=\"" + colorMap->at(dotId) + "\"" : ", color=" + tFun->getDotShapeColor());
         ret += ",width=.2,height=.2];\n";
       }
+//      else if (curDotGraph.find("subgraph cluster_" + dotId) != std::string::npos)
+//      {
+//         Add custom profiling for execution pipeline and TGTask
+//        ret += tMan->getTaskFunction()->genCustomDot(profileUtils, colorFlag);
+//      }
     }
 
     delete colorMap;
     colorMap = nullptr;
 
     return ret;
+  }
+
+
+  /**
+   * Gets the profile utility class to obtain color codes based on the total execution time
+   * @return the profile utility class
+   */
+  ProfileUtils *getProfileUtils()
+  {
+    return profileUtils;
   }
 
  private:
@@ -155,7 +180,6 @@ class TaskGraphProfiler {
 
     std::set<std::string> keys;
 
-    // TODO: For gathing data, need to use matching input and output connectors, name is unreliable
     // Gather multimap
     for (auto t : *taskManagerProfiles) {
       auto tMan = t.first;
@@ -219,13 +243,8 @@ class TaskGraphProfiler {
   std::unordered_map<std::string, std::string> *genColorMap(int colorFlag) {
     std::unordered_map<std::string, std::string> *colorMap = new std::unordered_map<std::string, std::string>();
 
-    int rColor[10] = {0, 0, 0, 0, 85, 170, 255, 255, 255, 255};
-    int gColor[10] = {0, 85, 170, 255, 255, 255, 255, 170, 85, 0};
-    int bColor[10] = {255, 255, 255, 255, 170, 85, 0, 0, 0, 0};
 
     std::deque<double> vals;
-    double maxTime = 0.0;
-    double totalTime = 0.0;
     for (auto v : *taskManagerProfiles) {
       double val = v.second->getValue(colorFlag);
       if (val > 0) {
@@ -236,48 +255,34 @@ class TaskGraphProfiler {
         maxTime = val;
     }
 
+    profileUtils = new ProfileUtils(maxTime);
+
     for (auto v : *taskManagerProfiles) {
       if (v.second->getValue(colorFlag) == 0.0) {
         colorMap->insert(std::pair<std::string, std::string>(v.first->getTaskFunction()->getDotId(), "black"));
         continue;
       }
 
-      int red = 0;
-      int green = 0;
-      int blue = 0;
+      double tManTime = v.second->getValue(colorFlag);
 
-      // compute percentage of totalTime
-      int perc = (int) (v.second->getValue(colorFlag) / maxTime * 100.0);
-
-      if (perc % 10 != 0)
-        perc = perc + 10 - (perc % 10);
-
-      int index = (perc / 10);
-
-      if (index < 0)
-        index = 0;
-
-      if (index >= 10)
-        index = 9;
-
-      red = rColor[index];
-      green = gColor[index];
-      blue = bColor[index];
-
-      char hexcol[16];
-
-      snprintf(hexcol, sizeof(hexcol), "%02x%02x%02x", red & 0xff, green & 0xff, blue & 0xff);
-      std::string color(hexcol);
-      color = "#" + color;
+      std::string color = profileUtils->getColorForTime(tManTime);
 
       colorMap->insert(std::pair<std::string, std::string>(v.first->getTaskFunction()->getDotId(), color));
     }
 
+
+
     return colorMap;
   }
 
+
   std::map<AnyTaskManager *, TaskManagerProfile *> *taskManagerProfiles; //!< The profile data for all task managers
   int flags; //!< The DOTGEN bit flags
+
+  ProfileUtils *profileUtils = nullptr;
+
+  double totalTime = 0.0; //!< Total execution time for all task managers
+  double maxTime = 0.0; //!< The maximum time from all task managers
 };
 }
 

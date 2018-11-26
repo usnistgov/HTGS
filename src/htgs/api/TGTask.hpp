@@ -152,6 +152,35 @@ namespace htgs {
       return new TGTask<T,U>(this->taskGraphConf->copy(this->getPipelineId(), this->getNumPipelines()), name, waitForInitialization);
     }
 
+    std::string genCustomDot(ProfileUtils *profileUtils, int colorFlag) override {
+      if (profileUtils == nullptr)
+        return "";
+
+      std::ostringstream oss;
+
+      double time = 0.0;
+      if (colorFlag == DOTGEN_COLOR_COMP_TIME)
+        time = (double) taskGraphConf->getGraphComputeTime();
+      else if (colorFlag == DOTGEN_COLOR_WAIT_TIME)
+        time = (double) this->getOwnerTaskManager()->getWaitTime();
+      else if (colorFlag == DOTGEN_COLOR_MAX_Q_SZ)
+        time = (double) this->getOwnerTaskManager()->getMaxQueueSize();
+
+      oss << "subgraph cluster_" << this->getDotId() << " {" << std::endl;
+
+      std::string color = profileUtils->getColorForTime(time);
+
+      oss << (colorFlag != 0 ? "penwidth=5\ncolor=\"" + color + "\"" : "color=forestgreen");
+      oss << std::endl;
+
+      oss << taskGraphConf->genCustomDotForTasks(profileUtils, colorFlag);
+
+      oss << "}" << std::endl;
+
+      return oss.str();
+    }
+
+
     /**
      * Gathers profiling data for the underlying htgs::TaskGraphConf
      * @param taskManagerProfiles the profiling data
@@ -176,6 +205,17 @@ namespace htgs {
       return true;
     }
 
+//    std::string getDotCustomProfile() override {
+//      std::ostringstream oss;
+//      oss << "subgraph cluster_" << this->getDotId() << " {" << std::endl;
+//
+//      oss << useColorMap ? ",penwidth=5,color=\"" + colorMap->at(dotId) + "\"" : ", color=" + tFun->getDotShapeColor());
+//      ret += ",width=.2,height=.2];\n"
+//
+//
+//      oss << "}" << std::endl;
+//
+//    }
 
     /**
      * Generates the sub graph dot file representation of the TGTask
