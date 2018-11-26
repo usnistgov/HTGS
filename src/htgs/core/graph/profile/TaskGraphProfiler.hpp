@@ -74,6 +74,7 @@ class TaskGraphProfiler {
    */
   void buildProfile(AnyTaskGraphConf *graphConf) {
     graphConf->gatherProfilingData(taskManagerProfiles);
+    taskGraphComputeTime = graphConf->getGraphComputeTime();
   }
 
   /**
@@ -255,7 +256,15 @@ class TaskGraphProfiler {
         maxTime = val;
     }
 
-    profileUtils = new ProfileUtils(maxTime);
+
+    if (colorFlag == DOTGEN_COLOR_COMP_TIME)
+    {
+      profileUtils = new ProfileUtils(taskGraphComputeTime);
+    } else {
+      profileUtils = new ProfileUtils(maxTime);
+    }
+
+
 
     for (auto v : *taskManagerProfiles) {
       if (v.second->getValue(colorFlag) == 0.0) {
@@ -283,6 +292,7 @@ class TaskGraphProfiler {
 
   double totalTime = 0.0; //!< Total execution time for all task managers
   double maxTime = 0.0; //!< The maximum time from all task managers
+  double taskGraphComputeTime;
 };
 }
 
