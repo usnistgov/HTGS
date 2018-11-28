@@ -210,7 +210,9 @@ class Bookkeeper : public ITask<T, VoidData> {
 
       std::string ruleManStr = ruleMan->getConnector()->getDotId();
 //      ruleManStr.erase(0, 1);
-      oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName(flags) << "\"];" << std::endl;
+      if ((flags & DOTGEN_FLAG_SHOW_CONNECTORS) != 0 || (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) != 0) {
+        oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName(flags) << "\"];" << std::endl;
+      }
     }
     std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\\nin: " + this->inTypeName()) : "");
 
@@ -218,6 +220,36 @@ class Bookkeeper : public ITask<T, VoidData> {
 
     return oss.str();
   }
+
+
+    std::string genDotProducerEdgeToTask(std::map<std::shared_ptr<AnyConnector>, AnyITask *> &inputConnectorDotMap, int dotFlags) override
+  {
+    std::ostringstream oss;
+    for (AnyRuleManagerInOnly<T> *ruleMan : *ruleManagers) {
+      auto connectorPair = inputConnectorDotMap.find(ruleMan->getConnector());
+      if (connectorPair != inputConnectorDotMap.end())
+      {
+        oss << this->getDotId() << " -> " << connectorPair->second->getConsumerDotIds() << "[label=\"" << ruleMan->getName(dotFlags) << "\"];" << std::endl;
+      }
+    }
+
+    return oss.str();
+  }
+
+
+//  std::string genDotProducerEdgeWithoutConnector(std::string consumerDotId, int flags) override
+//  {
+//    std::cerr << "GENERATING CUSTOM DOT FILE FOR BOOKKEEEPER" << std::endl;
+//    std::ostringstream oss;
+//
+//    for (AnyRuleManagerInOnly<T> *ruleMan : *ruleManagers) {
+//
+//      oss << this->getDotId() << " -> " << consumerDotId << "[label=\"" << ruleMan->getName(flags) << "\"];" << std::endl;
+//    }
+//
+//    return oss.str();
+//  }
+
 
  private:
   std::list<AnyRuleManagerInOnly<T> *> *ruleManagers; //!< The list of ruleManagers (one per consumer)

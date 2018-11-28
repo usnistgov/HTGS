@@ -17,6 +17,7 @@
 #include <cassert>
 #include <sstream>
 
+#include <htgs/core/task/AnyTaskManager.hpp>
 #include <htgs/api/MemoryData.hpp>
 #include <htgs/core/graph/Connector.hpp>
 #include <htgs/core/graph/AnyConnector.hpp>
@@ -34,6 +35,8 @@
 
 
 namespace htgs {
+
+  class AnyTaskManager;
 
 /**
  * @class AnyITask AnyITask.hpp <htgs/core/task/AnyITask.hpp>
@@ -202,20 +205,47 @@ class AnyITask {
                              std::shared_ptr<htgs::AnyConnector> output) {
     std::ostringstream oss;
 
-    if (input != nullptr) {
-      oss << input->getDotId() << " -> " << dotId << ";" << std::endl;
-      oss << input->genDot(flags);
-    }
+    if ((flags & DOTGEN_FLAG_SHOW_CONNECTORS) != 0 || (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) != 0) {
 
-    if (output != nullptr) {
-      oss << dotId << " -> " << output->getDotId() << ";" << std::endl;
-      oss << output->genDot(flags);
+      if (input != nullptr) {
+        oss << input->getDotId() << " -> " << dotId << ";" << std::endl;
+        oss << input->genDot(flags);
+      }
+
+      if (output != nullptr) {
+        oss << dotId << " -> " << output->getDotId() << ";" << std::endl;
+        oss << output->genDot(flags);
+      }
     }
 
     oss << genDot(flags, dotId);
 
     return oss.str();
   }
+
+
+  virtual std::string getConsumerDotIds() {
+    return this->getDotId();
+  }
+
+  virtual std::string getProducerDotIds() {
+    return this->getDotId();
+  }
+
+
+  virtual std::string genDotProducerEdgeToTask(std::map<std::shared_ptr<AnyConnector>, AnyITask *> &inputConnectorDotMap, int dotFlags) = 0;
+
+  virtual std::string genDotConsumerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags) = 0;
+  virtual std::string genDotProducerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags) = 0;
+//  {
+//
+////    return this->getDotId() + " -> " + consumerDotId + ";\n";
+//  }
+
+//  virtual std::string genDotConsumerEdgeWithoutConnector(std::string producerDotId, int flags)
+//  {
+//    return producerDotId + " -> " + this->getDotId() + ";\n";
+//  }
 
   /**
 * Virtual function that adds additional dot attributes to this node.

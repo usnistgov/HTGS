@@ -289,6 +289,46 @@ class ITask : public AnyITask {
    */
   virtual size_t getNumGraphsSpawned() { return 0; }
 
+  virtual std::string genDotProducerEdgeToTask(std::map<std::shared_ptr<AnyConnector>, AnyITask *> &inputConnectorDotMap, int dotFlags) override
+  {
+    auto connectorPair = inputConnectorDotMap.find(this->ownerTask->getOutputConnector());
+    if (connectorPair != inputConnectorDotMap.end())
+    {
+      auto consumerIds = connectorPair->second->getConsumerDotIds();
+      if (consumerIds != "")
+        return this->getDotId() + " -> " + connectorPair->second->getConsumerDotIds() + ";\n";
+    }
+
+    return "";
+  }
+
+
+  virtual std::string genDotConsumerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags) override
+  {
+    if (this->ownerTask->getInputConnector() != nullptr &&
+        connector != nullptr && this->ownerTask->getInputConnector() == connector)
+    {
+      auto consumerIds = this->getConsumerDotIds();
+      if (consumerIds != "")
+        return connector->getDotId() + " -> " + this->getConsumerDotIds() + ";\n";
+    }
+    return "";
+  }
+
+  virtual std::string genDotProducerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags)
+  {
+    if (this->ownerTask->getOutputConnector() != nullptr &&
+      connector != nullptr && this->ownerTask->getOutputConnector() == connector)
+    {
+      // TODO: Use a new getProducerDotIds ?
+      return this->getDotId() + " -> " + connector->getDotId() + ";\n";
+    }
+
+    return "";
+  }
+
+
+
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////// CLASS FUNCTIONS ///////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////

@@ -166,6 +166,16 @@ class TaskGraphProfiler {
     return profileUtils;
   }
 
+  /**
+   * Gets the task manager profiles for all tasks in all graphs and sub-graphs
+   * @return all of the task managers within the graph and its sub-graphs
+   */
+  std::map<AnyTaskManager *, TaskManagerProfile *> *getTaskManagerProfiles()
+  {
+    return taskManagerProfiles;
+  }
+
+
  private:
 
   /**

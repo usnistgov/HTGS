@@ -205,6 +205,48 @@ namespace htgs {
       return true;
     }
 
+    virtual std::string genDotProducerEdgeToTask(std::map<std::shared_ptr<AnyConnector>, AnyITask *> &inputConnectorDotMap, int dotFlags) override
+    {
+      return "";
+    }
+
+    virtual std::string genDotProducerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags)
+    {
+      return "";
+    }
+
+    virtual std::string genDotConsumerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags) override
+    {
+      return "";
+    }
+
+
+    std::string getConsumerDotIds() override {
+      // Who is consuming the input data...
+      if (this->getOwnerTaskManager()->getInputConnector() != nullptr)
+      {
+        return taskGraphConf->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds();
+      }
+
+      return "";
+    }
+
+    std::string getProducerDotIds() override {
+      std::ostringstream oss;
+
+      if (this->getOwnerTaskManager()->getOutputConnector() != nullptr)
+      {
+        oss << "{";
+        for (auto producer : *taskGraphConf->getGraphProducerTaskManagers())
+        {
+          oss << producer->getTaskFunction()->getProducerDotIds() << ";";
+        }
+        oss << "}";
+      }
+
+      return oss.str();
+    }
+
 //    std::string getDotCustomProfile() override {
 //      std::ostringstream oss;
 //      oss << "subgraph cluster_" << this->getDotId() << " {" << std::endl;
@@ -215,6 +257,52 @@ namespace htgs {
 //
 //      oss << "}" << std::endl;
 //
+//    }
+
+
+
+//
+//    std::string genDotConsumerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags) override
+//    {
+//      return "";
+//    }
+//
+//
+//    std::string genDotProducerEdgeToTask(std::map<std::shared_ptr<AnyConnector>, AnyITask *> &inputConnectorDotMap, int dotFlags) override
+//    {
+//      std::ostringstream oss;
+////
+////      if (this->getOwnerTaskManager()->getInputConnector() != nullptr)
+////      {
+////        taskGraphConf->setInputConnector(this->getOwnerTaskManager()->getInputConnector());
+////      }
+////
+////      if (this->getOwnerTaskManager()->getOutputConnector() != nullptr)
+////      {
+////        taskGraphConf->setOutputConnector(this->getOwnerTaskManager()->getOutputConnector());
+////      }
+//
+//      auto graphConsumerManager = taskGraphConf->getGraphConsumerTaskManager();
+//      if (this->getOwnerTaskManager()->getInputConnector() != nullptr)
+//      {
+//        auto connectorPair = inputConnectorDotMap.find(this->getOwnerTaskManager()->getInputConnector());
+//
+//        if (connectorPair != inputConnectorDotMap.end())
+//        {
+//          oss << graphConsumerManager->getTaskFunction()->getDotId() << " -> " << connectorPair->second << ";\n";
+//        }
+//      }
+////
+////      if (this->getOwnerTaskManager()->getOutputConnector() != nullptr)
+////      {
+////        auto connectorPair = inputConnectorDotMap
+////      }
+//
+//
+////      auto connectorDot = inputConnectorDotMap.find()
+//
+//
+//      return oss.str();
 //    }
 
     /**

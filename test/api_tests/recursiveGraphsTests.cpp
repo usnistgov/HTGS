@@ -231,8 +231,6 @@ void testGraphsWithinGraphs(int numGraphs, int numChain, size_t numThreads, bool
 
   runtime->waitForRuntime();
 
-  mainGraph->writeDotToFile("TestDot.dot", DOTGEN_COLOR_COMP_TIME);
-
   EXPECT_EQ(1, mainGraph->getTaskManagers()->size());
   EXPECT_EQ(count, numData * numPipelines);
 

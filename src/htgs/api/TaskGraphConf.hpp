@@ -860,9 +860,78 @@ class TaskGraphConf : public AnyTaskGraphConf {
   }
 
   /**
+   * Generates the edges between tasks without connectors
+   * @param allTaskManagerProfiles all of the task managers for all graphs and its sub-graphs
+   * @return the dot representation of the connection between task managers
+   */
+  std::string genDotGraphEdgesWithoutConnectors(std::map<AnyTaskManager *, TaskManagerProfile *> *allTaskManagerProfiles, int flags)
+  {
+
+
+    std::map<std::shared_ptr<AnyConnector>, AnyTaskManager *> inputConnectorMap;
+    std::map<std::shared_ptr<AnyConnector>, AnyITask *> inputConnectorDotMap;
+
+    for (auto tmanProfiles : *allTaskManagerProfiles) {
+      auto bTask = tmanProfiles.first;
+      if (bTask->getThreadId() == 0) {
+        inputConnectorMap.insert(
+            std::pair<std::shared_ptr<AnyConnector>, AnyTaskManager *>(bTask->getInputConnector(), bTask));
+        inputConnectorDotMap.insert(
+            std::pair<std::shared_ptr<AnyConnector>, AnyITask *>(bTask->getInputConnector(), bTask->getTaskFunction()));
+      }
+    }
+
+    // Add in the graph's input/output connectors as well
+    inputConnectorMap.insert(std::pair<std::shared_ptr<AnyConnector>, AnyTaskManager *>(this->getInputConnector(), nullptr));
+    inputConnectorMap.insert(std::pair<std::shared_ptr<AnyConnector>, AnyTaskManager *>(this->getOutputConnector(), nullptr));
+
+//    inputConnectorDotMap.insert(std::pair<std::shared_ptr<AnyConnector>, std::string>(this->getInputConnector(), this->getInputConnector()->getDotId()));
+//    inputConnectorDotMap.insert(std::pair<std::shared_ptr<AnyConnector>, std::string>(this->getOutputConnector(), this->getOutputConnector()->getDotId()));
+
+    std::ostringstream oss;
+
+    for (auto tmanProfiles : *allTaskManagerProfiles)
+    {
+      auto bTask = tmanProfiles.first;
+
+      if (bTask->getThreadId() == 0) {
+        oss << bTask->getTaskFunction()->genDotProducerEdgeToTask(inputConnectorDotMap, flags);
+        oss << bTask->getTaskFunction()->genDotConsumerEdgeFromConnector(this->getInputConnector(), flags);
+        oss << bTask->getTaskFunction()->genDotProducerEdgeFromConnector(this->getOutputConnector(), flags);
+      }
+
+//      auto findConsumer = inputConnectorMap.find(bTask->getOutputConnector());
+//      if (findConsumer != inputConnectorMap.end())
+//      {
+//        // bTask is producing for findConsumer
+//        oss << bTask->getTaskFunction()->genDotProducerEdgeWithoutConnector(findConsumer->second->getTaskFunction()->getDotId(), flags);
+//      }
+//
+//      if (this->getInputConnector() == bTask->getInputConnector())
+//      {
+        // input connector is connected to the task
+//        oss << this->getInputConnector()->getDotId() << " -> " << bTask->getTaskFunction()->getDotId() << ";" << std::endl;
+//        oss << bTask->getTaskFunction()->genDotConsumerEdgeWithoutConnector(this->getInputConnector()->getDotId(), flags);
+//      }
+//
+//      if (this->getOutputConnector() == bTask->getOutputConnector())
+//      {
+//        // the output connector for the graph is connected to the task
+//        oss <<bTask->getTaskFunction()->genDotProducerEdgeWithoutConnector(this->getOutputConnector()->getDotId(), flags);
+//      }
+
+
+    }
+
+    return oss.str();
+
+  }
+
+  /**
    * Generates the dot graph as a string
    */
   std::string genDotGraph(int flags, int colorFlag, std::string graphTitle = "", std::string customTitleText = "") override {
+
     std::ostringstream oss;
 
     // Create header info for graphViz dot file
@@ -885,11 +954,12 @@ class TaskGraphConf : public AnyTaskGraphConf {
     TaskGraphProfiler profiler(flags);
     profiler.buildProfile(this);
 
-    for (AnyTaskManager *bTask : *this->getTaskManagers()) {
-      oss << bTask->getDot(flags);
+    oss << genDotGraphContent(flags);
+    if ((flags & DOTGEN_FLAG_SHOW_CONNECTORS) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0) {
+      oss << genDotGraphEdgesWithoutConnectors(profiler.getTaskManagerProfiles(), flags);
     }
-    oss << profiler.genDotProfile(oss.str(), colorFlag);
 
+    oss << profiler.genDotProfile(oss.str(), colorFlag);
     oss << genCustomDotForTasks(profiler.getProfileUtils(), colorFlag);
 
     if (getGraphConsumerTaskManager() != nullptr)

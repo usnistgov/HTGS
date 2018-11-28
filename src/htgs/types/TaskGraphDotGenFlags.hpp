@@ -97,4 +97,10 @@
  */
 #define DOTGEN_FLAG_SHOW_TASK_LIVING_STATUS 1 << 13
 
+/**
+ * @def DOTGEN_FLAG_HIDE_CONNECTORS
+ * @brief Hides connects in dot file that are between tasks
+ */
+#define DOTGEN_FLAG_SHOW_CONNECTORS 1 << 14
+
 #endif //HTGS_TASKGRAPHDOTGENFLAGS_HPP

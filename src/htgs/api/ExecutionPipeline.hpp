@@ -408,6 +408,137 @@ class ExecutionPipeline : public ITask<T, U> {
     return oss.str();
   }
 
+    virtual std::string genDotProducerEdgeToTask(std::map<std::shared_ptr<AnyConnector>, AnyITask *> &inputConnectorDotMap, int dotFlags) override
+    {
+      std::ostringstream oss;
+
+//      oss << this->getOwnerTaskManager()->getInputConnector()->genDot(dotFlags);
+
+      std::string inputRuleNames;
+      int count = 0;
+      for (std::shared_ptr<IRule<T, T>> rule : *inputRules) {
+        if (count == 0)
+          inputRuleNames = inputRuleNames + rule->getName();
+        else
+          inputRuleNames = inputRuleNames + ", " + rule->getName();
+        count++;
+      }
+
+      if (graphs->size() > 0)
+      {
+        for (auto g : *graphs)
+        {
+          oss << inputBk->getDotId()
+              << " -> " << g->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds() << "[label=\"" << inputRuleNames
+              << "\"];" << std::endl;
+        }
+      } else {
+        oss << inputBk->getDotId() << " -> "
+            << graph->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds() << "[label=\"" << inputRuleNames
+            << "\"];"<< std::endl;
+      }
+
+      return oss.str();
+
+    }
+
+    virtual std::string genDotProducerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags)
+    {
+      return "";
+    }
+
+    virtual std::string genDotConsumerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags) override
+    {
+
+      if (this->getOwnerTaskManager()->getInputConnector() != nullptr && connector != nullptr &&
+      this->getOwnerTaskManager()->getInputConnector() == connector) {
+        return connector->getDotId() + " -> " + inputBk->getDotId() + ";\n";
+      }
+      return "";
+    }
+
+    std::string getConsumerDotIds() override {
+
+    std::ostringstream oss;
+
+      // Get inputRule edge name
+      std::string inputRuleNames;
+      int count = 0;
+      for (std::shared_ptr<IRule<T, T>> rule : *inputRules) {
+        if (count == 0)
+          inputRuleNames = inputRuleNames + rule->getName();
+        else
+          inputRuleNames = inputRuleNames + ", " + rule->getName();
+        count++;
+      }
+
+      oss << inputBk->getDotId();
+
+//      if (this->graphs->size() > 0)
+//      {
+//        oss << "{";
+//        for (auto g : *this->graphs) {
+//          oss << g->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds() << ";";
+//        }
+//        oss << "} ";
+//      } else {
+//        oss << graph->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds();
+//      }
+
+      oss << " [label=\"" << inputRuleNames
+              << "\"]" << std::endl;
+
+      return oss.str();
+    }
+
+//    std::string genDotConsumerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags) override
+//    {
+//      return "";
+//    }
+//
+//
+//    std::string genDotProducerEdgeToTask(std::map<std::shared_ptr<AnyConnector>, AnyITask *> &inputConnectorDotMap, int dotFlags) override
+//    {
+//      std::ostringstream oss;
+//
+//      oss << this->getOwnerTaskManager()->getInputConnector()->genDot(dotFlags);
+//
+//      std::string inputRuleNames;
+//      int count = 0;
+//      for (std::shared_ptr<IRule<T, T>> rule : *inputRules) {
+//        if (count == 0)
+//          inputRuleNames = inputRuleNames + rule->getName();
+//        else
+//          inputRuleNames = inputRuleNames + ", " + rule->getName();
+//        count++;
+//      }
+//
+//      if (graphs->size() > 0)
+//      {
+//        for (auto g : *graphs)
+//        {
+//          oss << this->getOwnerTaskManager()->getInputConnector()->getDotId()
+//              << " -> " << g->getGraphConsumerTaskManager()->getTaskFunction()->getDotId() << "[label=\"" << inputRuleNames
+//              << "\"];" << std::endl;
+//        }
+//      } else {
+//        oss << this->getOwnerTaskManager()->getInputConnector()->getDotId() << " -> "
+//            << graph->getGraphConsumerTaskManager()->getTaskFunction()->getDotId() << "[label=\"" << inputRuleNames
+//            << "\"];"<< std::endl;
+//      }
+//
+////      for (AnyRuleManagerInOnly<T> *ruleMan : *ruleManagers) {
+////        auto connectorPair = inputConnectorDotMap.find(ruleMan->getConnector());
+////        if (connectorPair != inputConnectorDotMap.end())
+////        {
+////          oss << this->getDotId() << " -> " << connectorPair->second << "[label=\"" << ruleMan->getName(dotFlags) << "\"];" << std::endl;
+////        }
+////      }
+////
+////      return oss.str();
+//      return oss.str();
+//    }
+
   /**
    * @copydoc ITask::genDot
    * @note This function will generate the dot notation for all sub-graphs within the execution pipeline.
@@ -420,8 +551,24 @@ class ExecutionPipeline : public ITask<T, U> {
                      std::shared_ptr<AnyConnector> output) override {
     std::ostringstream oss;
 
-    oss << input->genDot(flags);
+    std::string aliveLabel =
+        ((flags & DOTGEN_FLAG_SHOW_TASK_LIVING_STATUS) != 0) ? ("\\nLiving threads: " + std::to_string(this->getOwnerTaskManager()->getThreadsRemaining())) : "";
+    std::string inOutLabel =
+        (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\\nin: " + this->inTypeName() + "\\nout: "
+                                                              + this->outTypeName()) : "");
+    oss << inputBk->getDotId() + "[label=\"" + "Execution Pipeline Bookkeeper";
+    oss << inOutLabel + "\\n";
+    oss << aliveLabel;
+    oss << "\",shape=" + this->getDotShape();
+    oss << ",style=filled";
+    oss << ",fillcolor=lightgrey";
+    oss << ",color=orange";
+    oss << ",width=.2,height=.2];\n";
 
+
+    if ((flags & DOTGEN_FLAG_SHOW_CONNECTORS) != 0 || (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) != 0) {
+      oss << input->genDot(flags);
+    }
     // Get inputRule edge name
     std::string inputRuleNames;
     int count = 0;
@@ -433,15 +580,19 @@ class ExecutionPipeline : public ITask<T, U> {
       count++;
     }
 
-    // Draw decomposition rule edge to each graph
-    if (graphs->size() > 0) {
-      for (auto g : *graphs) {
-        oss << input->getDotId() << " -> " << g->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
+    if ((flags & DOTGEN_FLAG_SHOW_CONNECTORS) != 0 || (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) != 0) {
+      // Draw decomposition rule edge to each graph
+      oss << input->getDotId() << " -> " << inputBk->getDotId() << ";" << std::endl;
+      if (graphs->size() > 0) {
+        for (auto g : *graphs) {
+
+          oss << inputBk->getDotId() << " -> " << g->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
+              << "\"];" << std::endl;
+        }
+      } else {
+        oss << inputBk->getDotId() << " -> " << graph->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
             << "\"];" << std::endl;
       }
-    } else {
-      oss << input->getDotId() << " -> " << graph->getInputConnector()->getDotId() << "[label=\"" << inputRuleNames
-          << "\"];" << std::endl;
     }
 
     // Setup subgraph to draw execPipeline graphs

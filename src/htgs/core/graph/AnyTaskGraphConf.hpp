@@ -442,6 +442,18 @@ class AnyTaskGraphConf {
    * @note Calling this function prior to execution show the graph structure.
    */
   void writeDotToFile(std::string file, int flags = 0, std::string graphTitle = "", std::string customTitleText = "") {
+
+    if ((flags & DOTGEN_FLAG_SHOW_CONNECTORS) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0) {
+
+      if ((flags & DOTGEN_FLAG_SHOW_ALL_THREADING) != 0) {
+        std::cerr
+            << "DOT visualization without connectors does not support showing all threading. Adding DOTGEN_FLAG_SHOW_CONNECTORS flag."
+            << std::endl;
+        flags = flags | DOTGEN_FLAG_SHOW_CONNECTORS;
+
+      }
+    }
+
     bool graphColored = false;
 #ifdef PROFILE
     if ((flags & DOTGEN_COLOR_COMP_TIME) != 0) {
