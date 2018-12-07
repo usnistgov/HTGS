@@ -225,7 +225,7 @@ namespace htgs {
       // Who is consuming the input data...
       if (this->getOwnerTaskManager()->getInputConnector() != nullptr)
       {
-        return taskGraphConf->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds();
+        return taskGraphConf->getGraphConsumerEdge()->getTaskManager(taskGraphConf)->getTaskFunction()->getConsumerDotIds();
       }
 
       return "";
@@ -237,9 +237,9 @@ namespace htgs {
       if (this->getOwnerTaskManager()->getOutputConnector() != nullptr)
       {
         oss << "{";
-        for (auto producer : *taskGraphConf->getGraphProducerTaskManagers())
+        for (auto producer : *taskGraphConf->getGraphProducerEdges())
         {
-          oss << producer->getTaskFunction()->getProducerDotIds() << ";";
+          oss << producer->getTaskManager(taskGraphConf)->getTaskFunction()->getProducerDotIds() << ";";
         }
         oss << "}";
       }

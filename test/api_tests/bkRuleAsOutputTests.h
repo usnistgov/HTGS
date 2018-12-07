@@ -3,16 +3,12 @@
 // You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
 //
-// Created by tjb3 on 3/31/17.
+// Created by tjb3 on 12/7/18.
 //
 
-#ifndef HTGS_SIMPLECUDAGRAPHTESTS_H
-#define HTGS_SIMPLECUDAGRAPHTESTS_H
+#ifndef HTGS_BKRULEASOUTPUTTESTS_HPP
+#define HTGS_BKRULEASOUTPUTTESTS_HPP
 
-void createCudaTask();
-void simpleCudaGraphCreation();
-void simpleCudaGraphExecution();
+void testBkAsOutput(int numPipelines, int numChain, size_t numThreads);
 
-
-
-#endif //HTGS_SIMPLECUDAGRAPHTESTS_H
+#endif //HTGS_BKRULEASOUTPUTTESTS_HPP

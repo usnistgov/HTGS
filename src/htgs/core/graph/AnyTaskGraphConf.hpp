@@ -127,13 +127,13 @@ class AnyTaskGraphConf {
    * Pure virtual function that gets the task manager that is consuming data from the graph's input
    * @return the task manager that is consuming data from the graph's input.
    */
-  virtual AnyTaskManager *getGraphConsumerTaskManager() = 0;
+//  virtual AnyTaskManager *getGraphConsumerTaskManager() = 0;
 
   /**
    * Gets the list of task managers that are producing data for the graph's output
    * @return the list of task managers that are producing data for the graph's output.
    */
-  virtual std::list<AnyTaskManager *> *getGraphProducerTaskManagers() = 0;
+//  virtual std::list<AnyTaskManager *> *getGraphProducerTaskManagers() = 0;
 
   /**
    * Virtual function that gets the connector used for graph input

@@ -156,6 +156,7 @@ class Bookkeeper : public ITask<T, VoidData> {
 
   bool canTerminate(std::shared_ptr<AnyConnector> inputConnector) override {
     // check input connector first
+    HTGS_ASSERT(inputConnector != nullptr, "A Bookkeeper does not appear to have any input, which results in this bookkeeper not doing anything");
     assert(inputConnector != nullptr);
     if (inputConnector->isInputTerminated())
       return true;
@@ -214,9 +215,9 @@ class Bookkeeper : public ITask<T, VoidData> {
         oss << idStr << " -> " << ruleManStr << "[label=\"" << ruleMan->getName(flags) << "\"];" << std::endl;
       }
     }
-    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\\nin: " + this->inTypeName()) : "");
+//    std::string inOutLabel = (((flags & DOTGEN_FLAG_SHOW_IN_OUT_TYPES) != 0) ? ("\\nin: " + this->inTypeName()) : "");
 
-    oss << idStr + "[label=\"Bookkeeper" + inOutLabel + "\"];" << std::endl;
+    oss << idStr << ";" << std::endl;  // + "[label=\"Bookkeeper" + inOutLabel + "\"];" << std::endl;
 
     return oss.str();
   }
@@ -236,6 +237,26 @@ class Bookkeeper : public ITask<T, VoidData> {
     return oss.str();
   }
 
+
+  std::string genDotProducerEdgeFromConnector(std::shared_ptr<AnyConnector> connector, int flags)
+  {
+    std::ostringstream oss;
+    if (connector != nullptr)
+    {
+      for (AnyRuleManagerInOnly<T> *ruleMan : *ruleManagers) {
+        if (connector == ruleMan->getConnector())
+        {
+          oss << this->getDotId() << " -> " << connector->getDotId() << "[label=\"" << ruleMan->getName(flags) << "\"];" << std::endl;
+        }
+    }
+    }
+
+    return oss.str();
+  }
+
+  std::list<AnyRuleManagerInOnly<T> *> *getRuleManagers() {
+    return ruleManagers;
+  }
 
 //  std::string genDotProducerEdgeWithoutConnector(std::string consumerDotId, int flags) override
 //  {

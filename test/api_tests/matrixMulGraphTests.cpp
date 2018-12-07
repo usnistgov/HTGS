@@ -16,7 +16,6 @@
 #include "matrixMul/tasks/GenMatrixTask.h"
 #include "matrixMul/tasks/MatrixAccumTask.h"
 #include "matrixMul/tasks/MatrixMulBlkTask.h"
-#include "matrixMul/tasks/OutputTask.h"
 #include "matrixMul/rules/MatrixAccumulateRule.h"
 #include "matrixMul/rules/MatrixLoadRule.h"
 #include "matrixMul/rules/MatrixDistributeRule.h"
@@ -68,7 +67,6 @@ void createMatMulTasks()
   GenMatrixTask gTask(1, 2, 16, 16, "matrixA", 1.0);
   MatrixAccumTask maTask(1);
   MatrixMulBlkTask mmBlk(1);
-  OutputTask oTask;
 
 
   EXPECT_EQ(8, gTask.getNumBlocksCols());
@@ -76,7 +74,6 @@ void createMatMulTasks()
   EXPECT_EQ(1, gTask.getNumThreads());
   EXPECT_EQ(1, maTask.getNumThreads());
   EXPECT_EQ(1, mmBlk.getNumThreads());
-  EXPECT_EQ(1, oTask.getNumThreads());
 }
 
 
@@ -89,7 +86,6 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
   MatrixMulBlkTask *mmulTask = new MatrixMulBlkTask(numThreads);
   MatrixAccumTask * accumTask = new MatrixAccumTask((size_t)ceil((double)numThreads/2.0));
 
-  OutputTask *outputTask = new OutputTask();
 
   size_t blkHeightMatB = genBMatTask->getNumBlocksRows();
   size_t blkWidthMatB = genBMatTask->getNumBlocksCols();
@@ -123,8 +119,7 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
   taskGraph->addRuleEdge(matAccumBk, accumulateRule, accumTask);
   taskGraph->addEdge(accumTask, matAccumBk);
 
-  taskGraph->addRuleEdge(matAccumBk, outputRule, outputTask);
-  taskGraph->addGraphProducerTask(outputTask);
+  taskGraph->addRuleEdgeAsGraphProducer(matAccumBk, outputRule);
 
   MatrixAllocator *matrixAllocator = new MatrixAllocator(blockSize, blockSize);
 
@@ -132,7 +127,7 @@ htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<double *>> *createMatMulG
   taskGraph->addMemoryManagerEdge("matrixB", genBMatTask, matrixAllocator, 100, htgs::MMType::Static);
 
 
-  EXPECT_EQ(10, taskGraph->getTaskManagers()->size());
+  EXPECT_EQ(9, taskGraph->getTaskManagers()->size());
   EXPECT_EQ(1, taskGraph->getInputConnector()->getProducerCount());
   EXPECT_FALSE(taskGraph->isOutputTerminated());
 
@@ -191,6 +186,10 @@ double * launchGraph(htgs::TaskGraphConf<MatrixRequestData, MatrixBlockData<doub
   }
 
   runtime->waitForRuntime();
+
+#ifdef HTGS_TEST_OUTPUT_DOTFILE
+  graph->writeDotToFile("matMulGraph.dot");
+#endif
   delete runtime;
 
   return result;

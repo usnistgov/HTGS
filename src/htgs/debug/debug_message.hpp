@@ -26,7 +26,7 @@
     do { \
         if (! (condition)) { \
             std::cerr << message << ": Assertion `" #condition "` failed in " << __FILE__ \
-                      << " line " << __LINE__ << ": " << std::endl; \
+                      << ":" << __LINE__ << ": " << std::endl; \
             std::terminate(); \
         } \
     } while (false)

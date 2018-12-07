@@ -135,9 +135,11 @@ void launchGraph(htgs::TaskGraphConf<SimpleData, SimpleData> *graph, int numData
     }
   }
 
-
-
   rt->waitForRuntime();
+
+#ifdef HTGS_TEST_OUTPUT_DOTFILE
+  graph->writeDotToFile("testSimpleGraph.dot");
+#endif
 
   EXPECT_EQ(numDataGenerated*numPipelines, count);
   EXPECT_NO_FATAL_FAILURE(delete rt);

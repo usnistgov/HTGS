@@ -93,21 +93,29 @@ int main() {
   htgs::Bookkeeper<OutputData> *bk = new htgs::Bookkeeper<OutputData>();
   SimpleRule *rule = new SimpleRule();
   auto taskGraph = new htgs::TaskGraphConf<InputData, OutputData>();
+//  auto taskGraph = new htgs::TaskGraphConf<OutputData, OutputData>();
+//  taskGraph->setGraphConsumerTask(bk);
   taskGraph->setGraphConsumerTask(addTask);
   taskGraph->addEdge(addTask, addTask2);
   taskGraph->addEdge(addTask2, bk);
+  taskGraph->addRuleEdgeAsGraphProducer(bk, rule);
   taskGraph->addRuleEdge(bk, rule, addTask3);
   taskGraph->addGraphProducerTask(addTask3);
 
+  taskGraph->writeDotToFile("taskGraph.dot");
+
   auto tgTask = new htgs::TGTask<InputData, OutputData>(taskGraph);
+//  auto tgTask = new htgs::TGTask<OutputData, OutputData>(taskGraph);
 
   SquareResult *squareTask = new SquareResult(10);
 
   auto taskGraphMain = new htgs::TaskGraphConf<InputData, OutputData>();
+//  auto taskGraphMain = new htgs::TaskGraphConf<OutputData, OutputData>();
 
   taskGraphMain->setGraphConsumerTask(tgTask);
-  taskGraphMain->addEdge(tgTask, squareTask);
-  taskGraphMain->addGraphProducerTask(squareTask);
+  taskGraphMain->addGraphProducerTask(tgTask);
+//  taskGraphMain->addEdge(tgTask, squareTask);
+//  taskGraphMain->addGraphProducerTask(squareTask);
 
 
 
@@ -125,7 +133,7 @@ int main() {
   taskGraphMain->waitForInitialization();
 
 
-  int numData = 10000000;
+  int numData = 100;
   for (int i = 0; i < numData; i++) {
     auto inputData = new InputData(i, i);
     taskGraphMain->produceData(inputData);

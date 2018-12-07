@@ -428,14 +428,21 @@ class ExecutionPipeline : public ITask<T, U> {
       {
         for (auto g : *graphs)
         {
+          auto graphConsumer = g->getGraphConsumerEdge();
+
           oss << inputBk->getDotId()
-              << " -> " << g->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds() << "[label=\"" << inputRuleNames
+              << " -> " << graphConsumer->getTaskManager(g)->getTaskFunction()->getConsumerDotIds() << "[label=\"" << inputRuleNames
               << "\"];" << std::endl;
         }
       } else {
-        oss << inputBk->getDotId() << " -> "
-            << graph->getGraphConsumerTaskManager()->getTaskFunction()->getConsumerDotIds() << "[label=\"" << inputRuleNames
-            << "\"];"<< std::endl;
+          auto graphConsumer = graph->getGraphConsumerEdge();
+
+
+          oss << inputBk->getDotId() << " -> "
+              << graphConsumer->getTaskManager(graph)->getTaskFunction()->getConsumerDotIds() << "[label=\"" << inputRuleNames
+              << "\"];"<< std::endl;
+
+
       }
 
       return oss.str();

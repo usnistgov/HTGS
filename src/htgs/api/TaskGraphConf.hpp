@@ -14,13 +14,17 @@
 #define HTGS_TASKGRAPHCONF_HPP
 
 #include <htgs/core/graph/edge/ProducerConsumerEdge.hpp>
+#include <htgs/core/graph/edge/GraphTaskProducerEdge.hpp>
 #include <htgs/core/graph/edge/RuleEdge.hpp>
+#include <htgs/core/graph/edge/GraphEdge.hpp>
 #include <htgs/core/graph/edge/MemoryEdge.hpp>
 #include <htgs/core/comm/TaskGraphCommunicator.hpp>
 #include <htgs/core/graph/profile/TaskGraphProfiler.hpp>
 
 #include <htgs/api/ExecutionPipeline.hpp>
 #include <htgs/api/TGTask.hpp>
+#include <htgs/core/graph/edge/GraphRuleProducerEdge.hpp>
+#include <htgs/core/graph/edge/GraphTaskConsumerEdge.hpp>
 
 #ifdef USE_CUDA
 #include <htgs/core/memory/CudaMemoryManager.hpp>
@@ -151,8 +155,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
     this->output = std::shared_ptr<Connector<U>>(new Connector<U>());
 
     this->input->incrementInputTaskCount();
-    this->graphConsumerTaskManager = nullptr;
-    this->graphProducerTaskManagers = new std::list<AnyTaskManager *>();
+    this->graphConsumerEdge = nullptr;
+    this->graphProducerEdges = new std::list<GraphEdge<U> *>();
 
     this->edges = new std::list<EdgeDescriptor *>();
 
@@ -212,8 +216,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
 
     this->input->incrementInputTaskCount();
 
-    graphConsumerTaskManager = nullptr;
-    graphProducerTaskManagers = new std::list<AnyTaskManager *>();
+    graphConsumerEdge = nullptr;
+    graphProducerEdges = new std::list<GraphEdge<U> *>();
 
     edges = new std::list<EdgeDescriptor *>();
 
@@ -273,8 +277,14 @@ class TaskGraphConf : public AnyTaskGraphConf {
 //    delete taskConnectorCommunicator;
 //    taskConnectorCommunicator = nullptr;
 
-    delete graphProducerTaskManagers;
-    graphProducerTaskManagers = nullptr;
+    if (graphConsumerEdge)
+    {
+      delete graphConsumerEdge;
+      graphConsumerEdge = nullptr;
+    }
+
+    delete graphProducerEdges;
+    graphProducerEdges = nullptr;
   }
 
   AnyTaskGraphConf *copy() override {
@@ -330,8 +340,21 @@ class TaskGraphConf : public AnyTaskGraphConf {
     }
 
     // Copy the graph producer and consumer tasks
-    graphCopy->copyAndUpdateGraphConsumerTask(this->graphConsumerTaskManager);
-    graphCopy->copyAndUpdateGraphProducerTasks(this->graphProducerTaskManagers);
+    GraphEdge<T> *consumerEdge = graphConsumerEdge->copy(graphCopy);
+    consumerEdge->applyEdge(graphCopy);
+    graphCopy->setGraphConsumerEdge(consumerEdge);
+
+    for (auto producerEdge : *this->graphProducerEdges)
+    {
+      GraphEdge<U> *producerEdgeCopy = producerEdge->copy(graphCopy);
+      producerEdgeCopy->applyEdge(graphCopy);
+      graphCopy->addGraphProducerEdge(producerEdgeCopy);
+    }
+
+
+
+//    graphCopy->copyAndUpdateGraphConsumerTask(this->graphConsumerEdge);
+//    graphCopy->copyAndUpdateGraphProducerTasks(this->graphProducerEdges);
 
     for (EdgeDescriptor *edgeDescriptor : *edges) {
       // Copy the edge, using the graph copy as a reference for where to get task copies
@@ -468,6 +491,15 @@ class TaskGraphConf : public AnyTaskGraphConf {
 #endif
 
 
+  template <class V>
+  void addRuleEdgeAsGraphProducer(Bookkeeper<V> *bookkeeper, IRule<V, U> *iRule) {
+    std::shared_ptr<IRule<V, U>> rule = super::getIRule(iRule);
+
+    auto gore = new GraphRuleProducerEdge<V, U>(bookkeeper, rule, this->output);
+    gore->applyEdge(this);
+    this->addGraphProducerEdge(gore);
+  }
+
     /**
      * Adds a custom MemoryManager with the specified name to the TaskGraphConf.
      * This will create a custom memory manager
@@ -535,13 +567,14 @@ class TaskGraphConf : public AnyTaskGraphConf {
     this->addEdgeDescriptor(memEdge);
   }
 
-  AnyTaskManager *getGraphConsumerTaskManager() override {
-    return this->graphConsumerTaskManager;
-  }
+//  AnyTaskManager *getGraphConsumerTaskManager() override {
+//
+//    return this->graphConsumerEdge->getTaskManager(this);
+//  }
 
-  std::list<AnyTaskManager *> *getGraphProducerTaskManagers() override {
-    return this->graphProducerTaskManagers;
-  }
+//  std::list<AnyTaskManager *> *getGraphProducerTaskManagers() override {
+//    return this->graphProducerEdges;
+//  }
 
   std::shared_ptr<AnyConnector> getInputConnector() override {
     return this->input;
@@ -609,17 +642,17 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * Sets the input connector for the task graph
    * @param input the input connector
    */
-  void setInputConnector(std::shared_ptr<Connector<T>> input) {
-    this->input = input;
-  }
+//  void setInputConnector(std::shared_ptr<Connector<T>> input) {
+//    this->input = input;
+//  }
 
   /**
    * Sets the output connector for the task graph
    * @param output the output connector
    */
-  void setOutputConnector(std::shared_ptr<Connector<U>> output) {
-    this->output = output;
-  }
+//  void setOutputConnector(std::shared_ptr<Connector<U>> output) {
+//    this->output = output;
+//  }
 
   /**
    * Increments the number of producers for the task graph.
@@ -658,8 +691,15 @@ class TaskGraphConf : public AnyTaskGraphConf {
    */
   template<class W>
   void setGraphConsumerTask(ITask<T, W> *task) {
-    this->graphConsumerTaskManager = this->getTaskManager(task);
-    this->graphConsumerTaskManager->setInputConnector(this->input);
+    GraphTaskConsumerEdge<T, W> *consumerEdge = new GraphTaskConsumerEdge<T, W>(task, this->input);
+
+    consumerEdge->applyEdge(this);
+    if (this->graphConsumerEdge)
+    {
+      delete graphConsumerEdge;
+    }
+
+    this->graphConsumerEdge = consumerEdge;
 
 #ifdef WS_PROFILE
     // Add nodes
@@ -684,12 +724,10 @@ class TaskGraphConf : public AnyTaskGraphConf {
    */
   template<class W>
   void addGraphProducerTask(ITask<W, U> *task) {
-    this->output->incrementInputTaskCount();
+    GraphTaskProducerEdge<W, U> *producerEdge = new GraphTaskProducerEdge<W, U>(task, this->output);
+    producerEdge->applyEdge(this);
 
-    AnyTaskManager *taskManager = this->getTaskManager(task);
-    taskManager->setOutputConnector(this->output);
-
-    this->graphProducerTaskManagers->push_back(taskManager);
+    this->graphProducerEdges->push_back(producerEdge);
 
 #ifdef WS_PROFILE
     // Add nodes
@@ -795,9 +833,9 @@ class TaskGraphConf : public AnyTaskGraphConf {
    * @param connector the output connector
    */
   void setOutputConnector(std::shared_ptr<AnyConnector> connector) {
-    if (graphProducerTaskManagers != nullptr) {
-      for (auto task : *graphProducerTaskManagers)
-        task->setOutputConnector(connector);
+    if (graphProducerEdges != nullptr) {
+      for (auto producerEdge : *graphProducerEdges)
+        producerEdge->updateEdge(std::dynamic_pointer_cast<Connector<U>>(connector), this);
     }
 
     this->output = std::dynamic_pointer_cast<Connector<U>>(connector);
@@ -809,8 +847,8 @@ class TaskGraphConf : public AnyTaskGraphConf {
      * @param connector the input connector
      */
     void setInputConnector(std::shared_ptr<AnyConnector> connector) {
-      if (graphConsumerTaskManager != nullptr) {
-        graphConsumerTaskManager->setInputConnector(connector);
+      if (graphConsumerEdge != nullptr) {
+        graphConsumerEdge->updateEdge(std::dynamic_pointer_cast<Connector<T>>(connector), this);
       }
 
       this->input = std::dynamic_pointer_cast<Connector<T>>(connector);
@@ -962,14 +1000,16 @@ class TaskGraphConf : public AnyTaskGraphConf {
     oss << profiler.genDotProfile(oss.str(), colorFlag);
     oss << genCustomDotForTasks(profiler.getProfileUtils(), colorFlag);
 
-    if (getGraphConsumerTaskManager() != nullptr)
+    if (this->graphConsumerEdge != nullptr)
       oss << this->getInputConnector()->getDotId() << "[label=\"Graph Input\\n"
           << ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getInputConnector()->getProducerCount()) : "Active Producers: " + std::to_string(this->getInputConnector()->getProducerCount()))
           << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\\nQueue Size: " + std::to_string(this->getInputConnector()->getQueueSize()))
           << (((DOTGEN_FLAG_SHOW_IN_OUT_TYPES & flags) != 0) ? ("\\n" + this->getInputConnector()->typeName()) : "")
           << "\"];" << std::endl;
 
-    if (getGraphProducerTaskManagers()->size() > 0)
+
+//    if (getGraphProducerTaskManagers()->size() > 0)
+    if (this->graphProducerEdges->size() > 0)
       oss << "{ rank = sink; " << this->getOutputConnector()->getDotId() << "[label=\"Graph Output\\n"
         << ((flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? std::to_string(this->getInputConnector()->getProducerCount()) : "Active Producers: " + std::to_string(this->getOutputConnector()->getProducerCount()))
         << ((flags & DOTGEN_FLAG_SHOW_CURRENT_Q_SZ) == 0 && (flags & DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE) == 0 ? "" : "\\nQueue Size: " + std::to_string(this->getOutputConnector()->getQueueSize()))
@@ -1034,62 +1074,80 @@ class TaskGraphConf : public AnyTaskGraphConf {
     return new TGTask<T, U>(this, name, waitForInit);
   }
 
- private:
+  GraphEdge<T> *getGraphConsumerEdge() const {
+    return graphConsumerEdge;
+  }
+
+  std::list<GraphEdge<U> *> *getGraphProducerEdges() const {
+    return graphProducerEdges;
+  }
+
+   private:
 
   //! @cond Doxygen_Suppress
 
 
 
-  void copyAndUpdateGraphConsumerTask(AnyTaskManager *taskManager) {
-    if (taskManager != nullptr) {
-      AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
-      this->graphConsumerTaskManager = copy;
-      this->graphConsumerTaskManager->setInputConnector(this->input);
-      this->addTaskManager(this->graphConsumerTaskManager);
+//  void copyAndUpdateGraphConsumerTask(AnyTaskManager *taskManager) {
+//    if (taskManager != nullptr) {
+//      AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
+//      this->graphConsumerEdge = copy;
+//      this->graphConsumerEdge->setInputConnector(this->input);
+//      this->addTaskManager(this->graphConsumerEdge);
+//
+//#ifdef WS_PROFILE
+//      // TODO: Ensure this is doable with visualizer, this is an update edge and remove node type task
+//      // Add nodes
+////      std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
+////      std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
+////
+////      this->sendProfileData(producerData);
+////      this->sendProfileData(connectorData);
+////
+////      std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
+////
+////      this->sendProfileData(connectorProducerData);
+//#endif
+//
+//    }
+//  }
+//
+//  void copyAndUpdateGraphProducerTasks(std::list<AnyTaskManager *> *taskManagers) {
+//    for (auto taskManager : *taskManagers) {
+//      if (taskManager != nullptr) {
+//        AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
+//
+//        copy->setOutputConnector(this->output);
+//        this->graphProducerEdges->push_back(copy);
+//
+//        this->output->incrementInputTaskCount();
+//        this->addTaskManager(copy);
+//
+//#ifdef WS_PROFILE
+//        // TODO: Ensure this is doable with visualizer, this is an update edge and remove node type task
+//        // Add nodes
+////      std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
+////      std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
+////
+////      this->sendProfileData(producerData);
+////      this->sendProfileData(connectorData);
+////
+////      std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
+////
+////      this->sendProfileData(connectorProducerData);
+//#endif
+//      }
+//    }
+//  }
 
-#ifdef WS_PROFILE
-      // TODO: Ensure this is doable with visualizer, this is an update edge and remove node type task
-      // Add nodes
-//      std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
-//      std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
-//
-//      this->sendProfileData(producerData);
-//      this->sendProfileData(connectorData);
-//
-//      std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
-//
-//      this->sendProfileData(connectorProducerData);
-#endif
-
-    }
+  void setGraphConsumerEdge(GraphEdge<T> *consumerEdge)
+  {
+    this->graphConsumerEdge = consumerEdge;
   }
 
-  void copyAndUpdateGraphProducerTasks(std::list<AnyTaskManager *> *taskManagers) {
-    for (auto taskManager : *taskManagers) {
-      if (taskManager != nullptr) {
-        AnyTaskManager *copy = this->getTaskManagerCopy(taskManager->getTaskFunction());
-
-        copy->setOutputConnector(this->output);
-        this->graphProducerTaskManagers->push_back(copy);
-
-        this->output->incrementInputTaskCount();
-        this->addTaskManager(copy);
-
-#ifdef WS_PROFILE
-        // TODO: Ensure this is doable with visualizer, this is an update edge and remove node type task
-        // Add nodes
-//      std::shared_ptr<ProfileData> connectorData(new CreateNodeProfile(output.get(), output->getProducerCount() + " Graph Output"));
-//      std::shared_ptr<ProfileData> producerData(new CreateNodeProfile(task, task->getName()));
-//
-//      this->sendProfileData(producerData);
-//      this->sendProfileData(connectorData);
-//
-//      std::shared_ptr<ProfileData> connectorProducerData(new CreateEdgeProfile(output.get(), task));
-//
-//      this->sendProfileData(connectorProducerData);
-#endif
-      }
-    }
+  void addGraphProducerEdge(GraphEdge<U> *producerEdge)
+  {
+    graphProducerEdges->push_back(producerEdge);
   }
 
   void addEdgeDescriptor(EdgeDescriptor *edge) {
@@ -1102,9 +1160,9 @@ class TaskGraphConf : public AnyTaskGraphConf {
   std::list<EdgeDescriptor *> *
       edges; //!< The list of edges for the graph, represented by edge descriptors to define how the edges are copied/added.
 
-  AnyTaskManager *graphConsumerTaskManager; //!< The consumer accessing the TaskGraph's input connector
-  std::list<AnyTaskManager *> *
-      graphProducerTaskManagers; //!< The list of producers that are outputting data to the TaskGraph's output connector
+  GraphEdge<T> *graphConsumerEdge; //!< The consumer accessing the TaskGraph's input connector
+  std::list<GraphEdge<U> *> *
+      graphProducerEdges; //!< The list of producers that are outputting data to the TaskGraph's output connector
 
   std::shared_ptr<Connector<T>> input; //!< The input connector for the TaskGraph
   std::shared_ptr<Connector<U>> output; //!< The output connector for the TaskGraph

@@ -108,5 +108,10 @@ void memReleaseOutsideGraphCreation() {
 
 void memReleaseOutsideGraphExecution(size_t numData, size_t numAllocators, size_t numPipelines) {
   auto graph = createMemReleaseOutideGraph(numPipelines, numAllocators);
+
+#ifdef HTGS_TEST_OUTPUT_DOTFILE
+  graph->writeDotToFile("memReleaseOutsideGraph.dot");
+#endif
+
   EXPECT_NO_FATAL_FAILURE(launchGraph(graph, numData, numPipelines, numAllocators));
 }

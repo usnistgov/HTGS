@@ -15,6 +15,7 @@
 #include "memReleaseOutsideGraphTests.h"
 #include "recursiveGraphsTests.h"
 
+#include "bkRuleAsOutputTests.h"
 
 #ifdef USE_CUDA
 #include "simpleCudaGraphTests.h"
@@ -270,9 +271,9 @@ TEST(RecursiveGraph, RecursiveTGTask) {
 }
 
 TEST(RecursiveGraph, RecursiveTGTaskWithExecPipeline) {
-//  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(1, 1, 1, true, 1));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(1, 1, 1, true, 1));
   EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(2, 2, 2, true, 2));
-//  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(5, 5, 5, true, 5));
+  EXPECT_NO_FATAL_FAILURE(testGraphsWithinGraphs(5, 5, 5, true, 5));
 }
 
 TEST(RecursiveGraph, TGTaskWithExecPipeline) {
@@ -280,6 +281,13 @@ TEST(RecursiveGraph, TGTaskWithExecPipeline) {
   EXPECT_NO_FATAL_FAILURE(testTGTaskWithExecPipeline(2, 2, 2));
   EXPECT_NO_FATAL_FAILURE(testTGTaskWithExecPipeline(5, 5, 5));
   EXPECT_NO_FATAL_FAILURE(testTGTaskWithExecPipeline(10, 10, 10));
+}
+
+TEST(BkGraphOutput, BkGraphOutputWithExecPipelineAndTGTask) {
+  EXPECT_NO_FATAL_FAILURE(testBkAsOutput(1, 1, 1));
+  EXPECT_NO_FATAL_FAILURE(testBkAsOutput(2, 2, 2));
+  EXPECT_NO_FATAL_FAILURE(testBkAsOutput(5, 5, 5));
+  EXPECT_NO_FATAL_FAILURE(testBkAsOutput(10, 10, 10));
 }
 
 int main(int argc, char **argv) {

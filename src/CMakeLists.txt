@@ -28,7 +28,62 @@ if (BUILD_MAIN)
 #    add_definitions(-DUSE_PRIORITY_QUEUE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -Wall -Wextra -Wno-unused-parameter")
 
-    file(GLOB_RECURSE INC_ALL "*.hpp" "*.h")
+
+    set(INC_ALL
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/Bookkeeper.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/ExecutionPipeline.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/ICudaTask.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/IData.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/IMemoryAllocator.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/IMemoryReleaseRule.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/IRule.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/ITask.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/MemoryData.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/TGTask.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/TaskGraphConf.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/TaskGraphRuntime.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/api/VoidData.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/comm/DataPacket.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/comm/TaskGraphCommunicator.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/AnyConnector.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/AnyTaskGraphConf.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/Connector.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/EdgeDescriptor.hpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/GraphRuleProducerEdge.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/MemoryEdge.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/ProducerConsumerEdge.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/RuleEdge.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/profile/NVTXProfiler.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/profile/TaskGraphProfiler.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/profile/TaskManagerProfile.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/memory/AnyMemoryAllocator.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/memory/CudaMemoryManager.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/memory/MemoryManager.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/memory/MemoryPool.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/queue/BlockingQueue.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/queue/PriorityBlockingQueue.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/rules/AnyIRule.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/rules/AnyRuleManager.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/rules/AnyRuleManagerInOnly.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/rules/ExecutionPipelineBroadcastRule.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/rules/RuleManager.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/task/AnyITask.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/task/AnyTaskManager.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/task/TaskManager.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/debug/debug_message.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/log/TaskGraphSignalHandler.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/log/log_message.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/types/MMType.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/types/TaskGraphDotGenFlags.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/types/Types.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/utils/ProfileUtils.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/GraphEdge.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/GraphTaskProducerEdge.hpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/htgs/core/graph/edge/GraphTaskConsumerEdge.hpp
+            )
+
+        message(STATUS ${INC_ALL})
+
     find_package(Threads REQUIRED)
     #find_package(HTGSVisualizer QUIET)
 

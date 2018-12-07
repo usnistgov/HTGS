@@ -102,6 +102,10 @@ void launchGraph(htgs::TaskGraphConf<InputData, ProcessedData> *mainGraph,
     }
   }
 
+#ifdef HTGS_TEST_OUTPUT_DOTFILE
+  mainGraph->writeDotToFile("memMultiRelease.dot");
+#endif
+
   rt->waitForRuntime();
 
   EXPECT_EQ(numDataGenerated*numPipelines*numReleasers, count);
