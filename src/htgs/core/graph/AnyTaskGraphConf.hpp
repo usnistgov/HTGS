@@ -79,11 +79,10 @@ class AnyTaskGraphConf {
     this->graphComputeTime = 0;
     this->graphCreationTime = 0;
 
-    // TODO: Delete or Add #ifdef
-//    if (baseAddress == "")
-//      this->address = std::to_string(pipelineId);
-//    else
-//      this->address = baseAddress + ":" + std::to_string(this->pipelineId);
+    if (baseAddress == "")
+      this->address = std::to_string(pipelineId);
+    else
+      this->address = baseAddress + ":" + std::to_string(this->pipelineId);
     this->taskManagers = new std::list<AnyTaskManager *>();
     this->taskCopyMap = new ITaskMap();
     this->taskConnectorNameMap = new TaskNameConnectorMap();
