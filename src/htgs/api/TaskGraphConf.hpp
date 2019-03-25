@@ -283,6 +283,13 @@ class TaskGraphConf : public AnyTaskGraphConf {
       graphConsumerEdge = nullptr;
     }
 
+    for (auto edge : *graphProducerEdges) {
+      if (edge != nullptr) {
+        delete edge;
+        edge = nullptr;
+      }
+    }
+
     delete graphProducerEdges;
     graphProducerEdges = nullptr;
   }

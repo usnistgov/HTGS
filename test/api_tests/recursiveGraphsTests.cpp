@@ -165,7 +165,9 @@ void testTGTasks(bool graphIsConsumer, bool graphIsProducer, int numChain, size_
 
   runtime->waitForRuntime();
 
+#ifdef HTGS_TEST_OUTPUT_DOTFILE
   mainGraph->writeDotToFile("testTGTaskGraph.dot");
+#endif
 
   EXPECT_EQ(count, numData);
 
@@ -237,8 +239,9 @@ void testGraphsWithinGraphs(int numGraphs, int numChain, size_t numThreads, bool
 
   runtime->waitForRuntime();
 
+#ifdef HTGS_TEST_OUTPUT_DOTFILE
   mainGraph->writeDotToFile("testGraphsWithinGraphs.dot");
-
+#endif
 
   EXPECT_EQ(1, mainGraph->getTaskManagers()->size());
   EXPECT_EQ(count, numData * numPipelines);
