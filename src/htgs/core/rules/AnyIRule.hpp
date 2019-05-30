@@ -14,6 +14,9 @@
 #ifndef HTGS_BASEIRULE_HPP
 #define HTGS_BASEIRULE_HPP
 
+#include <mutex>
+#include <string>
+
 namespace htgs {
 /**
  * @class AnyIRule AnyIRule.hpp <htgs/core/rules/AnyIRule.hpp>
