@@ -14,6 +14,7 @@
 #define HTGS_BLOCKINGQUEUE_HPP
 
 #include <iostream>
+#include <mutex>
 #include <condition_variable>
 #include <deque>
 #include <queue>

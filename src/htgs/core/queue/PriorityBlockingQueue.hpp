@@ -15,6 +15,7 @@
 #define HTGS_PRIORITYBLOCKINGQUEUE_HPP
 
 #include <condition_variable>
+#include <mutex>
 #include <ostream>
 #include <iostream>
 #include <queue>
