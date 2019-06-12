@@ -132,7 +132,7 @@ class ICudaTask : public ITask<T, U> {
    * @param numGpus the number of GPUs
    * @param autoEnablePeerAccess Flag to automatically enables peer access between multiple GPUs (default true)
    */
-  ICudaTask(int *cudaIds, size_t numGpus, bool autoEnablePeerAccess = true) {
+  ICudaTask(int *cudaIds, size_t numGpus, bool autoEnablePeerAccess = true) : ITask(1) {
     this->cudaIds = cudaIds;
     this->numGpus = numGpus;
   }
