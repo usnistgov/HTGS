@@ -1,3 +1,17 @@
+# HTGS Remade
+
+The next generation of HTGS, named Hedgehog,is under development and can be found here: https://github.com/ABardakoff/hedgehog
+
+Main features:
+
+1) Takes advantage of C++17 features, such as variadic templates, constexpr
+2) Support for multiple input types per task and ability to broadcast output to multiple tasks
+3) Improved object oriented design
+4) Reduced overhead communication between tasks
+5) ... More details coming soon
+
+Currently there is no tutorial or documentation on how to use Hedgehog. Please feel free to send messages to Alexandre or Timothy for more assistance in using the API.
+
 # Hybrid Task Graph Scheduler (HTGS)
 
 An application programming interface to generate hybrid pipeline workflow systems
