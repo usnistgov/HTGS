@@ -135,6 +135,7 @@ class ICudaTask : public ITask<T, U> {
   ICudaTask(int *cudaIds, size_t numGpus, bool autoEnablePeerAccess = true) {
     this->cudaIds = cudaIds;
     this->numGpus = numGpus;
+    this->autoEnablePeerAccess = autoEnablePeerAccess;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
