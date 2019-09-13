@@ -1,4 +1,4 @@
 <map id="htgs::IData" name="htgs::IData">
-<area shape="rect" id="node2" href="$classhtgs_1_1_memory_data.html" title="Describes memory allocated by a MemoryManager to manage shared memory across multiple ITask..." alt="" coords="5,204,188,531"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_void_data.html" title="VoidData is used for data that is empty/void. " alt="" coords="213,329,322,406"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_memory_data.html" title="Describes memory allocated by a MemoryManager to manage shared memory across multiple ITask..." alt="" coords="5,204,192,531"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_void_data.html" title="VoidData is used for data that is empty/void. " alt="" coords="216,329,325,406"/>
 </map>

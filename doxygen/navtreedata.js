@@ -181,10 +181,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classhtgs_1_1_any_task_graph_conf.html#a6f01c03d02aeac3e0bf351946cb740c9",
-"classhtgs_1_1_i_rule.html#ae57587d08bbf4cf1110279e1683cfbcb",
-"classhtgs_1_1_task_graph_conf.html#aa359ab69ff6f839d233f2486e32d0605",
-"tutorial3a.html#tut3a-objectives"
+"classhtgs_1_1_any_task_graph_conf.html#a30f9c109c5263d3d5955253820a9642f",
+"classhtgs_1_1_i_cuda_task.html#aa4d0a64aa6a1e189e547f67fdebb5643",
+"classhtgs_1_1_t_g_task.html#ab0636a08c02784d8ecf6c9b73ab4b2ec",
+"tutorial2a.html#tut2a-api-used"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

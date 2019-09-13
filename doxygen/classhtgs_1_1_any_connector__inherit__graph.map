@@ -1,3 +1,4 @@
 <map id="htgs::AnyConnector" name="htgs::AnyConnector">
-<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. " alt="" coords="21,277,181,501"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_connector.html" title="{htgs::Connector\&lt; htgs\l::MemoryData\&lt; T \&gt; \&gt;\n|&#45; queue\l|+ Connector()\l+ ~Connector()\l+ isInputTerminated()\l+ copy()\l+ wakeupConsumer()\l+ profileProduce()\l+ profileConsume()\l+ getQueueSize()\l+ getMaxQueueSize()\l+ resetMaxQueueSize()\land 6 more...\l}" alt="" coords="5,277,165,516"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_connector.html" title="Manages the input/output of IData between Tasks. " alt="" coords="189,285,349,509"/>
 </map>

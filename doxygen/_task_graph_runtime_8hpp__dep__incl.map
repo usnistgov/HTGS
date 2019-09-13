@@ -1,3 +1,6 @@
-<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/TaskGraphRuntime.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/api/TaskGraphRuntime.hpp">
-<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="8,109,205,165"/>
+<map id="/home/tjb3/work/HTGS/src/htgs/api/TaskGraphRuntime.hpp" name="/home/tjb3/work/HTGS/src/htgs/api/TaskGraphRuntime.hpp">
+<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="23,95,250,136"/>
+<area shape="rect" id="node4" href="$_t_g_task_8hpp.html" title="Holds the TGTask class implementation. " alt="" coords="74,273,245,315"/>
+<area shape="rect" id="node3" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="75,184,289,225"/>
+<area shape="rect" id="node5" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="62,363,257,419"/>
 </map>

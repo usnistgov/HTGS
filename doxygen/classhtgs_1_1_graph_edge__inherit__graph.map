@@ -1,0 +1,4 @@
+<map id="htgs::GraphEdge&lt; T &gt;" name="htgs::GraphEdge&lt; T &gt;">
+<area shape="rect" id="node3" href="$classhtgs_1_1_graph_task_consumer_edge.html" title="{htgs::GraphTaskConsumerEdge\&lt; T \&gt;\n|&#45; task\l|+ GraphTaskConsumerEdge()\l+ ~GraphTaskConsumerEdge()\l+ applyEdge()\l+ copy()\l+ updateEdge()\l+ getTaskManager()\l}" alt="" coords="5,373,247,524"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_edge_descriptor.html" title="The edge descriptor is an interface used to describe how an edge is applied and copied to a task grap..." alt="" coords="53,5,199,112"/>
+</map>

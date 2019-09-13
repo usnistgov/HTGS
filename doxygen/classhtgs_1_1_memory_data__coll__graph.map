@@ -1,6 +1,9 @@
 <map id="htgs::MemoryData&lt; T &gt;" name="htgs::MemoryData&lt; T &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_data.html" title="Class to hold any type of data. " alt="" coords="5,147,103,297"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="127,183,207,261"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="104,5,231,97"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_i_memory_release_rule.html" title="Abstract class that describes when memory can be released/reused. " alt="" coords="238,169,419,275"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_data.html" title="Class to hold any type of data. " alt="" coords="5,807,103,957"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_connector.html" title="{htgs::Connector\&lt; htgs\l::MemoryData\&lt; T \&gt; \&gt;\n||+ Connector()\l+ ~Connector()\l+ isInputTerminated()\l+ copy()\l+ wakeupConsumer()\l+ profileProduce()\l+ profileConsume()\l+ getQueueSize()\l+ getMaxQueueSize()\l+ resetMaxQueueSize()\land 6 more...\l}" alt="" coords="347,505,507,744"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_connector.html" title="Parent class for Connector, which removes the template type of the Connector. " alt="" coords="310,197,502,421"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::MemoryData\&lt; T \&gt; \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="527,175,688,443"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="557,843,637,921"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="533,579,660,671"/>
+<area shape="rect" id="node11" href="$classhtgs_1_1_i_memory_release_rule.html" title="Abstract class that describes when memory can be released/reused. " alt="" coords="669,829,850,935"/>
 </map>

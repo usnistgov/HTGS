@@ -1,6 +1,7 @@
 var debug__message_8hpp =
 [
     [ "htgs_dbglog", "structhtgs__dbglog.html", null ],
+    [ "HTGS_ASSERT", "debug__message_8hpp.html#a1800f580d71da63a97dc1d6a421a0b2b", null ],
     [ "HTGS_DEBUG", "debug__message_8hpp.html#ad68962830feb89ebad701b362a25a010", null ],
     [ "HTGS_DEBUG_ENABLED", "debug__message_8hpp.html#a06f6e54a8f76367955bb2a7a8b508b3b", null ],
     [ "HTGS_DEBUG_LEVEL", "debug__message_8hpp.html#aef3cb4e43eb5ef04c0922baeb0c11bd2", null ],

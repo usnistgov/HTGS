@@ -1,3 +1,7 @@
-<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/rules/ExecutionPipelineBroadcastRule.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/rules/ExecutionPipelineBroadcastRule.hpp">
-<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="27,109,225,165"/>
+<map id="/home/tjb3/work/HTGS/src/htgs/core/rules/ExecutionPipelineBroadcastRule.hpp" name="/home/tjb3/work/HTGS/src/htgs/core/rules/ExecutionPipelineBroadcastRule.hpp">
+<area shape="rect" id="node2" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="71,109,298,151"/>
+<area shape="rect" id="node3" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="5,199,220,240"/>
+<area shape="rect" id="node6" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="70,467,265,523"/>
+<area shape="rect" id="node4" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="156,288,392,329"/>
+<area shape="rect" id="node5" href="$_t_g_task_8hpp.html" title="Holds the TGTask class implementation. " alt="" coords="82,377,253,419"/>
 </map>

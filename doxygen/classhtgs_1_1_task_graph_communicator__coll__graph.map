@@ -1,7 +1,0 @@
-<map id="htgs::TaskGraphCommunicator" name="htgs::TaskGraphCommunicator">
-<area shape="rect" id="node2" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::DataPacket \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="17,301,176,569"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="250,154,330,231"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="227,5,353,97"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="524,397,608,474"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="632,389,769,481"/>
-</map>

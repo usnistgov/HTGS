@@ -1,14 +1,10 @@
 <map id="htgs::ProducerConsumerEdge&lt; T, U, W &gt;" name="htgs::ProducerConsumerEdge&lt; T, U, W &gt;">
-<area shape="rect" id="node2" href="$classhtgs_1_1_edge_descriptor.html" title="The edge descriptor is an interface used to describe how an edge is applied and copied to a task grap..." alt="" coords="45,1455,191,1561"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; U, W \&gt;\n||+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 24 more...\l}" alt="" coords="215,1396,360,1620"/>
-<area shape="rect" id="node15" href="$classhtgs_1_1_task_manager.html" title="{htgs::TaskManager\&lt;\l U, W \&gt;\n|&#45; inputConnector\l&#45; outputConnector\l|+ TaskManager()\l+ TaskManager()\l+ ~TaskManager()\l+ getInputConnector()\l+ getOutputConnector()\l+ initialize()\l+ setRuntimeThread()\l+ getTaskFunction()\l+ copy()\l+ executeTask()\l+ gatherProfileData()\l+ setInputConnector()\l+ setOutputConnector()\l+ addResult()\l}" alt="" coords="373,1683,532,1980"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="209,985,365,1326"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_task_graph_communicator.html" title="Implements the task graph communicator where a task&#39;s address and name are mapped to their input conn..." alt="" coords="270,632,499,915"/>
-<area shape="rect" id="node16" href="$classhtgs_1_1_any_task_manager.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="496,977,655,1333"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_blocking_queue.html" title="{htgs::BlockingQueue\l\&lt; std::shared_ptr\&lt; htgs\l::DataPacket \&gt; \&gt;\n|&#45; queueSize\l&#45; mutex\l&#45; condition\l|+ BlockingQueue()\l+ BlockingQueue()\l+ ~BlockingQueue()\l+ remainingCapacity()\l+ isEmpty()\l+ size()\l+ remove()\l+ Enqueue()\l+ Dequeue()\l+ poll()\l}" alt="" coords="17,301,176,569"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="513,154,593,231"/>
-<area shape="rect" id="node9" title="STL class. " alt="" coords="489,5,616,97"/>
-<area shape="rect" id="node11" title="STL class. " alt="" coords="420,397,504,474"/>
-<area shape="rect" id="node12" title="STL class. " alt="" coords="683,389,820,481"/>
-<area shape="rect" id="node17" href="$classhtgs_1_1_task_manager_thread.html" title="Manages a TaskManager that is bound to a thread for execution. " alt="" coords="385,1403,625,1613"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_edge_descriptor.html" title="The edge descriptor is an interface used to describe how an edge is applied and copied to a task grap..." alt="" coords="9,793,154,900"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_task.html" title="{htgs::ITask\&lt; U, W \&gt;\n||+ ITask()\l+ ITask()\l+ ITask()\l+ ~ITask()\l+ initialize()\l+ initialize()\l+ executeTask()\l+ canTerminate()\l+ shutdown()\l+ executeTaskFinal()\land 27 more...\l}" alt="" coords="178,735,323,959"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_task_manager.html" title="{htgs::TaskManager\&lt;\l U, W \&gt;\n|&#45; inputConnector\l&#45; outputConnector\l|+ TaskManager()\l+ TaskManager()\l+ ~TaskManager()\l+ getInputConnector()\l+ getOutputConnector()\l+ initialize()\l+ setRuntimeThread()\l+ getTaskFunction()\l+ copy()\l+ executeTask()\land 6 more...\l}" alt="" coords="337,1036,495,1289"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="173,301,329,643"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_any_task_manager.html" title="The parent class for a Task that removes the template arguments. " alt="" coords="467,287,626,657"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_task_manager_thread.html" title="Manages a TaskManager that is bound to a thread for execution. " alt="" coords="348,720,588,973"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="507,147,587,224"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="483,5,610,97"/>
 </map>

@@ -12,5 +12,6 @@ var searchData=
   ['dotgen_5fflag_5fshow_5fall_5fthreading',['DOTGEN_FLAG_SHOW_ALL_THREADING',['../_task_graph_dot_gen_flags_8hpp.html#ad40fb64b87d99f44df0b2bf8f639fa22',1,'TaskGraphDotGenFlags.hpp']]],
   ['dotgen_5fflag_5fshow_5fconnector_5fverbose',['DOTGEN_FLAG_SHOW_CONNECTOR_VERBOSE',['../_task_graph_dot_gen_flags_8hpp.html#ae29bb313270abfa7b458dc4359279fab',1,'TaskGraphDotGenFlags.hpp']]],
   ['dotgen_5fflag_5fshow_5fcurrent_5fq_5fsz',['DOTGEN_FLAG_SHOW_CURRENT_Q_SZ',['../_task_graph_dot_gen_flags_8hpp.html#ab3bbaa0b128696cbfd8263d19054bbe1',1,'TaskGraphDotGenFlags.hpp']]],
-  ['dotgen_5fflag_5fshow_5fin_5fout_5ftypes',['DOTGEN_FLAG_SHOW_IN_OUT_TYPES',['../_task_graph_dot_gen_flags_8hpp.html#a2e6ff8669b15dd1ebaefed15503207fc',1,'TaskGraphDotGenFlags.hpp']]]
+  ['dotgen_5fflag_5fshow_5fin_5fout_5ftypes',['DOTGEN_FLAG_SHOW_IN_OUT_TYPES',['../_task_graph_dot_gen_flags_8hpp.html#a2e6ff8669b15dd1ebaefed15503207fc',1,'TaskGraphDotGenFlags.hpp']]],
+  ['dotgen_5fflag_5fshow_5ftask_5fliving_5fstatus',['DOTGEN_FLAG_SHOW_TASK_LIVING_STATUS',['../_task_graph_dot_gen_flags_8hpp.html#a7478fda68c62e67c9bc6605874fb7556',1,'TaskGraphDotGenFlags.hpp']]]
 ];

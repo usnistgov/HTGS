@@ -1,4 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classhtgs_1_1_any_task_graph_conf.html" title="Implements the base class for the TaskGraphConf class, removing the template arguments and providing ..." alt="" coords="5,13,176,39"/>
-<area shape="rect" id="node2" href="$classhtgs_1_1_task_graph_conf.html" title="Manages a group of connected ITasks and their connections. " alt="" coords="224,5,371,47"/>
+<area shape="rect" id="node1" href="$classhtgs_1_1_any_rule_manager.html" title="Connects a Bookkeeper to another ITask using one IRule. " alt="" coords="5,13,160,39"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_rule_manager_in_only.html" title="Implements the base class for the rule manager, but only provides the input type. ..." alt="" coords="208,13,433,39"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_rule_manager.html" title="Connects a Bookkeeper to another ITask using one or more IRule(s). " alt="" coords="481,5,621,47"/>
 </map>

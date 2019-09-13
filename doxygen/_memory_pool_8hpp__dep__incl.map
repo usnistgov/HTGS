@@ -1,8 +1,10 @@
-<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryPool.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/memory/MemoryPool.hpp">
-<area shape="rect" id="node2" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="103,109,297,165"/>
-<area shape="rect" id="node3" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="5,213,184,269"/>
-<area shape="rect" id="node7" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="208,213,403,269"/>
-<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="99,317,301,373"/>
-<area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="101,525,299,581"/>
-<area shape="rect" id="node6" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="168,421,371,477"/>
+<map id="/home/tjb3/work/HTGS/src/htgs/core/memory/MemoryPool.hpp" name="/home/tjb3/work/HTGS/src/htgs/core/memory/MemoryPool.hpp">
+<area shape="rect" id="node2" href="$_memory_manager_8hpp.html" title="Implements the MemoryManager class that processes MemoryData between two ITasks. " alt="" coords="265,109,421,165"/>
+<area shape="rect" id="node3" href="$_memory_edge_8hpp.html" title="Implements the memory edge, which is an edge descriptor. " alt="" coords="167,213,327,269"/>
+<area shape="rect" id="node9" href="$_cuda_memory_manager_8hpp.html" title="Provides the implementation for a MemoryManager for Cuda MemoryData. " alt="" coords="351,213,529,269"/>
+<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="235,317,450,359"/>
+<area shape="rect" id="node5" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="5,496,232,537"/>
+<area shape="rect" id="node7" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="142,407,378,448"/>
+<area shape="rect" id="node8" href="$_t_g_task_8hpp.html" title="Holds the TGTask class implementation. " alt="" coords="281,496,452,537"/>
+<area shape="rect" id="node6" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="269,585,464,641"/>
 </map>

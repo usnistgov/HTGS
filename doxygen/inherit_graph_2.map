@@ -1,12 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="5,155,116,182"/>
-<area shape="rect" id="node2" href="$classhtgs_1_1_i_task.html" title="An interface to process input data and forward results within a TaskGraph. " alt="" coords="186,67,325,94"/>
-<area shape="rect" id="node5" href="$classhtgs_1_1_i_task.html" title="htgs::ITask\&lt; MemoryData\l\&lt; T \&gt;, MemoryData\&lt; T \&gt; \&gt;" alt="" coords="165,119,346,160"/>
-<area shape="rect" id="node8" href="$classhtgs_1_1_i_task.html" title="htgs::ITask\&lt; T, VoidData \&gt;" alt="" coords="164,185,347,211"/>
-<area shape="rect" id="node10" href="$classhtgs_1_1_i_task.html" title="htgs::ITask\&lt; U, W \&gt;" alt="" coords="184,235,327,262"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="407,5,566,47"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="402,71,571,98"/>
-<area shape="rect" id="node6" href="$classhtgs_1_1_memory_manager.html" title="Processes MemoryData between two ITasks using a memory pool. " alt="" coords="395,126,579,153"/>
-<area shape="rect" id="node7" href="$classhtgs_1_1_cuda_memory_manager.html" title="Implements a MemoryManager that binds the thread responsible for the MemoryManager to a CUDA GPU prio..." alt="" coords="627,126,841,153"/>
-<area shape="rect" id="node9" href="$classhtgs_1_1_bookkeeper.html" title="Special task used to manage rules. " alt="" coords="409,185,565,211"/>
+<area shape="rect" id="node1" href="$classhtgs_1_1_any_i_rule.html" title="Base class for an htgs::IRule. " alt="" coords="5,31,115,57"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_i_rule.html" title="Provides an interface to send data along RuleManager edges for processing state and dependencies..." alt="" coords="163,5,299,32"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_i_rule.html" title="htgs::IRule\&lt; T, T \&gt;" alt="" coords="163,56,298,83"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_execution_pipeline_broadcast_rule.html" title="the default execution pipeline rule that is used if no other rule is specified for an execution pipel..." alt="" coords="347,49,565,90"/>
 </map>

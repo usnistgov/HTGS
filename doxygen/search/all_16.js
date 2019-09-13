@@ -26,5 +26,6 @@ var searchData=
   ['_7etaskgraphconf',['~TaskGraphConf',['../classhtgs_1_1_task_graph_conf.html#a323f679f264c726a61ea7ae50f02914a',1,'htgs::TaskGraphConf']]],
   ['_7etaskgraphprofiler',['~TaskGraphProfiler',['../classhtgs_1_1_task_graph_profiler.html#a365094e927bbb05722d8ae328f6f1af2',1,'htgs::TaskGraphProfiler']]],
   ['_7etaskgraphruntime',['~TaskGraphRuntime',['../classhtgs_1_1_task_graph_runtime.html#adbae05f5ad1c9c3a821fbc5666e9a0eb',1,'htgs::TaskGraphRuntime']]],
-  ['_7etaskmanagerthread',['~TaskManagerThread',['../classhtgs_1_1_task_manager_thread.html#abfbf7a563e20fd8c87cb6efb50760bb1',1,'htgs::TaskManagerThread']]]
+  ['_7etaskmanagerthread',['~TaskManagerThread',['../classhtgs_1_1_task_manager_thread.html#abfbf7a563e20fd8c87cb6efb50760bb1',1,'htgs::TaskManagerThread']]],
+  ['_7etgtask',['~TGTask',['../classhtgs_1_1_t_g_task.html#a580068c48441faee98de3d99ddc2579e',1,'htgs::TGTask']]]
 ];

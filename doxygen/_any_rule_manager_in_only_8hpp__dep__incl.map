@@ -1,8 +1,11 @@
-<map id="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/rules/AnyRuleManagerInOnly.hpp" name="/home/tjb3/phd&#45;research/HTGS/src/htgs/core/rules/AnyRuleManagerInOnly.hpp">
-<area shape="rect" id="node2" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="115,109,349,151"/>
-<area shape="rect" id="node7" href="$_rule_manager_8hpp.html" title="Implements a RuleManager, which connects a Bookkeeper to another ITask using an IRule. " alt="" coords="299,199,474,255"/>
-<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="5,511,203,567"/>
-<area shape="rect" id="node4" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="96,199,275,255"/>
-<area shape="rect" id="node5" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="91,303,293,359"/>
-<area shape="rect" id="node6" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="141,407,344,463"/>
+<map id="/home/tjb3/work/HTGS/src/htgs/core/rules/AnyRuleManagerInOnly.hpp" name="/home/tjb3/work/HTGS/src/htgs/core/rules/AnyRuleManagerInOnly.hpp">
+<area shape="rect" id="node2" href="$_bookkeeper_8hpp.html" title="Implements the Bookkeeper class. " alt="" coords="495,109,687,151"/>
+<area shape="rect" id="node10" href="$_rule_manager_8hpp.html" title="Implements a RuleManager, which connects a Bookkeeper to another ITask using an IRule. " alt="" coords="688,199,844,255"/>
+<area shape="rect" id="node3" href="$_execution_pipeline_8hpp.html" title="ExecutionPipeline encapsulates a task graph and duplicates it, such that each duplicate task graph ex..." alt="" coords="437,206,663,247"/>
+<area shape="rect" id="node8" href="$_graph_rule_producer_edge_8hpp_source.html" title="/home/tjb3/work/HTGS\l/src/htgs/core/graph\l/edge/GraphRuleProducerEdge.hpp" alt="" coords="186,199,413,255"/>
+<area shape="rect" id="node9" href="$_rule_edge_8hpp.html" title="Implements the rule edge, which is an edge descriptor. " alt="" coords="5,199,161,255"/>
+<area shape="rect" id="node4" href="$_task_graph_conf_8hpp.html" title="Implements the task graph configuration class responsible for managing ITask connections. " alt="" coords="233,303,448,344"/>
+<area shape="rect" id="node7" href="$_task_graph_profiler_8hpp.html" title="Implements the task graph profiler for gathering and communicating the results via graphviz..." alt="" coords="303,571,498,627"/>
+<area shape="rect" id="node5" href="$_task_graph_runtime_8hpp.html" title="Spawns threads and binds them to the appropriate ITask within a TaskGraph. " alt="" coords="389,392,625,433"/>
+<area shape="rect" id="node6" href="$_t_g_task_8hpp.html" title="Holds the TGTask class implementation. " alt="" coords="315,481,486,523"/>
 </map>

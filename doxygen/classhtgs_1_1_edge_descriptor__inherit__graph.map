@@ -1,5 +1,10 @@
 <map id="htgs::EdgeDescriptor" name="htgs::EdgeDescriptor">
-<area shape="rect" id="node2" href="$classhtgs_1_1_memory_edge.html" title="Implements the memory edge that is added to the graph. " alt="" coords="5,167,169,318"/>
-<area shape="rect" id="node3" href="$classhtgs_1_1_producer_consumer_edge.html" title="Implements the producer consumer edge that connects two tasks where one task is producing data and th..." alt="" coords="194,167,391,318"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_rule_edge.html" title="Implements the rule edge that is added to the graph. " alt="" coords="415,160,551,325"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_graph_edge.html" title="{htgs::GraphEdge\&lt; U \&gt;\n|&#45; graphConnector\l|+ GraphEdge()\l+ ~GraphEdge()\l+ getGraphConnector()\l+ setConnector()\l+ copy()\l+ updateEdge()\l+ getTaskManager()\l}" alt="" coords="251,160,406,325"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_graph_edge.html" title="{htgs::GraphEdge\&lt; T \&gt;\n|&#45; graphConnector\l|+ GraphEdge()\l+ ~GraphEdge()\l+ getGraphConnector()\l+ setConnector()\l+ copy()\l+ updateEdge()\l+ getTaskManager()\l}" alt="" coords="463,160,618,325"/>
+<area shape="rect" id="node7" href="$classhtgs_1_1_memory_edge.html" title="Implements the memory edge that is added to the graph. " alt="" coords="643,167,807,318"/>
+<area shape="rect" id="node8" href="$classhtgs_1_1_producer_consumer_edge.html" title="Implements the producer consumer edge that connects two tasks where one task is producing data and th..." alt="" coords="831,167,1029,318"/>
+<area shape="rect" id="node9" href="$classhtgs_1_1_rule_edge.html" title="Implements the rule edge that is added to the graph. " alt="" coords="1053,160,1189,325"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_graph_rule_producer_edge.html" title="{htgs::GraphRuleProducerEdge\l\&lt; T, U \&gt;\n|&#45; bookkeeper\l&#45; rule\l|+ GraphRuleProducerEdge()\l+ ~GraphRuleProducerEdge()\l+ applyEdge()\l+ updateEdge()\l+ getTaskManager()\l+ copy()\l}" alt="" coords="5,373,204,553"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_graph_task_producer_edge.html" title="{htgs::GraphTaskProducerEdge\l\&lt; T, U \&gt;\n|&#45; task\l|+ GraphTaskProducerEdge()\l+ ~GraphTaskProducerEdge()\l+ applyEdge()\l+ copy()\l+ updateEdge()\l+ getTaskManager()\l}" alt="" coords="228,381,429,546"/>
+<area shape="rect" id="node6" href="$classhtgs_1_1_graph_task_consumer_edge.html" title="{htgs::GraphTaskConsumerEdge\&lt; T \&gt;\n|&#45; task\l|+ GraphTaskConsumerEdge()\l+ ~GraphTaskConsumerEdge()\l+ applyEdge()\l+ copy()\l+ updateEdge()\l+ getTaskManager()\l}" alt="" coords="453,388,695,539"/>
 </map>

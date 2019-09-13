@@ -34,10 +34,15 @@ var dir_cba3643586339776702906f470e9e126 =
       [ "MemoryData", "classhtgs_1_1_memory_data.html", "classhtgs_1_1_memory_data" ]
     ] ],
     [ "TaskGraphConf.hpp", "_task_graph_conf_8hpp.html", [
+      [ "ExecutionPipeline", "classhtgs_1_1_execution_pipeline.html", "classhtgs_1_1_execution_pipeline" ],
+      [ "TGTask", "classhtgs_1_1_t_g_task.html", "classhtgs_1_1_t_g_task" ],
       [ "TaskGraphConf", "classhtgs_1_1_task_graph_conf.html", "classhtgs_1_1_task_graph_conf" ]
     ] ],
     [ "TaskGraphRuntime.hpp", "_task_graph_runtime_8hpp.html", [
       [ "TaskGraphRuntime", "classhtgs_1_1_task_graph_runtime.html", "classhtgs_1_1_task_graph_runtime" ]
+    ] ],
+    [ "TGTask.hpp", "_t_g_task_8hpp.html", [
+      [ "TGTask", "classhtgs_1_1_t_g_task.html", "classhtgs_1_1_t_g_task" ]
     ] ],
     [ "VoidData.hpp", "_void_data_8hpp.html", [
       [ "VoidData", "classhtgs_1_1_void_data.html", "classhtgs_1_1_void_data" ]

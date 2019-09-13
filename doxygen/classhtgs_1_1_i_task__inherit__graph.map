@@ -1,5 +1,6 @@
 <map id="htgs::ITask&lt; T, U &gt;" name="htgs::ITask&lt; T, U &gt;">
-<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="5,681,189,1008"/>
-<area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,681,383,1008"/>
-<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="110,5,285,361"/>
+<area shape="rect" id="node3" href="$classhtgs_1_1_execution_pipeline.html" title="The ExecutionPipeline class is used to duplicate task graphs, such that each duplicate executes concu..." alt="" coords="5,667,189,1023"/>
+<area shape="rect" id="node4" href="$classhtgs_1_1_i_cuda_task.html" title="An ICudaTask is used to attach a task to an NVIDIA Cuda GPU. " alt="" coords="214,696,383,993"/>
+<area shape="rect" id="node5" href="$classhtgs_1_1_t_g_task.html" title="TGTask is the task graph task, which is used to bundle a graph as a task, which can then be connected..." alt="" coords="408,711,592,979"/>
+<area shape="rect" id="node2" href="$classhtgs_1_1_any_i_task.html" title="Implements the parent ITask, which removes the template arguments of an ITask. " alt="" coords="221,5,377,347"/>
 </map>
