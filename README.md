@@ -6,7 +6,7 @@ Main features:
 
 1) Takes advantage of C++17 features, such as variadic templates, constexpr
 2) Support for multiple input types per task and ability to broadcast output to multiple tasks
-3) Improved object oriented design
+3) Architectural redesign -- memory management, graphs, tasks, data, etc.
 4) Reduced overhead communication between tasks
 5) ... More details coming soon
 
