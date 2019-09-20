@@ -1,6 +1,6 @@
 # HTGS Remade
 
-The next generation of HTGS, named Hedgehog,is under development and can be found here: https://github.com/ABardakoff/hedgehog
+The next generation of HTGS, named Hedgehog,is under development and can be found here: https://github.com/usnistgov/hedgehog
 
 Main features:
 
