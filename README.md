@@ -10,7 +10,7 @@ Main features:
 4) Reduced overhead communication between tasks
 5) ... More details coming soon
 
-Currently there is no tutorial or documentation on how to use Hedgehog. Please feel free to send messages to Alexandre or Timothy for more assistance in using the API.
+[Hedgehog Tutorials](https://github.com/usnistgov/hedgehog-Tutorials)
 
 # Hybrid Task Graph Scheduler (HTGS)
 
