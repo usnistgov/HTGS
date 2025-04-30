@@ -3,14 +3,14 @@
 # NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
 # You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 
 project(htgs VERSION 1.5.0 LANGUAGES CXX)
 
 set(CMAKE_VERBOSE_MAKEFILE  on)
 
 find_package (Threads REQUIRED)
-find_package (CUDA QUIET)
+find_package (CUDAToolkit QUIET)
 
 #if(CUDA_FOUND)
 #    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
@@ -81,6 +81,8 @@ if (BUILD_DOXYGEN)
 endif (BUILD_DOXYGEN)
 
 add_subdirectory(src)
+
+
 
 add_custom_target(install_${PROJECT_NAME}
         make install

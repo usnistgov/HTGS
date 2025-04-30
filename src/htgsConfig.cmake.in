@@ -1,0 +1,24 @@
+# Create htgsConfig.cmake.in
+# htgsConfig.cmake.in content:
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(Threads)
+find_dependency(CUDAToolkit)
+set(HTGS_WITH_CUDA TRUE)
+
+# Check C++11 support
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include("${CMAKE_CURRENT_LIST_DIR}/htgsTargets.cmake")
+
+set_and_check(HTGS_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set(HTGS_INCLUDE_DIRS ${HTGS_INCLUDE_DIR})
+
+if (HTGS_WITH_CUDA)
+    target_compile_definitions(htgs INTERFACE USE_CUDA)
+endif()
+
+check_required_components(htgs)

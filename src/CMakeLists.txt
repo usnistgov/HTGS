@@ -5,6 +5,36 @@
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../cmake-modules")
 
+# Add a dummy target to make the export work
+add_library(htgs INTERFACE)
+target_include_directories(htgs INTERFACE $<INSTALL_INTERFACE:include>)
+
+# Install the target
+install(TARGETS htgs EXPORT htgsTargets)
+
+configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/htgsConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/htgsConfig.cmake"
+        @ONLY
+)
+
+install(
+        FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/htgsConfig.cmake"
+        DESTINATION
+        "${CMAKE_INSTALL_PREFIX}/share/htgs"
+)
+
+install(
+        EXPORT
+        htgsTargets
+        NAMESPACE
+        htgs::
+        DESTINATION
+        "${CMAKE_INSTALL_PREFIX}/share/htgs"
+        FILE htgsTargets.cmake
+)
+
 
 install(DIRECTORY htgs
         DESTINATION include
