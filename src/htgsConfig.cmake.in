@@ -25,7 +25,7 @@ set_and_check(HTGS_INCLUDE_DIR "${HTGS_INCLUDE_DIR}")
 set(HTGS_INCLUDE_DIRS ${HTGS_INCLUDE_DIR})
 
 if (HTGS_WITH_CUDA)
-    target_compile_definitions(htgs INTERFACE USE_CUDA)
+    add_compile_definitions(USE_CUDA)
 endif()
 
 check_required_components(htgs)
